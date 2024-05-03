@@ -10,7 +10,7 @@ const lightColorScheme = ColorScheme(
   onSecondary: GrayColor.color10,
   error: ErrorColor.main,
   onError: ErrorColor.content,
-  background: PrimaryColor.surface,
+  background: GrayColor.color10,
   onBackground: GrayColor.color100,
   surface: PrimaryColor.surface,
   onSurface: GrayColor.color100,

@@ -8,5 +8,7 @@ class AppTheme {
         brightness: Brightness.light,
         colorScheme: lightColorScheme,
         textTheme: AppTextTheme.getTextTheme(),
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
       );
 }

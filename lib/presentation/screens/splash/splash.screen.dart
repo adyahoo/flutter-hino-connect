@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:hino_driver_app/infrastructure/navigation/routes.dart';
+import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
 
 import 'controllers/splash.controller.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -13,7 +14,7 @@ class SplashScreen extends GetView<SplashController> {
   Widget build(BuildContext context) {
     controller.isLoading.listen((isLoading) {
       if (!isLoading) {
-        Get.offNamed(Routes.HOME);
+        Get.offNamed(Routes.MAIN_TAB);
       }
     });
 
@@ -29,7 +30,7 @@ class SplashScreen extends GetView<SplashController> {
             ),
             Text(
               'V.1.1',
-              style: TextStyle(fontSize: 20),
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: TextColor.secondary),
             ),
           ],
         ),

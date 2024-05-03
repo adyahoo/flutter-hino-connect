@@ -36,5 +36,25 @@ class Nav {
       page: () => const LoginScreen(),
       binding: LoginControllerBinding(),
     ),
+    GetPage(
+      name: Routes.MAIN_TAB,
+      page: () => const MainTabScreen(),
+      binding: MainTabControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.PROFILE,
+      page: () => const ProfileScreen(),
+      binding: ProfileControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.TRIP,
+      page: () => const TripScreen(),
+      binding: TripControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.FEEDBACK,
+      page: () => const FeedbackScreen(),
+      binding: FeedbackControllerBinding(),
+    ),
   ];
 }
