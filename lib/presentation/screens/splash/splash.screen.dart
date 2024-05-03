@@ -13,7 +13,7 @@ class SplashScreen extends GetView<SplashController> {
   Widget build(BuildContext context) {
     controller.isLoading.listen((isLoading) {
       if (!isLoading) {
-        Get.offNamed(Routes.LOGIN);
+        Get.offNamed(Routes.HOME);
       }
     });
 

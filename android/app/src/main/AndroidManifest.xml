@@ -1,4 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="id.hino.driver">
     <application
         android:label="hino_driver_app"
         android:name="${applicationName}"

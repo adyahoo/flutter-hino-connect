@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:hino_driver_app/infrastructure/theme/app_theme.dart';
 
 import 'infrastructure/navigation/navigation.dart';
 import 'infrastructure/navigation/routes.dart';
@@ -12,11 +13,14 @@ void main() async {
 
 class Main extends StatelessWidget {
   final String initialRoute;
+
   Main(this.initialRoute);
 
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      themeMode: ThemeMode.light,
+      theme: AppTheme.getLightTheme(),
       initialRoute: initialRoute,
       getPages: Nav.routes,
     );

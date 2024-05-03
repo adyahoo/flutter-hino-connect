@@ -1,4 +1,4 @@
-package net.timedoor.hino.hino_driver_app
+package id.hino.driver
 
 import io.flutter.embedding.android.FlutterActivity
 
