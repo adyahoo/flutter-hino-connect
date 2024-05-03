@@ -33,7 +33,7 @@ class Nav {
     ),
     GetPage(
       name: Routes.LOGIN,
-      page: () => const LoginScreen(),
+      page: () => LoginScreen(),
       binding: LoginControllerBinding(),
     ),
     GetPage(
@@ -55,6 +55,11 @@ class Nav {
       name: Routes.FEEDBACK,
       page: () => const FeedbackScreen(),
       binding: FeedbackControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.SCAN_QR,
+      page: () => const ScanQrScreen(),
+      binding: ScanQrControllerBinding(),
     ),
   ];
 }

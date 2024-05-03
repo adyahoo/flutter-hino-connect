@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hino_driver_app/infrastructure/constants.dart';
 import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
-import 'package:hino_driver_app/infrastructure/theme/app_theme.dart';
 import 'package:hino_driver_app/infrastructure/theme/master_color.dart';
-import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 import 'package:iconsax/iconsax.dart';
 
 import 'controllers/main_tab.controller.dart';
@@ -16,10 +14,12 @@ class MainTabScreen extends GetView<MainTabController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Obx(()=> controller.activeScreen.value),
+      body: Obx(() => controller.activeScreen.value),
       floatingActionButton: FloatingActionButton(
         shape: CircleBorder(),
-        onPressed: () {},
+        onPressed: () {
+          controller.navigateScanQR();
+        },
         backgroundColor: BrandColor.color700,
         child: const Icon(Iconsax.scan),
       ),

@@ -32,6 +32,14 @@ class BorderColor {
   static const error = RedColor.color600;
 }
 
+class IconColor {
+  IconColor._();
+
+  static const primary = GrayColor.color100;
+  static const secondary = GrayColor.color70;
+  static const disabled = GrayColor.color50;
+}
+
 class ErrorColor {
   ErrorColor._();
 
