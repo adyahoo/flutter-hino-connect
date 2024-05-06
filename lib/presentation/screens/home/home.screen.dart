@@ -14,9 +14,9 @@ class HomeScreen extends GetView<HomeController> {
         title: const Text('HomeScreen'),
         centerTitle: true,
       ),
-      body: const Center(
+      body:  Center(
         child: Text(
-          'HomeScreen is working',
+          'HomeScreen is working ${controller.count.value}',
           style: TextStyle(fontSize: 20),
         ),
       ),
