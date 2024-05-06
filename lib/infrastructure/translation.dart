@@ -14,7 +14,8 @@ class AppTranslations extends Translations {
           'email_placeholder': 'Ex: jack@hino.com',
           'password': 'Password',
           'password_placeholder': 'Enter password',
-          'login': 'Login'
+          'login': 'Login',
+          'profile_title': 'My Account',
         },
         'id_ID': {
           'home': 'Home',
@@ -27,7 +28,8 @@ class AppTranslations extends Translations {
           'email_placeholder': 'Cth: jack@hino.com',
           'password': 'Kata sandi',
           'password_placeholder': 'Masukan kata sandi',
-          'login': 'Masuk'
-        }
+          'login': 'Masuk',
+          'profile_title': 'Akun saya',
+        },
       };
 }

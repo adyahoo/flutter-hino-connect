@@ -1,6 +1,6 @@
 class Routes {
   static Future<String> get initialRoute async {
-    return SPLASH;
+    return MAIN_TAB;
   }
 
   static const FEEDBACK = '/feedback';
