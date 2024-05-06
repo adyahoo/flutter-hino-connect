@@ -8,7 +8,7 @@ Hino Driver App is an application to track trucks from driver's reports.
 
 - Flutter Version: 3.19.6
 
-- Using Get Cli (Recommended)
+- Using Get Cli (Recommended) (https://pub.dev/packages/get_cli)
 
 ## Getting Started
 
