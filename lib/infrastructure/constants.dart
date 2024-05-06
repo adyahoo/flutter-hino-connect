@@ -1,6 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 import 'package:iconsax/iconsax.dart';
+
+class ButtonShapeValue {
+  final double radius;
+
+  const ButtonShapeValue({
+    required this.radius,
+  });
+}
 
 class Constants {
   static final bottomMainMenu = [
@@ -25,4 +34,13 @@ class Constants {
       icon: const Icon(Iconsax.user),
     ),
   ];
+
+  static final buttonShapeValue = {
+    AppButtonShape.rounded: ButtonShapeValue(
+      radius: 320,
+    ),
+    AppButtonShape.rect: ButtonShapeValue(
+      radius: 12,
+    ),
+  };
 }

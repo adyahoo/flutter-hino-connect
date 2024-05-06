@@ -78,7 +78,8 @@ class LoginScreen extends GetView<LoginController> {
                           controller: controller.passwordController.value,
                         ),
                         const SizedBox(height: 28),
-                        AppButton.filled(
+                        AppButton(
+                          type: AppButtonType.filled,
                           label: 'login'.tr,
                           onPress: () {},
                         ),
