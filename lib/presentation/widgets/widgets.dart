@@ -7,3 +7,4 @@ import 'package:iconsax/iconsax.dart';
 
 part 'app_text_field.dart';
 part 'app_button.dart';
+part 'app_tips.dart';

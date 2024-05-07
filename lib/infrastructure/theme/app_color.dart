@@ -51,3 +51,36 @@ class ErrorColor {
   static const border = RedColor.color100;
   static const content = GrayColor.color10;
 }
+
+class SuccesColor {
+  SuccesColor._();
+
+  static const main = GreenColor.color600;
+  static const hover = GreenColor.color700;
+  static const pressed = GreenColor.color800;
+  static const surface = GreenColor.color50;
+  static const border = GreenColor.color200;
+  static const content = GrayColor.color10;
+}
+
+class InfoColor {
+  InfoColor._();
+
+  static const main = BlueColor.color600;
+  static const hover = BlueColor.color700;
+  static const pressed = BlueColor.color800;
+  static const surface = BlueColor.color50;
+  static const border = BlueColor.color200;
+  static const content = GrayColor.color10;
+}
+
+class WarningColor {
+  WarningColor._();
+
+  static const main = OrangeColor.color600;
+  static const hover = OrangeColor.color700;
+  static const pressed = OrangeColor.color800;
+  static const surface = OrangeColor.color50;
+  static const border = OrangeColor.color200;
+  static const content = GrayColor.color10;
+}
