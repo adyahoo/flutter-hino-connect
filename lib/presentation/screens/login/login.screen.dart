@@ -17,6 +17,7 @@ class LoginScreen extends GetView<LoginController> {
   void doLogin() {
     if (_formKey.currentState?.validate() == true) {
       _formKey.currentState?.save();
+      controller.doLogin();
     }
   }
 
@@ -87,10 +88,13 @@ class LoginScreen extends GetView<LoginController> {
                           type: AppTextFieldType.password,
                         ),
                         const SizedBox(height: 28),
-                        AppButton(
-                          type: AppButtonType.filled,
-                          label: 'login'.tr,
-                          onPress: doLogin,
+                        Obx(
+                          () => AppButton(
+                            type: AppButtonType.filled,
+                            label: 'login'.tr,
+                            onPress: doLogin,
+                            isLoading: controller.isLoading.value,
+                          ),
                         ),
                       ],
                     ),

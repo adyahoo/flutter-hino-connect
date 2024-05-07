@@ -41,5 +41,15 @@ class Nav {
       page: () => const ScanQrScreen(),
       binding: ScanQrControllerBinding(),
     ),
+    GetPage(
+      name: Routes.FACE_RECOGNITION,
+      page: () => const FaceRecognitionScreen(),
+      binding: FaceRecognitionControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.FACE_SCAN_INFORMATION,
+      page: () => const FaceScanInformationScreen(),
+      binding: FaceScanInformationControllerBinding(),
+    ),
   ];
 }

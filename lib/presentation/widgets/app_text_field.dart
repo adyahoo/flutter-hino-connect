@@ -29,7 +29,7 @@ class AppTextFieldState {
       isError.value = true;
       this.errorText.value = errorText;
     } else {
-      isError.value = true;
+      isError.value = false;
       this.errorText.value = null;
     }
   }
@@ -92,14 +92,12 @@ class AppTextField extends StatelessWidget {
         final isObscure = state.isObscure.value;
         final suffixIcon = (type == AppTextFieldType.password) ? _renderSuffixIcon() : null;
 
-        if (state.isFocus.value && !isDisabled) {
-          borderWidth = 3;
-          borderColor = PrimaryColor.focus;
-        }
-
+        print("sapi focus $label ${state.isFocus.value} $isDisabled ${state.isError.value}");
         if (state.isError.value) {
           borderColor = BorderColor.error;
           helperColor = TextColor.error;
+        } else if (state.isFocus.value && !isDisabled) {
+          borderColor = PrimaryColor.focus;
         }
 
         if (isDisabled) {
@@ -119,23 +117,28 @@ class AppTextField extends StatelessWidget {
               maxLines: 1,
               obscureText: (type == AppTextFieldType.password) ? isObscure : false,
               decoration: InputDecoration(
-                floatingLabelBehavior: FloatingLabelBehavior.never,
-                contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
-                hintText: placeholder,
-                hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.placeholder),
-                filled: true,
-                fillColor: bgColor,
-                border: InputBorder.none,
-                focusedBorder: getBorder(borderWidth, borderColor),
-                enabledBorder: getBorder(borderWidth, borderColor),
-                suffixIcon: suffixIcon,
-              ),
+                  floatingLabelBehavior: FloatingLabelBehavior.never,
+                  contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+                  hintText: placeholder,
+                  hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.placeholder),
+                  filled: true,
+                  fillColor: bgColor,
+                  border: InputBorder.none,
+                  focusedBorder: getBorder(3, borderColor),
+                  enabledBorder: getBorder(borderWidth, borderColor),
+                  errorBorder: getBorder(borderWidth, borderColor),
+                  focusedErrorBorder: getBorder(3, borderColor),
+                  suffixIcon: suffixIcon,
+                  errorStyle: TextStyle(fontSize: 0)),
               style: Theme.of(context).textTheme.bodyMedium,
               validator: (value) {
                 final error = inputValidator(type, value, label);
                 state.setError(error);
 
-                return null;
+                if (error != null)
+                  return "";
+                else
+                  return null;
               },
               onChanged: (value) {
                 if (state.isError.value) {

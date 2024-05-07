@@ -11,6 +11,7 @@ class AppButton extends StatelessWidget {
     required this.onPress,
     required this.type,
     this.icon,
+    this.isLoading = false,
     this.shape = AppButtonShape.rounded,
   });
 
@@ -21,11 +22,13 @@ class AppButton extends StatelessWidget {
     required this.onPress,
     required this.type,
     this.shape = AppButtonShape.rounded,
+    this.isLoading = false,
   });
 
   final String label;
   final AppButtonType type;
   final AppButtonShape shape;
+  final bool isLoading;
   final Function()? onPress;
   final IconData? icon;
 
@@ -50,6 +53,16 @@ class AppButton extends StatelessWidget {
     return Text(
       label,
       style: Theme.of(context).textTheme.titleSmall?.copyWith(color: labelColor),
+    );
+  }
+
+  Widget _renderLoading() {
+    return SizedBox(
+      width: 24,
+      height: 24,
+      child: CircularProgressIndicator(
+        color: labelColor,
+      ),
     );
   }
 
@@ -106,7 +119,11 @@ class AppButton extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 12),
           alignment: Alignment.center,
-          child: icon != null ? _renderWithIcon(context) : _renderText(context),
+          child: isLoading
+              ? _renderLoading()
+              : icon != null
+                  ? _renderWithIcon(context)
+                  : _renderText(context),
         ),
       ),
     );
