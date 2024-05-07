@@ -34,6 +34,7 @@ class AppButton extends StatelessWidget {
 
   Widget _renderWithIcon(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Icon(
           icon,
