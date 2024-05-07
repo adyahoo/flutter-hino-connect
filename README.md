@@ -10,6 +10,8 @@ Hino Driver App is an application to track trucks from driver's reports.
 
 - Using Get Cli (Recommended) (https://pub.dev/packages/get_cli)
 
+- Using FVM to control flutter version (Recommended) (https://fvm.app/documentation/getting-started)
+
 ## Getting Started
 
 This project will use Clean Architecture Design, please read more about this Architecture Design and follow the pattern. (https://medium.com/ruangguru/an-introduction-to-flutter-clean-architecture-ae00154001b0)

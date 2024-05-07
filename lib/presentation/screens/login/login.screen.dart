@@ -14,6 +14,13 @@ class LoginScreen extends GetView<LoginController> {
 
   final _formKey = GlobalKey<FormState>();
 
+  void doLogin() {
+    if (_formKey.currentState?.validate() == true) {
+      _formKey.currentState?.save();
+      controller.doLogin();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,19 +75,26 @@ class LoginScreen extends GetView<LoginController> {
                         AppTextField(
                           label: 'Email',
                           placeholder: 'email_placeholder'.tr,
-                          controller: controller.emailController.value,
-                          type: TextFieldType.email,
+                          textEditingController: controller.emailController.value,
+                          state: controller.emailState,
+                          type: AppTextFieldType.email,
                         ),
                         const SizedBox(height: 28),
-                        AppTextField.password(
+                        AppTextField(
                           label: 'password'.tr,
                           placeholder: 'password_placeholder'.tr,
-                          controller: controller.passwordController.value,
+                          textEditingController: controller.passwordController.value,
+                          state: controller.passwordState,
+                          type: AppTextFieldType.password,
                         ),
                         const SizedBox(height: 28),
-                        AppButton.filled(
-                          label: 'login'.tr,
-                          onPress: () {},
+                        Obx(
+                          () => AppButton(
+                            type: AppButtonType.filled,
+                            label: 'login'.tr,
+                            onPress: doLogin,
+                            isLoading: controller.isLoading.value,
+                          ),
                         ),
                       ],
                     ),

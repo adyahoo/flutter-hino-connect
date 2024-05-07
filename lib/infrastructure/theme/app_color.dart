@@ -9,6 +9,7 @@ class PrimaryColor {
   static const surface = BrandColor.color100;
   static const border = BrandColor.color200;
   static const content = GrayColor.color10;
+  static final focus = BrandColor.color600.withOpacity(0.3);
 }
 
 class TextColor {

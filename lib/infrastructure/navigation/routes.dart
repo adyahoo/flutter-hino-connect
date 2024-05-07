@@ -3,12 +3,14 @@ class Routes {
     return MAIN_TAB;
   }
 
+  static const FACE_RECOGNITION = '/face-recognition';
   static const FEEDBACK = '/feedback';
   static const HOME = '/home';
   static const LOGIN = '/login';
   static const MAIN_TAB = '/main-tab';
   static const PROFILE = '/profile';
+  static const SCAN_QR = '/scan-qr';
   static const SPLASH = '/splash';
   static const TRIP = '/trip';
-  static const SCAN_QR = '/scan-qr';
+  static const FACE_SCAN_INFORMATION = '/face-scan-information';
 }

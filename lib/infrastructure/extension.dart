@@ -5,3 +5,4 @@ extension RGBA on Color {
     return Color.fromRGBO(r, g, b, opacity);
   }
 }
+

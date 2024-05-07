@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:hino_driver_app/data/locals/StorageService.dart';
+import 'package:hino_driver_app/infrastructure/di.dart';
 import 'package:hino_driver_app/infrastructure/navigation/routes.dart';
 import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
 
@@ -14,7 +16,10 @@ class SplashScreen extends GetView<SplashController> {
   Widget build(BuildContext context) {
     controller.isLoading.listen((isLoading) {
       if (!isLoading) {
-        Get.offNamed(Routes.LOGIN);
+        if (inject<StorageService>().getToken() != null)
+          Get.offNamed(Routes.FACE_SCAN_INFORMATION);
+        else
+          Get.offNamed(Routes.LOGIN);
       }
     });
 
