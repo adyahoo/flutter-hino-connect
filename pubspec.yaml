@@ -16,6 +16,7 @@ dependencies:
   shared_preferences: 2.2.3
   get_it: 7.7.0
   camera: 0.10.5+9
+  shimmer: 3.0.0
   flutter: 
     sdk: flutter
 
@@ -27,5 +28,7 @@ dev_dependencies:
 flutter: 
   assets: 
     - assets/images/
+    - assets/response_helpers/
+
   uses-material-design: true
 

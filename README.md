@@ -14,7 +14,11 @@ Hino Driver App is an application to track trucks from driver's reports.
 
 ## Getting Started
 
-This project will use Clean Architecture Design, please read more about this Architecture Design and follow the pattern. (https://medium.com/ruangguru/an-introduction-to-flutter-clean-architecture-ae00154001b0)
+This project will use Clean Architecture Design, please read more about this Architecture Design and follow the pattern. 
+
+- https://medium.com/@yamen.abd98/clean-architecture-in-flutter-mvvm-bloc-dio-79b1615530e1
+
+Folder Structure
 
 - Presentation: UI and Controller, contains code about ui logic
 - Domain: Entities, Use Case, and Repository Interfaces, contains code about business logic
