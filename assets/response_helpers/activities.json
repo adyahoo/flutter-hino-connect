@@ -1,0 +1,39 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "type": "refuel",
+      "created_at": "2023-07-28T01:09:49.000000Z"
+    },
+    {
+      "id": 2,
+      "type": "load",
+      "created_at": "2023-07-20T01:09:49.000000Z"
+    },
+    {
+      "id": 3,
+      "type": "unload",
+      "created_at": "2023-07-15T01:09:49.000000Z"
+    },
+    {
+      "id": 4,
+      "type": "workshop",
+      "created_at": "2023-07-5T01:09:49.000000Z"
+    }
+  ],
+  "links": {
+    "first": "http:\/\/mahaputra.local\/client\/v1\/technician-review?page=1",
+    "last": "http:\/\/mahaputra.local\/client\/v1\/technician-review?page=2",
+    "prev": null,
+    "next": "http:\/\/mahaputra.local\/client\/v1\/technician-review?page=2"
+  },
+  "meta": {
+    "current_page": 1,
+    "from": 1,
+    "last_page": 2,
+    "path": "http:\/\/mahaputra.local\/client\/v1\/technician-review",
+    "per_page": 10,
+    "to": 10,
+    "total": 18
+  }
+}

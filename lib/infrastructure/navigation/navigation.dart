@@ -51,5 +51,10 @@ class Nav {
       page: () => const FaceScanInformationScreen(),
       binding: FaceScanInformationControllerBinding(),
     ),
+    GetPage(
+      name: Routes.ACTIVITY_LIST,
+      page: () => const ActivityListScreen(),
+      binding: ActivityListControllerBinding(),
+    ),
   ];
 }

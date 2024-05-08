@@ -10,10 +10,10 @@ class AppButton extends StatelessWidget {
     required this.label,
     required this.onPress,
     required this.type,
-    this.icon,
     this.isLoading = false,
     this.shape = AppButtonShape.rounded,
-  });
+    this.isFullWidth = true,
+  }) : this.icon = null;
 
   AppButton.icon({
     super.key,
@@ -22,6 +22,7 @@ class AppButton extends StatelessWidget {
     required this.onPress,
     required this.type,
     this.shape = AppButtonShape.rounded,
+    this.isFullWidth = true,
     this.isLoading = false,
   });
 
@@ -29,31 +30,27 @@ class AppButton extends StatelessWidget {
   final AppButtonType type;
   final AppButtonShape shape;
   final bool isLoading;
+  final bool isFullWidth;
   final Function()? onPress;
   final IconData? icon;
 
   Widget _renderWithIcon(BuildContext context) {
     return Row(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Icon(
           icon,
           size: 20,
-          color: labelColor,
         ),
         const SizedBox(width: 8),
-        Text(
-          label,
-          style: Theme.of(context).textTheme.titleSmall?.copyWith(color: labelColor),
-        ),
+        Text(label),
       ],
     );
   }
 
   Widget _renderText(BuildContext context) {
-    return Text(
-      label,
-      style: Theme.of(context).textTheme.titleSmall?.copyWith(color: labelColor),
-    );
+    return Text(label);
   }
 
   Widget _renderLoading() {
@@ -71,6 +68,16 @@ class AppButton extends StatelessWidget {
   Color pressedColor = PrimaryColor.pressed;
   Color? borderColor;
   ButtonShapeValue? shapeValue;
+
+  RoundedRectangleBorder get shapeStyle => RoundedRectangleBorder(
+        side: borderColor != null
+            ? BorderSide(
+                width: 1,
+                color: borderColor!,
+              )
+            : BorderSide.none,
+        borderRadius: BorderRadius.circular(shapeValue!.radius),
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -100,25 +107,20 @@ class AppButton extends StatelessWidget {
         break;
     }
 
-    return Ink(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: bgColor,
-        borderRadius: BorderRadius.circular(shapeValue!.radius),
-        border: borderColor != null
-            ? Border.all(
-                width: 1,
-                color: borderColor!,
-              )
-            : null,
-      ),
-      child: InkWell(
-        onTap: onPress,
-        splashColor: pressedColor,
-        borderRadius: BorderRadius.circular(shapeValue!.radius),
+    return Expanded(
+      flex: isFullWidth ? 1 : 0,
+      child: TextButton(
+        onPressed: onPress,
+        style: TextButton.styleFrom(
+          padding: EdgeInsets.symmetric(vertical: isFullWidth ? 12 : 0),
+          minimumSize: Size.zero,
+          shape: shapeStyle,
+          backgroundColor: bgColor,
+          foregroundColor: labelColor,
+          textStyle: Theme.of(context).textTheme.titleSmall,
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap
+        ),
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 12),
-          alignment: Alignment.center,
           child: isLoading
               ? _renderLoading()
               : icon != null

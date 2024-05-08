@@ -17,7 +17,7 @@ class SplashScreen extends GetView<SplashController> {
     controller.isLoading.listen((isLoading) {
       if (!isLoading) {
         if (inject<StorageService>().getToken() != null)
-          Get.offNamed(Routes.FACE_SCAN_INFORMATION);
+          Get.offNamed(Routes.MAIN_TAB);
         else
           Get.offNamed(Routes.LOGIN);
       }

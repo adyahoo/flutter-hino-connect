@@ -8,9 +8,12 @@ import 'package:hino_driver_app/infrastructure/translation.dart';
 import 'infrastructure/navigation/navigation.dart';
 import 'infrastructure/navigation/routes.dart';
 
+final GlobalKey<ScaffoldMessengerState> rootScaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   var initialRoute = await Routes.initialRoute;
+
 
   await setupInjection();
 
@@ -25,6 +28,7 @@ class Main extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      scaffoldMessengerKey: rootScaffoldMessengerKey,
       themeMode: ThemeMode.light,
       theme: AppTheme.getLightTheme(),
       translations: AppTranslations(),

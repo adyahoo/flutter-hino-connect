@@ -43,4 +43,15 @@ class Constants {
       radius: 12,
     ),
   };
+
+  static final faceScanInformationItems = [
+    {
+      'icon': Iconsax.user_search,
+      'content': 'face_scan_item_1'.tr,
+    },
+    {
+      'icon': Iconsax.glass_1,
+      'content': 'face_scan_item_2'.tr,
+    },
+  ];
 }

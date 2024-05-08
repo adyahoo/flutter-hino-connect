@@ -4,6 +4,7 @@ class Routes {
   }
 
   static const FACE_RECOGNITION = '/face-recognition';
+  static const FACE_SCAN_INFORMATION = '/face-scan-information';
   static const FEEDBACK = '/feedback';
   static const HOME = '/home';
   static const LOGIN = '/login';
@@ -12,5 +13,5 @@ class Routes {
   static const SCAN_QR = '/scan-qr';
   static const SPLASH = '/splash';
   static const TRIP = '/trip';
-  static const FACE_SCAN_INFORMATION = '/face-scan-information';
+  static const ACTIVITY_LIST = '/activity-list';
 }
