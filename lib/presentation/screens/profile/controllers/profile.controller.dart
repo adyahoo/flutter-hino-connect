@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:hino_driver_app/data/locals/StorageService.dart';
+import 'package:hino_driver_app/infrastructure/navigation/routes.dart';
 
 import '../../../../infrastructure/di.dart';
 
@@ -29,5 +30,10 @@ class ProfileController extends GetxController {
     inject<StorageService>().setIsBiometricLogin(isBiometricLogin);
     update();
     print('isBiometricLogin check: $isBiometricLogin');
+  }
+
+  void navigateToFeedback() {
+    print('navigateToFeedback');
+    Get.toNamed(Routes.FEEDBACK);
   }
 }

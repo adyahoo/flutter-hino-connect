@@ -1,6 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter_svg/svg.dart';
+// import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
+// import 'package:hino_driver_app/presentation/widgets/widgets.dart';
+
+part of '../widgets.dart';
 
 enum BottomSheetType { confirmation }
 
@@ -57,7 +60,6 @@ class CustomBottomSheet extends StatelessWidget {
           height: 246,
           child: Column(
             children: <Widget>[
-
               // Drag handle
               Center(
                 child: Container(
@@ -96,7 +98,7 @@ class CustomBottomSheet extends StatelessWidget {
                   ],
                 ),
               ),
-              
+
               SizedBox(height: 16),
 
               // Footer with two buttons
@@ -109,28 +111,12 @@ class CustomBottomSheet extends StatelessWidget {
                       flex: 1,
                       child: Container(
                         width: double.infinity,
-                        child: TextButton(
-                          onPressed: () {
+                        child: AppButton(
+                          label: 'Batal',
+                          type: AppButtonType.outline,
+                          onPress: () {
                             firstButtonOnClick();
                           },
-                          child: Text('Batal',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleSmall
-                                  ?.copyWith(color: PrimaryColor.main)),
-                          style: TextButton.styleFrom(
-                            backgroundColor: Colors.transparent,
-                            padding: EdgeInsets.symmetric(
-                                vertical: 16, horizontal: 32),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                  50), // This gives the button a rounded shape
-                              side: BorderSide(
-                                  color: Color(0xFFCB3A31),
-                                  width:
-                                      1), // This sets the border color and width
-                            ),
-                          ),
                         ),
                       ),
                     ),
@@ -139,29 +125,12 @@ class CustomBottomSheet extends StatelessWidget {
                       flex: 1,
                       child: Container(
                         width: double.infinity,
-                        child: TextButton(
-                          onPressed: () {
+                        child: AppButton(
+                          label: 'Keluar',
+                          type: AppButtonType.filled,
+                          onPress: () {
                             secondButtonOnClick();
                           },
-                          child: Text('Keluar',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleSmall
-                                  ?.copyWith(color: Colors.white)),
-                          style: TextButton.styleFrom(
-                            backgroundColor:
-                                Color(0xFFCB3A31),
-                            padding: EdgeInsets.symmetric(
-                                vertical: 16, horizontal: 32),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                  50), 
-                              side: BorderSide(
-                                  color: Color(0xFFCB3A31),
-                                  width:
-                                      1), // This sets the border color and width
-                            ),
-                          ),
                         ),
                       ),
                     ),

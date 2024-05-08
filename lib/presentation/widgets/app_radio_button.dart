@@ -1,5 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
+// import 'package:flutter/material.dart';
+// import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
+
+part of 'widgets.dart';
 
 class CustomRadioButton extends StatelessWidget {
   final bool isSelected;

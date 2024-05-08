@@ -1,6 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
-import 'package:hino_driver_app/presentation/widgets/app_radio_button.dart';
+// import 'package:flutter/material.dart';
+// import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
+// import 'package:hino_driver_app/presentation/widgets/widgets.dart';
+
+part of '../widgets.dart';
 
 class CustomPicker extends StatefulWidget {
   final List<String> options;
@@ -88,21 +90,13 @@ class _CustomPickerState extends State<CustomPicker> {
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 8),
                 width: double.infinity,
-                child: TextButton(
-                  onPressed: () {},
-                  child: Text('Simpan Perubahan',
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleSmall
-                          ?.copyWith(color: Colors.white)),
-                  style: TextButton.styleFrom(
-                    backgroundColor: PrimaryColor.main,
-                    padding: EdgeInsets.symmetric(vertical: 16, horizontal: 32),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50),
-                      side: BorderSide(color: Color(0xFFCB3A31), width: 1),
-                    ),
-                  ),
+                child: AppButton(
+                  label: 'Simpan Perubahan',
+                  type: AppButtonType.filled,
+                  onPress: () {
+                    // Define what happens when the button is pressed
+                    // For example, you might want to save changes
+                  },
                 ),
               ),
             ],
