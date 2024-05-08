@@ -61,5 +61,10 @@ class Nav {
       page: () => const LogScreen(),
       binding: LogControllerBinding(),
     ),
+    GetPage(
+      name: Routes.EVENT_LIST,
+      page: () => const EventListScreen(),
+      binding: EventListControllerBinding(),
+    ),
   ];
 }

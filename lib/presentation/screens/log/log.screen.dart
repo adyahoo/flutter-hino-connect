@@ -43,7 +43,7 @@ class LogScreen extends GetView<LogController> {
               child: TabBarView(
                 children: [
                   ActivityListScreen(),
-                  FeedbackScreen(),
+                  EventListScreen(),
                 ],
               ),
             ),

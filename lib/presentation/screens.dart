@@ -1,4 +1,5 @@
 export 'package:hino_driver_app/presentation/screens/activity_list/activity_list.screen.dart';
+export 'package:hino_driver_app/presentation/screens/event_list/event_list.screen.dart';
 export 'package:hino_driver_app/presentation/screens/face_recognition/face_recognition.screen.dart';
 export 'package:hino_driver_app/presentation/screens/face_scan_information/face_scan_information.screen.dart';
 export 'package:hino_driver_app/presentation/screens/feedback/feedback.screen.dart';

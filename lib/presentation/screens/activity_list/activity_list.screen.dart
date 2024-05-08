@@ -17,7 +17,9 @@ class ActivityListScreen extends GetView<ActivityListController> {
 
   void onDelete(ActivityModel item) {}
 
-  void onAdd() {}
+  void onAdd() {
+    Get.bottomSheet(BsActivityForm());
+  }
 
   Widget _renderContent(ActivityModel item) {
     return Container(

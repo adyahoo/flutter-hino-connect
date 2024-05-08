@@ -19,6 +19,7 @@ class AppTranslations extends Translations {
           'error_required': '@label is required',
           'error_email_invalid': 'Email has invalid format',
           'error_password_invalid': 'Password must between 6 and 12 characters',
+          'profile_title': 'My Account',
           'face_scan_title': 'Verify your face to keep continue using the application',
           'face_scan_subtitle': 'We will compare your face with data in our server',
           'verification': 'Verification',
@@ -30,9 +31,19 @@ class AppTranslations extends Translations {
           'map': 'Maps',
           'log': 'Log',
           'sos': 'SOS',
-          'activity':'Activity',
-          'event':'Event',
-          'log_activity_event':"Activities and events log"
+          'activity': 'Activity',
+          'event': 'Event',
+          'log_activity_event': "Activities and events log",
+          'add_activity': "Add activity",
+          'fill_activity_form': 'Fill form below to add new activity.',
+          'activity_type': 'Activity type',
+          'choose_activity': 'Choose activity',
+          'date': 'Date',
+          'choose_date': 'Choose date',
+          'time': 'Time',
+          'choose_time': 'Choose time',
+          'cancel':'Cancel',
+          'save':'Save'
         },
         'id_ID': {
           'home': 'Home',
@@ -49,6 +60,7 @@ class AppTranslations extends Translations {
           'error_required': '@label wajib diisi',
           'error_email_invalid': 'Format email salah',
           'error_password_invalid': 'Kata sandi harus 6 sampai 12 karakter',
+          'profile_title': 'Akun Saya',
           'face_scan_title': 'Verifikasi wajah untuk melanjutkan menggunakan aplikasi',
           'face_scan_subtitle': 'Kami akan membandingkan ini dengan data pada server kami',
           'verification': 'Verifikasi',
@@ -60,9 +72,19 @@ class AppTranslations extends Translations {
           'map': 'Peta',
           'log': 'Log',
           'sos': 'SOS',
-          'activity':'Aktivitas',
-          'event':'Event',
-          'log_activity_event':"Log aktivitas dan event"
+          'activity': 'Aktivitas',
+          'event': 'Event',
+          'log_activity_event': "Log aktivitas dan event",
+          'add_activity': "Tambah aktivitas",
+          'fill_activity_form': 'Lengkapi formulir dibawah untuk menambahkan aktivitas.',
+          'activity_type': 'Tipe aktivitas',
+          'choose_activity': 'Pilih aktivitas',
+          'date': 'Tanggal',
+          'choose_date': 'Pilih tanggal',
+          'time': 'Jam',
+          'choose_time': 'Pilih jam',
+          'cancel':'Batalkan',
+          'save':'Simpan'
         }
       };
 }
