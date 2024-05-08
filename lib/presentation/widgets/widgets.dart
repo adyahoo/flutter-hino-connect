@@ -11,3 +11,4 @@ part 'app_button.dart';
 part 'app_tips.dart';
 part 'app_stripped_divider.dart';
 part 'app_shimmer_container.dart';
+part 'app_fab.dart';

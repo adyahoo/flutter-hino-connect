@@ -56,5 +56,10 @@ class Nav {
       page: () => const ActivityListScreen(),
       binding: ActivityListControllerBinding(),
     ),
+    GetPage(
+      name: Routes.LOG,
+      page: () => const LogScreen(),
+      binding: LogControllerBinding(),
+    ),
   ];
 }

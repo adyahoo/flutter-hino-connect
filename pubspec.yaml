@@ -28,6 +28,7 @@ dev_dependencies:
 flutter: 
   assets: 
     - assets/images/
+    - assets/icons/
     - assets/response_helpers/
 
   uses-material-design: true

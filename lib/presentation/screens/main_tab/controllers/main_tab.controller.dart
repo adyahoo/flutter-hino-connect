@@ -34,7 +34,7 @@ class MainTabController extends GetxController {
           activeScreen.value = TripScreen();
           break;
         case 3:
-          activeScreen.value = FeedbackScreen();
+          activeScreen.value = LogScreen();
           break;
         case 4:
           activeScreen.value = ProfileScreen();

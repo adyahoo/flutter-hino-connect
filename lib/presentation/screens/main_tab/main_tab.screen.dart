@@ -35,6 +35,7 @@ class MainTabScreen extends GetView<MainTabController> {
         shadowColor: Color(0xFFD3D3D340),
         child: Obx(
           () => BottomNavigationBar(
+            items: Constants.bottomMainMenu,
             currentIndex: controller.activeIndex.value,
             onTap: (value) {
               controller.onTapMenu(value);
@@ -46,7 +47,6 @@ class MainTabScreen extends GetView<MainTabController> {
             elevation: 0,
             selectedLabelStyle: Theme.of(context).textTheme.bodySmall?.copyWith(color: PrimaryColor.main),
             unselectedLabelStyle: Theme.of(context).textTheme.bodySmall?.copyWith(color: TextColor.placeholder),
-            items: Constants.bottomMainMenu,
           ),
         ),
       ),

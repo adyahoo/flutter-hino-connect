@@ -3,6 +3,7 @@ class Routes {
     return SPLASH;
   }
 
+  static const ACTIVITY_LIST = '/activity-list';
   static const FACE_RECOGNITION = '/face-recognition';
   static const FACE_SCAN_INFORMATION = '/face-scan-information';
   static const FEEDBACK = '/feedback';
@@ -13,5 +14,5 @@ class Routes {
   static const SCAN_QR = '/scan-qr';
   static const SPLASH = '/splash';
   static const TRIP = '/trip';
-  static const ACTIVITY_LIST = '/activity-list';
+  static const LOG = '/log';
 }
