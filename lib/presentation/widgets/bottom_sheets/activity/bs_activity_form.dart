@@ -28,28 +28,37 @@ class BsActivityForm extends GetView<BsActivityFormController> {
         key: _formKey,
         child: Column(
           children: [
-            AppTextField(
+            AppTextField.picker(
+              onClick: () {
+                _openPicker(AppTextFieldType.single_picker);
+              },
               label: 'activity_type'.tr,
               placeholder: 'choose_activity'.tr,
               textEditingController: controller.typeController.value,
               state: controller.typeState,
-              type: AppTextFieldType.text,
+              type: AppTextFieldType.single_picker,
             ),
             const SizedBox(height: 16),
-            AppTextField(
-              label: 'activity_type'.tr,
-              placeholder: 'choose_activity'.tr,
-              textEditingController: controller.typeController.value,
-              state: controller.typeState,
-              type: AppTextFieldType.text,
+            AppTextField.picker(
+              onClick: () {
+                _openPicker(AppTextFieldType.date_picker);
+              },
+              label: 'date'.tr,
+              placeholder: 'choose_date'.tr,
+              textEditingController: controller.dateController.value,
+              state: controller.dateState,
+              type: AppTextFieldType.date_picker,
             ),
             const SizedBox(height: 16),
-            AppTextField(
-              label: 'activity_type'.tr,
-              placeholder: 'choose_activity'.tr,
-              textEditingController: controller.typeController.value,
-              state: controller.typeState,
-              type: AppTextFieldType.text,
+            AppTextField.picker(
+              onClick: () {
+                _openPicker(AppTextFieldType.time_picker);
+              },
+              label: 'time'.tr,
+              placeholder: 'choose_time'.tr,
+              textEditingController: controller.timeController.value,
+              state: controller.timeState,
+              type: AppTextFieldType.time_picker,
             ),
             const SizedBox(height: 16),
             _renderAction(),
@@ -64,22 +73,49 @@ class BsActivityForm extends GetView<BsActivityFormController> {
       padding: const EdgeInsets.symmetric(vertical: 16),
       child: Row(
         children: [
-          AppButton(
-            label: 'cancel'.tr,
-            onPress: () {
-              Get.back();
-            },
-            type: AppButtonType.outline,
+          Expanded(
+            child: AppButton(
+              label: 'cancel'.tr,
+              onPress: () {
+                Get.back();
+              },
+              type: AppButtonType.outline,
+            ),
           ),
           const SizedBox(width: 16),
-          AppButton(
-            label: 'save'.tr,
-            onPress: () {},
-            type: AppButtonType.filled,
+          Expanded(
+            child: AppButton(
+              label: 'save'.tr,
+              onPress: () {},
+              type: AppButtonType.filled,
+            ),
           ),
         ],
       ),
     );
+  }
+
+  void _openPicker(AppTextFieldType type) {
+    switch (type) {
+      case AppTextFieldType.single_picker:
+        Get.bottomSheet(
+          BsSinglePicker(
+            title: 'activity_type'.tr,
+            options: Constants.activityTypeItems,
+            selectedId: controller.type,
+            onSubmit: (value) {
+              controller.setType(value);
+            },
+          ),
+        );
+        break;
+      case AppTextFieldType.date_picker:
+        break;
+      case AppTextFieldType.time_picker:
+        break;
+      default:
+        break;
+    }
   }
 
   @override

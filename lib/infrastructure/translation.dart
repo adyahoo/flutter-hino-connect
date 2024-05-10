@@ -43,7 +43,8 @@ class AppTranslations extends Translations {
           'time': 'Time',
           'choose_time': 'Choose time',
           'cancel':'Cancel',
-          'save':'Save'
+          'save':'Save',
+          'save_change':'Save Changes'
         },
         'id_ID': {
           'home': 'Home',
@@ -84,7 +85,8 @@ class AppTranslations extends Translations {
           'time': 'Jam',
           'choose_time': 'Pilih jam',
           'cancel':'Batalkan',
-          'save':'Simpan'
+          'save':'Simpan',
+          'save_change':'Simpan Perubahan'
         }
       };
 }

@@ -1,11 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
+part of 'widgets.dart';
 
-class CustomRadioButton extends StatelessWidget {
+class AppRadioButton extends StatelessWidget {
   final bool isSelected;
   final VoidCallback onSelect;
 
-  CustomRadioButton({required this.isSelected, required this.onSelect});
+  AppRadioButton({required this.isSelected, required this.onSelect});
 
   @override
   Widget build(BuildContext context) {

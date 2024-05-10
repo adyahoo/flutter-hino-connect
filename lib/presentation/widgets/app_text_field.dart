@@ -1,6 +1,6 @@
 part of 'widgets.dart';
 
-enum AppTextFieldType { email, text, password }
+enum AppTextFieldType { email, text, password, single_picker, date_picker, time_picker }
 
 class AppTextFieldState {
   final suffixIcon = Rx<IconData>(Iconsax.eye);
@@ -43,13 +43,43 @@ class AppTextField extends StatelessWidget {
     required this.textEditingController,
     required this.state,
     required this.type,
-    this.onSaved,
+    this.helperText,
+    this.withIcon = false,
+    this.isRequired = true,
+    this.isEditable = true,
+    this.withCounter = false,
+    this.isDisabled = false,
+  }) : this.onClick = null;
+
+  AppTextField.icon({
+    super.key,
+    required this.label,
+    required this.placeholder,
+    required this.textEditingController,
+    required this.state,
+    required this.type,
     this.helperText,
     this.isRequired = true,
     this.isEditable = true,
     this.withCounter = false,
     this.isDisabled = false,
-  });
+  })  : this.withIcon = true,
+        this.onClick = null;
+
+  AppTextField.picker({
+    super.key,
+    required this.label,
+    required this.placeholder,
+    required this.textEditingController,
+    required this.state,
+    required this.type,
+    required this.onClick,
+    this.helperText,
+    this.isRequired = true,
+    this.isDisabled = false,
+  })  : this.withIcon = true,
+        this.withCounter = false,
+        this.isEditable = false;
 
   final String label;
   final String placeholder;
@@ -60,8 +90,9 @@ class AppTextField extends StatelessWidget {
   final bool isEditable;
   final bool withCounter;
   final bool isDisabled;
-  final Function(String?)? onSaved;
+  final bool withIcon;
   final String? helperText;
+  final VoidCallback? onClick;
 
   OutlineInputBorder getBorder(double width, Color color) {
     return OutlineInputBorder(
@@ -71,10 +102,37 @@ class AppTextField extends StatelessWidget {
   }
 
   Widget _renderSuffixIcon() {
+    IconData? icon;
+
+    switch (type) {
+      case AppTextFieldType.password:
+        if (state.isObscure.value) {
+          icon = Iconsax.eye;
+        } else {
+          icon = Iconsax.eye_slash;
+        }
+        break;
+      case AppTextFieldType.email:
+        icon = null;
+        break;
+      case AppTextFieldType.text:
+        icon = null;
+        break;
+      case AppTextFieldType.single_picker:
+        icon = Iconsax.arrow_down_1;
+        break;
+      case AppTextFieldType.date_picker:
+        icon = Iconsax.calendar_1;
+        break;
+      case AppTextFieldType.time_picker:
+        icon = Iconsax.clock;
+        break;
+    }
+
     return InkWell(
       onTap: state.toggleObscure,
       child: Icon(
-        state.suffixIcon.value,
+        icon,
         size: 20,
         color: IconColor.secondary,
       ),
@@ -90,9 +148,8 @@ class AppTextField extends StatelessWidget {
         double borderWidth = 1;
 
         final isObscure = state.isObscure.value;
-        final suffixIcon = (type == AppTextFieldType.password) ? _renderSuffixIcon() : null;
+        final suffixIcon = withIcon ? _renderSuffixIcon() : null;
 
-        print("sapi focus $label ${state.isFocus.value} $isDisabled ${state.isError.value}");
         if (state.isError.value) {
           borderColor = BorderColor.error;
           helperColor = TextColor.error;
@@ -110,7 +167,7 @@ class AppTextField extends StatelessWidget {
             TextFormField(
               focusNode: state.focusNode.value,
               controller: textEditingController,
-              onSaved: onSaved,
+              onTap: onClick,
               readOnly: !isEditable,
               enabled: !isDisabled,
               keyboardType: TextInputType.text,
