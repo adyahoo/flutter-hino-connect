@@ -13,6 +13,8 @@ class ButtonShapeValue {
 }
 
 class Constants {
+  static final DATE_FORMAT_TZ = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+
   static final bottomMainMenu = [
     BottomNavigationBarItem(
       label: 'home'.tr,

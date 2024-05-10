@@ -1,7 +1,14 @@
 part of '../../widgets.dart';
 
 class BsActivityForm extends GetView<BsActivityFormController> {
-  BsActivityForm({super.key});
+  BsActivityForm({
+    super.key,
+    required this.onSubmit,
+    this.initialData,
+  });
+
+  final Function(ActivityModel data) onSubmit;
+  final ActivityModel? initialData;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -10,19 +17,21 @@ class BsActivityForm extends GetView<BsActivityFormController> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "add_activity".tr,
+          initialData != null ? "edit_activity".tr : "add_activity".tr,
           style: Theme.of(context).textTheme.titleMedium,
         ),
         const SizedBox(height: 8),
-        Text(
-          "fill_activity_form".tr,
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.tertiary),
-        ),
+        (initialData == null)
+            ? Text(
+                "fill_activity_form".tr,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.tertiary),
+              )
+            : const SizedBox(),
       ],
     );
   }
 
-  Widget _renderForm() {
+  Widget _renderForm(BuildContext context) {
     return Obx(
       () => Form(
         key: _formKey,
@@ -30,7 +39,7 @@ class BsActivityForm extends GetView<BsActivityFormController> {
           children: [
             AppTextField.picker(
               onClick: () {
-                _openPicker(AppTextFieldType.single_picker);
+                _openPicker(context, AppTextFieldType.single_picker);
               },
               label: 'activity_type'.tr,
               placeholder: 'choose_activity'.tr,
@@ -41,7 +50,7 @@ class BsActivityForm extends GetView<BsActivityFormController> {
             const SizedBox(height: 16),
             AppTextField.picker(
               onClick: () {
-                _openPicker(AppTextFieldType.date_picker);
+                _openPicker(context, AppTextFieldType.date_picker);
               },
               label: 'date'.tr,
               placeholder: 'choose_date'.tr,
@@ -52,7 +61,7 @@ class BsActivityForm extends GetView<BsActivityFormController> {
             const SizedBox(height: 16),
             AppTextField.picker(
               onClick: () {
-                _openPicker(AppTextFieldType.time_picker);
+                _openPicker(context, AppTextFieldType.time_picker);
               },
               label: 'time'.tr,
               placeholder: 'choose_time'.tr,
@@ -86,7 +95,7 @@ class BsActivityForm extends GetView<BsActivityFormController> {
           Expanded(
             child: AppButton(
               label: 'save'.tr,
-              onPress: () {},
+              onPress: _doSubmit,
               type: AppButtonType.filled,
             ),
           ),
@@ -95,14 +104,14 @@ class BsActivityForm extends GetView<BsActivityFormController> {
     );
   }
 
-  void _openPicker(AppTextFieldType type) {
+  void _openPicker(BuildContext context, AppTextFieldType type) {
     switch (type) {
       case AppTextFieldType.single_picker:
         Get.bottomSheet(
           BsSinglePicker(
             title: 'activity_type'.tr,
             options: Constants.activityTypeItems,
-            selectedId: controller.type,
+            selectedId: controller.type?.id ?? 0,
             onSubmit: (value) {
               controller.setType(value);
             },
@@ -110,17 +119,44 @@ class BsActivityForm extends GetView<BsActivityFormController> {
         );
         break;
       case AppTextFieldType.date_picker:
+        showDatePicker(
+          context: context,
+          firstDate: DateTime(1900),
+          lastDate: DateTime(2200),
+          initialDate: controller.date,
+        ).then((pickedDate) {
+          controller.setDate(pickedDate);
+        });
         break;
       case AppTextFieldType.time_picker:
+        showTimePicker(
+          context: context,
+          initialTime: controller.time,
+        ).then((pickedTime) {
+          controller.setTime(pickedTime);
+        });
         break;
       default:
         break;
     }
   }
 
+  void _doSubmit() {
+    if (_formKey.currentState?.validate() == true) {
+      final data = controller.submit();
+      onSubmit(data);
+
+      Get.back();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Get.put(BsActivityFormController());
+
+    if (initialData != null) {
+      controller.setInitData(initialData!);
+    }
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -133,10 +169,10 @@ class BsActivityForm extends GetView<BsActivityFormController> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           BsNotch(),
-          const SizedBox(height: 18),
+          const SizedBox(height: 8),
           _renderHeader(context),
           const SizedBox(height: 16),
-          _renderForm(),
+          _renderForm(context),
         ],
       ),
     );

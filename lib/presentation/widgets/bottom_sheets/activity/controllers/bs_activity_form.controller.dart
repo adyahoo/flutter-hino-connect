@@ -1,6 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hino_driver_app/domain/core/entities/activities_model.dart';
 import 'package:hino_driver_app/domain/core/entities/picker_model.dart';
+import 'package:hino_driver_app/infrastructure/constants.dart';
+import 'package:hino_driver_app/infrastructure/extension.dart';
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 
 class BsActivityFormController extends GetxController {
@@ -13,25 +17,56 @@ class BsActivityFormController extends GetxController {
   final timeController = TextEditingController().obs;
   final isLoading = false.obs;
 
-  int type = 0;
+  PickerModel? type;
+  DateTime date = DateTime.now();
+  TimeOfDay time = TimeOfDay.now();
+  int _editedId = 0;
 
-  void setType(PickerModel value){
-    type = value.id;
-    typeController.value.text = value.title;
+  void setType(PickerModel value) {
+    type = value;
+    typeController.value.text = value.title.capitalize!;
   }
 
-  @override
-  void onInit() {
-    super.onInit();
+  void setDate(DateTime? value) {
+    if (value != null) {
+      date = value;
+      dateController.value.text = value.getActivityDate();
+    }
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  void setTime(TimeOfDay? value) {
+    if (value != null) {
+      time = value;
+      timeController.value.text = value.getActivityTime();
+    }
   }
 
-  @override
-  void onClose() {
-    super.onClose();
+  ActivityModel submit() {
+    final mergedDate = date.copyWith(hour: time.hour, minute: time.minute);
+    final formattedDate = DateFormat(Constants.DATE_FORMAT_TZ).format(mergedDate);
+
+    // if submit update use selected item's id else use static id for v1
+    final data = ActivityModel(
+      id: (_editedId != 0) ? _editedId : 5,
+      type: type!,
+      createdAt: formattedDate.toString(),
+    );
+
+    return data;
+  }
+
+  void setInitData(ActivityModel activityModel) {
+    final date = DateFormat(Constants.DATE_FORMAT_TZ).parse(activityModel.createdAt);
+    final time = TimeOfDay.fromDateTime(date);
+
+    typeController.value.text = activityModel.type.title;
+    dateController.value.text = date.getActivityDate();
+    timeController.value.text = time.getActivityTime();
+
+    this.type = activityModel.type;
+    this.date = date;
+    this.time = time;
+
+    _editedId = activityModel.id;
   }
 }

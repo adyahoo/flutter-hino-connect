@@ -14,7 +14,7 @@ class CardContent extends StatelessWidget {
   Widget build(BuildContext context) {
     String icon = "ic_gas_station.svg";
 
-    switch (data.type) {
+    switch (data.type.value) {
       case "load":
         icon = "ic_document_upload.svg";
         break;
@@ -33,7 +33,7 @@ class CardContent extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                data.type.capitalize ?? "",
+                data.type.title,
                 style: Theme.of(context).textTheme.titleSmall,
               ),
               const SizedBox(height: 4),

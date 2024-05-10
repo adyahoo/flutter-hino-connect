@@ -1,9 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:equatable/equatable.dart';
+import 'package:hino_driver_app/domain/core/entities/picker_model.dart';
+import 'package:hino_driver_app/infrastructure/constants.dart';
 
 class ActivityModel extends Equatable {
   final int id;
-  final String type;
+  final PickerModel type;
   final String createdAt;
 
   const ActivityModel({
@@ -13,7 +15,7 @@ class ActivityModel extends Equatable {
   });
 
   String get formatedDate {
-    DateTime date = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(this.createdAt);
+    DateTime date = DateFormat(Constants.DATE_FORMAT_TZ).parse(this.createdAt);
     final outputFormat = DateFormat("dd MMMM yyyy, HH:mm");
 
     return outputFormat.format(date);
