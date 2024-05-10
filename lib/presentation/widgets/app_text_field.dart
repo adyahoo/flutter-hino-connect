@@ -1,6 +1,6 @@
 part of 'widgets.dart';
 
-enum AppTextFieldType { email, text, password, single_picker, date_picker, time_picker }
+enum AppTextFieldType { email, text, password, multiline, single_picker, date_picker, time_picker }
 
 class AppTextFieldState {
   final suffixIcon = Rx<IconData>(Iconsax.eye);
@@ -112,12 +112,6 @@ class AppTextField extends StatelessWidget {
           icon = Iconsax.eye_slash;
         }
         break;
-      case AppTextFieldType.email:
-        icon = null;
-        break;
-      case AppTextFieldType.text:
-        icon = null;
-        break;
       case AppTextFieldType.single_picker:
         icon = Iconsax.arrow_down_1;
         break;
@@ -126,6 +120,9 @@ class AppTextField extends StatelessWidget {
         break;
       case AppTextFieldType.time_picker:
         icon = Iconsax.clock;
+        break;
+      default:
+        icon = null;
         break;
     }
 
@@ -146,6 +143,8 @@ class AppTextField extends StatelessWidget {
         Color helperColor = TextColor.helper;
         Color borderColor = BorderColor.secondary;
         double borderWidth = 1;
+        TextInputType inputType = TextInputType.text;
+        int maxLines = 1;
 
         final isObscure = state.isObscure.value;
         final suffixIcon = withIcon ? _renderSuffixIcon() : null;
@@ -161,6 +160,11 @@ class AppTextField extends StatelessWidget {
           bgColor = BorderColor.secondary;
         }
 
+        if (type == AppTextFieldType.multiline) {
+          maxLines = 4;
+          inputType = TextInputType.multiline;
+        }
+
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -170,8 +174,8 @@ class AppTextField extends StatelessWidget {
               onTap: onClick,
               readOnly: !isEditable,
               enabled: !isDisabled,
-              keyboardType: TextInputType.text,
-              maxLines: 1,
+              keyboardType: inputType,
+              maxLines: maxLines,
               obscureText: (type == AppTextFieldType.password) ? isObscure : false,
               decoration: InputDecoration(
                   floatingLabelBehavior: FloatingLabelBehavior.never,
@@ -189,7 +193,7 @@ class AppTextField extends StatelessWidget {
                   errorStyle: TextStyle(fontSize: 0)),
               style: Theme.of(context).textTheme.bodyMedium,
               validator: (value) {
-                final error = inputValidator(type, value, label);
+                final error = inputValidator(type, value, label, isRequired);
                 state.setError(error);
 
                 if (error != null)

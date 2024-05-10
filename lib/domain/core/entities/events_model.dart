@@ -1,14 +1,16 @@
 part of 'model.dart';
 
-class ActivityModel extends Equatable {
+class EventModel extends Equatable {
   final int id;
   final PickerModel type;
   final String createdAt;
+  final String? note;
 
-  const ActivityModel({
+  const EventModel({
     required this.id,
     required this.type,
     required this.createdAt,
+    required this.note,
   });
 
   String get formatedDate {
@@ -19,5 +21,5 @@ class ActivityModel extends Equatable {
   }
 
   @override
-  List<Object> get props => [id, type, createdAt];
+  List<Object?> get props => [id, type, createdAt, note];
 }

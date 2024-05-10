@@ -4,19 +4,19 @@ import 'package:hino_driver_app/domain/core/entities/model.dart';
 import 'package:hino_driver_app/domain/core/interfaces/i_use_case.dart';
 import 'package:hino_driver_app/infrastructure/constants.dart';
 
-class ActivityUseCase implements IActivityUseCase {
-  const ActivityUseCase({required this.dataSource});
+class EventUseCase implements IEventUseCase {
+  const EventUseCase({required this.dataSource});
 
-  final ActivityDataSource dataSource;
+  final EventDataSource dataSource;
 
   @override
-  Future<ListApiResponse<ActivityModel>> getActivityList() async {
+  Future<ListApiResponse<EventModel>> getEventlist() async {
     try {
-      final response = await dataSource.getActivityList();
+      final response = await dataSource.getEventList();
       final data = response.data.map((e) {
-        final type = Constants.activityTypeItems.firstWhere((element) => element.value == e.type);
+        final type = Constants.eventTypeItems.firstWhere((element) => element.value == e.type);
 
-        return ActivityModel(id: e.id, type: type, createdAt: e.createdAt);
+        return EventModel(id: e.id, type: type, note: e.note, createdAt: e.createdAt);
       }).toList();
 
       return ListApiResponse(

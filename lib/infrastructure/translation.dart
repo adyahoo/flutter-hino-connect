@@ -43,9 +43,19 @@ class AppTranslations extends Translations {
           'choose_date': 'Choose date',
           'time': 'Time',
           'choose_time': 'Choose time',
-          'cancel':'Cancel',
-          'save':'Save',
-          'save_change':'Save Changes'
+          'cancel': 'Cancel',
+          'save': 'Save',
+          'save_change': 'Save Changes',
+          'confirm': 'Confirm',
+          'delete_activity_title': 'Delete activity',
+          'delete_activity_subtitle': 'Are you sure want to delete this activity?',
+          'add_event': "Add Event",
+          'edit_event': "Edit Event",
+          'fill_event_form': 'Fill form below to add new event.',
+          'delete_event_title': 'Delete event',
+          'delete_event_subtitle': 'Are you sure want to delete this event?',
+          'note': 'Note',
+          'note_placeholder': 'Input note'
         },
         'id_ID': {
           'home': 'Home',
@@ -86,9 +96,19 @@ class AppTranslations extends Translations {
           'choose_date': 'Pilih tanggal',
           'time': 'Jam',
           'choose_time': 'Pilih jam',
-          'cancel':'Batalkan',
-          'save':'Simpan',
-          'save_change':'Simpan Perubahan'
+          'cancel': 'Batalkan',
+          'save': 'Simpan',
+          'save_change': 'Simpan Perubahan',
+          'confirm': 'Konfirmasi',
+          'delete_activity_title': 'Hapus aktivitas',
+          'delete_activity_subtitle': 'Apakah Anda yakin ingin menghapus aktivitas ini?',
+          'add_event': "Tambah Event",
+          'edit_event': "Ubah Event",
+          'fill_event_form': 'Lengkapi formulir dibawah untuk menambahkan event.',
+          'delete_event_title': 'Hapus event',
+          'delete_event_subtitle': 'Apakah Anda yakin ingin menghapus event ini?',
+          'note': 'Catatan',
+          'note_placeholder': 'Masukan catatan'
         }
       };
 }

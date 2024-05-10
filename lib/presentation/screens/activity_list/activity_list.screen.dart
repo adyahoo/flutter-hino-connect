@@ -2,11 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:hino_driver_app/domain/core/entities/activities_model.dart';
+import 'package:hino_driver_app/domain/core/entities/model.dart';
 import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
 import 'package:hino_driver_app/infrastructure/utils.dart';
-import 'package:hino_driver_app/presentation/screens/activity_list/widgets/card_action.dart';
-import 'package:hino_driver_app/presentation/screens/activity_list/widgets/card_content.dart';
+import 'package:hino_driver_app/presentation/screens/activity_list/widgets/activity_card_content.dart';
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 
 import 'controllers/activity_list.controller.dart';
@@ -28,7 +27,23 @@ class ActivityListScreen extends GetView<ActivityListController> {
     );
   }
 
-  void onDelete(ActivityModel item) {}
+  void onDelete(ActivityModel item) {
+    Get.bottomSheet(
+      BsConfirmation(
+        type: BsConfirmationType.danger,
+        title: "delete_activity_title".tr,
+        description: "delete_activity_subtitle".tr,
+        positiveTitle: 'delete'.tr,
+        positiveButtonOnClick: () async {
+          Get.back();
+          await Future.delayed(const Duration(milliseconds: 500));
+          showLoadingOverlay();
+
+          controller.deleteActivity(item.id);
+        },
+      ),
+    );
+  }
 
   void onAdd() {
     Get.bottomSheet(
@@ -52,9 +67,9 @@ class ActivityListScreen extends GetView<ActivityListController> {
       ),
       child: Column(
         children: [
-          CardContent(data: item),
+          ActivityCardContent(data: item),
           Container(margin: const EdgeInsets.symmetric(vertical: 16), child: const AppStrippedDivider()),
-          CardAction(
+          AppCardAction(
             onEdit: () {
               onEdit(item);
             },
