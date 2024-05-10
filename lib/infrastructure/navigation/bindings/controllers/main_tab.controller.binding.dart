@@ -17,6 +17,6 @@ class MainTabControllerBinding extends Bindings {
     Get.lazyPut<LogController>(() => LogController());
     Get.lazyPut<ActivityListController>(() => ActivityListController(useCase: inject()));
     Get.lazyPut<EventListController>(() => EventListController());
-    Get.lazyPut<ProfileController>(() => ProfileController());
+    Get.lazyPut<ProfileController>(() => ProfileController(useCase: inject()));
   }
 }

@@ -1,42 +1,22 @@
+import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:get/get.dart';
+import 'package:hino_driver_app/domain/core/entities/feedback_model.dart';
 import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
+import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 
 import 'controllers/feedback.controller.dart';
-
-class Feedback {
-  final String title;
-  final String subtitle;
-
-  Feedback({required this.title, required this.subtitle});
-}
 
 class FeedbackScreen extends GetView<FeedbackController> {
   FeedbackScreen({Key? key}) : super(key: key);
   @override
-  final List<Feedback> feedbackList = [
-    Feedback(
-      title: 'I have a suggestion',
-      subtitle: 'Share your thoughts with us',
-    ),
-    Feedback(
-      title: 'I have a complaint',
-      subtitle: 'Share your thoughts with us',
-    ),
-    Feedback(
-      title: 'I have a question',
-      subtitle: 'Share your thoughts with us',
-    ),
-  ];
 
-  Widget feedbackCard(String title, String subtitle, BuildContext context) {
+  Widget feedbackCard(FeedbackModel feedback, BuildContext context) {
     return Container(
       width: double.infinity,
-      height: 124,
-      padding: const EdgeInsets.all(16),
-      // margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
       decoration: BoxDecoration(
         color: Color(0xffFFFFFF),
         borderRadius: BorderRadius.circular(8),
@@ -50,15 +30,15 @@ class FeedbackScreen extends GetView<FeedbackController> {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
             children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    title,
+                    feedback.title,
                     style: Theme.of(context)
                         .textTheme
                         .titleSmall
@@ -66,7 +46,7 @@ class FeedbackScreen extends GetView<FeedbackController> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    subtitle,
+                    'Dibuat oleh ${feedback.createdBy}',
                     style: Theme.of(context)
                         .textTheme
                         .bodySmall
@@ -74,30 +54,74 @@ class FeedbackScreen extends GetView<FeedbackController> {
                   ),
                 ],
               ),
-              SvgPicture.asset('assets/icons/note-text.svg'),
+              Expanded(
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: SvgPicture.asset('assets/icons/note-text.svg'),
+                ),
+              ),
             ],
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
+          DottedLine(
+            direction: Axis.horizontal,
+            lineLength: double.infinity,
+            lineThickness: 1.0,
+            dashLength: 4.0,
+            dashColor: BorderColor.primary,
+            dashRadius: 0.0,
+            dashGapLength: 4.0,
+            dashGapColor: Colors.transparent,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                '24 Aug 2024'.tr,
+                feedback.createdAt,
                 style: Theme.of(context)
                     .textTheme
                     .bodySmall
                     ?.copyWith(color: TextColor.primary),
               ),
-              Text(
-                'Lihat Detail'.tr,
-                style: Theme.of(context)
-                    .textTheme
-                    .labelLarge
-                    ?.copyWith(color: PrimaryColor.main),
+              TextButton(
+                onPressed: () {
+                  Get.bottomSheet(SuccessBottomSheet(
+                      feedback: feedback,
+                      onButtonPressed: () => Get.back()));
+                },
+                style: TextButton.styleFrom(
+                  padding: const EdgeInsets.all(0),
+                ),
+                child: Text(
+                  'Lihat Detail',
+                  style: Theme.of(context)
+                      .textTheme
+                      .labelLarge
+                      ?.copyWith(color: PrimaryColor.main),
+                ),
               ),
             ],
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _renderLoading() {
+    return ShimmerContainer(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: ListView.separated(
+          itemCount: 4,
+          itemBuilder: (context, index) => Container(
+            height: 120,
+            decoration: BoxDecoration(
+              color: Colors.black,
+              borderRadius: BorderRadius.circular(16),
+            ),
+          ),
+          separatorBuilder: (context, index) => const SizedBox(height: 16),
+        ),
       ),
     );
   }
@@ -114,7 +138,7 @@ class FeedbackScreen extends GetView<FeedbackController> {
             onPressed: () => Get.back(),
           ),
           title: Text(
-            'Feedback'.tr,
+            'Feedback',
             style: Theme.of(context)
                 .textTheme
                 .titleMedium
@@ -125,26 +149,27 @@ class FeedbackScreen extends GetView<FeedbackController> {
           centerTitle: false,
         ),
       ),
+
       body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            ListView.separated(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: feedbackList.length,
-              separatorBuilder: (context, index) => const SizedBox(height: 16),
-              itemBuilder: (context, index) {
-                return feedbackCard(
-                  feedbackList[index].title,
-                  feedbackList[index].subtitle,
-                  context,
-                );
-              },
-            ),
-          ],
-        ),
-      ),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Obx(
+            () {
+              if (controller.isFetching.value) {
+                return _renderLoading();
+              }
+
+              final data = controller.data.value;
+
+              return ListView.separated(
+                itemCount: data.length,
+                itemBuilder: (context, index) =>
+                    feedbackCard(data[index], context),
+                separatorBuilder: (context, index) =>
+                    const SizedBox(height: 16),
+                padding: const EdgeInsets.symmetric(vertical: 16),
+              );
+            },
+          )),
     );
   }
 }

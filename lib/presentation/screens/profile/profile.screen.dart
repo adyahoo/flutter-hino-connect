@@ -6,6 +6,7 @@ import 'package:get/get_utils/get_utils.dart';
 import 'package:hino_driver_app/infrastructure/constants.dart';
 import 'package:hino_driver_app/presentation/widgets/app_toggle.dart';
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';
+import 'package:shimmer/shimmer.dart';
 
 import 'controllers/profile.controller.dart';
 import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
@@ -15,9 +16,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 class ProfileScreen extends GetView<ProfileController> {
   ProfileScreen({Key? key}) : super(key: key);
   @override
-  final ProfileController profileController = Get.put(ProfileController());
-
   Widget profileHeader(BuildContext context) {
+    final user = controller.data.value;
+
     return Container(
       color: Color(0xffFAFAFA),
       child: Column(
@@ -29,20 +30,22 @@ class ProfileScreen extends GetView<ProfileController> {
               children: [
                 CircleAvatar(
                   radius: 32,
-                  backgroundImage: AssetImage('assets/images/avatar.png'),
+                  backgroundImage: NetworkImage(
+                    user.profilePic,
+                  ), //!PLEASE CHANGE LATER BASED ON THE IMAGE API
                 ),
                 const SizedBox(width: 16),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Arya Utama',
+                    Text(user.name,
                         style: Theme.of(context).textTheme.titleMedium),
-                    Text('aryautama123@gmail.com',
+                    Text(user.email,
                         style: Theme.of(context)
                             .textTheme
                             .bodyMedium
                             ?.copyWith(color: TextColor.tertiary)),
-                    Text('Driver',
+                    Text(user.role,
                         style: Theme.of(context)
                             .textTheme
                             .bodyMedium
@@ -64,7 +67,7 @@ class ProfileScreen extends GetView<ProfileController> {
                           .titleSmall
                           ?.copyWith(color: TextColor.secondary)),
                   const SizedBox(height: 8),
-                  scoreCard(context),
+                  scoreCard(user.score, context),
                 ],
               )),
         ],
@@ -72,7 +75,7 @@ class ProfileScreen extends GetView<ProfileController> {
     );
   }
 
-  Widget scoreCard(BuildContext context) {
+  Widget scoreCard(String point, BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -118,7 +121,7 @@ class ProfileScreen extends GetView<ProfileController> {
                           padding: const EdgeInsets.symmetric(
                               vertical: 4, horizontal: 8),
                           child: Text(
-                            '70 poin',
+                            point + ' Poin',
                             style: Theme.of(context)
                                 .textTheme
                                 .labelMedium
@@ -161,19 +164,22 @@ class ProfileScreen extends GetView<ProfileController> {
                 Text(title, style: Theme.of(context).textTheme.labelLarge),
               ],
             ),
-            title == 'Biometric Login'
+            title == 'biometric_login'.tr
                 ? Container(
                     child: Row(
                       children: [
-                        GetBuilder<ProfileController>(
-                          builder: (controller) => Column(
+                        Obx(
+                          () => Column(
                             children: [
                               AppToggle(
-                                status: controller.isBiometricLogin.value
+                                status: Get.find<ProfileController>()
+                                        .isBiometricLogin
+                                        .value
                                     ? AppToggleStatus.active
                                     : AppToggleStatus.inactive,
                                 onChanged: (isActive) {
-                                  controller.toggleSwitch(isActive);
+                                  Get.find<ProfileController>()
+                                      .toggleSwitch(isActive);
                                 },
                               ),
                             ],
@@ -252,9 +258,7 @@ class ProfileScreen extends GetView<ProfileController> {
             ),
           ),
           SizedBox(height: 16),
-
           Text('Akun', style: Theme.of(context).textTheme.labelMedium),
-
           ListView.separated(
             itemCount: 2,
             shrinkWrap: true,
@@ -266,11 +270,9 @@ class ProfileScreen extends GetView<ProfileController> {
                   onTap: item.onTap);
             },
           ),
-
           SizedBox(height: 20),
           Text('Pengaturan lainnya',
               style: Theme.of(context).textTheme.labelMedium),
-
           ListView.separated(
             itemCount: Constants.profileMenuItems.length - 2,
             shrinkWrap: true,
@@ -310,14 +312,108 @@ class ProfileScreen extends GetView<ProfileController> {
           centerTitle: false,
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            profileHeader(context),
-            content(context),
-            SizedBox(height: 20)
-          ],
-        ),
+      body: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints viewportConstraints) {
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: viewportConstraints.maxHeight,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Obx(() => controller.isFetching.value
+                      ? _renderLoading()
+                      : profileHeader(context)),
+                  content(context),
+                  SizedBox(height: 20),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _renderLoading() {
+    return Container(
+      color: Color(0xffFAFAFA),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              children: [
+                ShimmerContainer(
+                  child: Container(
+                    width: 64,
+                    height: 64,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ShimmerContainer(
+                      child: Container(
+                        width: 100,
+                        height: 20,
+                        color: Colors.white,
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    ShimmerContainer(
+                      child: Container(
+                        width: 150,
+                        height: 20,
+                        color: Colors.white,
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    ShimmerContainer(
+                      child: Container(
+                        width: 100,
+                        height: 20,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 10),
+          Container(
+            padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ShimmerContainer(
+                  child: Container(
+                    width: 100,
+                    height: 20,
+                    color: Colors.white,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                ShimmerContainer(
+                  child: Container(
+                    width: double.infinity,
+                    height: 20,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

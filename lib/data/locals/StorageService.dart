@@ -7,6 +7,7 @@ class StorageService {
   final String IS_FIRST_TIME_LOGIN = "is_first_time_login";
   final String TOKEN = "token";
   final String IS_BIOMETRIC_LOGIN = "is_biometric_login";
+  final String SELECTED_LANGUAGE = "selected_language";
 
   static Future<StorageService?> instance() async {
     _instance ??= StorageService();
@@ -36,5 +37,15 @@ class StorageService {
 
   void setIsBiometricLogin(bool value) async {
     await _preferences!.setBool(IS_BIOMETRIC_LOGIN, value);
+  }
+
+  int? getSelectedLanguage() => _preferences!.getInt(SELECTED_LANGUAGE);
+
+  void setSelectedLanguage(int value) async {
+    await _preferences!.setInt(SELECTED_LANGUAGE, value);
+  }
+
+  void clearToken() async {
+    await _preferences!.remove(TOKEN);
   }
 }
