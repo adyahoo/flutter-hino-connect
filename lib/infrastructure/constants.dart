@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hino_driver_app/domain/core/entities/picker_model.dart';
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -30,20 +31,20 @@ class Constants {
       icon: const Icon(Iconsax.home),
     ),
     BottomNavigationBarItem(
-      label: 'trip'.tr,
-      icon: const Icon(Iconsax.location),
+      label: 'map'.tr,
+      icon: const Icon(Iconsax.map_1),
     ),
     BottomNavigationBarItem(
       label: 'scan'.tr,
       icon: const SizedBox(height: 24),
     ),
     BottomNavigationBarItem(
-      label: 'feedback'.tr,
-      icon: const Icon(Iconsax.message_text),
+      label: 'log'.tr,
+      icon: const Icon(Iconsax.note_text),
     ),
     BottomNavigationBarItem(
-      label: 'profile'.tr,
-      icon: const Icon(Iconsax.user),
+      label: 'sos'.tr,
+      icon: const Icon(Iconsax.call_calling),
     ),
   ];
 
@@ -92,5 +93,12 @@ class Constants {
         },
       ));
     }),
+  ];
+
+  static final activityTypeItems = [
+    PickerModel(id: 1, title: 'Refuel', value: 'refuel'),
+    PickerModel(id: 2, title: 'Load', value: 'load'),
+    PickerModel(id: 3, title: 'Unload', value: 'unload'),
+    PickerModel(id: 4, title: 'Workshop', value: 'workshop'),
   ];
 }

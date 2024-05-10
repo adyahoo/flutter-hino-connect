@@ -30,7 +30,10 @@ class AppButton extends StatelessWidget {
   final AppButtonType type;
   final AppButtonShape shape;
   final bool isLoading;
+
+  /// Wrap the button with Expanded widget if use fullwidth button inside row
   final bool isFullWidth;
+
   final Function()? onPress;
   final IconData? icon;
 
@@ -107,19 +110,18 @@ class AppButton extends StatelessWidget {
         break;
     }
 
-    return Expanded(
-      flex: isFullWidth ? 1 : 0,
+    return ConstrainedBox(
+      constraints: BoxConstraints(minWidth: isFullWidth ? double.infinity : 0),
       child: TextButton(
         onPressed: onPress,
         style: TextButton.styleFrom(
-          padding: EdgeInsets.symmetric(vertical: isFullWidth ? 12 : 0),
-          minimumSize: Size.zero,
-          shape: shapeStyle,
-          backgroundColor: bgColor,
-          foregroundColor: labelColor,
-          textStyle: Theme.of(context).textTheme.titleSmall,
-          tapTargetSize: MaterialTapTargetSize.shrinkWrap
-        ),
+            padding: EdgeInsets.symmetric(vertical: isFullWidth ? 12 : 0),
+            minimumSize: Size.zero,
+            shape: shapeStyle,
+            backgroundColor: bgColor,
+            foregroundColor: labelColor,
+            textStyle: Theme.of(context).textTheme.titleSmall,
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap),
         child: Container(
           child: isLoading
               ? _renderLoading()

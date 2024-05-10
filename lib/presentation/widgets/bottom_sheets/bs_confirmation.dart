@@ -5,7 +5,7 @@
 
 part of '../widgets.dart';
 
-enum BottomSheetType { confirmation }
+enum BottomSheetType { confirmation, success, warning, danger }
 
 class CustomBottomSheet extends StatelessWidget {
   final BottomSheetType type;

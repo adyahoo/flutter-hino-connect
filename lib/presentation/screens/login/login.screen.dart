@@ -80,7 +80,7 @@ class LoginScreen extends GetView<LoginController> {
                           type: AppTextFieldType.email,
                         ),
                         const SizedBox(height: 28),
-                        AppTextField(
+                        AppTextField.icon(
                           label: 'password'.tr,
                           placeholder: 'password_placeholder'.tr,
                           textEditingController: controller.passwordController.value,

@@ -21,6 +21,12 @@ String? inputValidator(AppTextFieldType type, String? value, String label) {
         return "error_email_invalid".tr;
       }
       break;
+    case AppTextFieldType.single_picker:
+      break;
+    case AppTextFieldType.date_picker:
+      break;
+    case AppTextFieldType.time_picker:
+      break;
   }
 
   return null;

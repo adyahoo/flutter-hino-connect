@@ -13,7 +13,15 @@ import 'controllers/activity_list.controller.dart';
 class ActivityListScreen extends GetView<ActivityListController> {
   const ActivityListScreen({Key? key}) : super(key: key);
 
-  Widget _renderContent(ActivityModel data) {
+  void onEdit(ActivityModel item) {}
+
+  void onDelete(ActivityModel item) {}
+
+  void onAdd() {
+    Get.bottomSheet(BsActivityForm());
+  }
+
+  Widget _renderContent(ActivityModel item) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -22,9 +30,16 @@ class ActivityListScreen extends GetView<ActivityListController> {
       ),
       child: Column(
         children: [
-          CardContent(),
+          CardContent(data: item),
           Container(margin: const EdgeInsets.symmetric(vertical: 16), child: const AppStrippedDivider()),
-          CardAction(),
+          CardAction(
+            onEdit: () {
+              onEdit(item);
+            },
+            onDelete: () {
+              onDelete(item);
+            },
+          ),
         ],
       ),
     );
@@ -52,12 +67,8 @@ class ActivityListScreen extends GetView<ActivityListController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('ActivityListScreen'),
-        backgroundColor: Colors.white,
-        shape: BeveledRectangleBorder(
-          side: BorderSide(width: 1, color: BorderColor.primary),
-        ),
+      floatingActionButton: AppFab(
+        onAdd: onAdd,
       ),
       body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
