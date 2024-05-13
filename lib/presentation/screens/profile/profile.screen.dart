@@ -61,7 +61,7 @@ class ProfileScreen extends GetView<ProfileController> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Score Card',
+                  Text('score_title'.tr,
                       style: Theme.of(context)
                           .textTheme
                           .titleSmall
@@ -86,7 +86,7 @@ class ProfileScreen extends GetView<ProfileController> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Periode April 2024',
+          Text('periode_placeholder'.tr,
               style: Theme.of(context)
                   .textTheme
                   .labelMedium
@@ -106,7 +106,7 @@ class ProfileScreen extends GetView<ProfileController> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Skor Pengemudi',
+                Text('driver_score_title'.tr,
                     style: Theme.of(context).textTheme.bodyMedium),
                 Container(
                   child: Row(
@@ -121,7 +121,7 @@ class ProfileScreen extends GetView<ProfileController> {
                           padding: const EdgeInsets.symmetric(
                               vertical: 4, horizontal: 8),
                           child: Text(
-                            point + ' Poin',
+                            point +  ' ' + 'point'.tr,
                             style: Theme.of(context)
                                 .textTheme
                                 .labelMedium
@@ -238,10 +238,10 @@ class ProfileScreen extends GetView<ProfileController> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Feedback dari admin',
+                          Text('feedback_profile_title'.tr,
                               style: Theme.of(context).textTheme.labelLarge),
                           Text(
-                            'Ketuk disini untuk melihat',
+                            'feedback_profile_subtitle'.tr,
                             style: Theme.of(context)
                                 .textTheme
                                 .bodySmall
@@ -258,7 +258,7 @@ class ProfileScreen extends GetView<ProfileController> {
             ),
           ),
           SizedBox(height: 16),
-          Text('Akun', style: Theme.of(context).textTheme.labelMedium),
+          Text('account'.tr, style: Theme.of(context).textTheme.labelMedium),
           ListView.separated(
             itemCount: 2,
             shrinkWrap: true,
@@ -271,7 +271,7 @@ class ProfileScreen extends GetView<ProfileController> {
             },
           ),
           SizedBox(height: 20),
-          Text('Pengaturan lainnya',
+          Text('other_setting'.tr,
               style: Theme.of(context).textTheme.labelMedium),
           ListView.separated(
             itemCount: Constants.profileMenuItems.length - 2,

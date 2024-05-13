@@ -46,7 +46,8 @@ class FeedbackScreen extends GetView<FeedbackController> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Dibuat oleh ${feedback.createdBy}',
+                    'feedback_subtitle'.tr +
+                        ' ${feedback.createdBy}',
                     style: Theme.of(context)
                         .textTheme
                         .bodySmall
@@ -93,7 +94,7 @@ class FeedbackScreen extends GetView<FeedbackController> {
                   padding: const EdgeInsets.all(0),
                 ),
                 child: Text(
-                  'Lihat Detail',
+                  'detail_feedback_button_title'.tr,
                   style: Theme.of(context)
                       .textTheme
                       .labelLarge
@@ -138,7 +139,7 @@ class FeedbackScreen extends GetView<FeedbackController> {
             onPressed: () => Get.back(),
           ),
           title: Text(
-            'Feedback',
+            'feedback'.tr,
             style: Theme.of(context)
                 .textTheme
                 .titleMedium

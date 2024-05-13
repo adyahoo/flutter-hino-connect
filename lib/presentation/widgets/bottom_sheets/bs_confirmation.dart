@@ -112,14 +112,16 @@ class BsConfirmation extends StatelessWidget {
         children: <Widget>[
           // Drag handle
           const BsNotch(),
-
+    
           // Main description content
           _renderContent(context),
-
+    
           const SizedBox(height: 16),
-
+    
           // Footer with two buttons
           _renderActions(context),
+
+          if (Platform.isIOS) const SizedBox(height: 24),
         ],
       ),
     );

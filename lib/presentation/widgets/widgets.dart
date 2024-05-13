@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dotted_line/dotted_line.dart';
 import 'dart:math';
 
@@ -17,6 +19,7 @@ import 'package:hino_driver_app/infrastructure/validation/app_validator.dart';
 import 'package:hino_driver_app/presentation/widgets/bottom_sheets/activity/controllers/bs_activity_form.controller.dart';
 import 'package:hino_driver_app/presentation/widgets/bottom_sheets/event/controllers/bs_event_form.controller.dart';
 import 'package:hino_driver_app/presentation/widgets/bottom_sheets/single_picker/controllers/bs_single_picker.controller.dart';
+import 'package:hino_driver_app/presentation/widgets/chips/controllers/app_chip.controller.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:flutter_svg/svg.dart';
@@ -29,6 +32,8 @@ part 'app_stripped_divider.dart';
 part 'app_shimmer_container.dart';
 
 part 'app_radio_button.dart';
+part 'app_search_bar.dart';
+part 'chips/app_chip.dart';
 
 part 'bottom_sheets/bs_confirmation.dart';
 part 'bottom_sheets/bs_success.dart';

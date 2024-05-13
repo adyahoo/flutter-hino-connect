@@ -12,18 +12,14 @@ class BsSinglePickerController extends GetxController {
   final isFetching = false.obs;
 
   void setSelectedOption(int id) {
-    print('selectedOption: ${selectedOption.value}');
     selectedOption.value = id;
-    print('selectedOption check: $id');
   }
 
   Future<void> changeLanguage(int id) async {
     isFetching.value = true;
-    print('abis isFetching true');
     selectedOption.value = id;
     inject<StorageService>().setSelectedLanguage(id);
     update();
-    print('abis update');
 
     Get.back();
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+
 import 'package:hino_driver_app/infrastructure/navigation/bindings/controllers/feedback.controller.binding.dart';
 
 import '../../config.dart';
@@ -59,7 +60,7 @@ class Nav {
     ),
     GetPage(
       name: Routes.FEEDBACK,
-      page: () =>  FeedbackScreen(),
+      page: () => FeedbackScreen(),
       binding: FeedbackControllerBinding(),
     ),
     GetPage(

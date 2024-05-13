@@ -4,6 +4,7 @@ class Routes {
   }
 
   static const ACTIVITY_LIST = '/activity-list';
+  static const EVENT_LIST = '/event-list';
   static const FACE_RECOGNITION = '/face-recognition';
   static const FACE_SCAN_INFORMATION = '/face-scan-information';
   static const FEEDBACK = '/feedback';
@@ -15,5 +16,5 @@ class Routes {
   static const SCAN_QR = '/scan-qr';
   static const SPLASH = '/splash';
   static const TRIP = '/trip';
-  static const EVENT_LIST = '/event-list';
+  static const MAPS = '/maps';
 }

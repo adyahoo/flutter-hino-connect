@@ -21,6 +21,14 @@ class AppTranslations extends Translations {
           'error_email_invalid': 'Email has invalid format',
           'error_password_invalid': 'Password must between 6 and 12 characters',
           'profile_title': 'My Account',
+          "score_title": "Score Card",
+          "driver_score_title": "Driver Score",
+          "point": "Point",
+          "periode_placeholder": "Period April 2024",
+          "feedback_profile_title": "Feedback from admin",
+          "feedback_profile_subtitle": "Tap here to see",
+          "account": "Account",
+          "other_setting": "Other Setting",
           "edit_profile": "Edit Profile",
           "biometric_login": "Biometric Login",
           "language": "Language",
@@ -28,6 +36,8 @@ class AppTranslations extends Translations {
           "privacy_policy": "Privacy Policy",
           "need_help": "Need Help?",
           "logout_title": "Logout from your account?",
+          "feedback_subtitle": "Created by",
+          "detail_feedback_button_title": "See Detail",
           'face_scan_title':
               'Verify your face to keep continue using the application',
           'face_scan_subtitle':
@@ -61,7 +71,8 @@ class AppTranslations extends Translations {
           'save_change': 'Save Changes',
           'confirm': 'Confirm',
           'delete_activity_title': 'Delete activity',
-          'delete_activity_subtitle': 'Are you sure want to delete this activity?',
+          'delete_activity_subtitle':
+              'Are you sure want to delete this activity?',
           'add_event': "Add Event",
           'edit_event': "Edit Event",
           'fill_event_form': 'Fill form below to add new event.',
@@ -87,6 +98,14 @@ class AppTranslations extends Translations {
           'error_email_invalid': 'Format email salah',
           'error_password_invalid': 'Kata sandi harus 6 sampai 12 karakter',
           'profile_title': 'Akun Saya',
+          "score_title": "Kartu Skor",
+          "driver_score_title": "Skor Driver",
+          "point": "Poin",
+          "periode_placeholder": "Periode April 2024",
+          "feedback_profile_title": "Feedback dari admin",
+          "feedback_profile_subtitle": "Ketuk disini untuk melihat",
+          "account": "Akun",
+          "other_setting": "Pengaturan Lainnya",
           "edit_profile": "Edit Profil",
           "biometric_login": "Login Biometrik",
           "language": "Bahasa",
@@ -94,6 +113,8 @@ class AppTranslations extends Translations {
           "privacy_policy": "Kebijakan Privasi",
           "need_help": "Butuh bantuan?",
           "logout_title": "Keluar dari akun?",
+          "feedback_subtitle": "Dibuet oleh",
+          "detail_feedback_button_title": "Lihat Detail",
           'face_scan_title':
               'Verifikasi wajah untuk melanjutkan menggunakan aplikasi',
           'face_scan_subtitle':
@@ -115,7 +136,8 @@ class AppTranslations extends Translations {
           'log_activity_event': "Log aktivitas dan event",
           'add_activity': "Tambah Aktivitas",
           'edit_activity': "Ubah Aktivitas",
-          'fill_activity_form': 'Lengkapi formulir dibawah untuk menambahkan aktivitas.',
+          'fill_activity_form':
+              'Lengkapi formulir dibawah untuk menambahkan aktivitas.',
           'activity_type': 'Tipe aktivitas',
           'choose_activity': 'Pilih aktivitas',
           'date': 'Tanggal',
@@ -127,12 +149,15 @@ class AppTranslations extends Translations {
           'save_change': 'Simpan Perubahan',
           'confirm': 'Konfirmasi',
           'delete_activity_title': 'Hapus aktivitas',
-          'delete_activity_subtitle': 'Apakah Anda yakin ingin menghapus aktivitas ini?',
+          'delete_activity_subtitle':
+              'Apakah Anda yakin ingin menghapus aktivitas ini?',
           'add_event': "Tambah Event",
           'edit_event': "Ubah Event",
-          'fill_event_form': 'Lengkapi formulir dibawah untuk menambahkan event.',
+          'fill_event_form':
+              'Lengkapi formulir dibawah untuk menambahkan event.',
           'delete_event_title': 'Hapus event',
-          'delete_event_subtitle': 'Apakah Anda yakin ingin menghapus event ini?',
+          'delete_event_subtitle':
+              'Apakah Anda yakin ingin menghapus event ini?',
           'note': 'Catatan',
           'note_placeholder': 'Masukan catatan'
         }
