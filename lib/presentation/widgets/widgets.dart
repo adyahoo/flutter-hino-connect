@@ -32,3 +32,5 @@ part 'bottom_sheets/single_picker/bs_single_picker.dart';
 part 'bottom_sheets/bs_notch.dart';
 part 'bottom_sheets/bs_confirmation.dart';
 part 'bottom_sheets/sos/bs_sos.dart';
+
+enum WidgetVariant { primary, danger, warning, success, info }

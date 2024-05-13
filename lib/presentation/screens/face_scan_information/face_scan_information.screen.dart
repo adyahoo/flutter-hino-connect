@@ -58,7 +58,7 @@ class FaceScanInformationScreen extends GetView<FaceScanInformationController> {
                   const SizedBox(height: 32),
                   AppTips(
                     content: 'face_scan_tips_info'.tr,
-                    type: AppTipsType.info,
+                    variant: WidgetVariant.info,
                   ),
                   const SizedBox(height: 24),
                   AppButton.icon(

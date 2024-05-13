@@ -58,7 +58,12 @@ class AppTranslations extends Translations {
           'note_placeholder': 'Input note',
           'need_help': 'Need help?',
           'contact_us': 'Contact us using these numbers below',
-          'call_us': 'Contact Us'
+          'call_us': 'Contact Us',
+          'total_penalty_point': 'Total penalty point',
+          'point': '@poin Point',
+          'tap_penalty_icon': 'Tap penalty icon on map to see information detail',
+          'back': 'Back',
+          'detail_penalty':'Penalty Detail'
         },
         'id_ID': {
           'home': 'Home',
@@ -114,7 +119,12 @@ class AppTranslations extends Translations {
           'note_placeholder': 'Masukan catatan',
           'need_help': 'Perlu bantuan?',
           'contact_us': 'Hubungi kami lewat kontak dibawah ini',
-          'call_us': 'Hubungi Kami'
+          'call_us': 'Hubungi Kami',
+          'total_penalty_point': 'Jumlah poin penalti',
+          'point': '@poin Poin',
+          'tap_penalty_icon': 'Ketuk pada ikon penalti di map untuk menampilkan detail informasi',
+          'back': 'Kembali',
+          'detail_penalty':'Detail Penalti'
         }
       };
 }

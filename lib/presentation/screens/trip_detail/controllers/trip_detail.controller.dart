@@ -1,5 +1,9 @@
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:hino_driver_app/presentation/screens.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
+
+final _panelController = PanelController();
 
 class TripDetailController extends GetxController {
   late GoogleMapController _controller;
@@ -9,12 +13,10 @@ class TripDetailController extends GetxController {
     zoom: 14.4746,
   );
 
-  final CameraPosition kLake = CameraPosition(
-    bearing: 192.8334901395799,
-    target: LatLng(37.43296265331129, -122.08832357078792),
-    tilt: 59.440717697143555,
-    zoom: 19.151926040649414,
-  );
+  final panelController = _panelController;
+
+  final currentPanel = TripPanel.detail.obs;
+  final panelMaxHeight = 225.0.obs;
 
   @override
   void onInit() {
@@ -31,7 +33,22 @@ class TripDetailController extends GetxController {
     super.onClose();
   }
 
-  void setController(GoogleMapController controller){
+  void setController(GoogleMapController controller) {
     _controller = controller;
+  }
+
+  void setPanel(TripPanel panel) {
+    currentPanel.value = panel;
+
+    switch(currentPanel.value) {
+      case TripPanel.detail:
+        panelMaxHeight.value = 225;
+        break;
+      case TripPanel.penalty:
+        panelMaxHeight.value = 370;
+        break;
+    }
+
+    panelController.open();
   }
 }

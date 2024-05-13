@@ -44,12 +44,12 @@ class AppTextField extends StatelessWidget {
     required this.state,
     required this.type,
     this.helperText,
-    this.withIcon = false,
     this.isRequired = true,
     this.isEditable = true,
     this.withCounter = false,
     this.isDisabled = false,
-  }) : this.onClick = null;
+  })  : this.onClick = null,
+        this.withIcon = false;
 
   AppTextField.icon({
     super.key,

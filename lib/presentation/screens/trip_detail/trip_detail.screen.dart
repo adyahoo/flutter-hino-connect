@@ -1,25 +1,68 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
+import 'package:hino_driver_app/main.dart';
+import 'package:hino_driver_app/presentation/widgets/app_tag.dart';
+import 'package:hino_driver_app/presentation/widgets/widgets.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 import 'controllers/trip_detail.controller.dart';
+
+part 'widgets/trip_detail_slide_panel.dart';
+
+part 'widgets/detail_panel.dart';
+
+part 'widgets/detail_penalty_panel.dart';
 
 class TripDetailScreen extends GetView<TripDetailController> {
   const TripDetailScreen({Key? key}) : super(key: key);
 
+  Widget _renderBack() {
+    return Positioned(
+      top: 56,
+      left: 16,
+      child: InkWell(
+        onTap: () {
+          // Get.back();
+          controller.setPanel(TripPanel.penalty);
+        },
+        child: Container(
+          width: 40,
+          height: 40,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(100),
+          ),
+          padding: const EdgeInsets.all(8),
+          child: Icon(
+            Icons.arrow_back,
+            size: 24,
+            color: Colors.black,
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('TripDetailScreen'),
-        centerTitle: true,
-      ),
-      body: GoogleMap(
-        initialCameraPosition: controller.kGooglePlex,
-        onMapCreated: (GoogleMapController controller) {
-          this.controller.setController(controller);
-        },
+      body: Stack(
+        children: [
+          TripDetailSlidePanel(
+            body: GoogleMap(
+              initialCameraPosition: controller.kGooglePlex,
+              zoomControlsEnabled: false,
+              onMapCreated: (GoogleMapController controller) {
+                this.controller.setController(controller);
+              },
+            ),
+          ),
+          _renderBack(),
+        ],
       ),
     );
   }
