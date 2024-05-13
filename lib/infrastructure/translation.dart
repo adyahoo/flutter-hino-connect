@@ -47,7 +47,8 @@ class AppTranslations extends Translations {
           'activity': 'Activity',
           'event': 'Event',
           'log_activity_event': "Activities and events log",
-          'add_activity': "Add activity",
+          'add_activity': "Add Activity",
+          'edit_activity': "Edit Activity",
           'fill_activity_form': 'Fill form below to add new activity.',
           'activity_type': 'Activity type',
           'choose_activity': 'Choose activity',
@@ -58,6 +59,16 @@ class AppTranslations extends Translations {
           'cancel': 'Cancel',
           'save': 'Save',
           'save_change': 'Save Changes',
+          'confirm': 'Confirm',
+          'delete_activity_title': 'Delete activity',
+          'delete_activity_subtitle': 'Are you sure want to delete this activity?',
+          'add_event': "Add Event",
+          'edit_event': "Edit Event",
+          'fill_event_form': 'Fill form below to add new event.',
+          'delete_event_title': 'Delete event',
+          'delete_event_subtitle': 'Are you sure want to delete this event?',
+          'note': 'Note',
+          'note_placeholder': 'Input note'
         },
         'id_ID': {
           'home': 'Home',
@@ -102,9 +113,9 @@ class AppTranslations extends Translations {
           'activity': 'Aktivitas',
           'event': 'Event',
           'log_activity_event': "Log aktivitas dan event",
-          'add_activity': "Tambah aktivitas",
-          'fill_activity_form':
-              'Lengkapi formulir dibawah untuk menambahkan aktivitas.',
+          'add_activity': "Tambah Aktivitas",
+          'edit_activity': "Ubah Aktivitas",
+          'fill_activity_form': 'Lengkapi formulir dibawah untuk menambahkan aktivitas.',
           'activity_type': 'Tipe aktivitas',
           'choose_activity': 'Pilih aktivitas',
           'date': 'Tanggal',
@@ -113,7 +124,17 @@ class AppTranslations extends Translations {
           'choose_time': 'Pilih jam',
           'cancel': 'Batalkan',
           'save': 'Simpan',
-          'save_change': 'Simpan Perubahan'
+          'save_change': 'Simpan Perubahan',
+          'confirm': 'Konfirmasi',
+          'delete_activity_title': 'Hapus aktivitas',
+          'delete_activity_subtitle': 'Apakah Anda yakin ingin menghapus aktivitas ini?',
+          'add_event': "Tambah Event",
+          'edit_event': "Ubah Event",
+          'fill_event_form': 'Lengkapi formulir dibawah untuk menambahkan event.',
+          'delete_event_title': 'Hapus event',
+          'delete_event_subtitle': 'Apakah Anda yakin ingin menghapus event ini?',
+          'note': 'Catatan',
+          'note_placeholder': 'Masukan catatan'
         }
       };
 }

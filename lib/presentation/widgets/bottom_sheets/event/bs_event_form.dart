@@ -1,14 +1,14 @@
 part of '../../widgets.dart';
 
-class BsActivityForm extends GetView<BsActivityFormController> {
-  BsActivityForm({
+class BsEventForm extends GetView<BsEventFormController> {
+  BsEventForm({
     super.key,
     required this.onSubmit,
     this.initialData,
   });
 
-  final Function(ActivityModel data) onSubmit;
-  final ActivityModel? initialData;
+  final Function(EventModel data) onSubmit;
+  final EventModel? initialData;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -17,13 +17,13 @@ class BsActivityForm extends GetView<BsActivityFormController> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          initialData != null ? "edit_activity".tr : "add_activity".tr,
+          initialData != null ? "edit_event".tr : "add_event".tr,
           style: Theme.of(context).textTheme.titleMedium,
         ),
         const SizedBox(height: 8),
         (initialData == null)
             ? Text(
-                "fill_activity_form".tr,
+                "fill_event_form".tr,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.tertiary),
               )
             : const SizedBox(),
@@ -70,6 +70,15 @@ class BsActivityForm extends GetView<BsActivityFormController> {
               type: AppTextFieldType.time_picker,
             ),
             const SizedBox(height: 16),
+            AppTextField(
+              label: 'note'.tr,
+              placeholder: 'note_placeholder'.tr,
+              textEditingController: controller.noteController.value,
+              state: controller.noteState,
+              type: AppTextFieldType.multiline,
+              isRequired: false,
+            ),
+            const SizedBox(height: 16),
             _renderAction(),
           ],
         ),
@@ -110,7 +119,7 @@ class BsActivityForm extends GetView<BsActivityFormController> {
         Get.bottomSheet(
           BsSinglePicker(
             title: 'activity_type'.tr,
-            options: Constants.activityTypeItems,
+            options: Constants.eventTypeItems,
             selectedId: controller.type?.id ?? 0,
             onSubmit: (value) {
               controller.setType(value);
@@ -152,7 +161,7 @@ class BsActivityForm extends GetView<BsActivityFormController> {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(BsActivityFormController());
+    Get.put(BsEventFormController());
 
     if (initialData != null) {
       controller.setInitData(initialData!);
@@ -164,16 +173,19 @@ class BsActivityForm extends GetView<BsActivityFormController> {
         color: Colors.white,
         borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)),
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          BsNotch(),
-          const SizedBox(height: 8),
-          _renderHeader(context),
-          const SizedBox(height: 16),
-          _renderForm(context),
-        ],
+      // single child scroll used to prevent overflow when soft keyboard appear
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            BsNotch(),
+            const SizedBox(height: 8),
+            _renderHeader(context),
+            const SizedBox(height: 16),
+            _renderForm(context),
+          ],
+        ),
       ),
     );
   }

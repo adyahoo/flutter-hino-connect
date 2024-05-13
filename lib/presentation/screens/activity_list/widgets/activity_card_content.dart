@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
-import 'package:hino_driver_app/domain/core/entities/activities_model.dart';
+import 'package:hino_driver_app/domain/core/entities/model.dart';
 import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
-import 'package:iconsax/iconsax.dart';
 
-class CardContent extends StatelessWidget {
-  const CardContent({super.key, required this.data});
+class ActivityCardContent extends StatelessWidget {
+  const ActivityCardContent({super.key, required this.data});
 
   final ActivityModel data;
 
@@ -14,7 +12,7 @@ class CardContent extends StatelessWidget {
   Widget build(BuildContext context) {
     String icon = "ic_gas_station.svg";
 
-    switch (data.type) {
+    switch (data.type.value) {
       case "load":
         icon = "ic_document_upload.svg";
         break;
@@ -33,7 +31,7 @@ class CardContent extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                data.type.capitalize ?? "",
+                data.type.title,
                 style: Theme.of(context).textTheme.titleSmall,
               ),
               const SizedBox(height: 4),

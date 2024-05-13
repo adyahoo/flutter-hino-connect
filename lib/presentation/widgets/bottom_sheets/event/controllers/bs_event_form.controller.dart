@@ -6,14 +6,17 @@ import 'package:hino_driver_app/infrastructure/constants.dart';
 import 'package:hino_driver_app/infrastructure/extension.dart';
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 
-class BsActivityFormController extends GetxController {
+class BsEventFormController extends GetxController {
   final typeState = AppTextFieldState();
   final dateState = AppTextFieldState();
   final timeState = AppTextFieldState();
+  final noteState = AppTextFieldState();
 
   final typeController = TextEditingController().obs;
   final dateController = TextEditingController().obs;
   final timeController = TextEditingController().obs;
+  final noteController = TextEditingController().obs;
+
   final isLoading = false.obs;
 
   PickerModel? type;
@@ -40,32 +43,34 @@ class BsActivityFormController extends GetxController {
     }
   }
 
-  ActivityModel submit() {
+  EventModel submit() {
     final mergedDate = date.copyWith(hour: time.hour, minute: time.minute);
     final formattedDate = DateFormat(Constants.DATE_FORMAT_TZ).format(mergedDate);
 
     // if submit update use selected item's id else use static id for v1
-    final data = ActivityModel(
+    final data = EventModel(
       id: (_editedId != 0) ? _editedId : 5,
       type: type!,
       createdAt: formattedDate.toString(),
+      note: noteController.value.text,
     );
 
     return data;
   }
 
-  void setInitData(ActivityModel activityModel) {
-    final date = DateFormat(Constants.DATE_FORMAT_TZ).parse(activityModel.createdAt);
+  void setInitData(EventModel event) {
+    final date = DateFormat(Constants.DATE_FORMAT_TZ).parse(event.createdAt);
     final time = TimeOfDay.fromDateTime(date);
 
-    typeController.value.text = activityModel.type.title;
+    typeController.value.text = event.type.title;
     dateController.value.text = date.getActivityDate();
     timeController.value.text = time.getActivityTime();
+    noteController.value.text = event.note ?? "";
 
-    this.type = activityModel.type;
+    this.type = event.type;
     this.date = date;
     this.time = time;
 
-    _editedId = activityModel.id;
+    _editedId = event.id;
   }
 }

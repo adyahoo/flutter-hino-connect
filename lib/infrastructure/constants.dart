@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hino_driver_app/data/locals/StorageService.dart';
 import 'package:hino_driver_app/domain/core/entities/picker_model.dart';
-import 'package:hino_driver_app/infrastructure/di.dart';
-import 'package:hino_driver_app/presentation/screens/profile/controllers/profile.controller.dart';
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -28,6 +25,8 @@ class MenuItem {
 }
 
 class Constants {
+  static final DATE_FORMAT_TZ = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+
   static final bottomMainMenu = [
     BottomNavigationBarItem(
       label: 'home'.tr,
@@ -114,11 +113,5 @@ class Constants {
     PickerModel(id: 2, title: 'Load', value: 'load'),
     PickerModel(id: 3, title: 'Unload', value: 'unload'),
     PickerModel(id: 4, title: 'Workshop', value: 'workshop'),
-  ];
-
-  static final languageOptions = [
-    PickerModel(id: 0, title: 'Sesuai device', value: 'default'),
-    PickerModel(id: 1, title: 'Bahasa Indonesia', value: 'id'),
-    PickerModel(id: 2, title: 'English', value: 'en'),
   ];
 }

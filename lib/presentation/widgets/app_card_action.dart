@@ -1,10 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:hino_driver_app/presentation/widgets/widgets.dart';
-import 'package:iconsax/iconsax.dart';
+part of 'widgets.dart';
 
-class CardAction extends StatelessWidget {
-  const CardAction({super.key, required this.onEdit, required this.onDelete});
+class AppCardAction extends StatelessWidget {
+  const AppCardAction({super.key, required this.onEdit, required this.onDelete});
 
   final Function() onEdit;
   final Function() onDelete;

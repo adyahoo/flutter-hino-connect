@@ -1,37 +1,103 @@
 part of '../widgets.dart';
 
-enum BottomSheetType { confirmation, success, warning, danger }
+enum BsConfirmationType { success, warning, danger }
 
-class CustomBottomSheet extends StatelessWidget {
-  final BottomSheetType type;
-  final String title;
-  final String description;
-  final VoidCallback firstButtonOnClick;
-  final VoidCallback secondButtonOnClick;
-
-  const CustomBottomSheet({
+class BsConfirmation extends StatelessWidget {
+  const BsConfirmation({
     Key? key,
     required this.type,
     required this.title,
     required this.description,
-    required this.firstButtonOnClick,
-    required this.secondButtonOnClick,
+    required this.positiveButtonOnClick,
+    this.negativeButtonOnClick,
+    this.positiveTitle,
+    this.negativeTitle,
+    this.isMultiAction = true,
   }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
+  final BsConfirmationType type;
+  final String title;
+  final String description;
+  final VoidCallback positiveButtonOnClick;
+  final VoidCallback? negativeButtonOnClick;
+  final String? positiveTitle;
+
+  /// will have "cancel" as default value
+  final String? negativeTitle;
+
+  /// handle when the bs show multi action button or single full-width button (default: true)
+  final bool isMultiAction;
+
+  String get icon {
     switch (type) {
-      case BottomSheetType.confirmation:
-        return _buildConfirmationBottomSheet(context);
-
-      // Add more cases as needed for other types of bottom sheets below
-
-      default:
-        return Container();
+      case BsConfirmationType.success:
+        return "assets/icons/ic_success_circle.svg";
+      case BsConfirmationType.warning:
+        return "assets/icons/ic_warning_circle.svg";
+      case BsConfirmationType.danger:
+        return "assets/icons/ic_alert_circle.svg";
     }
   }
 
-  Widget _buildConfirmationBottomSheet(BuildContext context) {
+  Widget _renderContent(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        SvgPicture.asset(
+          icon,
+          height: 40,
+          width: 40,
+        ),
+        const SizedBox(height: 16),
+        Text(
+          title,
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+        const SizedBox(height: 8),
+        Text(
+          description,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.tertiary),
+          textAlign: TextAlign.center,
+        ),
+      ],
+    );
+  }
+
+  Widget _renderActions(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        (isMultiAction)
+            ? Expanded(
+                flex: 1,
+                child: AppButton(
+                  label: negativeTitle ?? 'cancel'.tr,
+                  onPress: () {
+                    Get.back();
+
+                    if (negativeButtonOnClick != null) {
+                      negativeButtonOnClick!();
+                    }
+                  },
+                  type: AppButtonType.outline,
+                ),
+              )
+            : const SizedBox(),
+        (isMultiAction) ? const SizedBox(width: 16) : const SizedBox(),
+        Expanded(
+          flex: 1,
+          child: AppButton(
+            label: positiveTitle ?? 'confirm'.tr,
+            onPress: positiveButtonOnClick,
+            type: AppButtonType.filled,
+          ),
+        ),
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -40,88 +106,20 @@ class CustomBottomSheet extends StatelessWidget {
           topRight: Radius.circular(20),
         ),
       ),
-      padding: EdgeInsets.only(left: 16, right: 16, bottom: 16, top: 8),
-
+      padding: const EdgeInsets.only(right: 16, bottom: 16, left: 16),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           // Drag handle
-          Center(
-            child: Container(
-              width: 48,
-              height: 4,
-              margin: EdgeInsets.symmetric(vertical: 12),
-              decoration: BoxDecoration(
-                color: BorderColor.primary,
-                borderRadius: BorderRadius.circular(24),
-              ),
-            ),
-          ),
-    
+          const BsNotch(),
+
           // Main description content
-          Expanded(
-            flex: 3,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SvgPicture.asset(
-                  'assets/icons/bs-confirmation-icon.svg',
-                  height: 40,
-                  width: 40,
-                ),
-                SizedBox(height: 16),
-                Text(
-                  title,
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                SizedBox(height: 8),
-                Text(
-                  description,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-          ),
-    
-          SizedBox(height: 16),
-    
+          _renderContent(context),
+
+          const SizedBox(height: 16),
+
           // Footer with two buttons
-          Expanded(
-            flex: 1,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    width: double.infinity,
-                    child: AppButton(
-                      label: 'Batal',
-                      type: AppButtonType.outline,
-                      onPress: () {
-                        firstButtonOnClick();
-                      },
-                    ),
-                  ),
-                ),
-                SizedBox(width: 16),
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    width: double.infinity,
-                    child: AppButton(
-                      label: 'Keluar',
-                      type: AppButtonType.filled,
-                      onPress: () {
-                        secondButtonOnClick();
-                      },
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          _renderActions(context),
         ],
       ),
     );
