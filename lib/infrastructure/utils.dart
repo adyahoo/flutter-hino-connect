@@ -16,3 +16,14 @@ void showLoadingOverlay() {
 void hideLoadingOverlay() {
   Get.back();
 }
+
+void showGetBottomSheet(Widget content, {bool canExpand = false}) {
+  Get.bottomSheet(
+    content,
+    backgroundColor: Colors.white,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)),
+    ),
+    isScrollControlled: canExpand,
+  );
+}

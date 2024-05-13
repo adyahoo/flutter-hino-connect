@@ -10,7 +10,7 @@ class ActivityUseCase implements IActivityUseCase {
   final ActivityDataSource dataSource;
 
   @override
-  Future<ListApiResponse<ActivityModel>> getActivityList() async {
+  Future<ListPaginationApiResponse<ActivityModel>> getActivityList() async {
     try {
       final response = await dataSource.getActivityList();
       final data = response.data.map((e) {
@@ -19,7 +19,7 @@ class ActivityUseCase implements IActivityUseCase {
         return ActivityModel(id: e.id, type: type, createdAt: e.createdAt);
       }).toList();
 
-      return ListApiResponse(
+      return ListPaginationApiResponse(
         data: data,
         links: response.links,
         meta: response.meta,

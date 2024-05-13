@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hino_driver_app/infrastructure/navigation/routes.dart';
+import 'package:hino_driver_app/infrastructure/utils.dart';
 import 'package:hino_driver_app/presentation/screens.dart';
+import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 
 class MainTabController extends GetxController {
   final activeIndex = 0.obs;
@@ -37,7 +39,7 @@ class MainTabController extends GetxController {
           activeScreen.value = LogScreen();
           break;
         case 4:
-          activeScreen.value = ProfileScreen();
+          showGetBottomSheet(BsSos(), canExpand: true);
           break;
       }
     }

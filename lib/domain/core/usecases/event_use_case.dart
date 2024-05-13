@@ -10,7 +10,7 @@ class EventUseCase implements IEventUseCase {
   final EventDataSource dataSource;
 
   @override
-  Future<ListApiResponse<EventModel>> getEventlist() async {
+  Future<ListPaginationApiResponse<EventModel>> getEventlist() async {
     try {
       final response = await dataSource.getEventList();
       final data = response.data.map((e) {
@@ -19,7 +19,7 @@ class EventUseCase implements IEventUseCase {
         return EventModel(id: e.id, type: type, note: e.note, createdAt: e.createdAt);
       }).toList();
 
-      return ListApiResponse(
+      return ListPaginationApiResponse(
         data: data,
         links: response.links,
         meta: response.meta,

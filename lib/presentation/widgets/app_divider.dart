@@ -1,5 +1,20 @@
 part of 'widgets.dart';
 
+class AppDivider extends StatelessWidget {
+  const AppDivider({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: 1,
+      color: BorderColor.primary,
+      margin: const EdgeInsets.symmetric(vertical: 12),
+    );
+  }
+}
+
+
 class AppStrippedDivider extends StatelessWidget {
   const AppStrippedDivider({super.key});
 
