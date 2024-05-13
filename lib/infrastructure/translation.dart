@@ -55,7 +55,10 @@ class AppTranslations extends Translations {
           'delete_event_title': 'Delete event',
           'delete_event_subtitle': 'Are you sure want to delete this event?',
           'note': 'Note',
-          'note_placeholder': 'Input note'
+          'note_placeholder': 'Input note',
+          'need_help': 'Need help?',
+          'contact_us': 'Contact us using these numbers below',
+          'call_us': 'Contact Us'
         },
         'id_ID': {
           'home': 'Home',
@@ -108,7 +111,10 @@ class AppTranslations extends Translations {
           'delete_event_title': 'Hapus event',
           'delete_event_subtitle': 'Apakah Anda yakin ingin menghapus event ini?',
           'note': 'Catatan',
-          'note_placeholder': 'Masukan catatan'
+          'note_placeholder': 'Masukan catatan',
+          'need_help': 'Perlu bantuan?',
+          'contact_us': 'Hubungi kami lewat kontak dibawah ini',
+          'call_us': 'Hubungi Kami'
         }
       };
 }

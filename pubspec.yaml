@@ -17,6 +17,8 @@ dependencies:
   get_it: 7.7.0
   camera: 0.10.5+9
   shimmer: 3.0.0
+  google_maps_flutter: 2.6.1
+  sliding_up_panel: 2.0.0+1
   flutter: 
     sdk: flutter
 
@@ -30,6 +32,5 @@ flutter:
     - assets/images/
     - assets/icons/
     - assets/response_helpers/
-
   uses-material-design: true
 
