@@ -75,15 +75,14 @@ class Constants {
   ];
 
   static List<MenuItem> get profileMenuItems => [
-        MenuItem(title: 'edit_profile'.tr, icon: Iconsax.edit_24),
+        MenuItem(title: 'edit_profile'.tr, icon: Iconsax.edit_24, onTap: () {
+          
+        }),
         MenuItem(title: 'biometric_login'.tr, icon: Iconsax.scan4),
         MenuItem(
             title: 'language'.tr,
             icon: Iconsax.language_circle4,
             onTap: () {
-              print('Bahasa clicked');
-              print(
-                  'Selected language: ${inject<StorageService>().getSelectedLanguage()}');
               Get.bottomSheet(BsSinglePicker(
                   options: languageOptions,
                   title: 'Pilih Bahasa',

@@ -3,6 +3,7 @@ import 'package:hino_driver_app/data/data_sources/data_source.dart';
 import 'package:hino_driver_app/data/locals/StorageService.dart';
 import 'package:hino_driver_app/domain/core/usecases/activity_use_case.dart';
 import 'package:hino_driver_app/domain/core/usecases/feedback_use_case.dart';
+import 'package:hino_driver_app/domain/core/usecases/place_use_case.dart';
 import 'package:hino_driver_app/domain/core/usecases/user_use_case.dart';
 import 'package:hino_driver_app/domain/core/usecases/event_use_case.dart';
 
@@ -29,5 +30,9 @@ Future setupInjection() async {
   //event
   inject.registerLazySingleton<EventDataSource>(() => EventDataSource());
   inject.registerLazySingleton<EventUseCase>(() => EventUseCase(dataSource: inject()));
+
+  //maps
+  inject.registerLazySingleton<PlaceDataSource>(() => PlaceDataSource());
+  inject.registerLazySingleton<PlaceUseCase>(() => PlaceUseCase(dataSource: inject()));
 
 }

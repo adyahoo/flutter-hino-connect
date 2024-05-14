@@ -13,7 +13,7 @@ class MainTabControllerBinding extends Bindings {
   void dependencies() {
     Get.lazyPut<MainTabController>(() => MainTabController());
     Get.lazyPut<HomeController>(() => HomeController());
-    Get.lazyPut<MapsController>(() => MapsController());
+    Get.lazyPut<MapsController>(() => MapsController(useCase: inject()));
     Get.lazyPut<ActivityListController>(() => ActivityListController(useCase: inject()));
 
     Get.lazyPut<EventListController>(() => EventListController(useCase: inject()));

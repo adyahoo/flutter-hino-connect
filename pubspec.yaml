@@ -20,6 +20,7 @@ dependencies:
   dotted_line: ^3.2.2
   google_maps_flutter: 2.6.1
   sliding_up_panel: 2.0.0+1
+  http: 1.2.1
   flutter: 
     sdk: flutter
 

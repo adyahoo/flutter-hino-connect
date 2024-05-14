@@ -27,24 +27,12 @@ class Main extends StatelessWidget {
   Main(this.initialRoute);
 
   @override
-  // Widget build(BuildContext context) {
-  //   return GetMaterialApp(
-  //     scaffoldMessengerKey: rootScaffoldMessengerKey,
-  //     themeMode: ThemeMode.light,
-  //     theme: AppTheme.getLightTheme(),
-  //     translations: AppTranslations(),
-  //     locale: Get.deviceLocale,
-  //     initialRoute: initialRoute,
-  //     getPages: Nav.routes,
-  //   );
-  // }
-
   Widget build(BuildContext context) {
     return FutureBuilder<int>(
       future: Future<int>.value(inject<StorageService>().getSelectedLanguage()),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator(); // Show a loading spinner while waiting
+          return CircularProgressIndicator();
         } else {
           Locale locale;
           switch (snapshot.data) {

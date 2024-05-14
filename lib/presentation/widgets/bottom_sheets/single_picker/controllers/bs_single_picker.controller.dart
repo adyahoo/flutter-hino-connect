@@ -3,12 +3,14 @@ import 'dart:ui';
 import 'package:get/get.dart';
 import 'package:hino_driver_app/data/locals/StorageService.dart';
 import 'package:hino_driver_app/infrastructure/di.dart';
+import 'package:hino_driver_app/presentation/screens/profile/controllers/profile.controller.dart';
 
 class BsSinglePickerController extends GetxController {
   // final selectedOption = 0.obs;
 
   var selectedOption =
       (inject<StorageService>().getSelectedLanguage() ?? 0).obs;
+      
   final isFetching = false.obs;
 
   void setSelectedOption(int id) {
@@ -17,14 +19,14 @@ class BsSinglePickerController extends GetxController {
 
   Future<void> changeLanguage(int id) async {
     isFetching.value = true;
-    selectedOption.value = id;
-    inject<StorageService>().setSelectedLanguage(id);
-    update();
+    // selectedOption.value = id;
+    // inject<StorageService>().setSelectedLanguage(id);
+    // update();
 
-    Get.back();
+    // Get.back();
 
-    await Future.delayed(Duration(milliseconds: 500)); 
-    
+    await Future.delayed(Duration(milliseconds: 500));
+
     // Update the locale
     switch (id) {
       case 1:
@@ -37,6 +39,10 @@ class BsSinglePickerController extends GetxController {
     print('abis Get.updateLocale');
     isFetching.value = false;
     print('abis isFetching false');
+        selectedOption.value = id;
+    inject<StorageService>().setSelectedLanguage(id);
+    // update();
+
   }
 
   @override

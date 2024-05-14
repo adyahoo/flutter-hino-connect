@@ -14,7 +14,32 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'controllers/maps.controller.dart';
 
 class MapsScreen extends GetView<MapsController> {
-  const MapsScreen({Key? key}) : super(key: key);
+  MapsScreen({Key? key}) : super(key: key);
+
+  final PanelController _panelController = PanelController();
+  bool _isRestaurantSelected = false;
+
+  Widget _renderLocationInfo(
+      BuildContext context, String title, String value, IconData icon) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Icon(icon, color: IconColor.secondary),
+        SizedBox(width: 8),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(title, style: Theme.of(context).textTheme.bodyMedium),
+              SizedBox(height: 4),
+              Text(value, style: Theme.of(context).textTheme.bodyMedium),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,6 +49,10 @@ class MapsScreen extends GetView<MapsController> {
       ),
       extendBodyBehindAppBar: true,
       body: SlidingUpPanel(
+        controller: _panelController,
+        maxHeight: MediaQuery.of(context).size.height *
+            0.4, //!CHANGE LATER IF FOUND THE SOLUTION
+        minHeight: 0,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(24),
           topRight: Radius.circular(24),
@@ -49,43 +78,74 @@ class MapsScreen extends GetView<MapsController> {
                   ],
                 ),
                 SizedBox(width: 16),
-                Expanded(
-                  
+                Container(
+                  width: 70,
                   child: AppButton(
-                      label: 'Tutup',
-                      onPress: () {},
-                      type: AppButtonType.outline),
+                    label: 'Tutup',
+                    onPress: () {
+                      _panelController.close();
+                    },
+                    type: AppButtonType.outline,
+                    size: AppButtonSize.smallSize,
+                  ),
                 ),
               ],
             ),
-            SizedBox(height: 16),
+            SizedBox(height: 8),
             Expanded(
-              child: 
-              Column(
+                child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                Text('Detail Tempat', style: Theme.of(context).textTheme.labelLarge),
-                SizedBox(height: 8),
-                Row(
-                  children: [
-                    Icon(Iconsax.gas_station4, color: IconColor.secondary),
-                    SizedBox(width: 8),
-                    Text('SPBU', style: Theme.of(context).textTheme.bodyMedium),
-                  ],
-                ),
-              ],)
-            ),
+                  Text('Detail Tempat',
+                      style: Theme.of(context).textTheme.labelLarge),
+                  SizedBox(height: 16),
+                  _renderLocationInfo(context, 'Posisi',
+                      '801892839232, 8210930232', Iconsax.location5),
+                  SizedBox(height: 16),
+                  _renderLocationInfo(
+                      context,
+                      'Alamat',
+                      'Jl. Bypass Ngurah Rai No.6, Jimbaran, Kec. Kuta Sel., Kabupaten Badung, Bali 80361',
+                      Iconsax.gps5),
+                  SizedBox(height: 16),
+                  _renderLocationInfo(
+                      context, 'Nomor Telepon', '0361 701000', Iconsax.call5),
+                ],
+              ),
+            )),
           ],
         ),
         body: Stack(
           children: [
-            GoogleMap(
-              initialCameraPosition: controller.kGooglePlex,
-              onMapCreated: (GoogleMapController controller) {
-                this.controller.setController(controller);
+            FutureBuilder(
+              future: controller.fetchPlaces(37.42796133580664, -122.085749655962,
+                  'gas_station'),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return GoogleMap(
+                    initialCameraPosition: controller.kGooglePlex,
+                    onMapCreated: (GoogleMapController controller) {
+                      this.controller.setController(controller);
+                    },
+                    markers: Set<Marker>.of(controller.markers),
+                  );
+                } else {
+                  return CircularProgressIndicator(); // Show a loading spinner while waiting
+                }
               },
-              markers: Set<Marker>.of(<Marker>[]),
             ),
+
+            // GoogleMap(
+            //   initialCameraPosition: controller.kGooglePlex,
+            //   onMapCreated: (GoogleMapController controller) {
+            //     this.controller.setController(controller);
+            //     this.controller.fetchPlaces(37.42796133580664, -122.085749655962,
+            //         'restaurant');
+            //   },
+            //   markers: Set<Marker>.of(controller.markers),
+            // ),
             Positioned(
               top: Platform.isIOS ? 60.0 : 30.0,
               right: 0.0,
@@ -100,19 +160,50 @@ class MapsScreen extends GetView<MapsController> {
                       child: Row(
                         children: [
                           AppChip(
-                              label: 'Gas Station',
-                              icon: Iconsax.gas_station4,
-                              id: 'filter_gas_station'),
+                            label: 'Gas Station',
+                            icon: Iconsax.gas_station4,
+                            id: 'filter_gas_station',
+                            onSelected: () {
+                              if (_panelController.isPanelOpen) {
+                                _panelController.close();
+                              } else {
+                                _panelController.open();
+                              }
+                            },
+                          ),
                           SizedBox(width: 8),
                           AppChip(
-                              label: 'Dealers',
-                              icon: Icons.fire_truck_rounded,
-                              id: 'filter_dealers'),
+                            label: 'Dealers',
+                            icon: Iconsax.truck,
+                            id: 'filter_dealers',
+                            onSelected: () {
+                              if (_panelController.isPanelOpen) {
+                                _panelController.close();
+                              } else {
+                                _panelController.open();
+                              }
+                            },
+                          ),
                           SizedBox(width: 8),
                           AppChip(
-                              label: 'Restaurant',
-                              icon: Icons.coffee,
-                              id: 'filter_restaurant'),
+                            label: 'Restaurant',
+                            icon: Icons.coffee,
+                            id: 'filter_restaurant',
+                            onSelected: () {
+                              if (_panelController.isPanelOpen) {
+                                _panelController.close();
+                              } else {
+                                _panelController.open();
+                              }
+                              _isRestaurantSelected = true;
+                              double latitude =
+                                  37.42796133580664; // replace with actual latitude
+                              double longitude =
+                                  -122.085749655962; // replace with actual longitude
+                              controller.fetchPlaces(
+                                  latitude, longitude, 'restaurant');
+                            },
+                          ),
                         ],
                       ),
                     ),
