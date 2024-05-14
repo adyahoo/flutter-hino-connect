@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
-import 'package:hino_driver_app/main.dart';
 import 'package:hino_driver_app/presentation/widgets/app_tag.dart';
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -26,8 +25,7 @@ class TripDetailScreen extends GetView<TripDetailController> {
       left: 16,
       child: InkWell(
         onTap: () {
-          // Get.back();
-          controller.setPanel(TripPanel.penalty);
+          Get.back();
         },
         child: Container(
           width: 40,
@@ -53,12 +51,23 @@ class TripDetailScreen extends GetView<TripDetailController> {
       body: Stack(
         children: [
           TripDetailSlidePanel(
-            body: GoogleMap(
-              initialCameraPosition: controller.kGooglePlex,
-              zoomControlsEnabled: false,
-              onMapCreated: (GoogleMapController controller) {
-                this.controller.setController(controller);
-              },
+            body: Obx(
+              () => GoogleMap(
+                initialCameraPosition: controller.kGooglePlex,
+                markers: this.controller.markers,
+                polylines: this.controller.polylines,
+                myLocationEnabled: false,
+                myLocationButtonEnabled: false,
+                zoomControlsEnabled: false,
+                tiltGesturesEnabled: false,
+                rotateGesturesEnabled: false,
+                compassEnabled: false,
+                minMaxZoomPreference: const MinMaxZoomPreference(5, 17),
+                onMapCreated: (GoogleMapController controller) {
+                  this.controller.setController(controller);
+                  this.controller.initRouteMarker();
+                },
+              ),
             ),
           ),
           _renderBack(),

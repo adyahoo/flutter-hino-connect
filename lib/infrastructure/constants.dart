@@ -13,6 +13,7 @@ class ButtonShapeValue {
 }
 
 class Constants {
+  static final MAP_API_KEY = "AIzaSyAzc3CqLAKvVzyciztdOcADxafOs1iYHbs";
   static final DATE_FORMAT_TZ = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
   static final bottomMainMenu = [
