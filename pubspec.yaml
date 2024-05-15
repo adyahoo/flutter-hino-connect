@@ -21,6 +21,7 @@ dependencies:
   google_maps_flutter: 2.6.1
   sliding_up_panel: 2.0.0+1
   http: 1.2.1
+  flutter_polyline_points: 2.0.0
   flutter: 
     sdk: flutter
 
@@ -34,6 +35,5 @@ flutter:
     - assets/images/
     - assets/icons/
     - assets/response_helpers/
-
   uses-material-design: true
 

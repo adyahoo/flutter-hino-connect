@@ -2,17 +2,34 @@ import 'package:equatable/equatable.dart';
 
 class ListApiResponse<T> extends Equatable {
   final List<T> data;
+
+  const ListApiResponse({
+    required this.data,
+  });
+
+  factory ListApiResponse.fromJson(Map<String, dynamic> json, Function(Iterable json) create) {
+    return ListApiResponse(
+      data: create(json['data'] as Iterable),
+    );
+  }
+
+  @override
+  List<Object> get props => [data];
+}
+
+class ListPaginationApiResponse<T> extends Equatable {
+  final List<T> data;
   final Links links;
   final Meta meta;
 
-  const ListApiResponse({
+  const ListPaginationApiResponse({
     required this.data,
     required this.links,
     required this.meta,
   });
 
-  factory ListApiResponse.fromJson(Map<String, dynamic> json, Function(Iterable json) create) {
-    return ListApiResponse(
+  factory ListPaginationApiResponse.fromJson(Map<String, dynamic> json, Function(Iterable json) create) {
+    return ListPaginationApiResponse(
       data: create(json['data'] as Iterable),
       links: Links.fromJson(json['links']),
       meta: Meta.fromJson(json['meta']),

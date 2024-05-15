@@ -1,0 +1,18 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "name": "Hino Service Center Jimbaran",
+      "code": "0361",
+      "phone": "7432350",
+      "address": "Jl. Bypass I B Mantra No. 17 X, Jimbaran, South Kuta, Badung Regency, Bali 80361"
+    },
+    {
+      "id": 2,
+      "name": "HINO PARTS SHOP BALI MOTOR 2",
+      "code": "0361",
+      "phone": "499307",
+      "address": "Jl. Imam Bonjol No.403, Pemecutan Klod, Kec. Denpasar Bar., Kota Denpasar, Bali 80119"
+    }
+  ]
+}

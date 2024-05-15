@@ -12,3 +12,4 @@ export 'package:hino_driver_app/presentation/screens/profile/profile.screen.dart
 export 'package:hino_driver_app/presentation/screens/scan_qr/scan_qr.screen.dart';
 export 'package:hino_driver_app/presentation/screens/splash/splash.screen.dart';
 export 'package:hino_driver_app/presentation/screens/trip/trip.screen.dart';
+export 'package:hino_driver_app/presentation/screens/trip_detail/trip_detail.screen.dart';

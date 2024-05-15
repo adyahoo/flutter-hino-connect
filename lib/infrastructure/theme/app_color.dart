@@ -1,4 +1,150 @@
+import 'package:flutter/material.dart';
 import 'package:hino_driver_app/infrastructure/theme/master_color.dart';
+
+abstract class BaseAppColorProps {
+  final Color? main;
+  final Color? hover;
+  final Color? pressed;
+  final Color? surface;
+  final Color? border;
+  final Color? content;
+  final Color? focus;
+
+  BaseAppColorProps({
+    this.main,
+    this.hover,
+    this.pressed,
+    this.surface,
+    this.border,
+    this.content,
+    this.focus,
+  });
+}
+
+class PrimaryNewColor implements BaseAppColorProps {
+  PrimaryNewColor();
+
+  @override
+  Color get main => BrandColor.color600;
+
+  @override
+  Color get border => BrandColor.color200;
+
+  @override
+  Color get content => GrayColor.color10;
+
+  @override
+  Color get hover => BrandColor.color700;
+
+  @override
+  Color get pressed => BrandColor.color800;
+
+  @override
+  Color get surface => BrandColor.color100;
+
+  @override
+  Color get focus => BrandColor.color600.withOpacity(0.3);
+}
+
+class DangerNewColor implements BaseAppColorProps {
+  DangerNewColor();
+
+  @override
+  Color get border => RedColor.color100;
+
+  @override
+  Color get content => GrayColor.color10;
+
+  @override
+  Color get focus => RedColor.color600.withOpacity(0.3);
+
+  @override
+  Color get hover => RedColor.color700;
+
+  @override
+  Color get main => RedColor.color600;
+
+  @override
+  Color get pressed => RedColor.color900;
+
+  @override
+  Color get surface => RedColor.color50;
+}
+
+class WarningNewColor implements BaseAppColorProps {
+  WarningNewColor();
+
+  @override
+  Color get border => OrangeColor.color200;
+
+  @override
+  Color get content => GrayColor.color10;
+
+  @override
+  Color get focus => OrangeColor.color600.withOpacity(0.3);
+
+  @override
+  Color get hover => OrangeColor.color700;
+
+  @override
+  Color get main => OrangeColor.color600;
+
+  @override
+  Color get pressed => OrangeColor.color800;
+
+  @override
+  Color get surface => OrangeColor.color50;
+}
+
+class SuccessNewColor implements BaseAppColorProps {
+  SuccessNewColor();
+
+  @override
+  Color get border => GreenColor.color200;
+
+  @override
+  Color get content => GrayColor.color10;
+
+  @override
+  Color get focus => GreenColor.color600.withOpacity(0.3);
+
+  @override
+  Color get hover => GreenColor.color700;
+
+  @override
+  Color get main => GreenColor.color600;
+
+  @override
+  Color get pressed => GreenColor.color800;
+
+  @override
+  Color get surface => GreenColor.color50;
+}
+
+class InfoNewColor implements BaseAppColorProps {
+  InfoNewColor();
+
+  @override
+  Color get border => BlueColor.color200;
+
+  @override
+  Color get content => GrayColor.color10;
+
+  @override
+  Color get focus => BlueColor.color600.withOpacity(0.3);
+
+  @override
+  Color get hover => BlueColor.color700;
+
+  @override
+  Color get main => BlueColor.color600;
+
+  @override
+  Color get pressed => BlueColor.color800;
+
+  @override
+  Color get surface => BlueColor.color50;
+}
 
 class PrimaryColor {
   PrimaryColor._();

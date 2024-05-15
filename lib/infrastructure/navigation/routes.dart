@@ -17,4 +17,5 @@ class Routes {
   static const SPLASH = '/splash';
   static const TRIP = '/trip';
   static const MAPS = '/maps';
+  static const TRIP_DETAIL = '/trip-detail';
 }

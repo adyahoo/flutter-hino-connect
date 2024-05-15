@@ -1,20 +1,18 @@
 part of 'widgets.dart';
 
-enum AppTipsType { error, warning, info, success }
-
-enum AppTipsVariant { basic, outline, filled }
+enum AppTipsType { basic, outline, filled }
 
 class AppTips extends StatelessWidget {
   AppTips({
     super.key,
     required this.content,
-    required this.type,
+    required this.variant,
     this.title,
     this.onDismiss,
   });
 
   final String content;
-  final AppTipsType type;
+  final WidgetVariant variant;
   final String? title;
   final Function()? onDismiss;
 
@@ -24,25 +22,30 @@ class AppTips extends StatelessWidget {
     Color iconColor;
     IconData icon;
 
-    switch (type) {
-      case AppTipsType.info:
+    switch (variant) {
+      case WidgetVariant.info:
         bgColor = InfoColor.surface;
         iconColor = InfoColor.main;
         icon = Iconsax.info_circle;
         break;
-      case AppTipsType.error:
+      case WidgetVariant.danger:
         bgColor = ErrorColor.surface;
         iconColor = ErrorColor.main;
         icon = Iconsax.info_circle;
         break;
-      case AppTipsType.warning:
+      case WidgetVariant.warning:
         bgColor = WarningColor.surface;
         iconColor = WarningColor.main;
         icon = Iconsax.info_circle;
         break;
-      case AppTipsType.success:
+      case WidgetVariant.success:
         bgColor = SuccesColor.surface;
         iconColor = SuccesColor.main;
+        icon = Iconsax.info_circle;
+        break;
+      case WidgetVariant.primary:
+        bgColor = PrimaryColor.surface;
+        iconColor = PrimaryColor.main;
         icon = Iconsax.info_circle;
         break;
     }
