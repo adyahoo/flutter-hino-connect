@@ -85,7 +85,14 @@ class AppTranslations extends Translations {
           'english': 'English',
           'quit_account': 'Quit Akun?',
           'are_you_sure_logout': 'Are you sure want to quit from this account?',
-          "quit": 'Quit'
+          "quit": 'Quit',
+          "vehicle_information": "Vehicle Information",
+          "trip_list": "Trip List",
+          "do_verification_title": "Do Driver Verification",
+          "do_verification_subtitle": "Face verification is needed before doing vehicle scan.",
+          "no_trip_title": "No trip list yet",
+          "no_trip_subtitle": "Trip list will be shown after vehicle verification.",
+          "see_all_trip": "See All Trip"
         },
         'id_ID': {
           'home': 'Home',
@@ -168,7 +175,14 @@ class AppTranslations extends Translations {
           'english': 'Inggris',
           'quit_account': 'Keluar akun?',
           'are_you_sure_logout': 'Apakah Anda yakin ingin keluar dari akun ini?',
-          "quit": 'Keluar'
+          "quit": 'Keluar',
+          "vehicle_information": "Informasi kendaraan",
+          "trip_list": "Daftar Penjalanan",
+          "do_verification_title": "Lakukan verifikasi driver",
+          "do_verification_subtitle": "Lakukan verifikasi wajah terlebih dahulu untuk melakukan scan kendaraan.",
+          "no_trip_title": "Belum ada daftar perjalanan",
+          "no_trip_subtitle": "Daftar perjalanan akan ditampilkan setelah mobil berhasil discan.",
+          "see_all_trip": "Lihat Semua Perjalanan"
         }
       };
 }
