@@ -15,8 +15,6 @@ class FeedbackUseCase {
 
       return ListApiResponse(
         data: data,
-        links: response.links,
-        meta: response.meta,
       );
     } catch (e) {
       //call error handler dialog

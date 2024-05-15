@@ -25,18 +25,26 @@ class PlaceUseCase {
 
       print('response $response');
 
-     final data = response.results
-        .where((e) =>
-            e.name != null && e.longitude != null && e.latitude != null)
-        .map(
-          (e) => PlaceModel(
-            name: e.name!,
-            address: e.address,
-            longitude: e.longitude!.toString(),
-            latitude: e.latitude!.toString(),
-          ),
-        )
-        .toList();
+      final data = response.results
+          .where((e) =>
+              e.name != null && e.longitude != null && e.latitude != null)
+          .map(
+            // (e) => PlaceModel(
+            //   name: e.name!,
+            //   address: e.address,
+            //   longitude: e.longitude!.toString(),
+            //   latitude: e.latitude!.toString(),
+            // ),
+            (e) => PlaceModel(
+              name: e.name!,
+              type: e.type!,
+              address: e.address,
+              latitude: e.latitude!.toString(),
+              longitude: e.longitude!.toString(),
+              phone: e.phone ?? '-',
+            ),
+          )
+          .toList();
       print("\n data $data");
 
       return data;

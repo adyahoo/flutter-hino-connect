@@ -1,15 +1,18 @@
+
 // part of '../widgets.dart';
 
 // class AppChip extends GetView<AppChipController> {
 //   final String label;
 //   final IconData icon;
 //   final String id;
+//   final VoidCallback? onSelected;
 
 //   AppChip({
 //     Key? key,
 //     required this.label,
 //     required this.icon,
 //     required this.id,
+//     this.onSelected,
 //   }) : super(key: key) {
 //     Get.put(AppChipController(), tag: id);
 //   }
@@ -23,6 +26,9 @@
 //           () => GestureDetector(
 //             onTap: () {
 //               controller.setIsSelected(!controller.isSelected.value);
+//               if (onSelected != null) {
+//                 onSelected!();
+//               }
 //             },
 //             child: Chip(
 //               padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
@@ -51,7 +57,7 @@ class AppChip extends GetView<AppChipController> {
   final String label;
   final IconData icon;
   final String id;
-  final VoidCallback? onSelected;
+  final Function(bool)? onSelected;
 
   AppChip({
     Key? key,
@@ -73,7 +79,7 @@ class AppChip extends GetView<AppChipController> {
             onTap: () {
               controller.setIsSelected(!controller.isSelected.value);
               if (onSelected != null) {
-                onSelected!();
+                onSelected!(controller.isSelected.value); 
               }
             },
             child: Chip(

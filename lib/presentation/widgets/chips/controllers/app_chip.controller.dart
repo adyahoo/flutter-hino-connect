@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:hino_driver_app/presentation/screens/maps/controllers/maps.controller.dart';
 
 class AppChipController extends GetxController {
   // final RxInt count = 0.obs;
@@ -28,5 +29,4 @@ class AppChipController extends GetxController {
     isSelected.value = value;
     update();
   }
-
 }
