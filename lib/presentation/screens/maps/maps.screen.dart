@@ -20,7 +20,11 @@ class MapsScreen extends GetView<MapsController> {
   bool _isRestaurantSelected = false;
 
   Widget _renderLocationInfo(
-      BuildContext context, String title, String value, IconData icon) {
+    BuildContext context,
+    String title,
+    String value,
+    IconData icon,
+  ) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -50,8 +54,8 @@ class MapsScreen extends GetView<MapsController> {
       extendBodyBehindAppBar: true,
       body: SlidingUpPanel(
         controller: _panelController,
-        maxHeight: MediaQuery.of(context).size.height *
-            0.4, //!CHANGE LATER IF FOUND THE SOLUTION
+        maxHeight: MediaQuery.of(context).size.height * 0.4,
+        //!CHANGE LATER IF FOUND THE SOLUTION
         minHeight: 0,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(24),
@@ -98,20 +102,13 @@ class MapsScreen extends GetView<MapsController> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Detail Tempat',
-                      style: Theme.of(context).textTheme.labelLarge),
+                  Text('Detail Tempat', style: Theme.of(context).textTheme.labelLarge),
                   SizedBox(height: 16),
-                  _renderLocationInfo(context, 'Posisi',
-                      '801892839232, 8210930232', Iconsax.location5),
+                  _renderLocationInfo(context, 'Posisi', '801892839232, 8210930232', Iconsax.location5),
                   SizedBox(height: 16),
-                  _renderLocationInfo(
-                      context,
-                      'Alamat',
-                      'Jl. Bypass Ngurah Rai No.6, Jimbaran, Kec. Kuta Sel., Kabupaten Badung, Bali 80361',
-                      Iconsax.gps5),
+                  _renderLocationInfo(context, 'Alamat', 'Jl. Bypass Ngurah Rai No.6, Jimbaran, Kec. Kuta Sel., Kabupaten Badung, Bali 80361', Iconsax.gps5),
                   SizedBox(height: 16),
-                  _renderLocationInfo(
-                      context, 'Nomor Telepon', '0361 701000', Iconsax.call5),
+                  _renderLocationInfo(context, 'Nomor Telepon', '0361 701000', Iconsax.call5),
                 ],
               ),
             )),
@@ -120,16 +117,22 @@ class MapsScreen extends GetView<MapsController> {
         body: Stack(
           children: [
             FutureBuilder(
-              future: controller.fetchPlaces(37.42796133580664, -122.085749655962,
-                  'gas_station'),
+              future: controller.fetchPlaces(37.42796133580664, -122.085749655962, 'gas_station'),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   return GoogleMap(
                     initialCameraPosition: controller.kGooglePlex,
+                    markers: Set<Marker>.of(controller.markers),
+                    myLocationEnabled: false,
+                    myLocationButtonEnabled: false,
+                    zoomControlsEnabled: false,
+                    tiltGesturesEnabled: false,
+                    rotateGesturesEnabled: false,
+                    compassEnabled: false,
+                    minMaxZoomPreference: const MinMaxZoomPreference(5, 17),
                     onMapCreated: (GoogleMapController controller) {
                       this.controller.setController(controller);
                     },
-                    markers: Set<Marker>.of(controller.markers),
                   );
                 } else {
                   return CircularProgressIndicator(); // Show a loading spinner while waiting
@@ -196,12 +199,9 @@ class MapsScreen extends GetView<MapsController> {
                                 _panelController.open();
                               }
                               _isRestaurantSelected = true;
-                              double latitude =
-                                  37.42796133580664; // replace with actual latitude
-                              double longitude =
-                                  -122.085749655962; // replace with actual longitude
-                              controller.fetchPlaces(
-                                  latitude, longitude, 'restaurant');
+                              double latitude = 37.42796133580664; // replace with actual latitude
+                              double longitude = -122.085749655962; // replace with actual longitude
+                              controller.fetchPlaces(latitude, longitude, 'restaurant');
                             },
                           ),
                         ],

@@ -12,7 +12,10 @@ class TripDetailSlidePanel extends GetView<TripDetailController> {
       case TripPanel.detail:
         return DetailPanel(onBack: onBack);
       case TripPanel.penalty:
-        return DetailPenaltyPanel(onBack: onBack);
+        return DetailPenaltyPanel(
+          onBack: onBack,
+          penalty: controller.selectedPenalty.value!,
+        );
     }
   }
 

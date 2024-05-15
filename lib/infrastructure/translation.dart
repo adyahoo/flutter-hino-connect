@@ -11,8 +11,7 @@ class AppTranslations extends Translations {
           'feedback': 'Feedback',
           'profile': 'Profile',
           'login_title': 'Welcome to Hino Connect',
-          'login_subtitle':
-              'Login using email and password created by admin previously.',
+          'login_subtitle': 'Login using email and password created by admin previously.',
           'email_placeholder': 'Ex: jack@hino.com',
           'password': 'Password',
           'password_placeholder': 'Enter password',
@@ -38,17 +37,12 @@ class AppTranslations extends Translations {
           "logout_title": "Logout from your account?",
           "feedback_subtitle": "Created by",
           "detail_feedback_button_title": "See Detail",
-          'face_scan_title':
-              'Verify your face to keep continue using the application',
-          'face_scan_subtitle':
-              'We will compare your face with data in our server',
+          'face_scan_title': 'Verify your face to keep continue using the application',
+          'face_scan_subtitle': 'We will compare your face with data in our server',
           'verification': 'Verification',
-          'face_scan_item_1':
-              'Make sure you face forward and eyes showed clearly',
-          'face_scan_item_2':
-              'Clear your face from any accessories. Like glasses or mask',
-          'face_scan_tips_info':
-              'Face and background will be captured during this verification process',
+          'face_scan_item_1': 'Make sure you face forward and eyes showed clearly',
+          'face_scan_item_2': 'Clear your face from any accessories. Like glasses or mask',
+          'face_scan_tips_info': 'Face and background will be captured during this verification process',
           'edit': 'Edit',
           'delete': 'Delete',
           'map': 'Maps',
@@ -71,8 +65,7 @@ class AppTranslations extends Translations {
           'save_change': 'Save Changes',
           'confirm': 'Confirm',
           'delete_activity_title': 'Delete activity',
-          'delete_activity_subtitle':
-              'Are you sure want to delete this activity?',
+          'delete_activity_subtitle': 'Are you sure want to delete this activity?',
           'add_event': "Add Event",
           'edit_event': "Edit Event",
           'fill_event_form': 'Fill form below to add new event.',
@@ -87,7 +80,12 @@ class AppTranslations extends Translations {
           'point': '@poin Point',
           'tap_penalty_icon': 'Tap penalty icon on map to see information detail',
           'back': 'Back',
-          'detail_penalty':'Penalty Detail'
+          'detail_penalty': 'Penalty Detail',
+          'device_setting': 'Device default setting',
+          'english': 'English',
+          'quit_account': 'Quit Akun?',
+          'are_you_sure_logout': 'Are you sure want to quit from this account?',
+          "quit": 'Quit'
         },
         'id_ID': {
           'home': 'Home',
@@ -96,8 +94,7 @@ class AppTranslations extends Translations {
           'feedback': 'Feedback',
           'profile': 'Profil',
           'login_title': 'Selamat datang di Hino Connect',
-          'login_subtitle':
-              'Masuk menggunakan email dan kata sandi yang sudah dibuat dari admin sebelumnya.',
+          'login_subtitle': 'Masuk menggunakan email dan kata sandi yang sudah dibuat dari admin sebelumnya.',
           'email_placeholder': 'Cth: jack@hino.com',
           'password': 'Kata sandi',
           'password_placeholder': 'Masukan kata sandi',
@@ -123,17 +120,12 @@ class AppTranslations extends Translations {
           "logout_title": "Keluar dari akun?",
           "feedback_subtitle": "Dibuet oleh",
           "detail_feedback_button_title": "Lihat Detail",
-          'face_scan_title':
-              'Verifikasi wajah untuk melanjutkan menggunakan aplikasi',
-          'face_scan_subtitle':
-              'Kami akan membandingkan ini dengan data pada server kami',
+          'face_scan_title': 'Verifikasi wajah untuk melanjutkan menggunakan aplikasi',
+          'face_scan_subtitle': 'Kami akan membandingkan ini dengan data pada server kami',
           'verification': 'Verifikasi',
-          'face_scan_item_1':
-              'Pastikan wajah menghadap kedepan dan mata terlihat dengan jelas',
-          'face_scan_item_2':
-              'Hapus apa pun yang menutupi wajah Anda. Seperti kacamata dan masker',
-          'face_scan_tips_info':
-              'Wajah dan latar belakang akan diambil fotonya saat proses verifikasi ini',
+          'face_scan_item_1': 'Pastikan wajah menghadap kedepan dan mata terlihat dengan jelas',
+          'face_scan_item_2': 'Hapus apa pun yang menutupi wajah Anda. Seperti kacamata dan masker',
+          'face_scan_tips_info': 'Wajah dan latar belakang akan diambil fotonya saat proses verifikasi ini',
           'edit': 'Ubah',
           'delete': 'Hapus',
           'map': 'Peta',
@@ -144,8 +136,7 @@ class AppTranslations extends Translations {
           'log_activity_event': "Log aktivitas dan event",
           'add_activity': "Tambah Aktivitas",
           'edit_activity': "Ubah Aktivitas",
-          'fill_activity_form':
-              'Lengkapi formulir dibawah untuk menambahkan aktivitas.',
+          'fill_activity_form': 'Lengkapi formulir dibawah untuk menambahkan aktivitas.',
           'activity_type': 'Tipe aktivitas',
           'choose_activity': 'Pilih aktivitas',
           'date': 'Tanggal',
@@ -157,15 +148,12 @@ class AppTranslations extends Translations {
           'save_change': 'Simpan Perubahan',
           'confirm': 'Konfirmasi',
           'delete_activity_title': 'Hapus aktivitas',
-          'delete_activity_subtitle':
-              'Apakah Anda yakin ingin menghapus aktivitas ini?',
+          'delete_activity_subtitle': 'Apakah Anda yakin ingin menghapus aktivitas ini?',
           'add_event': "Tambah Event",
           'edit_event': "Ubah Event",
-          'fill_event_form':
-              'Lengkapi formulir dibawah untuk menambahkan event.',
+          'fill_event_form': 'Lengkapi formulir dibawah untuk menambahkan event.',
           'delete_event_title': 'Hapus event',
-          'delete_event_subtitle':
-              'Apakah Anda yakin ingin menghapus event ini?',
+          'delete_event_subtitle': 'Apakah Anda yakin ingin menghapus event ini?',
           'note': 'Catatan',
           'note_placeholder': 'Masukan catatan',
           'need_help': 'Perlu bantuan?',
@@ -175,7 +163,12 @@ class AppTranslations extends Translations {
           'point': '@poin Poin',
           'tap_penalty_icon': 'Ketuk pada ikon penalti di map untuk menampilkan detail informasi',
           'back': 'Kembali',
-          'detail_penalty':'Detail Penalti'
+          'detail_penalty': 'Detail Penalti',
+          'device_setting': 'Sesuai pengaturan perangkat',
+          'english': 'Inggris',
+          'quit_account': 'Keluar akun?',
+          'are_you_sure_logout': 'Apakah Anda yakin ingin keluar dari akun ini?',
+          "quit": 'Keluar'
         }
       };
 }

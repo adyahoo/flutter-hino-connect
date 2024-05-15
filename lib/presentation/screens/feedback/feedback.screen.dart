@@ -1,4 +1,3 @@
-import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -11,8 +10,8 @@ import 'controllers/feedback.controller.dart';
 
 class FeedbackScreen extends GetView<FeedbackController> {
   FeedbackScreen({Key? key}) : super(key: key);
-  @override
 
+  @override
   Widget feedbackCard(FeedbackModel feedback, BuildContext context) {
     return Container(
       width: double.infinity,
@@ -39,19 +38,12 @@ class FeedbackScreen extends GetView<FeedbackController> {
                 children: [
                   Text(
                     feedback.title,
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleSmall
-                        ?.copyWith(color: TextColor.primary),
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(color: TextColor.primary),
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'feedback_subtitle'.tr +
-                        ' ${feedback.createdBy}',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodySmall
-                        ?.copyWith(color: TextColor.secondary),
+                    'feedback_subtitle'.tr + ' ${feedback.createdBy}',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(color: TextColor.secondary),
                   ),
                 ],
               ),
@@ -64,41 +56,24 @@ class FeedbackScreen extends GetView<FeedbackController> {
             ],
           ),
           const SizedBox(height: 16),
-          DottedLine(
-            direction: Axis.horizontal,
-            lineLength: double.infinity,
-            lineThickness: 1.0,
-            dashLength: 4.0,
-            dashColor: BorderColor.primary,
-            dashRadius: 0.0,
-            dashGapLength: 4.0,
-            dashGapColor: Colors.transparent,
-          ),
+          const AppStrippedDivider(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 feedback.createdAt,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodySmall
-                    ?.copyWith(color: TextColor.primary),
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(color: TextColor.primary),
               ),
               TextButton(
                 onPressed: () {
-                  Get.bottomSheet(SuccessBottomSheet(
-                      feedback: feedback,
-                      onButtonPressed: () => Get.back()));
+                  Get.bottomSheet(SuccessBottomSheet(feedback: feedback, onButtonPressed: () => Get.back()));
                 },
                 style: TextButton.styleFrom(
                   padding: const EdgeInsets.all(0),
                 ),
                 child: Text(
                   'detail_feedback_button_title'.tr,
-                  style: Theme.of(context)
-                      .textTheme
-                      .labelLarge
-                      ?.copyWith(color: PrimaryColor.main),
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(color: PrimaryColor.main),
                 ),
               ),
             ],
@@ -140,17 +115,13 @@ class FeedbackScreen extends GetView<FeedbackController> {
           ),
           title: Text(
             'feedback'.tr,
-            style: Theme.of(context)
-                .textTheme
-                .titleMedium
-                ?.copyWith(color: TextColor.primary),
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(color: TextColor.primary),
           ),
           backgroundColor: Color(0xffFFFFFF),
           elevation: 1,
           centerTitle: false,
         ),
       ),
-
       body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Obx(
@@ -163,10 +134,8 @@ class FeedbackScreen extends GetView<FeedbackController> {
 
               return ListView.separated(
                 itemCount: data.length,
-                itemBuilder: (context, index) =>
-                    feedbackCard(data[index], context),
-                separatorBuilder: (context, index) =>
-                    const SizedBox(height: 16),
+                itemBuilder: (context, index) => feedbackCard(data[index], context),
+                separatorBuilder: (context, index) => const SizedBox(height: 16),
                 padding: const EdgeInsets.symmetric(vertical: 16),
               );
             },

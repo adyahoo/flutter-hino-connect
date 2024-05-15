@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:hino_driver_app/infrastructure/navigation/bindings/controllers/feedback.controller.binding.dart';
+import 'package:hino_driver_app/infrastructure/navigation/bindings/controllers/profile.controller.binding.dart';
 
 import '../../config.dart';
 import '../../presentation/screens.dart';
@@ -54,24 +55,14 @@ class Nav {
       binding: FaceScanInformationControllerBinding(),
     ),
     GetPage(
-      name: Routes.ACTIVITY_LIST,
-      page: () => const ActivityListScreen(),
-      binding: ActivityListControllerBinding(),
-    ),
-    GetPage(
       name: Routes.FEEDBACK,
       page: () => FeedbackScreen(),
       binding: FeedbackControllerBinding(),
     ),
     GetPage(
-      name: Routes.LOG,
-      page: () => const LogScreen(),
-      binding: LogControllerBinding(),
-    ),
-    GetPage(
-      name: Routes.EVENT_LIST,
-      page: () => const EventListScreen(),
-      binding: EventListControllerBinding(),
+      name: Routes.PROFILE,
+      page: () => ProfileScreen(),
+      binding: ProfileControllerBinding(),
     ),
     GetPage(
       name: Routes.TRIP_DETAIL,
