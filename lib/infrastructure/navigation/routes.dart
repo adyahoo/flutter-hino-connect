@@ -12,10 +12,11 @@ class Routes {
   static const LOG = '/log';
   static const LOGIN = '/login';
   static const MAIN_TAB = '/main-tab';
+  static const MAPS = '/maps';
   static const PROFILE = '/profile';
   static const SCAN_QR = '/scan-qr';
   static const SPLASH = '/splash';
   static const TRIP = '/trip';
-  static const MAPS = '/maps';
   static const TRIP_DETAIL = '/trip-detail';
+  static const SEARCH = '/search';
 }

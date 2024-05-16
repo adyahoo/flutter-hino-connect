@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:hino_driver_app/infrastructure/navigation/routes.dart';
 import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
 import 'package:hino_driver_app/presentation/screens.dart';
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';
@@ -44,7 +45,14 @@ class MapsScreen extends GetView<MapsController> {
             left: 0.0,
             child: Column(
               children: [
-                AppSearchBar(),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: AppSearchBar(
+                    onSearch: (value) {
+                      controller.search(value);
+                    },
+                  ),
+                ),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Padding(
@@ -97,6 +105,7 @@ class MapsScreen extends GetView<MapsController> {
               ),
               child: IconButton(
                 onPressed: () {
+                  Get.toNamed(Routes.SEARCH);
                 },
                 splashColor:  Colors.white,
                 icon: Icon(

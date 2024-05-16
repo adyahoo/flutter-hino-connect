@@ -76,6 +76,19 @@ class MapsController extends GetxController {
     _controller = controller;
   }
 
+  //!PLEASE UPDATE THIS FUNCTION LATER
+  void search(String query) {
+    // Implement your search logic here
+    // For example, filter your data based on the query
+    var filteredResults = data.where((result) {
+      return result.name.toLowerCase().contains(query.toLowerCase());
+    }).toList();
+
+    // Update the results list
+    data.clear();
+    data.addAll(filteredResults);
+  }
+
   void initMarker(GoogleMapController controller) {
     setController(controller);
     fetchAllPlaces(37.42796133580664, -122.085749655962);

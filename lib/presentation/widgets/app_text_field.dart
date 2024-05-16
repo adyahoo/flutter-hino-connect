@@ -53,6 +53,7 @@ class AppTextField extends StatelessWidget {
     required this.state,
     required this.type,
     this.helperText,
+    this.onChanged,
     this.isRequired = true,
     this.isEditable = true,
     this.withCounter = false,
@@ -68,6 +69,7 @@ class AppTextField extends StatelessWidget {
     required this.state,
     required this.type,
     this.helperText,
+    this.onChanged,
     this.isRequired = true,
     this.isEditable = true,
     this.withCounter = false,
@@ -83,6 +85,7 @@ class AppTextField extends StatelessWidget {
     required this.state,
     required this.type,
     required this.onClick,
+    this.onChanged,
     this.helperText,
     this.isRequired = true,
     this.isDisabled = false,
@@ -95,13 +98,14 @@ class AppTextField extends StatelessWidget {
     required this.textEditingController,
     required this.type,
     required this.onClick,
+    required this.state,
+    required this.onChanged,
     this.helperText,
     this.isDisabled = false,
   })  : this.withIcon = true,
         this.label = "",
         this.isRequired = false,
         this.placeholder = "",
-        this.state = AppTextFieldState(),
         this.withCounter = false,
         this.isEditable = true;
 
@@ -117,6 +121,7 @@ class AppTextField extends StatelessWidget {
   final bool withIcon;
   final String? helperText;
   final VoidCallback? onClick;
+  final ValueChanged<String>? onChanged;
 
   OutlineInputBorder getBorder(double width, Color color) {
     return OutlineInputBorder(
@@ -270,24 +275,61 @@ class AppTextField extends StatelessWidget {
     );
   }
 
+  // Widget _renderSearchTextField(BuildContext context) {
+  //   return Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+  //     _renderSuffixIcon(),
+  //     Expanded(
+  //       child: TextField(
+  //         controller: textEditingController,
+  //         onTap: () {
+  //           print('TextField tapped');
+  //           // Add your action here
+  //         },
+  //         onChanged: (text) {
+  //           print('TextField edited');
+  //           // Add your action here
+  //         },
+  //         decoration: InputDecoration(
+  //           hintText: 'Cari tempat..',
+  //           hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+  //                 color: TextColor.placeholder,
+  //               ),
+  //           border: InputBorder.none,
+  //           contentPadding:
+  //               const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+  //         ),
+  //       ),
+  //     ),
+  //   ]);
+  // }
+
   Widget _renderSearchTextField(BuildContext context) {
-    return Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-      _renderSuffixIcon(),
-      Expanded(
-        child: TextField(
-          decoration: InputDecoration(
-            hintText: 'Cari tempat..',
-            hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: TextColor.placeholder,
-                ),
-            border: InputBorder.none,
-            contentPadding:
-                const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
-          ),
+  return Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+    _renderSuffixIcon(),
+    Expanded(
+      child: TextField(
+        controller: textEditingController,
+        onTap: () {
+          print('TextField tapped');
+          // Add your action here
+        },
+        onChanged: (text) {
+          print('TextField edited');
+          onChanged?.call(text); // Add this line
+        },
+        decoration: InputDecoration(
+          hintText: 'Cari tempat..',
+          hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: TextColor.placeholder,
+              ),
+          border: InputBorder.none,
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
         ),
       ),
-    ]);
-  }
+    ),
+  ]);
+}
 
   @override
   Widget build(BuildContext context) {

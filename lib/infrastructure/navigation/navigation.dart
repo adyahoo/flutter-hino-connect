@@ -78,5 +78,10 @@ class Nav {
       page: () => const TripDetailScreen(),
       binding: TripDetailControllerBinding(),
     ),
+    GetPage(
+      name: Routes.SEARCH,
+      page: () => const SearchScreen(),
+      binding: SearchControllerBinding(),
+    ),
   ];
 }

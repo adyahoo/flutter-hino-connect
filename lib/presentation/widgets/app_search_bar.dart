@@ -1,12 +1,14 @@
 part of 'widgets.dart';
 
 class AppSearchBar extends StatelessWidget {
-  const AppSearchBar({super.key});
+  final Function(String) onSearch;
+
+  const AppSearchBar({Key? key, required this.onSearch}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      // margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       width: double.infinity,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -24,7 +26,15 @@ class AppSearchBar extends StatelessWidget {
         child: AppTextField.search(
           textEditingController: TextEditingController(),
           type: AppTextFieldType.search,
-          onClick: () {},
+          state: AppTextFieldState(),
+          onChanged: (value) {
+            print(value);
+            onSearch(value);
+          },
+          onClick: () {
+            print('Search');
+            Get.toNamed(Routes.SEARCH);
+          },
         ),
       ),
     );
