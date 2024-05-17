@@ -5,7 +5,6 @@ import 'package:hino_driver_app/presentation/screens/event_list/controllers/even
 import 'package:hino_driver_app/presentation/screens/home/controllers/home.controller.dart';
 import 'package:hino_driver_app/presentation/screens/main_tab/controllers/main_tab.controller.dart';
 import 'package:hino_driver_app/presentation/screens/maps/controllers/maps.controller.dart';
-import 'package:hino_driver_app/presentation/widgets/bottom_sheets/sos/controllers/bs_sos.controller.dart';
 
 class MainTabControllerBinding extends Bindings {
   @override
@@ -15,6 +14,5 @@ class MainTabControllerBinding extends Bindings {
     Get.lazyPut<MapsController>(() => MapsController(useCase: inject()));
     Get.lazyPut<ActivityListController>(() => ActivityListController(useCase: inject()));
     Get.lazyPut<EventListController>(() => EventListController(useCase: inject()));
-    Get.lazyPut<BsSosController>(() => BsSosController(useCase: inject()));
   }
 }

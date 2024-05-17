@@ -37,7 +37,7 @@ class LoginController extends GetxController {
     Future.delayed(const Duration(milliseconds: 2000), () {
       inject<StorageService>().setToken("ini email ${emailController.value.text} dan pass ${passwordController.value.text}");
 
-      Get.offNamed(Routes.FACE_SCAN_INFORMATION);
+      Get.offNamed(Routes.MAIN_TAB);
       isLoading.value = false;
     });
   }

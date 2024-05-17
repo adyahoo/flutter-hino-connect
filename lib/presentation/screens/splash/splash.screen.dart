@@ -14,14 +14,7 @@ class SplashScreen extends GetView<SplashController> {
 
   @override
   Widget build(BuildContext context) {
-    controller.isLoading.listen((isLoading) {
-      if (!isLoading) {
-        if (inject<StorageService>().getToken() != null)
-          Get.offNamed(Routes.MAIN_TAB);
-        else
-          Get.offNamed(Routes.LOGIN);
-      }
-    });
+    Get.find<SplashController>();
 
     return Scaffold(
       body: Padding(

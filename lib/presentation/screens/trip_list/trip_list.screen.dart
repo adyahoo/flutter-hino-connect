@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:get/get.dart';
 import 'package:hino_driver_app/domain/core/entities/trips_model.dart';
 import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
 import 'package:hino_driver_app/infrastructure/utils.dart';
-import 'package:hino_driver_app/main.dart';
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 import 'package:iconsax/iconsax.dart';
 
