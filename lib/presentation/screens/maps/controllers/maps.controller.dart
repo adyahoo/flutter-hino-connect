@@ -76,22 +76,16 @@ class MapsController extends GetxController {
     _controller = controller;
   }
 
-  //!PLEASE UPDATE THIS FUNCTION LATER
-  void search(String query) {
-    // Implement your search logic here
-    // For example, filter your data based on the query
-    var filteredResults = data.where((result) {
-      return result.name.toLowerCase().contains(query.toLowerCase());
-    }).toList();
+  void moveCamera(double lat, double long) {
+    initMarker(_controller, lat, long);
 
-    // Update the results list
-    data.clear();
-    data.addAll(filteredResults);
+    // Then animate the camera
+    _controller.animateCamera(CameraUpdate.newLatLng(LatLng(lat, long)));
   }
 
-  void initMarker(GoogleMapController controller) {
+  void initMarker(GoogleMapController controller, double lat, double long) {
     setController(controller);
-    fetchAllPlaces(37.42796133580664, -122.085749655962);
+    fetchAllPlaces(lat, long);
   }
 
   Future<void> fetchAllPlaces(double lat, double long) async {
@@ -103,7 +97,7 @@ class MapsController extends GetxController {
   Future<void> fetchPlaces(double lat, double long, String type) async {
     final res = await useCase.getPlaceList(lat, long, type);
     data.addAll(res.where((place) => place.type == type));
-    print('\n fetch places: ${data}');
+    // print('\n fetch places: ${data}');
 
     _markers.value = data
         .map((e) => Marker(
@@ -126,9 +120,20 @@ class MapsController extends GetxController {
               },
             ))
         .toSet();
+
+    //add marker to the initial position
+    _markers.value = Set<Marker>.from(_markers.value)
+      ..add(Marker(
+        markerId: MarkerId('Initial Position'),
+        position: LatLng(lat, long),
+        icon: BitmapDescriptor.defaultMarker,
+      ));
   }
 
-  void filterMarkers(String type, bool isSelected, String chipId) {
+  void filterMarkers(String label, bool isSelected, String chipId) {
+    print('\n label: $label, isSelected: $isSelected, chipId: $chipId');
+
+    String type = convertLabelToType(label);
     if (isSelected) {
       selectedChip.value = chipId;
       _markers.value = data
@@ -156,6 +161,19 @@ class MapsController extends GetxController {
     } else {
       selectedChip.value = '';
       fetchAllPlaces(37.42796133580664, -122.085749655962);
+    }
+  }
+
+  String convertLabelToType(String label) {
+    switch (label) {
+      case 'Gas Station':
+        return 'gas_station';
+      case 'Dealers':
+        return 'car_dealer';
+      case 'Restaurant':
+        return 'restaurant';
+      default:
+        return '';
     }
   }
 

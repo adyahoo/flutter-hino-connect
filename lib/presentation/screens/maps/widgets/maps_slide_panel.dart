@@ -16,7 +16,7 @@ class MapsSlidePanel extends GetView<MapsController> {
             children: [
               Text(title, style: Theme.of(context).textTheme.bodyMedium),
               SizedBox(height: 4),
-              Text(value, style: Theme.of(context).textTheme.bodyMedium),
+              Text(value, style: Theme.of(context).textTheme.bodyMedium, maxLines: 2, overflow: TextOverflow.ellipsis),
             ],
           ),
         ),
@@ -41,18 +41,21 @@ class MapsSlidePanel extends GetView<MapsController> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Obx(() => Text(
-                        controller.placeName.value,
-                        style: Theme.of(context).textTheme.titleMedium,
-                      )),
-                  Obx(() => Text(
-                        controller.placeType.value,
-                        style: Theme.of(context).textTheme.bodySmall,
-                      )),
-                ],
+              Flexible(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Obx(() => Text(
+                          overflow: TextOverflow.ellipsis,
+                          controller.placeName.value,
+                          style: Theme.of(context).textTheme.titleMedium,
+                        )),
+                    Obx(() => Text(
+                          controller.placeType.value,
+                          style: Theme.of(context).textTheme.bodySmall,
+                        )),
+                  ],
+                ),
               ),
               SizedBox(width: 16),
               Container(
@@ -60,7 +63,9 @@ class MapsSlidePanel extends GetView<MapsController> {
                 child: AppButton(
                   label: 'Tutup',
                   onPress: () {
+                    controller.onMarkerTapped(controller.selectedMarker!);
                     controller.panelController.close();
+                    // controller.onMarkerTapped(controller.selectedMarker!);
                   },
                   type: AppButtonType.outline,
                   size: AppButtonSize.smallSize,

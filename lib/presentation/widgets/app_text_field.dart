@@ -102,12 +102,13 @@ class AppTextField extends StatelessWidget {
     required this.onChanged,
     this.helperText,
     this.isDisabled = false,
+    this.isEditable = true,
   })  : this.withIcon = true,
         this.label = "",
         this.isRequired = false,
         this.placeholder = "",
-        this.withCounter = false,
-        this.isEditable = true;
+        this.withCounter = false;
+        
 
   final String label;
   final String placeholder;
@@ -308,9 +309,11 @@ class AppTextField extends StatelessWidget {
     _renderSuffixIcon(),
     Expanded(
       child: TextField(
+        readOnly: !isEditable,
         controller: textEditingController,
         onTap: () {
           print('TextField tapped');
+          if (onClick != null) onClick!();
           // Add your action here
         },
         onChanged: (text) {

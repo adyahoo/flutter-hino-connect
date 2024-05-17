@@ -24,6 +24,7 @@ import 'package:hino_driver_app/presentation/widgets/bottom_sheets/event/control
 import 'package:hino_driver_app/presentation/widgets/bottom_sheets/single_picker/controllers/bs_single_picker.controller.dart';
 import 'package:hino_driver_app/presentation/widgets/chips/controllers/app_chip.controller.dart';
 import 'package:hino_driver_app/presentation/widgets/bottom_sheets/sos/controllers/bs_sos.controller.dart';
+import 'package:hino_driver_app/presentation/widgets/filter/controllers/app_filter.controller.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:flutter_svg/svg.dart';
@@ -38,6 +39,7 @@ part 'app_shimmer_container.dart';
 part 'app_radio_button.dart';
 part 'app_search_bar.dart';
 part 'chips/app_chip.dart';
+part 'filter/app_filter.dart';
 
 part 'bottom_sheets/bs_confirmation.dart';
 part 'bottom_sheets/bs_success.dart';

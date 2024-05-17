@@ -22,77 +22,20 @@ class MapsScreen extends GetView<MapsController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
-      ),
-      extendBodyBehindAppBar: true,
       body: Stack(
         children: [
           Obx(
             () => GoogleMap(
-                initialCameraPosition: controller.kGooglePlex,
-                onMapCreated: (GoogleMapController controller) {
-                  this.controller.initMarker(controller);
-                },
-                markers: controller.markers,
-                myLocationButtonEnabled: false,
-                ),
-          ),
-          Positioned(
-            top: Platform.isIOS ? 60.0 : 30.0,
-            right: 0.0,
-            left: 0.0,
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: AppSearchBar(
-                    onSearch: (value) {
-                      controller.search(value);
-                    },
-                  ),
-                ),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Row(
-                      children: [
-                        AppChip(
-                          label: 'Gas Station',
-                          icon: Iconsax.gas_station4,
-                          id: 'filter_gas_station',
-                          onSelected: (isSelected) {
-                            controller.filterMarkers('gas_station', isSelected, 'filter_gas_station');
-                          },
-                        ),
-                        SizedBox(width: 8),
-                        AppChip(
-                          label: 'Dealers',
-                          icon: Iconsax.truck,
-                          id: 'filter_dealers',
-                          onSelected: (isSelected) {
-                            controller.filterMarkers('car_dealer', isSelected, 'filter_dealers');
-                          },
-                        ),
-                        SizedBox(width: 8),
-                        AppChip(
-                          label: 'Restaurant',
-                          icon: Icons.coffee,
-                          id: 'filter_restaurant',
-                          onSelected: (isSelected) {
-                            controller.filterMarkers('restaurant', isSelected, 'filter_restaurant');
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+              initialCameraPosition: controller.kGooglePlex,
+              onMapCreated: (GoogleMapController controller) {
+                this.controller.initMarker(
+                    controller, 37.42796133580664, -122.085749655962);
+              },
+              markers: controller.markers,
+              myLocationButtonEnabled: false,
             ),
           ),
-          MapsSlidePanel(),
+          // MapsSlidePanel(),
           Positioned(
             bottom: 20.0,
             right: 20.0,
@@ -105,17 +48,58 @@ class MapsScreen extends GetView<MapsController> {
               ),
               child: IconButton(
                 onPressed: () {
-                  Get.toNamed(Routes.SEARCH);
+                  //:TODO: Implement current location
                 },
-                splashColor:  Colors.white,
-                icon: Icon(
-                  Icons.location_searching_outlined,
-                  size: 28,
-                  color: IconColor.primary
-                ),
+                splashColor: Colors.white,
+                icon: Icon(Icons.location_searching_outlined,
+                    size: 28, color: IconColor.primary),
               ),
             ),
           ),
+          Positioned(
+            top: Platform.isIOS ? 60.0 : 30.0,
+            right: 0.0,
+            left: 0.0,
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: AppSearchBar(
+                    editable: false,
+                    onSearch: (value) {
+                      print(value);
+                    },
+                  ),
+                ),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: AppFilter(
+                      chips: [
+                        AppChip(
+                          label: 'Gas Station',
+                          icon: Iconsax.gas_station4,
+                          id: 'filter_gas_station',
+                        ),
+                        AppChip(
+                          label: 'Dealers',
+                          icon: Iconsax.truck,
+                          id: 'filter_dealers',
+                        ),
+                        AppChip(
+                          label: 'Restaurant',
+                          icon: Icons.coffee,
+                          id: 'filter_restaurant',
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          MapsSlidePanel(),
         ],
       ),
     );

@@ -2,8 +2,10 @@ part of 'widgets.dart';
 
 class AppSearchBar extends StatelessWidget {
   final Function(String) onSearch;
+  final bool editable;
 
-  const AppSearchBar({Key? key, required this.onSearch}) : super(key: key);
+  const AppSearchBar({Key? key, required this.onSearch, this.editable = true})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +21,6 @@ class AppSearchBar extends StatelessWidget {
             BoxShadow(
               color: Colors.black.withOpacity(0.1),
               blurRadius: 4,
-              offset: const Offset(0, 2),
             ),
           ],
         ),
@@ -27,6 +28,7 @@ class AppSearchBar extends StatelessWidget {
           textEditingController: TextEditingController(),
           type: AppTextFieldType.search,
           state: AppTextFieldState(),
+          isEditable: editable,
           onChanged: (value) {
             print(value);
             onSearch(value);
