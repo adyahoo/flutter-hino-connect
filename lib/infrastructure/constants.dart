@@ -135,7 +135,7 @@ class Constants {
     PickerModel(id: 2, title: 'english'.tr, value: 'en'),
   ];
 
-  static final tripDetailData = TripModel(
+  static final tripDetailData = TripDetailModel(
     origin: LatLng(-8.681547132266411, 115.24069589508952),
     destination: LatLng(-8.677846354619318, 115.23787020063237),
     penalties: [

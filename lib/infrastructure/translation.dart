@@ -92,7 +92,18 @@ class AppTranslations extends Translations {
           "do_verification_subtitle": "Face verification is needed before doing vehicle scan.",
           "no_trip_title": "No trip list yet",
           "no_trip_subtitle": "Trip list will be shown after vehicle verification.",
-          "see_all_trip": "See All Trip"
+          "see_all_trip": "See All Trip",
+          "your_trip_list": "Your Trip List",
+          "filter_by_date": "Filter by date",
+          "see_vehicle_detail": "See Vehicle Detail",
+          "vehicle_detail": "Vehicle Detail",
+          "plat_number": "Plat Number",
+          "scanned": "Scanned",
+          "today_trip":"Today trips",
+          "started_at":"Started at",
+          "ended_at":"Ended at",
+          "trip_duration":"Trip duration",
+          "penalty_point":"@poin Penalty Point"
         },
         'id_ID': {
           'home': 'Home',
@@ -182,7 +193,18 @@ class AppTranslations extends Translations {
           "do_verification_subtitle": "Lakukan verifikasi wajah terlebih dahulu untuk melakukan scan kendaraan.",
           "no_trip_title": "Belum ada daftar perjalanan",
           "no_trip_subtitle": "Daftar perjalanan akan ditampilkan setelah mobil berhasil discan.",
-          "see_all_trip": "Lihat Semua Perjalanan"
+          "see_all_trip": "Lihat Semua Perjalanan",
+          "your_trip_list": "Daftar perjalanan Anda",
+          "filter_by_date": "Filter berdasarkan tanggal",
+          "see_vehicle_detail": "Lihat Detail Kendaraan",
+          "vehicle_detail": "Detail Kendaraan",
+          "plat_number": "Plat Nomor",
+          "scanned": "Discan",
+          "today_trip":"Perjalanan hari ini",
+          "started_at":"Dimulai pada",
+          "ended_at":"Selesai pada",
+          "trip_duration":"Durasi perjalanan",
+          "penalty_point":"@poin Poin Penalti"
         }
       };
 }

@@ -4,8 +4,11 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:get/get.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:hino_driver_app/infrastructure/navigation/routes.dart';
 import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
+import 'package:hino_driver_app/infrastructure/utils.dart';
+import 'package:hino_driver_app/presentation/screens.dart';
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -17,51 +20,57 @@ part 'widgets/home_account_chip.dart';
 
 part 'widgets/home_content_card.dart';
 
+part 'widgets/home_vehicle_card.dart';
+
+part 'widgets/home_trip_list.dart';
+
+part 'bs/bs_vehicle_detail.dart';
+
 class HomeScreen extends GetView<HomeController> {
   const HomeScreen({Key? key}) : super(key: key);
 
   Widget _renderContent(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 24),
-          Text(
-            "vehicle_information".tr,
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          const SizedBox(height: 12),
-          const HomeContentCard(type: HomeContentType.vehicle),
-          const SizedBox(height: 24),
-          Text(
-            "trip_list".tr,
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          const SizedBox(height: 12),
-          const HomeContentCard(type: HomeContentType.trip),
-          const SizedBox(height: 16),
-          AppButton(
-            label: "see_all_trip".tr,
-            onPress: navigateListTrip,
-            type: AppButtonType.alternate,
-          )
-        ],
+      child: Obx(
+        () => Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 24),
+            Text(
+              "vehicle_information".tr,
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            const SizedBox(height: 12),
+            (controller.isVehicleVerified.value) ? HomeVehicleCard() : HomeContentCard(type: HomeContentType.vehicle),
+            const SizedBox(height: 24),
+            Text(
+              "today_trip".tr,
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            const SizedBox(height: 12),
+            (controller.isVehicleVerified.value) ? HomeTripList() : HomeContentCard(type: HomeContentType.trip),
+          ],
+        ),
       ),
     );
   }
 
-  void navigateListTrip() {}
+  void navigateListTrip() {
+    Get.toNamed(Routes.TRIP_LIST);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const HomeAppBar(),
-          _renderContent(context),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const HomeAppBar(),
+            _renderContent(context),
+          ],
+        ),
       ),
     );
   }

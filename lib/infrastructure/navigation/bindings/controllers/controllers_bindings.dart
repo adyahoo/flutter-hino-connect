@@ -9,3 +9,4 @@ export 'package:hino_driver_app/infrastructure/navigation/bindings/controllers/m
 export 'package:hino_driver_app/infrastructure/navigation/bindings/controllers/scan_qr.controller.binding.dart';
 export 'package:hino_driver_app/infrastructure/navigation/bindings/controllers/splash.controller.binding.dart';
 export 'package:hino_driver_app/infrastructure/navigation/bindings/controllers/trip_detail.controller.binding.dart'; 
+export 'package:hino_driver_app/infrastructure/navigation/bindings/controllers/trip_list.controller.binding.dart'; 

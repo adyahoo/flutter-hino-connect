@@ -35,9 +35,9 @@ class RedColor {
 class OrangeColor {
   OrangeColor._();
 
-  static const color50 = Color(0xFF40120F);
+  static const color50 = Color(0xFFFCF7EE);
   static const color100 = Color(0xFFF5E9D0);
-  static const color200 = Color(0xFFEBD09C);
+  static const color200 = Color(0xFFebd09c);
   static const color300 = Color(0xFFE1B368);
   static const color400 = Color(0xFFD99B46);
   static const color500 = Color(0xFFCD7B2E);
@@ -78,6 +78,12 @@ class GreenColor {
   static const color800 = Color(0xFF1F4635);
   static const color900 = Color(0xFF1A3A2D);
   static const color950 = Color(0xFF0E2019);
+}
+
+class YellowColor {
+  YellowColor._();
+
+  static const color100 = Color(0xFFF8CF61);
 }
 
 class GrayColor {

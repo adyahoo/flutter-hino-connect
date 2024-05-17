@@ -3,12 +3,14 @@ part of '../home.screen.dart';
 enum HomeContentType { vehicle, trip }
 
 class HomeContentCard extends StatelessWidget {
-  const HomeContentCard({
+  HomeContentCard({
     super.key,
     required this.type,
   });
 
   final HomeContentType type;
+
+  late HomeController _homeController;
 
   Widget _renderContent(BuildContext context) {
     String icon;
@@ -61,12 +63,12 @@ class HomeContentCard extends StatelessWidget {
         _renderContent(context),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 16),
-          child: AppDivider(),
+          child: const AppDivider(),
         ),
         AppButton.icon(
           icon: Iconsax.scan,
           label: "verification".tr,
-          onPress: () {},
+          onPress: doVerifyVehicle,
           type: AppButtonType.filled,
         ),
       ],
@@ -77,8 +79,14 @@ class HomeContentCard extends StatelessWidget {
     return _renderContent(context);
   }
 
+  void doVerifyVehicle() {
+    _homeController.verifyVehicle();
+  }
+
   @override
   Widget build(BuildContext context) {
+    _homeController = Get.find<HomeController>();
+
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(

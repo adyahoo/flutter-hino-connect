@@ -1,6 +1,5 @@
 import 'package:hino_driver_app/data/data_sources/data_source.dart';
-import 'package:hino_driver_app/data/dtos/base_response_dto.dart';
-import 'package:hino_driver_app/domain/core/entities/contact_model.dart';
+import 'package:hino_driver_app/domain/core/entities/model.dart';
 import 'package:hino_driver_app/domain/core/interfaces/i_use_case.dart';
 
 class ContactUseCase implements IContactUseCase {

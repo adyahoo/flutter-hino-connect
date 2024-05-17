@@ -69,5 +69,10 @@ class Nav {
       page: () => const TripDetailScreen(),
       binding: TripDetailControllerBinding(),
     ),
+    GetPage(
+      name: Routes.TRIP_LIST,
+      page: () => const TripListScreen(),
+      binding: TripListControllerBinding(),
+    ),
   ];
 }

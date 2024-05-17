@@ -1,14 +1,86 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hino_driver_app/infrastructure/constants.dart';
-import 'package:hino_driver_app/infrastructure/map_utils.dart';
+import 'package:equatable/equatable.dart';
 
-class TripModel {
+class TripModel extends Equatable {
+  final int id;
+  final TripLocationModel origin;
+  final TripLocationModel destination;
+  final int totalPoint;
+  final int totalDistance;
+  final String duration;
+  final String createdAt;
+
+  TripModel({
+    required this.id,
+    required this.origin,
+    required this.destination,
+    required this.totalPoint,
+    required this.totalDistance,
+    required this.duration,
+    required this.createdAt,
+  });
+
+  factory TripModel.fromJson(Map<String, dynamic> json) => TripModel(
+        id: json["id"],
+        origin: TripLocationModel.fromJson(json["origin"]),
+        destination: TripLocationModel.fromJson(json["destination"]),
+        totalPoint: json["total_point"],
+        totalDistance: json["total_distance"],
+        duration: json["duration"],
+        createdAt: json["created_at"],
+      );
+
+  @override
+  List<Object> get props => [
+        id,
+        origin,
+        destination,
+        totalPoint,
+        totalDistance,
+        duration,
+        createdAt,
+      ];
+}
+
+class TripLocationModel extends Equatable {
+  final double lat;
+  final double lng;
+  final String address;
+  final String date;
+
+  TripLocationModel({
+    required this.lat,
+    required this.lng,
+    required this.address,
+    required this.date,
+  });
+
+  factory TripLocationModel.fromJson(Map<String, dynamic> json) => TripLocationModel(
+        lat: json["lat"],
+        lng: json["lng"],
+        address: json['address'],
+        date: json["date"],
+      );
+
+  String get formattedDate {
+    final date = DateFormat(Constants.DATE_FORMAT_TZ).parse(this.date);
+    final outputFormat = DateFormat(Constants.DATE_FORMAT_PENALTY);
+
+    return outputFormat.format(date);
+  }
+
+  @override
+  List<Object> get props => [lat, lng, address, date];
+}
+
+class TripDetailModel {
   final LatLng origin;
   final LatLng destination;
   final List<PenaltyModel> penalties;
 
-  const TripModel({
+  const TripDetailModel({
     required this.origin,
     required this.destination,
     required this.penalties,

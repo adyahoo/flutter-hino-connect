@@ -146,6 +146,32 @@ class InfoNewColor implements BaseAppColorProps {
   Color get surface => BlueColor.color50;
 }
 
+class YellowBaseColor implements BaseAppColorProps {
+  const YellowBaseColor();
+
+  @override
+  Color get border => YellowColor.color100;
+
+  @override
+  Color get content => YellowColor.color100;
+
+  @override
+  Color get focus => YellowColor.color100;
+
+  @override
+  Color get hover => YellowColor.color100;
+
+  @override
+  Color get main => YellowColor.color100;
+
+  @override
+  Color get pressed => YellowColor.color100;
+
+  @override
+  Color get surface => YellowColor.color100;
+
+}
+
 class PrimaryColor {
   PrimaryColor._();
 

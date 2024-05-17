@@ -36,7 +36,13 @@ class MapUtils {
     return coordinates;
   }
 
-  Future<List<Placemark>> getAddressFromCoordinate() async {
-    return await placemarkFromCoordinates(origin.latitude, origin.longitude);
+  Future<List<Placemark>> getAddressFromCoordinate({LatLng? coordinate = null}) async {
+    LatLng latLng = origin;
+
+    if (coordinate != null) {
+      latLng = coordinate;
+    }
+
+    return await placemarkFromCoordinates(latLng.latitude, latLng.longitude);
   }
 }

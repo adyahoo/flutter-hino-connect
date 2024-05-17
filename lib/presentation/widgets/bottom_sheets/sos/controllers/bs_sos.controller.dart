@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:hino_driver_app/domain/core/entities/contact_model.dart';
+import 'package:hino_driver_app/domain/core/entities/model.dart';
 import 'package:hino_driver_app/domain/core/usecases/contact_use_case.dart';
 
 class BsSosController extends GetxController {
