@@ -65,6 +65,8 @@ class MapsScreen extends GetView<MapsController> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: AppSearchBar(
+                    // state: controller.searchBarState,
+                    controller: controller.searchbarController.value,
                     editable: false,
                     onSearch: (value) {
                       print(value);

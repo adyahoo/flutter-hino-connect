@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:hino_driver_app/domain/core/entities/search_result_model.dart';
 import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 import 'package:iconsax/iconsax.dart';
@@ -72,7 +73,7 @@ class SearchScreen extends GetView<SearchPageController> {
                     overflow: TextOverflow.ellipsis,
                   ),
                   SizedBox(height: 4),
-                  Text(location.visibility,
+                  Text(location.vicinity,
                       style: Theme.of(context).textTheme.bodySmall),
                 ],
               ),
@@ -82,17 +83,6 @@ class SearchScreen extends GetView<SearchPageController> {
       ),
     );
   }
-
-  //!!MODIFY THIS WIDGET LATER
-  // Widget onTypingState(BuildContext context, String input) {
-  //   // Generate a list of widgets based on the input
-  //   List<Widget> widgets = input.split(' ').map((word) {
-  //     return _renderLocationInfo(
-  //         context, word, 'Value for $word', Icons.location_on_outlined);
-  //   }).toList();
-
-  //   return ListView(children: widgets);
-  // }
 
   Widget onTypingState(BuildContext context) {
     print('onTypingState called');
@@ -124,6 +114,8 @@ class SearchScreen extends GetView<SearchPageController> {
           title: Padding(
             padding: const EdgeInsets.all(8),
             child: AppSearchBar(
+              // state: controller.mapsController.searchBarState,
+              controller: controller.mapsController.searchbarController.value,
               onSearch: (input) {
                 // Call the search function in your controller
                 controller.search(input);

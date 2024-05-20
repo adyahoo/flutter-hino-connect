@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:hino_driver_app/domain/core/entities/search_result_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StorageService {
@@ -47,5 +50,22 @@ class StorageService {
 
   void clearToken() async {
     await _preferences!.remove(TOKEN);
+  }
+
+  Future<void> saveRecentSearches(List<SearchResult> searchResults) async {
+    final searchesJson =
+        jsonEncode(searchResults.map((e) => e.toJson()).toList());
+    await _preferences!.setString('recent_searches', searchesJson);
+  }
+
+  Future<List<SearchResult>> loadRecentSearches() async {
+    final searchesJson = _preferences!.getString('recent_searches');
+
+    if (searchesJson != null) {
+      final List<dynamic> searchesList = jsonDecode(searchesJson);
+      return searchesList.map((json) => SearchResult.fromJson(json)).toList();
+    }
+
+    return [];
   }
 }

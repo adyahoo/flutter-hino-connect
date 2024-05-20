@@ -27,36 +27,36 @@ class Main extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<int>(
-      future: Future<int>.value(inject<StorageService>().getSelectedLanguage()),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
-        } else {
-          Locale locale;
-          switch (snapshot.data) {
-            case 1:
-              locale = Locale('id', 'ID'); // Indonesian
-              break;
-            case 2:
-              locale = Locale('en', 'US'); // English
-              break;
-            default:
-              locale = Get.deviceLocale!;
-              break;
-          }
+    // return FutureBuilder<int>(
+    //   future: Future<int>.value(inject<StorageService>().getSelectedLanguage()),
+    //   builder: (context, snapshot) {
+    //     if (snapshot.connectionState == ConnectionState.waiting) {
+    //       return CircularProgressIndicator();
+    //     } else {
+    //       Locale locale;
+    //       switch (snapshot.data) {
+    //         case 1:
+    //           locale = Locale('id', 'ID'); // Indonesian
+    //           break;
+    //         case 2:
+    //           locale = Locale('en', 'US'); // English
+    //           break;
+    //         default:
+    //           locale = Get.deviceLocale!;
+    //           break;
+    //       }
 
           return GetMaterialApp(
             scaffoldMessengerKey: rootScaffoldMessengerKey,
             themeMode: ThemeMode.light,
             theme: AppTheme.getLightTheme(),
             translations: AppTranslations(),
-            locale: locale,
+            locale: Get.deviceLocale!,
             initialRoute: initialRoute,
             getPages: Nav.routes,
           );
-        }
-      },
-    );
+    //     }
+    //   },
+    // );
   }
 }

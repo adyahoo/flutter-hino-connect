@@ -1,22 +1,26 @@
 import 'package:get/get.dart';
+import 'package:hino_driver_app/data/locals/StorageService.dart';
+import 'package:hino_driver_app/domain/core/entities/search_result_model.dart';
 import 'package:hino_driver_app/infrastructure/constants.dart';
+import 'package:hino_driver_app/infrastructure/di.dart';
 import 'package:hino_driver_app/presentation/screens/maps/controllers/maps.controller.dart';
+import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-class SearchResult {
-  final String name;
-  final String visibility;
-  final double lat;
-  final double lng;
+// class SearchResult {
+//   final String name;
+//   final String visibility;
+//   final double lat;
+//   final double lng;
 
-  SearchResult({
-    required this.name,
-    required this.visibility,
-    required this.lat,
-    required this.lng,
-  });
-}
+//   SearchResult({
+//     required this.name,
+//     required this.visibility,
+//     required this.lat,
+//     required this.lng,
+//   });
+// }
 
 class SearchPageController extends GetxController {
   var searchResults = <SearchResult>[].obs;
@@ -25,36 +29,46 @@ class SearchPageController extends GetxController {
 
   var currentInput = ''.obs;
 
+  var isTextFieldEdited = false.obs;
+
   //map controller
   MapsController mapsController = Get.find<MapsController>();
 
+  final searchBarState = AppTextFieldState();
+  
+
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
+    searchBarState.focusNode.value.addListener(searchBarState.onFocusChange);
 
     // Populate results with some dummy data
-    searchResults.addAll([
-      SearchResult(
-          name: 'Pom Bensin Hayam Wuruk',
-          visibility: 'Subtitle 1',
-          lat: -6.1751,
-          lng: 106.8650),
-      SearchResult(
-          name: 'Resto ayam kencana',
-          visibility: 'Subtitle 2',
-          lat: -6.1751,
-          lng: 106.8650),
-      SearchResult(
-          name: 'POM Bensin sanur',
-          visibility: 'Subtitle 3',
-          lat: -6.1751,
-          lng: 106.8650),
-      SearchResult(
-          name: 'POM Bensin Kuta',
-          visibility: 'Subtitle 4',
-          lat: -6.1751,
-          lng: 106.8650),
-    ]);
+    // searchResults.addAll([
+    //   SearchResult(
+    //       name: 'Pom Bensin Hayam Wuruk',
+    //       vicinity: 'Subtitle 1',
+    //       lat: -6.1751,
+    //       lng: 106.8650),
+    //   SearchResult(
+    //       name: 'Resto ayam kencana',
+    //       vicinity: 'Subtitle 2',
+    //       lat: -6.1751,
+    //       lng: 106.8650),
+    //   SearchResult(
+    //       name: 'POM Bensin sanur',
+    //       vicinity: 'Subtitle 3',
+    //       lat: -6.1751,
+    //       lng: 106.8650),
+    //   SearchResult(
+    //       name: 'POM Bensin Kuta',
+    //       vicinity: 'Subtitle 4',
+    //       lat: -6.1751,
+    //       lng: 106.8650),
+    // ]);
+
+    
+  searchResults.value = await StorageService().loadRecentSearches();
+
   }
 
   @override
@@ -65,7 +79,20 @@ class SearchPageController extends GetxController {
   @override
   void onClose() {
     super.onClose();
+    searchBarState.focusNode.value.removeListener(searchBarState.onFocusChange);
   }
+
+  
+
+  // bool onChangeListener(String value) {
+  //   if (value.isEmpty) {
+  //     isTextFieldEdited.value = false;
+  //     return false;
+  //   } else {
+  //     isTextFieldEdited.value = true;
+  //     return true;
+  //   }
+  // }
 
   void selectLocation(SearchResult result) {
     print('Selected Location: ${result.name}');
@@ -76,20 +103,32 @@ class SearchPageController extends GetxController {
     //update the searchResults
     searchResults.value = newSearchResults;
 
+    inject<StorageService>().saveRecentSearches(searchResults);
+
     Get.back();
     Future.delayed(Duration(milliseconds: 500), () {
       mapsController.moveCamera(result.lat, result.lng);
+      mapsController.searchbarController.value.text = result.name;
     });
+
+
+
+
   }
 
   void removeRecentSearchSelected(SearchResult result) {
     final newSearchResults = searchResults.where((element) => element != result).toList();
     searchResults.value = newSearchResults;
+
+    StorageService.instance().then((storage) {
+      storage!.saveRecentSearches(searchResults);
+    });
   }
 
   Future<void> search(String input) async {
+        currentInput.value = input;
     String apiKey = Constants.MAP_API_KEY;
-    currentInput.value = input;
+    // currentInput.value = input;
 
     // The URL of the Google Maps API Place Autocomplete
     String url =
@@ -121,7 +160,7 @@ class SearchPageController extends GetxController {
 
           filteredResults.add(SearchResult(
             name: item['description'],
-            visibility: vicinity,
+            vicinity: vicinity,
             lat: location['lat'],
             lng: location['lng'],
           ));

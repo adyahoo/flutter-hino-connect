@@ -1,12 +1,16 @@
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hino_driver_app/domain/core/entities/place_model.dart';
 import 'package:hino_driver_app/domain/core/usecases/place_use_case.dart';
+import 'package:hino_driver_app/infrastructure/map_utils.dart';
+import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:geocoding/geocoding.dart';
 
 final _panelController = PanelController();
 
@@ -37,6 +41,9 @@ class MapsController extends GetxController {
   Marker? selectedMarker; //store last selected marker
   RxString selectedChip = RxString('');
 
+  final Rx<TextEditingController> searchbarController = TextEditingController().obs;
+  final searchBarState = AppTextFieldState();
+
   final CameraPosition kGooglePlex = CameraPosition(
     target: LatLng(37.42796133580664, -122.085749655962),
     zoom: 14.4746,
@@ -60,6 +67,8 @@ class MapsController extends GetxController {
   void onInit() {
     _createCustomMarker();
     super.onInit();
+    // searchBarState.focusNode.value.addListener(searchBarState.onFocusChange);
+    searchBarState.focusNode.value.addListener(searchBarState.onFocusChange);
   }
 
   @override
@@ -70,11 +79,16 @@ class MapsController extends GetxController {
   @override
   void onClose() {
     super.onClose();
+    searchBarState.focusNode.value.removeListener(searchBarState.onFocusChange);
   }
 
   void setController(GoogleMapController controller) {
     _controller = controller;
   }
+
+  void getCurrentLocation() {
+  }
+    
 
   void moveCamera(double lat, double long) {
     initMarker(_controller, lat, long);
@@ -190,44 +204,66 @@ class MapsController extends GetxController {
     }
   }
 
-  void onMarkerTapped(Marker marker) {
-    //Update panel data
-    placeName.value = marker.markerId.value;
-    placeType.value = convertTypeName(
-        data.firstWhere((e) => e.name == marker.markerId.value).type);
-    address.value =
-        data.firstWhere((e) => e.name == marker.markerId.value).address!;
-    phoneNumber.value =
-        data.firstWhere((e) => e.name == marker.markerId.value).phone!;
-    position.value =
-        '${marker.position.latitude}, ${marker.position.longitude}';
+Future<String> fetchFormattedAddress(Marker marker) async {
+  List<Placemark> placemarks = await placemarkFromCoordinates(marker.position.latitude, marker.position.longitude);
+  print('\n placemarks: ${placemarks}');
 
-    //update marker icon
-    updateMarkerIcon(marker.markerId.value);
+  String formattedAddress = placemarks.first.street! +
+      ', ' +
+      placemarks.first.subLocality! +
+      ', ' +
+      placemarks.first.locality! +
+      ', ' +
+      placemarks.first.administrativeArea! +
+      ', ' +
+      placemarks.first.postalCode!;
 
-    //check if marker is already selected
-    if (selectedMarker != null && selectedMarker!.markerId == marker.markerId) {
-      //toggle panel
-      if (panelController.isPanelOpen) {
-        panelController.close();
-        //close info window
-        _controller.hideMarkerInfoWindow(marker.markerId);
-        //revert marker icon
-        revertMarkerIcon(marker.markerId.value);
-      } else {
-        panelController.open();
-      }
+  print('\n formattedAddress: ${formattedAddress}');
+
+  return formattedAddress;
+}
+
+void onMarkerTapped(Marker marker) {
+  // Update panel data
+  placeName.value = marker.markerId.value;
+  placeType.value = convertTypeName(
+      data.firstWhere((e) => e.name == marker.markerId.value).type);
+  phoneNumber.value =
+      data.firstWhere((e) => e.name == marker.markerId.value).phone!;
+  position.value =
+      '${marker.position.latitude}, ${marker.position.longitude}';
+
+  // Fetch and update address in the background
+  fetchFormattedAddress(marker).then((formattedAddress) {
+    address.value = formattedAddress;
+  });
+
+  // Update marker icon
+  updateMarkerIcon(marker.markerId.value);
+
+  // Check if marker is already selected
+  if (selectedMarker != null && selectedMarker!.markerId == marker.markerId) {
+    // Toggle panel
+    if (panelController.isPanelOpen) {
+      panelController.close();
+      // Close info window
+      _controller.hideMarkerInfoWindow(marker.markerId);
+      // Revert marker icon
+      revertMarkerIcon(marker.markerId.value);
     } else {
-      //revert last selected marker icon
-      if (selectedMarker != null) {
-        revertMarkerIcon(selectedMarker!.markerId.value);
-      }
-      //store selected marker
-      selectedMarker = marker;
-      //open panel
       panelController.open();
     }
+  } else {
+    // Revert last selected marker icon
+    if (selectedMarker != null) {
+      revertMarkerIcon(selectedMarker!.markerId.value);
+    }
+    // Store selected marker
+    selectedMarker = marker;
+    // Open panel
+    panelController.open();
   }
+}
 
   Future<void> _createCustomMarker() async {
     final gasStationBytes =

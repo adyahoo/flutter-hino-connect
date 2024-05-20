@@ -1,6 +1,15 @@
 part of 'widgets.dart';
 
-enum AppTextFieldType { email, text, password, multiline, single_picker, date_picker, time_picker, search }
+enum AppTextFieldType {
+  email,
+  text,
+  password,
+  multiline,
+  single_picker,
+  date_picker,
+  time_picker,
+  search
+}
 
 enum AppTextFieldShape { rect, rounded }
 
@@ -12,9 +21,19 @@ class AppTextFieldState {
   final isFocus = false.obs;
   final isError = false.obs;
 
+  
   void onFocusChange() {
+    print('\n FOCUS JALAN: ${focusNode.value.hasFocus}');
     isFocus.value = focusNode.value.hasFocus;
+
+    print('\n focus: ${isFocus.value}');
   }
+
+  AppTextFieldState() {
+    print('AppTextFieldState');
+    focusNode.value.addListener(onFocusChange);
+  }
+  
 
   void toggleObscure() {
     isObscure.value = !isObscure.value;
@@ -109,7 +128,6 @@ class AppTextField extends StatelessWidget {
         this.isRequired = false,
         this.placeholder = "",
         this.withCounter = false;
-        
 
   final String placeholder;
   final TextEditingController textEditingController;
@@ -130,7 +148,8 @@ class AppTextField extends StatelessWidget {
   OutlineInputBorder getBorder(double width, Color color) {
     return OutlineInputBorder(
       borderSide: BorderSide(width: width, color: color),
-      borderRadius: BorderRadius.circular(shape == AppTextFieldShape.rect ? 8 : 24),
+      borderRadius:
+          BorderRadius.circular(shape == AppTextFieldShape.rect ? 8 : 24),
     );
   }
 
@@ -221,12 +240,17 @@ class AppTextField extends StatelessWidget {
               enabled: !isDisabled,
               keyboardType: inputType,
               maxLines: maxLines,
-              obscureText: (type == AppTextFieldType.password) ? isObscure : false,
+              obscureText:
+                  (type == AppTextFieldType.password) ? isObscure : false,
               decoration: InputDecoration(
                   floatingLabelBehavior: FloatingLabelBehavior.never,
-                  contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+                  contentPadding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
                   hintText: placeholder,
-                  hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.placeholder),
+                  hintStyle: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.copyWith(color: TextColor.placeholder),
                   filled: true,
                   fillColor: bgColor,
                   border: InputBorder.none,
@@ -239,7 +263,8 @@ class AppTextField extends StatelessWidget {
                   errorStyle: TextStyle(fontSize: 0)),
               style: Theme.of(context).textTheme.bodyMedium,
               validator: (value) {
-                final error = inputValidator(type, value, label ?? "", isRequired);
+                final error =
+                    inputValidator(type, value, label ?? "", isRequired);
                 state.setError(error);
 
                 if (error != null)
@@ -259,14 +284,20 @@ class AppTextField extends StatelessWidget {
                       Expanded(
                         child: Text(
                           state.errorText.value ?? helperText ?? "",
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: helperColor),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(color: helperColor),
                         ),
                       ),
                       const SizedBox(width: 16),
                       (withCounter)
                           ? Text(
                               "Max. 100 char",
-                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.helper),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(color: TextColor.helper),
                             )
                           : const SizedBox(),
                     ],
@@ -283,14 +314,16 @@ class AppTextField extends StatelessWidget {
   //     _renderSuffixIcon(),
   //     Expanded(
   //       child: TextField(
+  //         readOnly: !isEditable,
   //         controller: textEditingController,
   //         onTap: () {
   //           print('TextField tapped');
+  //           if (onClick != null) onClick!();
   //           // Add your action here
   //         },
   //         onChanged: (text) {
   //           print('TextField edited');
-  //           // Add your action here
+  //           onChanged?.call(text);
   //         },
   //         decoration: InputDecoration(
   //           hintText: 'Cari tempat..',
@@ -298,6 +331,9 @@ class AppTextField extends StatelessWidget {
   //                 color: TextColor.placeholder,
   //               ),
   //           border: InputBorder.none,
+  //           // border: OutlineInputBorder(
+  //           //     borderSide: BorderSide(color: Colors.red),
+  //           //   ),
   //           contentPadding:
   //               const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
   //         ),
@@ -306,34 +342,63 @@ class AppTextField extends StatelessWidget {
   //   ]);
   // }
 
-  Widget _renderSearchTextField(BuildContext context) {
-  return Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-    _renderSuffixIcon(),
-    Expanded(
-      child: TextField(
-        readOnly: !isEditable,
-        controller: textEditingController,
-        onTap: () {
-          print('TextField tapped');
-          if (onClick != null) onClick!();
-          // Add your action here
-        },
-        onChanged: (text) {
-          print('TextField edited');
-          onChanged?.call(text); // Add this line
-        },
-        decoration: InputDecoration(
-          hintText: 'Cari tempat..',
-          hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: TextColor.placeholder,
+Widget _renderSearchTextField(BuildContext context) {
+  return Obx(() {
+    return Container(
+        // margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        width: double.infinity,
+        child: Container(
+          padding: const EdgeInsets.only(left: 16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(24),
+            boxShadow: [
+              BoxShadow(
+                color: state.focusNode.value.hasFocus
+                    ? Colors.red.withOpacity(0.1)
+                    : Colors.black.withOpacity(0.1),
+                blurRadius: 4,
               ),
-          border: InputBorder.none,
-          contentPadding:
-              const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+            ],
+            border: Border.all(
+              color: state.isError.value
+                  ? BorderColor.error
+                  : state.focusNode.value.hasFocus
+                      ? PrimaryColor.focus
+                      : BorderColor.secondary,
+              width: 1,
+            ),
+          ),
+      child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+        _renderSuffixIcon(),
+        Expanded(
+          child: TextField(
+            focusNode: state.focusNode.value,
+            readOnly: !isEditable,
+            controller: textEditingController,
+            onTap: () {
+              print('TextField tapped');
+              if (onClick != null) onClick!();
+            },
+            onChanged: (text) {
+              print('TextField edited');
+              onChanged?.call(text);
+            },
+            decoration: InputDecoration(
+              hintText: 'Cari tempat..',
+              hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: TextColor.placeholder,
+                  ),
+              border: InputBorder.none,
+              contentPadding:
+                  const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+            ),
+          ),
         ),
-      ),
+      ]),
     ),
-  ]);
+    );
+  });
 }
 
   @override
@@ -341,21 +406,33 @@ class AppTextField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (label!=null) ...[
+        if (label != null) ...[
           RichText(
             text: TextSpan(
               children: [
                 TextSpan(
                   text: label,
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(color: TextColor.secondary),
+                  style: Theme.of(context)
+                      .textTheme
+                      .labelLarge
+                      ?.copyWith(color: TextColor.secondary),
                 ),
-                (isRequired) ? TextSpan(text: "*", style: Theme.of(context).textTheme.labelLarge?.copyWith(color: Colors.red)) : const TextSpan(),
+                (isRequired)
+                    ? TextSpan(
+                        text: "*",
+                        style: Theme.of(context)
+                            .textTheme
+                            .labelLarge
+                            ?.copyWith(color: Colors.red))
+                    : const TextSpan(),
               ],
             ),
           ),
           const SizedBox(height: 4),
         ],
-        (type == AppTextFieldType.search) ? _renderSearchTextField(context) : _renderTextField(context),
+        (type == AppTextFieldType.search)
+            ? _renderSearchTextField(context)
+            : _renderTextField(context),
       ],
     );
   }
