@@ -6,11 +6,7 @@ import 'package:hino_driver_app/infrastructure/di.dart';
 import 'package:hino_driver_app/presentation/screens/profile/controllers/profile.controller.dart';
 
 class BsSinglePickerController extends GetxController {
-  // final selectedOption = 0.obs;
-
-  var selectedOption =
-      (inject<StorageService>().getSelectedLanguage() ?? 0).obs;
-      
+  final selectedOption = 0.obs;
   final isFetching = false.obs;
 
   void setSelectedOption(int id) {

@@ -76,18 +76,20 @@ class TripLocationModel extends Equatable {
 }
 
 class TripDetailModel {
+  final int id;
   final LatLng origin;
   final LatLng destination;
   final List<PenaltyModel> penalties;
 
   const TripDetailModel({
+    required this.id,
     required this.origin,
     required this.destination,
     required this.penalties,
   });
 
   @override
-  List<Object> get props => [origin, destination, penalties];
+  List<Object> get props => [id, origin, destination, penalties];
 }
 
 enum PenaltyType { brake, over_speed, acceleration, lateral_accel }
@@ -98,6 +100,7 @@ class PenaltyModel {
   final PenaltyType type;
   final String datetime;
   final String? address;
+  final String? note;
 
   const PenaltyModel({
     required this.id,
@@ -105,6 +108,7 @@ class PenaltyModel {
     required this.type,
     required this.datetime,
     this.address,
+    this.note,
   });
 
   String get category {
@@ -141,5 +145,12 @@ class PenaltyModel {
   }
 
   @override
-  List<Object> get props => [id, coordinate, type, datetime];
+  List<Object?> get props => [
+        id,
+        coordinate,
+        type,
+        datetime,
+        address,
+        note,
+      ];
 }

@@ -5,10 +5,12 @@ class DetailPenaltyPanel extends StatelessWidget {
     super.key,
     required this.onBack,
     required this.penalty,
+    required this.onUpdateNote,
   });
 
   final VoidCallback onBack;
   final PenaltyModel penalty;
+  final Function(String? note) onUpdateNote;
 
   Widget _renderPenaltyCard(BuildContext context) {
     return Container(
@@ -39,6 +41,11 @@ class DetailPenaltyPanel extends StatelessWidget {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
+                    const SizedBox(height: 4),
+                    Text(
+                      penalty.formattedDate,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(color: TextColor.secondary),
+                    ),
                   ],
                 ),
               ),
@@ -55,11 +62,43 @@ class DetailPenaltyPanel extends StatelessWidget {
             margin: const EdgeInsets.symmetric(vertical: 12),
             child: AppStrippedDivider(),
           ),
-          Text(
-            penalty.formattedDate,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(color: TextColor.secondary),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(
+                Iconsax.flag,
+                size: 16,
+                color: IconColor.secondary,
+              ),
+              const SizedBox(width: 4),
+              Text(
+                penalty.note ?? "no_note".tr,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(color: TextColor.secondary),
+              ),
+            ],
+          ),
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 12),
+            child: AppStrippedDivider(),
+          ),
+          AppButton.icon(
+            icon: penalty.note != null ? Iconsax.edit_2 : Iconsax.add,
+            isFullWidth: false,
+            label: penalty.note != null ? "edit_note".tr : "add_note".tr,
+            onPress: _showNoteBs,
+            size: AppButtonSize.smallSize,
+            type: AppButtonType.text,
           ),
         ],
+      ),
+    );
+  }
+
+  void _showNoteBs() {
+    showGetBottomSheet(
+      BsTripDetailNote(
+        note: penalty.note,
+        onSave: onUpdateNote,
       ),
     );
   }

@@ -1,6 +1,6 @@
 class Routes {
   static Future<String> get initialRoute async {
-    return SPLASH;
+    return MAIN_TAB;
   }
 
   static const ACTIVITY_LIST = '/activity-list';
@@ -17,6 +17,6 @@ class Routes {
   static const SCAN_QR = '/scan-qr';
   static const SPLASH = '/splash';
   static const TRIP = '/trip';
-  static const TRIP_DETAIL = '/trip-detail';
+  static const TRIP_DETAIL = '/trip-detail/:id';
   static const TRIP_LIST = '/trip-list';
 }

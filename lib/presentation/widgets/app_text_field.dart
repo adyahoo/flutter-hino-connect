@@ -4,6 +4,8 @@ enum AppTextFieldType { email, text, password, multiline, single_picker, date_pi
 
 enum AppTextFieldShape { rect, rounded }
 
+enum AppFormActionType { add, edit }
+
 class AppTextFieldState {
   final suffixIcon = Rx<IconData>(Iconsax.eye);
   final errorText = Rx<String?>(null);
@@ -50,8 +52,8 @@ class AppTextField extends StatelessWidget {
     this.shape = AppTextFieldShape.rect,
     this.isRequired = true,
     this.isEditable = true,
-    this.withCounter = false,
     this.isDisabled = false,
+    this.length = null,
   })  : this.onClick = null,
         this.withIcon = false;
 
@@ -67,8 +69,8 @@ class AppTextField extends StatelessWidget {
     this.shape = AppTextFieldShape.rect,
     this.isRequired = true,
     this.isEditable = true,
-    this.withCounter = false,
     this.isDisabled = false,
+    this.length = null,
   })  : this.withIcon = true,
         this.onClick = null;
 
@@ -86,7 +88,7 @@ class AppTextField extends StatelessWidget {
     this.isRequired = true,
     this.isDisabled = false,
   })  : this.withIcon = true,
-        this.withCounter = false,
+        this.length = null,
         this.isEditable = false;
 
   AppTextField.search({
@@ -103,7 +105,7 @@ class AppTextField extends StatelessWidget {
         this.isRequired = false,
         this.placeholder = "",
         this.state = AppTextFieldState(),
-        this.withCounter = false,
+        this.length = null,
         this.isEditable = true;
 
   final String placeholder;
@@ -113,10 +115,10 @@ class AppTextField extends StatelessWidget {
   final AppTextFieldShape shape;
   final bool isRequired;
   final bool isEditable;
-  final bool withCounter;
   final bool isDisabled;
   final bool withIcon;
   final String? label;
+  final int? length;
   final IconData? prefixIcon;
   final String? helperText;
   final VoidCallback? onClick;
@@ -214,6 +216,7 @@ class AppTextField extends StatelessWidget {
               readOnly: !isEditable,
               enabled: !isDisabled,
               keyboardType: inputType,
+              maxLength: length,
               maxLines: maxLines,
               obscureText: (type == AppTextFieldType.password) ? isObscure : false,
               decoration: InputDecoration(
@@ -221,6 +224,7 @@ class AppTextField extends StatelessWidget {
                   contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
                   hintText: placeholder,
                   hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.placeholder),
+                  counterStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.helper),
                   filled: true,
                   fillColor: bgColor,
                   border: InputBorder.none,
@@ -256,13 +260,6 @@ class AppTextField extends StatelessWidget {
                           style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: helperColor),
                         ),
                       ),
-                      const SizedBox(width: 16),
-                      (withCounter)
-                          ? Text(
-                              "Max. 100 char",
-                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.helper),
-                            )
-                          : const SizedBox(),
                     ],
                   )
                 : const SizedBox(),
@@ -295,7 +292,7 @@ class AppTextField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (label!=null) ...[
+        if (label != null) ...[
           RichText(
             text: TextSpan(
               children: [

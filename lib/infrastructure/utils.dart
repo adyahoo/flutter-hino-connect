@@ -1,17 +1,20 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hino_driver_app/infrastructure/constants.dart';
 import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 
 void showLoadingOverlay() {
   Get.dialog(
-      Center(
-        child: CircularProgressIndicator(
-          color: PrimaryColor.main,
-        ),
+    Center(
+      child: CircularProgressIndicator(
+        color: PrimaryColor.main,
       ),
-      barrierDismissible: false);
+    ),
+    barrierDismissible: false,
+  );
 }
 
 void hideLoadingOverlay() {
@@ -44,4 +47,10 @@ BaseAppColorProps getVariantColor(WidgetVariant variant) {
     case WidgetVariant.yellow:
       return YellowBaseColor();
   }
+}
+
+String formatDate(String date, String destFormat, {String sourceFormat = Constants.DATE_FORMAT_TZ}) {
+  DateTime sourceDate = DateFormat(sourceFormat).parse(date);
+
+  return DateFormat(destFormat).format(sourceDate);
 }

@@ -99,11 +99,16 @@ class AppTranslations extends Translations {
           "vehicle_detail": "Vehicle Detail",
           "plat_number": "Plat Number",
           "scanned": "Scanned",
-          "today_trip":"Today trips",
-          "started_at":"Started at",
-          "ended_at":"Ended at",
-          "trip_duration":"Trip duration",
-          "penalty_point":"@poin Penalty Point"
+          "today_trip": "Today trips",
+          "started_at": "Started at",
+          "ended_at": "Ended at",
+          "trip_duration": "Trip duration",
+          "penalty_point": "@poin Penalty Point",
+          "no_note": "No note yet",
+          "edit_note": "Edit Note",
+          "add_note": "Add Note",
+          "note": "Note",
+          "note_placeholder": "Write your note here..."
         },
         'id_ID': {
           'home': 'Home',
@@ -200,11 +205,16 @@ class AppTranslations extends Translations {
           "vehicle_detail": "Detail Kendaraan",
           "plat_number": "Plat Nomor",
           "scanned": "Discan",
-          "today_trip":"Perjalanan hari ini",
-          "started_at":"Dimulai pada",
-          "ended_at":"Selesai pada",
-          "trip_duration":"Durasi perjalanan",
-          "penalty_point":"@poin Poin Penalti"
+          "today_trip": "Perjalanan hari ini",
+          "started_at": "Dimulai pada",
+          "ended_at": "Selesai pada",
+          "trip_duration": "Durasi perjalanan",
+          "penalty_point": "@poin Poin Penalti",
+          "no_note": "Belum ada catatan",
+          "edit_note": "Ubah Catatan",
+          "add_note": "Tambah Catatan",
+          "note": "Catatan",
+          "note_placeholder": "Tulis catatan disini..."
         }
       };
 }

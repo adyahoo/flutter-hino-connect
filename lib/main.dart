@@ -27,6 +27,15 @@ class Main extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return GetMaterialApp(
+      scaffoldMessengerKey: rootScaffoldMessengerKey,
+      themeMode: ThemeMode.light,
+      theme: AppTheme.getLightTheme(),
+      translations: AppTranslations(),
+      locale: Get.deviceLocale,
+      initialRoute: initialRoute,
+      getPages: Nav.routes,
+    );
     return FutureBuilder<int>(
       future: Future<int>.value(inject<StorageService>().getSelectedLanguage()),
       builder: (context, snapshot) {
@@ -51,7 +60,7 @@ class Main extends StatelessWidget {
             themeMode: ThemeMode.light,
             theme: AppTheme.getLightTheme(),
             translations: AppTranslations(),
-            locale: locale,
+            locale: Get.deviceLocale,
             initialRoute: initialRoute,
             getPages: Nav.routes,
           );

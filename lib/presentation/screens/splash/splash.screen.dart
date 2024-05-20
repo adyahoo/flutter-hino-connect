@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:hino_driver_app/data/locals/StorageService.dart';
-import 'package:hino_driver_app/infrastructure/di.dart';
-import 'package:hino_driver_app/infrastructure/navigation/routes.dart';
 import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
 
 import 'controllers/splash.controller.dart';

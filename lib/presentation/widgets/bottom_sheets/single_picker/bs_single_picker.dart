@@ -28,10 +28,7 @@ class BsSinglePicker extends GetView<BsSinglePickerController> {
               contentPadding: const EdgeInsets.symmetric(horizontal: 0),
               title: Text(
                 value.title,
-                style: Theme.of(context)
-                    .textTheme
-                    .labelLarge
-                    ?.copyWith(color: TextColor.secondary),
+                style: Theme.of(context).textTheme.labelLarge?.copyWith(color: TextColor.secondary),
               ),
               trailing: AppRadioButton(
                 isSelected: controller.selectedOption.value == value.id,
@@ -49,20 +46,17 @@ class BsSinglePicker extends GetView<BsSinglePickerController> {
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
       ),
       child: SafeArea(
         bottom: true,
         child: Container(
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
           ),
           padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
           child: Column(
@@ -74,10 +68,7 @@ class BsSinglePicker extends GetView<BsSinglePickerController> {
               const SizedBox(height: 8),
               Text(
                 title,
-                style: Theme.of(context)
-                    .textTheme
-                    .titleMedium
-                    ?.copyWith(color: TextColor.secondary),
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(color: TextColor.secondary),
               ),
               const SizedBox(height: 8),
               ...options.map((PickerModel value) {
@@ -87,7 +78,8 @@ class BsSinglePicker extends GetView<BsSinglePickerController> {
               AppButton(
                 label: "save_change".tr,
                 onPress: () {
-                  controller.changeLanguage(controller.selectedOption.value);
+                  onSubmit(options.firstWhere((element) => element.id == controller.selectedOption.value));
+                  Get.back();
                 },
                 type: AppButtonType.filled,
                 isLoading: controller.isFetching.value,

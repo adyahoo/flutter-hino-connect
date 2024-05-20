@@ -118,8 +118,8 @@ class AppButton extends StatelessWidget {
     }
 
     // Adjust padding and text style based on the selected size here
-    final double verticalPadding = size == AppButtonSize.smallSize ? 8 : 12;
-    final double horizontalPadding = size == AppButtonSize.smallSize ? 16 : 24;
+    final double verticalPadding = size == AppButtonSize.smallSize ? 0 : 12;
+    final double horizontalPadding = size == AppButtonSize.smallSize ? 0 : 24;
     final TextStyle? textStyle = size == AppButtonSize.smallSize ? Theme.of(context).textTheme.labelMedium : Theme.of(context).textTheme.titleSmall;
 
     return ConstrainedBox(
