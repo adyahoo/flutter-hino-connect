@@ -1,9 +1,14 @@
 part of '../trip_detail.screen.dart';
 
 class DetailPenaltyPanel extends StatelessWidget {
-  const DetailPenaltyPanel({super.key, required this.onBack});
+  const DetailPenaltyPanel({
+    super.key,
+    required this.onBack,
+    required this.penalty,
+  });
 
   final VoidCallback onBack;
+  final PenaltyModel penalty;
 
   Widget _renderPenaltyCard(BuildContext context) {
     return Container(
@@ -24,12 +29,12 @@ class DetailPenaltyPanel extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Harsh Berak",
+                      penalty.category,
                       style: Theme.of(context).textTheme.labelLarge,
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      "Jalan jalan bersama jalan sesama",
+                      penalty.address ?? "-",
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(color: TextColor.secondary),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
@@ -39,7 +44,7 @@ class DetailPenaltyPanel extends StatelessWidget {
               ),
               const SizedBox(width: 16),
               SvgPicture.asset(
-                "assets/icons/ic_gas_station.svg",
+                "assets/icons/${penalty.icon}",
                 width: 32,
                 height: 32,
                 color: PrimaryNewColor().main,
@@ -51,7 +56,7 @@ class DetailPenaltyPanel extends StatelessWidget {
             child: AppStrippedDivider(),
           ),
           Text(
-            "27 Agu 2024, 20:30",
+            penalty.formattedDate,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(color: TextColor.secondary),
           ),
         ],
@@ -67,7 +72,7 @@ class DetailPenaltyPanel extends StatelessWidget {
           children: [
             Expanded(
               child: Text(
-                "penalty_detail".tr,
+                "detail_penalty".tr,
                 style: Theme.of(context).textTheme.titleSmall,
               ),
             ),

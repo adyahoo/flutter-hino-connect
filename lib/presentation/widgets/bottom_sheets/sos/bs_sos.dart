@@ -110,8 +110,6 @@ class BsSos extends GetView<BsSosController> {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(BsSosController(useCase: inject()));
-
     return SingleChildScrollView(
       child: Container(
         padding: const EdgeInsets.only(right: 16, bottom: 24, left: 16),

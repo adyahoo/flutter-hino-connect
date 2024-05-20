@@ -19,4 +19,5 @@ class Routes {
   static const TRIP = '/trip';
   static const TRIP_DETAIL = '/trip-detail';
   static const SEARCH = '/search';
+  static const TRIP_LIST = '/trip-list';
 }

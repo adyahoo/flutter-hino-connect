@@ -1,15 +1,8 @@
 part of 'widgets.dart';
 
-enum AppTextFieldType {
-  email,
-  text,
-  password,
-  multiline,
-  single_picker,
-  date_picker,
-  time_picker,
-  search
-}
+enum AppTextFieldType { email, text, password, multiline, single_picker, date_picker, time_picker, search }
+
+enum AppTextFieldShape { rect, rounded }
 
 class AppTextFieldState {
   final suffixIcon = Rx<IconData>(Iconsax.eye);
@@ -47,13 +40,15 @@ class AppTextFieldState {
 class AppTextField extends StatelessWidget {
   AppTextField({
     super.key,
-    required this.label,
     required this.placeholder,
     required this.textEditingController,
     required this.state,
     required this.type,
+    this.label,
     this.helperText,
     this.onChanged,
+    this.prefixIcon,
+    this.shape = AppTextFieldShape.rect,
     this.isRequired = true,
     this.isEditable = true,
     this.withCounter = false,
@@ -63,13 +58,15 @@ class AppTextField extends StatelessWidget {
 
   AppTextField.icon({
     super.key,
-    required this.label,
     required this.placeholder,
     required this.textEditingController,
     required this.state,
     required this.type,
+    this.label,
     this.helperText,
     this.onChanged,
+    this.prefixIcon,
+    this.shape = AppTextFieldShape.rect,
     this.isRequired = true,
     this.isEditable = true,
     this.withCounter = false,
@@ -79,14 +76,16 @@ class AppTextField extends StatelessWidget {
 
   AppTextField.picker({
     super.key,
-    required this.label,
     required this.placeholder,
     required this.textEditingController,
     required this.state,
     required this.type,
     required this.onClick,
     this.onChanged,
+    this.label,
     this.helperText,
+    this.prefixIcon,
+    this.shape = AppTextFieldShape.rect,
     this.isRequired = true,
     this.isDisabled = false,
   })  : this.withIcon = true,
@@ -100,26 +99,30 @@ class AppTextField extends StatelessWidget {
     required this.onClick,
     required this.state,
     required this.onChanged,
+    this.label,
     this.helperText,
+    this.prefixIcon,
     this.isDisabled = false,
     this.isEditable = true,
   })  : this.withIcon = true,
-        this.label = "",
+        this.shape = AppTextFieldShape.rounded,
         this.isRequired = false,
         this.placeholder = "",
         this.withCounter = false;
         
 
-  final String label;
   final String placeholder;
   final TextEditingController textEditingController;
   final AppTextFieldState state;
   final AppTextFieldType type;
+  final AppTextFieldShape shape;
   final bool isRequired;
   final bool isEditable;
   final bool withCounter;
   final bool isDisabled;
   final bool withIcon;
+  final String? label;
+  final IconData? prefixIcon;
   final String? helperText;
   final VoidCallback? onClick;
   final ValueChanged<String>? onChanged;
@@ -127,7 +130,15 @@ class AppTextField extends StatelessWidget {
   OutlineInputBorder getBorder(double width, Color color) {
     return OutlineInputBorder(
       borderSide: BorderSide(width: width, color: color),
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: BorderRadius.circular(shape == AppTextFieldShape.rect ? 8 : 24),
+    );
+  }
+
+  Widget _renderPrefixIcon() {
+    return Icon(
+      prefixIcon,
+      size: 24,
+      color: IconColor.secondary,
     );
   }
 
@@ -181,6 +192,7 @@ class AppTextField extends StatelessWidget {
 
         final isObscure = state.isObscure.value;
         final suffixIcon = withIcon ? _renderSuffixIcon() : null;
+        final prefixIcon = this.prefixIcon != null ? _renderPrefixIcon() : null;
 
         if (state.isError.value) {
           borderColor = BorderColor.error;
@@ -209,17 +221,12 @@ class AppTextField extends StatelessWidget {
               enabled: !isDisabled,
               keyboardType: inputType,
               maxLines: maxLines,
-              obscureText:
-                  (type == AppTextFieldType.password) ? isObscure : false,
+              obscureText: (type == AppTextFieldType.password) ? isObscure : false,
               decoration: InputDecoration(
                   floatingLabelBehavior: FloatingLabelBehavior.never,
-                  contentPadding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+                  contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
                   hintText: placeholder,
-                  hintStyle: Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.copyWith(color: TextColor.placeholder),
+                  hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.placeholder),
                   filled: true,
                   fillColor: bgColor,
                   border: InputBorder.none,
@@ -228,10 +235,11 @@ class AppTextField extends StatelessWidget {
                   errorBorder: getBorder(borderWidth, borderColor),
                   focusedErrorBorder: getBorder(3, borderColor),
                   suffixIcon: suffixIcon,
+                  prefixIcon: prefixIcon,
                   errorStyle: TextStyle(fontSize: 0)),
               style: Theme.of(context).textTheme.bodyMedium,
               validator: (value) {
-                final error = inputValidator(type, value, label, isRequired);
+                final error = inputValidator(type, value, label ?? "", isRequired);
                 state.setError(error);
 
                 if (error != null)
@@ -251,20 +259,14 @@ class AppTextField extends StatelessWidget {
                       Expanded(
                         child: Text(
                           state.errorText.value ?? helperText ?? "",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium
-                              ?.copyWith(color: helperColor),
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: helperColor),
                         ),
                       ),
                       const SizedBox(width: 16),
                       (withCounter)
                           ? Text(
                               "Max. 100 char",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(color: TextColor.helper),
+                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.helper),
                             )
                           : const SizedBox(),
                     ],
@@ -339,33 +341,21 @@ class AppTextField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (type != AppTextFieldType.search) ...[
+        if (label!=null) ...[
           RichText(
             text: TextSpan(
               children: [
                 TextSpan(
                   text: label,
-                  style: Theme.of(context)
-                      .textTheme
-                      .labelLarge
-                      ?.copyWith(color: TextColor.secondary),
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(color: TextColor.secondary),
                 ),
-                (isRequired)
-                    ? TextSpan(
-                        text: "*",
-                        style: Theme.of(context)
-                            .textTheme
-                            .labelLarge
-                            ?.copyWith(color: Colors.red))
-                    : const TextSpan(),
+                (isRequired) ? TextSpan(text: "*", style: Theme.of(context).textTheme.labelLarge?.copyWith(color: Colors.red)) : const TextSpan(),
               ],
             ),
           ),
           const SizedBox(height: 4),
         ],
-        (type == AppTextFieldType.search)
-            ? _renderSearchTextField(context)
-            : _renderTextField(context),
+        (type == AppTextFieldType.search) ? _renderSearchTextField(context) : _renderTextField(context),
       ],
     );
   }

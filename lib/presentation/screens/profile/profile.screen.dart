@@ -6,16 +6,14 @@ import 'package:get/get_utils/get_utils.dart';
 import 'package:hino_driver_app/infrastructure/constants.dart';
 import 'package:hino_driver_app/presentation/widgets/app_toggle.dart';
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';
-import 'package:shimmer/shimmer.dart';
 
 import 'controllers/profile.controller.dart';
 import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class ProfileScreen extends GetView<ProfileController> {
   ProfileScreen({Key? key}) : super(key: key);
-  @override
+
   Widget profileHeader(BuildContext context) {
     final user = controller.data.value;
 
@@ -38,18 +36,9 @@ class ProfileScreen extends GetView<ProfileController> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(user.name,
-                        style: Theme.of(context).textTheme.titleMedium),
-                    Text(user.email,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium
-                            ?.copyWith(color: TextColor.tertiary)),
-                    Text(user.role,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium
-                            ?.copyWith(color: TextColor.tertiary)),
+                    Text(user.name, style: Theme.of(context).textTheme.titleMedium),
+                    Text(user.email, style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.tertiary)),
+                    Text(user.role, style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.tertiary)),
                   ],
                 ),
               ],
@@ -61,11 +50,7 @@ class ProfileScreen extends GetView<ProfileController> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('score_title'.tr,
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleSmall
-                          ?.copyWith(color: TextColor.secondary)),
+                  Text('score_title'.tr, style: Theme.of(context).textTheme.titleSmall?.copyWith(color: TextColor.secondary)),
                   const SizedBox(height: 8),
                   scoreCard(user.score, context),
                 ],
@@ -86,11 +71,7 @@ class ProfileScreen extends GetView<ProfileController> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('periode_placeholder'.tr,
-              style: Theme.of(context)
-                  .textTheme
-                  .labelMedium
-                  ?.copyWith(color: TextColor.secondary)),
+          Text('periode_placeholder'.tr, style: Theme.of(context).textTheme.labelMedium?.copyWith(color: TextColor.secondary)),
           SizedBox(height: 12),
           Container(
             height: 40,
@@ -106,26 +87,20 @@ class ProfileScreen extends GetView<ProfileController> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('driver_score_title'.tr,
-                    style: Theme.of(context).textTheme.bodyMedium),
+                Text('driver_score_title'.tr, style: Theme.of(context).textTheme.bodyMedium),
                 Container(
                   child: Row(
                     children: [
                       Container(
                         decoration: BoxDecoration(
-                          color: Color(
-                              0xFF2D6E50), // Replace with your actual color
+                          color: Color(0xFF2D6E50), // Replace with your actual color
                           borderRadius: BorderRadius.all(Radius.circular(24)),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 4, horizontal: 8),
+                          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                           child: Text(
-                            point +  ' ' + 'point'.tr,
-                            style: Theme.of(context)
-                                .textTheme
-                                .labelMedium
-                                ?.copyWith(color: Colors.white),
+                            point + ' ' + 'point'.tr,
+                            style: Theme.of(context).textTheme.labelMedium?.copyWith(color: Colors.white),
                           ),
                         ),
                       ),
@@ -140,8 +115,13 @@ class ProfileScreen extends GetView<ProfileController> {
     );
   }
 
-  Widget renderMenuItem(BuildContext context, String title, IconData icon,
-      {bool isLastItem = false, Function()? onTap}) {
+  Widget renderMenuItem(
+    BuildContext context,
+    String title,
+    IconData icon, {
+    bool isLastItem = false,
+    Function()? onTap,
+  }) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -172,27 +152,20 @@ class ProfileScreen extends GetView<ProfileController> {
                           () => Column(
                             children: [
                               AppToggle(
-                                status: Get.find<ProfileController>()
-                                        .isBiometricLogin
-                                        .value
-                                    ? AppToggleStatus.active
-                                    : AppToggleStatus.inactive,
+                                status: Get.find<ProfileController>().isBiometricLogin.value ? AppToggleStatus.active : AppToggleStatus.inactive,
                                 onChanged: (isActive) {
-                                  Get.find<ProfileController>()
-                                      .toggleSwitch(isActive);
+                                  Get.find<ProfileController>().toggleSwitch(isActive);
                                 },
                               ),
                             ],
                           ),
                         ),
                         SizedBox(width: 16),
-                        Icon(Icons.arrow_forward_ios,
-                            size: 16, color: IconColor.primary),
+                        Icon(Icons.arrow_forward_ios, size: 16, color: IconColor.primary),
                       ],
                     ),
                   )
-                : Icon(Icons.arrow_forward_ios,
-                    size: 16, color: IconColor.primary),
+                : Icon(Icons.arrow_forward_ios, size: 16, color: IconColor.primary),
           ],
         ),
       ),
@@ -238,21 +211,16 @@ class ProfileScreen extends GetView<ProfileController> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('feedback_profile_title'.tr,
-                              style: Theme.of(context).textTheme.labelLarge),
+                          Text('feedback_profile_title'.tr, style: Theme.of(context).textTheme.labelLarge),
                           Text(
                             'feedback_profile_subtitle'.tr,
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodySmall
-                                ?.copyWith(color: TextColor.tertiary),
+                            style: Theme.of(context).textTheme.bodySmall?.copyWith(color: TextColor.tertiary),
                           ),
                         ],
                       ),
                     ],
                   ),
-                  Icon(Icons.arrow_forward_ios,
-                      size: 16, color: IconColor.primary),
+                  Icon(Icons.arrow_forward_ios, size: 16, color: IconColor.primary),
                 ],
               ),
             ),
@@ -266,13 +234,11 @@ class ProfileScreen extends GetView<ProfileController> {
             separatorBuilder: (context, index) => SizedBox(height: 0),
             itemBuilder: (context, index) {
               final item = Constants.profileMenuItems[index];
-              return renderMenuItem(context, item.title, item.icon,
-                  onTap: item.onTap);
+              return renderMenuItem(context, item.title, item.icon, onTap: item.onTap);
             },
           ),
           SizedBox(height: 20),
-          Text('other_setting'.tr,
-              style: Theme.of(context).textTheme.labelMedium),
+          Text('other_setting'.tr, style: Theme.of(context).textTheme.labelMedium),
           ListView.separated(
             itemCount: Constants.profileMenuItems.length - 2,
             shrinkWrap: true,
@@ -280,8 +246,7 @@ class ProfileScreen extends GetView<ProfileController> {
             separatorBuilder: (context, index) => SizedBox(height: 0),
             itemBuilder: (context, index) {
               final item = Constants.profileMenuItems[index + 2];
-              return renderMenuItem(context, item.title, item.icon,
-                  onTap: item.onTap);
+              return renderMenuItem(context, item.title, item.icon, onTap: item.onTap);
             },
           ),
         ],
@@ -289,6 +254,7 @@ class ProfileScreen extends GetView<ProfileController> {
     );
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
@@ -302,10 +268,7 @@ class ProfileScreen extends GetView<ProfileController> {
           ),
           title: Text(
             'profile_title'.tr,
-            style: Theme.of(context)
-                .textTheme
-                .titleMedium
-                ?.copyWith(color: TextColor.primary),
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(color: TextColor.primary),
           ),
           backgroundColor: Color(0xffFFFFFF),
           elevation: 1,
@@ -323,9 +286,7 @@ class ProfileScreen extends GetView<ProfileController> {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  Obx(() => controller.isFetching.value
-                      ? _renderLoading()
-                      : profileHeader(context)),
+                  Obx(() => controller.isFetching.value ? _renderLoading() : profileHeader(context)),
                   content(context),
                   SizedBox(height: 20),
                 ],
@@ -365,7 +326,10 @@ class ProfileScreen extends GetView<ProfileController> {
                       child: Container(
                         width: 100,
                         height: 20,
-                        color: Colors.white,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
                     ),
                     SizedBox(height: 10),
@@ -373,7 +337,10 @@ class ProfileScreen extends GetView<ProfileController> {
                       child: Container(
                         width: 150,
                         height: 20,
-                        color: Colors.white,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
                     ),
                     SizedBox(height: 10),
@@ -381,7 +348,10 @@ class ProfileScreen extends GetView<ProfileController> {
                       child: Container(
                         width: 100,
                         height: 20,
-                        color: Colors.white,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
                     ),
                   ],
@@ -399,7 +369,10 @@ class ProfileScreen extends GetView<ProfileController> {
                   child: Container(
                     width: 100,
                     height: 20,
-                    color: Colors.white,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -407,7 +380,10 @@ class ProfileScreen extends GetView<ProfileController> {
                   child: Container(
                     width: double.infinity,
                     height: 20,
-                    color: Colors.white,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
                 ),
               ],

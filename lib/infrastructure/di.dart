@@ -4,6 +4,8 @@ import 'package:hino_driver_app/data/locals/StorageService.dart';
 import 'package:hino_driver_app/domain/core/usecases/activity_use_case.dart';
 import 'package:hino_driver_app/domain/core/usecases/feedback_use_case.dart';
 import 'package:hino_driver_app/domain/core/usecases/place_use_case.dart';
+import 'package:hino_driver_app/domain/core/usecases/trip_use_case.dart';
+import 'package:hino_driver_app/domain/core/usecases/trip_use_case.dart';
 import 'package:hino_driver_app/domain/core/usecases/user_use_case.dart';
 import 'package:hino_driver_app/domain/core/usecases/contact_use_case.dart';
 import 'package:hino_driver_app/domain/core/usecases/event_use_case.dart';
@@ -24,7 +26,7 @@ Future setupInjection() async {
   inject.registerLazySingleton<FeedbackDataSource>(() => FeedbackDataSource());
   inject.registerLazySingleton<FeedbackUseCase>(() => FeedbackUseCase(dataSource: inject()));
 
-  //User
+  //user
   inject.registerLazySingleton<UserDataSource>(() => UserDataSource());
   inject.registerLazySingleton<UserUseCase>(() => UserUseCase(dataSource: inject()));
 
@@ -35,6 +37,10 @@ Future setupInjection() async {
   //maps
   inject.registerLazySingleton<PlaceDataSource>(() => PlaceDataSource());
   inject.registerLazySingleton<PlaceUseCase>(() => PlaceUseCase(dataSource: inject()));
+
+  //trip
+  inject.registerLazySingleton<TripDataSource>(() => TripDataSource());
+  inject.registerLazySingleton<TripUseCase>(() => TripUseCase(dataSource: inject()));
 
   //bs sos
   inject.registerLazySingleton<ContactDataSource>(() => ContactDataSource());

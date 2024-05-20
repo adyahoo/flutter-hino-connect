@@ -48,6 +48,11 @@ class AppTips extends StatelessWidget {
         iconColor = PrimaryColor.main;
         icon = Iconsax.info_circle;
         break;
+      default:
+        bgColor = SuccesColor.surface;
+        iconColor = SuccesColor.main;
+        icon = Iconsax.info_circle;
+        break;
     }
 
     return Container(

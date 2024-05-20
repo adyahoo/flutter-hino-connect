@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hino_driver_app/domain/core/entities/trips_model.dart';
+import 'package:hino_driver_app/infrastructure/constants.dart';
 import 'package:hino_driver_app/infrastructure/map_utils.dart';
 import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
 import 'package:hino_driver_app/presentation/screens.dart';
@@ -43,17 +44,9 @@ class TripDetailController extends GetxController {
 
   final currentPanel = TripPanel.detail.obs;
   final panelMaxHeight = 225.0.obs;
+  final selectedPenalty = Rx<PenaltyModel?>(null);
 
-  final data = TripModel(
-    origin: LatLng(-8.681547132266411, 115.24069589508952),
-    destination: LatLng(-8.677846354619318, 115.23787020063237),
-    penalties: [
-      PenaltyModel(id: 1, coordinate: LatLng(-8.680087825062431, 115.24217508151388), type: PenaltyType.brake),
-      PenaltyModel(id: 2, coordinate: LatLng(-8.677138607855436, 115.2396055095573), type: PenaltyType.over_speed),
-      PenaltyModel(id: 3, coordinate: LatLng(-8.677677058199146, 115.24235824877428), type: PenaltyType.acceleration),
-      PenaltyModel(id: 4, coordinate: LatLng(-8.67707191777169, 115.24227885415357), type: PenaltyType.lateral_accel),
-    ],
-  );
+  final data = Constants.tripDetailData;
 
   @override
   void onInit() {
@@ -93,6 +86,12 @@ class TripDetailController extends GetxController {
     }
 
     panelController.open();
+  }
+
+  void onMapTapped(LatLng latLng) {
+    if (currentPanel.value == TripPanel.penalty) {
+      setPanel(TripPanel.detail);
+    }
   }
 
   void _setRoute() async {
@@ -158,11 +157,34 @@ class TripDetailController extends GetxController {
     }
 
     return Marker(
-      markerId: MarkerId(data.id.toString()),
-      position: data.coordinate,
-      anchor: const Offset(0.5, 0.5),
-      icon: icon,
+        markerId: MarkerId(data.id.toString()),
+        position: data.coordinate,
+        anchor: const Offset(0.5, 0.5),
+        icon: icon,
+        onTap: () {
+          _penaltyTapHandler(data);
+        });
+  }
+
+  void _penaltyTapHandler(PenaltyModel penalty) async {
+    final mapUtils = MapUtils(
+      origin: penalty.coordinate,
+      destination: penalty.coordinate,
     );
+    final placemarks = await mapUtils.getAddressFromCoordinate();
+    final penaltyData = PenaltyModel(
+      id: penalty.id,
+      coordinate: penalty.coordinate,
+      type: penalty.type,
+      datetime: penalty.datetime,
+      address: placemarks[0].street,
+    );
+
+    selectedPenalty.value = penaltyData;
+
+    Future.delayed(const Duration(milliseconds: 500), () {
+      setPanel(TripPanel.penalty);
+    });
   }
 
   Future<void> _createCustomMarker() async {

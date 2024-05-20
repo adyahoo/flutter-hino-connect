@@ -15,7 +15,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   var initialRoute = await Routes.initialRoute;
 
-
   await setupInjection();
 
   runApp(Main(initialRoute));

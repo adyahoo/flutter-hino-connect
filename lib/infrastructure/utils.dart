@@ -41,5 +41,7 @@ BaseAppColorProps getVariantColor(WidgetVariant variant) {
       return SuccessNewColor();
     case WidgetVariant.info:
       return InfoNewColor();
+    case WidgetVariant.yellow:
+      return YellowBaseColor();
   }
 }

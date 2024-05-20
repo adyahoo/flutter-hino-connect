@@ -67,16 +67,7 @@ class SuccessBottomSheet extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 12),
-              DottedLine(
-                direction: Axis.horizontal,
-                lineLength: double.infinity,
-                lineThickness: 1.0,
-                dashLength: 4.0,
-                dashColor: BorderColor.primary,
-                dashRadius: 0.0,
-                dashGapLength: 4.0,
-                dashGapColor: Colors.transparent,
-              ),
+              const AppStrippedDivider(),
               SizedBox(height: 12),
               Text(
                 feedback.description,

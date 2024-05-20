@@ -5,3 +5,4 @@ import 'package:hino_driver_app/infrastructure/constants.dart';
 part 'activities_model.dart';
 part 'picker_model.dart';
 part 'events_model.dart';
+part 'contact_model.dart';

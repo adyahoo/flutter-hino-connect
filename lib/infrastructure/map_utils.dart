@@ -1,4 +1,5 @@
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hino_driver_app/infrastructure/constants.dart';
 
@@ -35,5 +36,13 @@ class MapUtils {
     return coordinates;
   }
 
-  
+  Future<List<Placemark>> getAddressFromCoordinate({LatLng? coordinate = null}) async {
+    LatLng latLng = origin;
+
+    if (coordinate != null) {
+      latLng = coordinate;
+    }
+
+    return await placemarkFromCoordinates(latLng.latitude, latLng.longitude);
+  }
 }
