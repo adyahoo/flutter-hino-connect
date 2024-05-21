@@ -1,7 +1,7 @@
 part of 'widgets.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const CustomAppBar({
+  CustomAppBar({
     super.key,
     required this.title,
     this.bottom,
@@ -10,7 +10,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final PreferredSizeWidget? bottom;
 
-  final height = 112.0;
+  final double height = 112.0;
 
   @override
   Widget build(BuildContext context) {
@@ -26,13 +26,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         style: Theme.of(context).textTheme.titleMedium,
       ),
       backgroundColor: Colors.white,
+      surfaceTintColor: Colors.white,
       centerTitle: false,
+      elevation: 1,
       bottom: bottom ?? null,
     );
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(height);
+  Size get preferredSize => Size.fromHeight(bottom != null ? height : kToolbarHeight);
 }
 
 class AppbarBottomPicker extends StatelessWidget implements PreferredSizeWidget {
