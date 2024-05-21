@@ -11,6 +11,7 @@ class AppCardAction extends StatelessWidget {
     return Row(
       children: [
         AppButton.icon(
+          size: AppButtonSize.smallSize,
           icon: Iconsax.edit_2,
           isFullWidth: false,
           label: "edit".tr,
@@ -19,11 +20,13 @@ class AppCardAction extends StatelessWidget {
         ),
         const SizedBox(width: 16),
         AppButton.icon(
+          size: AppButtonSize.smallSize,
           icon: Iconsax.trash,
           isFullWidth: false,
           label: "delete".tr,
           onPress: onDelete,
           type: AppButtonType.text,
+
         ),
       ],
     );

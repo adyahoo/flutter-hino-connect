@@ -74,5 +74,10 @@ class Nav {
       page: () => const TripListScreen(),
       binding: TripListControllerBinding(),
     ),
+    GetPage(
+      name: Routes.EMERGENCY_CONTACT_LIST,
+      page: () => const EmergencyContactListScreen(),
+      binding: EmergencyContactListControllerBinding(),
+    ),
   ];
 }

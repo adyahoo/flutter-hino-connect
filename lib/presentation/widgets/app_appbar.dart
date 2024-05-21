@@ -27,6 +27,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       backgroundColor: Colors.white,
       surfaceTintColor: Colors.white,
+      shape: bottom != null ? null : Border(bottom: BorderSide(width: 1, color: BorderColor.primary)),
       centerTitle: false,
       elevation: 1,
       bottom: bottom ?? null,

@@ -10,25 +10,26 @@ import 'package:hino_driver_app/infrastructure/navigation/routes.dart';
 import '../../../../infrastructure/di.dart';
 
 class ProfileController extends GetxController {
-
   ProfileController({required this.useCase});
 
   final UserUseCase useCase;
 
-  final data = Rx<UserModel>(UserModel(
-    id: '',
-    name: '',
-    email: '',
-    role: '',
-    status: '',
-    profilePic: '',
-    score: '',
-    createdAt: '',
-    updatedAt: '',
-  ));
-  final isFetching = true.obs;
+  final data = Rx<UserModel>(
+    UserModel(
+      id: '',
+      name: '',
+      email: '',
+      role: '',
+      status: '',
+      profilePic: '',
+      score: '',
+      createdAt: '',
+      updatedAt: '',
+    ),
+  );
 
-  var isBiometricLogin = (inject<StorageService>().getIsBiometricLogin() ?? false).obs;
+  final isFetching = true.obs;
+  final isBiometricLogin = (inject<StorageService>().getIsBiometricLogin() ?? false).obs;
 
   @override
   void onInit() {
@@ -51,7 +52,6 @@ class ProfileController extends GetxController {
 
     final res = await useCase.getUser();
     data.value = res.data;
-    print('data: ${data.value}');
 
     isFetching.value = false;
   }
@@ -60,15 +60,9 @@ class ProfileController extends GetxController {
     this.isBiometricLogin.value = isBiometricLogin;
     inject<StorageService>().setIsBiometricLogin(isBiometricLogin);
     update();
-    print('isBiometricLogin check: $isBiometricLogin');
   }
 
-  void navigateToFeedback() {
-    print('navigateToFeedback');
-    Get.toNamed(Routes.FEEDBACK);
-  }
-
-  void logout(){
+  void logout() {
     inject<StorageService>().clearToken();
     Get.offAllNamed(Routes.LOGIN);
   }

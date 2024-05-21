@@ -4,6 +4,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hino_driver_app/data/locals/StorageService.dart';
 import 'package:hino_driver_app/domain/core/entities/model.dart';
 import 'package:hino_driver_app/infrastructure/di.dart';
+import 'package:hino_driver_app/infrastructure/navigation/routes.dart';
 import 'package:hino_driver_app/presentation/screens/profile/controllers/profile.controller.dart';
 import 'package:hino_driver_app/domain/core/entities/trips_model.dart';
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';
@@ -20,12 +21,12 @@ class ButtonShapeValue {
 class MenuItem {
   final String title;
   final IconData icon;
-  final Function()? onTap;
+  final Function() onTap;
 
   const MenuItem({
     required this.title,
     required this.icon,
-    this.onTap,
+    required this.onTap,
   });
 }
 
@@ -79,8 +80,11 @@ class Constants {
   ];
 
   static List<MenuItem> get profileMenuItems => [
-        MenuItem(title: 'edit_profile'.tr, icon: Iconsax.edit_24),
-        MenuItem(title: 'biometric_login'.tr, icon: Iconsax.scan4),
+        MenuItem(title: 'edit_profile'.tr, icon: Iconsax.edit_24, onTap: () {}),
+        MenuItem(title: 'biometric_login'.tr, icon: Iconsax.scan4, onTap: () {}),
+      ];
+
+  static List<MenuItem> get settingMenuItems => [
         MenuItem(
           title: 'language'.tr,
           icon: Iconsax.language_circle4,
@@ -97,9 +101,14 @@ class Constants {
             );
           },
         ),
-        MenuItem(title: 'about_us'.tr, icon: Iconsax.note_21),
-        MenuItem(title: 'privacy_policy'.tr, icon: Iconsax.shield_tick4),
-        MenuItem(title: 'need_help'.tr, icon: Iconsax.message_2),
+        MenuItem(title: 'about_us'.tr, icon: Iconsax.note_21, onTap: () {}),
+        MenuItem(title: 'privacy_policy'.tr, icon: Iconsax.shield_tick4, onTap: () {}),
+        MenuItem(
+            title: 'emergency_contact'.tr,
+            icon: Iconsax.call_calling,
+            onTap: () {
+              Get.toNamed(Routes.EMERGENCY_CONTACT_LIST);
+            }),
         MenuItem(
           title: 'logout_title'.tr,
           icon: Iconsax.logout_1,
@@ -114,7 +123,7 @@ class Constants {
               ),
             );
           },
-        ),
+        )
       ];
 
   static final activityTypeItems = [

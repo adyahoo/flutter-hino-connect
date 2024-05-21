@@ -107,8 +107,17 @@ class AppTranslations extends Translations {
           "no_note": "No note yet",
           "edit_note": "Edit Note",
           "add_note": "Add Note",
-          "note": "Note",
-          "note_placeholder": "Write your note here..."
+          "note_trip_placeholder": "Write your note here...",
+          "emergency_contact": "Emergency Contact",
+          "add_emergency_contact": "Add Emergency Contact",
+          "emergency_tips_content": "You can add one emergency contact to be contacted when emergency situation happens. The emergency contact will be displayed in SOS Dialog.",
+          "delete_emergency_contact": "Delete emergency contact?",
+          "are_you_sure_delete_emergency": "Are you sure wanna delete this emergency contact?",
+          "name":"Name",
+          "name_placeholder":"Ex: Mamank Putra",
+          "phone":"Phone number",
+          "phone_placeholder":"ex: 89123123123",
+          "edit_emergency_contact":"Edit Emergency Contact"
         },
         'id_ID': {
           'home': 'Home',
@@ -213,8 +222,17 @@ class AppTranslations extends Translations {
           "no_note": "Belum ada catatan",
           "edit_note": "Ubah Catatan",
           "add_note": "Tambah Catatan",
-          "note": "Catatan",
-          "note_placeholder": "Tulis catatan disini..."
+          "note_trip_placeholder": "Tulis catatan disini...",
+          "emergency_contact": "Kontak Darurat",
+          "add_emergency_contact": "Tambah Kontak Darurat",
+          "emergency_tips_content": "Anda dapat menambah satu kontak darurat yang ingin Anda hubungi ketika situasi darurat. Kontak darurat akan ditampilkan pada dialog SOS.",
+          "delete_emergency_contact": "Hapus kontak darurat?",
+          "are_you_sure_delete_emergency": "Apakah Anda yakin ingin menghapus kontak darurat ini?",
+          "name":"Nama",
+          "name_placeholder":"Cth: Mamank Putra",
+          "phone":"Nomor telepon",
+          "phone_placeholder":"Cth: 089123123123",
+          "edit_emergency_contact":"Ubah Kontak Darurat"
         }
       };
 }

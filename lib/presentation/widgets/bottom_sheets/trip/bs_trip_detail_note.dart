@@ -29,7 +29,7 @@ class BsTripDetailNote extends StatelessWidget {
           const SizedBox(height: 16),
           AppTextField(
             label: "note".tr,
-            placeholder: "note_placeholder".tr,
+            placeholder: "note_trip_placeholder".tr,
             textEditingController: editController,
             state: AppTextFieldState(),
             type: AppTextFieldType.text,

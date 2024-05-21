@@ -7,6 +7,14 @@ enum AppTextFieldShape { rect, rounded }
 enum AppFormActionType { add, edit }
 
 class AppTextFieldState {
+  AppTextFieldState({
+    this.inputType = TextInputType.text,
+    this.maxLines = 1,
+  });
+
+  final TextInputType inputType;
+  final int maxLines;
+
   final suffixIcon = Rx<IconData>(Iconsax.eye);
   final errorText = Rx<String?>(null);
   final focusNode = FocusNode().obs;
@@ -36,6 +44,16 @@ class AppTextFieldState {
       isError.value = false;
       this.errorText.value = null;
     }
+  }
+
+  AppTextFieldState copyWith({
+    TextInputType? inputType,
+    int? maxLines,
+  }) {
+    return AppTextFieldState(
+      inputType: inputType ?? this.inputType,
+      maxLines: maxLines ?? this.maxLines,
+    );
   }
 }
 
@@ -183,8 +201,6 @@ class AppTextField extends StatelessWidget {
         Color helperColor = TextColor.helper;
         Color borderColor = BorderColor.secondary;
         double borderWidth = 1;
-        TextInputType inputType = TextInputType.text;
-        int maxLines = 1;
 
         final isObscure = state.isObscure.value;
         final suffixIcon = withIcon ? _renderSuffixIcon() : null;
@@ -202,8 +218,10 @@ class AppTextField extends StatelessWidget {
         }
 
         if (type == AppTextFieldType.multiline) {
-          maxLines = 4;
-          inputType = TextInputType.multiline;
+          state.copyWith(
+            maxLines: 4,
+            inputType: TextInputType.multiline,
+          );
         }
 
         return Column(
@@ -215,9 +233,9 @@ class AppTextField extends StatelessWidget {
               onTap: onClick,
               readOnly: !isEditable,
               enabled: !isDisabled,
-              keyboardType: inputType,
+              keyboardType: state.inputType,
               maxLength: length,
-              maxLines: maxLines,
+              maxLines: state.maxLines,
               obscureText: (type == AppTextFieldType.password) ? isObscure : false,
               decoration: InputDecoration(
                   floatingLabelBehavior: FloatingLabelBehavior.never,

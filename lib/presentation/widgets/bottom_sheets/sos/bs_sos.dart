@@ -88,7 +88,7 @@ class BsSos extends GetView<BsSosController> {
             ),
             const SizedBox(height: 4),
             Text(
-              item.address,
+              item.address??"",
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.secondary),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
