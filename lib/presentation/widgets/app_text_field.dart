@@ -8,7 +8,8 @@ enum AppTextFieldType {
   single_picker,
   date_picker,
   time_picker,
-  search
+  search,
+  phoneNumber
 }
 
 enum AppTextFieldShape { rect, rounded }
@@ -21,7 +22,6 @@ class AppTextFieldState {
   final isFocus = false.obs;
   final isError = false.obs;
 
-  
   void onFocusChange() {
     print('\n FOCUS JALAN: ${focusNode.value.hasFocus}');
     isFocus.value = focusNode.value.hasFocus;
@@ -33,7 +33,6 @@ class AppTextFieldState {
     print('AppTextFieldState');
     focusNode.value.addListener(onFocusChange);
   }
-  
 
   void toggleObscure() {
     isObscure.value = !isObscure.value;
@@ -342,9 +341,9 @@ class AppTextField extends StatelessWidget {
   //   ]);
   // }
 
-Widget _renderSearchTextField(BuildContext context) {
-  return Obx(() {
-    return Container(
+  Widget _renderSearchTextField(BuildContext context) {
+    return Obx(() {
+      return Container(
         // margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         width: double.infinity,
         child: Container(
@@ -369,37 +368,162 @@ Widget _renderSearchTextField(BuildContext context) {
               width: 1,
             ),
           ),
-      child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-        _renderSuffixIcon(),
-        Expanded(
-          child: TextField(
-            focusNode: state.focusNode.value,
-            readOnly: !isEditable,
-            controller: textEditingController,
-            onTap: () {
-              print('TextField tapped');
-              if (onClick != null) onClick!();
-            },
-            onChanged: (text) {
-              print('TextField edited');
-              onChanged?.call(text);
-            },
-            decoration: InputDecoration(
-              hintText: 'Cari tempat..',
-              hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: TextColor.placeholder,
-                  ),
-              border: InputBorder.none,
-              contentPadding:
-                  const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+          child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+            _renderSuffixIcon(),
+            Expanded(
+              child: TextField(
+                focusNode: state.focusNode.value,
+                readOnly: !isEditable,
+                controller: textEditingController,
+                onTap: () {
+                  print('TextField tapped');
+                  if (onClick != null) onClick!();
+                },
+                onChanged: (text) {
+                  print('TextField edited');
+                  onChanged?.call(text);
+                },
+                decoration: InputDecoration(
+                  hintText: 'Cari tempat..',
+                  hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: TextColor.placeholder,
+                      ),
+                  border: InputBorder.none,
+                  contentPadding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+                ),
+              ),
+            ),
+          ]),
+        ),
+      );
+    });
+  }
+
+  Widget _renderPhoneNumberField(BuildContext context) {
+    List<PickerModel> countryCodes = [
+      PickerModel(id: 1, title: '+62 (Indonesia)', value: 'ID'),
+      PickerModel(id: 2, title: '+61 (Malaysia)', value: 'MY'),
+      PickerModel(id: 3, title: '+63 (Thailand)', value: 'TH'),
+    ];
+
+    return Row(
+      children: [
+        GestureDetector(
+          onTap: () {
+            Get.bottomSheet(
+              BsSinglePicker(
+                options: countryCodes,
+                title: 'Select Country Code',
+                selectedId: 1, // Set default selected id here
+                onSubmit: (PickerModel value) {
+                  // Handle selected country code
+                  print('Selected: ${value.title}');
+                  // Update the text field controller or state with the selected country code
+                },
+              ),
+              isScrollControlled: true,
+            );
+          },
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 13),
+            decoration: BoxDecoration(
+              border: Border.all(color: BorderColor.secondary),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(8),
+                bottomLeft: Radius.circular(8),
+              ),
+              color: BorderColor.secondary,
+            ),
+            child: Row(
+              children: [
+                Text(
+                  '+62', // Initial country code
+                  style: TextStyle(color: Colors.black),
+                ),
+                SizedBox(width: 4),
+                Icon(
+                  Iconsax.arrow_down_1,
+                  size: 12,
+                  color: IconColor.primary,
+                ),
+              ],
             ),
           ),
         ),
-      ]),
-    ),
+        Expanded(
+          child: TextFormField(
+            focusNode: state.focusNode.value,
+            controller: textEditingController,
+            keyboardType: TextInputType.phone,
+            style: Theme.of(context).textTheme.bodyMedium,
+            decoration: InputDecoration(
+              floatingLabelBehavior: FloatingLabelBehavior.never,
+              contentPadding:
+                  const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+              hintText: placeholder,
+              hintStyle: Theme.of(context)
+                  .textTheme
+                  .bodyMedium
+                  ?.copyWith(color: TextColor.placeholder),
+              filled: true,
+              fillColor: Colors.white,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(8),
+                  bottomRight: Radius.circular(8),
+                ),
+                borderSide: BorderSide(color: BorderColor.secondary),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(8),
+                  bottomRight: Radius.circular(8),
+                ),
+                borderSide: BorderSide(color: PrimaryColor.focus, width: 3),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(8),
+                  bottomRight: Radius.circular(8),
+                ),
+                borderSide: BorderSide(color: BorderColor.secondary, width: 1),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(8),
+                  bottomRight: Radius.circular(8),
+                ),
+                borderSide: BorderSide(color: BorderColor.error, width: 1),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(8),
+                  bottomRight: Radius.circular(8),
+                ),
+                borderSide: BorderSide(color: BorderColor.error, width: 3),
+              ),
+            ),
+            validator: (value) {
+              final error =
+                  inputValidator(type, value, label ?? "", isRequired);
+              state.setError(error);
+
+              if (error != null)
+                return "";
+              else
+                return null;
+            },
+            onChanged: (value) {
+              if (state.isError.value) {
+                state.setError(null);
+              }
+            },
+          ),
+        ),
+      ],
     );
-  });
-}
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -430,9 +554,15 @@ Widget _renderSearchTextField(BuildContext context) {
           ),
           const SizedBox(height: 4),
         ],
+        //   (type == AppTextFieldType.search)
+        //       ? _renderSearchTextField(context)
+        //       : _renderTextField(context),
+        // ],
         (type == AppTextFieldType.search)
             ? _renderSearchTextField(context)
-            : _renderTextField(context),
+            : (type == AppTextFieldType.phoneNumber)
+                ? _renderPhoneNumberField(context)
+                : _renderTextField(context),
       ],
     );
   }

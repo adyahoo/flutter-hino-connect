@@ -79,5 +79,10 @@ class Nav {
       page: () => const TripListScreen(),
       binding: TripListControllerBinding(),
     ),
+    GetPage(
+      name: Routes.EDIT_PROFILE,
+      page: () => const EditProfileScreen(),
+      binding: EditProfileControllerBinding(),
+    ),
   ];
 }

@@ -22,7 +22,7 @@ class ProfileScreen extends GetView<ProfileController> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
+        Container(
             padding: const EdgeInsets.all(16),
             child: Row(
               children: [

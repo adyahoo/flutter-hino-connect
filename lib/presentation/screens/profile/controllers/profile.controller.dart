@@ -23,6 +23,8 @@ class ProfileController extends GetxController {
     status: '',
     profilePic: '',
     score: '',
+    phoneCode: '',
+    phoneNumber: '',
     createdAt: '',
     updatedAt: '',
   ));

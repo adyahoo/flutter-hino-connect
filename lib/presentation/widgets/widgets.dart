@@ -23,6 +23,7 @@ import 'package:hino_driver_app/presentation/widgets/chips/controllers/app_chip.
 import 'package:hino_driver_app/presentation/widgets/bottom_sheets/sos/controllers/bs_sos.controller.dart';
 import 'package:hino_driver_app/presentation/widgets/filter/controllers/app_filter.controller.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:flutter_svg/svg.dart';
 

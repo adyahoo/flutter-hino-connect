@@ -22,6 +22,7 @@ dependencies:
   http: 1.2.1
   flutter_polyline_points: 2.0.0
   geocoding: 3.0.0
+  intl_phone_number_input: ^0.7.4
   flutter: 
     sdk: flutter
 

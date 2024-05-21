@@ -19,6 +19,11 @@ String? inputValidator(AppTextFieldType type, String? value, String label, bool 
         return "error_email_invalid".tr;
       }
       break;
+    case AppTextFieldType.phoneNumber:
+      if (!GetUtils.isPhoneNumber(value!)) {
+        return "error_phone_invalid".tr;
+      }
+      break;
     default:
       break;
   }

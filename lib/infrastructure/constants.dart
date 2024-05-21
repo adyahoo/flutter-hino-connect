@@ -4,6 +4,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hino_driver_app/data/locals/StorageService.dart';
 import 'package:hino_driver_app/domain/core/entities/model.dart';
 import 'package:hino_driver_app/infrastructure/di.dart';
+import 'package:hino_driver_app/infrastructure/navigation/routes.dart';
 import 'package:hino_driver_app/presentation/screens/profile/controllers/profile.controller.dart';
 import 'package:hino_driver_app/domain/core/entities/trips_model.dart';
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';
@@ -78,7 +79,9 @@ class Constants {
   ];
 
   static List<MenuItem> get profileMenuItems => [
-        MenuItem(title: 'edit_profile'.tr, icon: Iconsax.edit_24),
+        MenuItem(title: 'edit_profile'.tr, icon: Iconsax.edit_24, onTap: () => 
+          Get.toNamed(Routes.EDIT_PROFILE)
+        ),
         MenuItem(title: 'biometric_login'.tr, icon: Iconsax.scan4),
         MenuItem(
           title: 'language'.tr,

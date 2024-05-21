@@ -15,9 +15,10 @@ class Routes {
   static const MAPS = '/maps';
   static const PROFILE = '/profile';
   static const SCAN_QR = '/scan-qr';
+  static const SEARCH = '/search';
   static const SPLASH = '/splash';
   static const TRIP = '/trip';
   static const TRIP_DETAIL = '/trip-detail';
-  static const SEARCH = '/search';
   static const TRIP_LIST = '/trip-list';
+  static const EDIT_PROFILE = '/edit-profile';
 }
