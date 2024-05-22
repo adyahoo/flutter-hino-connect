@@ -76,6 +76,10 @@ class StorageService {
     await _preferences!.remove(key);
   }
 
+  void clearById(String key, int id) async {
+
+  }
+
   void clearToken() async {
     await _preferences!.remove(TOKEN);
   }

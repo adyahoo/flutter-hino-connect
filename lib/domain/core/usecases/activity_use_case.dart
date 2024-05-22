@@ -1,4 +1,5 @@
 import 'package:hino_driver_app/data/data_sources/data_source.dart';
+import 'package:hino_driver_app/data/dtos/activities_dto.dart';
 import 'package:hino_driver_app/data/dtos/base_response_dto.dart';
 import 'package:hino_driver_app/domain/core/entities/model.dart';
 import 'package:hino_driver_app/domain/core/interfaces/i_use_case.dart';
@@ -26,6 +27,46 @@ class ActivityUseCase implements IActivityUseCase {
       );
     } catch (e) {
       //call error handler dialog
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> addActivity(ActivityModel newData) async {
+    try {
+      final dto = ActivityDto(
+        id: newData.id,
+        type: newData.type.value,
+        createdAt: newData.createdAt,
+      );
+
+      await dataSource.addActivity(dto);
+    } catch (e) {
+      //call error handler dialog
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> deleteActivity(int id) async {
+    try {
+      await dataSource.deleteActivity(id);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> updateActivity(ActivityModel newData) async {
+    try {
+      final dto = ActivityDto(
+        id: newData.id,
+        type: newData.type.value,
+        createdAt: newData.createdAt,
+      );
+
+      await dataSource.updateActivity(dto);
+    } catch (e) {
       rethrow;
     }
   }

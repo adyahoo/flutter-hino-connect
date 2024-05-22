@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:hino_driver_app/data/data_sources/data_source.dart';
 import 'package:hino_driver_app/data/dtos/contacts_dto.dart';
 import 'package:hino_driver_app/domain/core/entities/model.dart';

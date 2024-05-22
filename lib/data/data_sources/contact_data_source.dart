@@ -37,16 +37,7 @@ class ContactDataSource {
   Future<void> addPersonalSosContact(ContactDto newData) async {
     try {
       await Future.delayed(const Duration(seconds: 3));
-      // final data = await inject<StorageService>().getJsonData(StorageService.PERSONAL_CONTACTS_JSON);
-      //
-      // List<ContactDto> contacts = [];
-      //
-      // if (data != null) {
-      //   contacts = (data["data"] as Iterable).map((e) => ContactDto.fromJson(e)).toList();
-      // }
-      // contacts.add(newData);
-      //
-      // final newJson = contacts.map((e) => e.toJson()).toList();
+
       inject<StorageService>().setJsonData(StorageService.PERSONAL_CONTACTS_JSON, {"data": newData.toJson()});
     } catch (e) {
       rethrow;

@@ -36,6 +36,14 @@ class ListPaginationApiResponse<T> extends Equatable {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'data': this.data,
+      'links': this.links.toJson(),
+      'meta': this.meta.toJson(),
+    };
+  }
+
   @override
   List<Object> get props => [data, links, meta];
 }
@@ -60,6 +68,15 @@ class Links {
       prev: json['prev'],
       next: json['next'],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'first': this.first,
+      'last': this.last,
+      'prev': this.prev,
+      'next': this.next,
+    };
   }
 }
 
@@ -104,4 +121,16 @@ class Meta {
         to,
         total,
       ];
+
+  Map<String, dynamic> toJson() {
+    return {
+      'current_page': this.currentPage,
+      'from': this.from,
+      'last_page': this.lastPage,
+      'path': this.path,
+      'per_page': this.perPage,
+      'to': this.to,
+      'total': this.total,
+    };
+  }
 }

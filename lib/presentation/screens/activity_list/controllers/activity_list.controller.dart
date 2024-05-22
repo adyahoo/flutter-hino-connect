@@ -31,25 +31,27 @@ class ActivityListController extends GetxController {
   void addActivity(ActivityModel data) async {
     await Future.delayed(const Duration(milliseconds: 3000));
 
-    this.data.value = [data, ...this.data.value];
+    await _useCase.addActivity(data);
     hideLoadingOverlay();
+
+    getActivityList();
   }
 
   void updateActivity(ActivityModel data) async {
     await Future.delayed(const Duration(milliseconds: 3000));
 
-    final updatedIndex = this.data.value.indexWhere((element) => element.id == data.id);
-
-    this.data.value[updatedIndex] = data;
-    this.data.refresh();
+    await _useCase.updateActivity(data);
     hideLoadingOverlay();
+
+    getActivityList();
   }
 
   void deleteActivity(int id) async {
     await Future.delayed(const Duration(milliseconds: 3000));
 
-    this.data.value.removeWhere((element) => element.id == id);
-    this.data.refresh();
+    await _useCase.deleteActivity(id);
     hideLoadingOverlay();
+
+    getActivityList();
   }
 }
