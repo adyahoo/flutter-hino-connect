@@ -17,4 +17,24 @@ class ContactModel extends Equatable {
 
   @override
   List<Object?> get props => [id, name, code, phone, address];
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': this.id,
+      'name': this.name,
+      'code': this.code,
+      'phone': this.phone,
+      'address': this.address,
+    };
+  }
+
+  factory ContactModel.fromJson(Map<String, dynamic> json) {
+    return ContactModel(
+      id: json['id'],
+      name: json['name'],
+      code: json['code'],
+      phone: json['phone'],
+      address: json['address'],
+    );
+  }
 }

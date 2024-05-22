@@ -117,7 +117,9 @@ class AppTranslations extends Translations {
           "name_placeholder":"Ex: Mamank Putra",
           "phone":"Phone number",
           "phone_placeholder":"ex: 89123123123",
-          "edit_emergency_contact":"Edit Emergency Contact"
+          "edit_emergency_contact":"Edit Emergency Contact",
+          "empty_contact_title":"No emergency contact yet",
+          "empty_contact_subtitle":"You can add 1 emergency contact to be called through SOS menu."
         },
         'id_ID': {
           'home': 'Home',
@@ -232,7 +234,9 @@ class AppTranslations extends Translations {
           "name_placeholder":"Cth: Mamank Putra",
           "phone":"Nomor telepon",
           "phone_placeholder":"Cth: 089123123123",
-          "edit_emergency_contact":"Ubah Kontak Darurat"
+          "edit_emergency_contact":"Ubah Kontak Darurat",
+          "empty_contact_title":"Belum ada kontak darurat",
+          "empty_contact_subtitle":"Anda dapat menambahkan 1 kontak darurat untuk dihubungi dengan cepat lewat menu SOS."
         }
       };
 }

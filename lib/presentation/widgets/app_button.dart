@@ -73,9 +73,9 @@ class AppButton extends StatelessWidget {
     );
   }
 
-  Color bgColor = PrimaryColor.main;
-  Color labelColor = PrimaryColor.content;
-  Color pressedColor = PrimaryColor.pressed;
+  Color bgColor = PrimaryNewColor().main;
+  Color labelColor = PrimaryNewColor().content;
+  Color pressedColor = PrimaryNewColor().pressed;
   Color? borderColor;
   ButtonShapeValue? shapeValue;
 
@@ -89,33 +89,59 @@ class AppButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(shapeValue!.radius),
       );
 
+  void _settingColor() {
+    if(onPress==null) {
+      switch (type) {
+        case AppButtonType.filled:
+          bgColor = BackgroundColor.disabled;
+          labelColor = PrimaryNewColor().content;
+          break;
+        case AppButtonType.outline:
+          bgColor = PrimaryNewColor().content;
+          labelColor = TextColor.disabled;
+          borderColor = BorderColor.disabled;
+          break;
+        case AppButtonType.text:
+          bgColor = PrimaryNewColor().content;
+          labelColor = TextColor.disabled;
+          break;
+        case AppButtonType.alternate:
+          bgColor = BackgroundColor.secondary;
+          labelColor = TextColor.disabled;
+          break;
+      }
+    }else {
+      switch (type) {
+        case AppButtonType.filled:
+          bgColor = PrimaryNewColor().main;
+          labelColor = PrimaryNewColor().content;
+          pressedColor = PrimaryNewColor().pressed;
+          break;
+        case AppButtonType.outline:
+          bgColor = PrimaryNewColor().content;
+          labelColor = PrimaryNewColor().main;
+          pressedColor = PrimaryNewColor().surface;
+          borderColor = PrimaryNewColor().main;
+          break;
+        case AppButtonType.text:
+          bgColor = PrimaryNewColor().content;
+          labelColor = PrimaryNewColor().main;
+          pressedColor = PrimaryNewColor().surface;
+          break;
+        case AppButtonType.alternate:
+          bgColor = PrimaryNewColor().surface;
+          labelColor = PrimaryNewColor().main;
+          pressedColor = PrimaryNewColor().border;
+          break;
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     shapeValue = Constants.buttonShapeValue[shape];
 
-    switch (type) {
-      case AppButtonType.filled:
-        bgColor = PrimaryColor.main;
-        labelColor = PrimaryColor.content;
-        pressedColor = PrimaryColor.pressed;
-        break;
-      case AppButtonType.outline:
-        bgColor = PrimaryColor.content;
-        labelColor = PrimaryColor.main;
-        pressedColor = PrimaryColor.surface;
-        borderColor = PrimaryColor.main;
-        break;
-      case AppButtonType.text:
-        bgColor = PrimaryColor.content;
-        labelColor = PrimaryColor.main;
-        pressedColor = PrimaryColor.surface;
-        break;
-      case AppButtonType.alternate:
-        bgColor = PrimaryColor.surface;
-        labelColor = PrimaryColor.main;
-        pressedColor = PrimaryColor.border;
-        break;
-    }
+    _settingColor();
 
     // Adjust padding and text style based on the selected size here
     final double verticalPadding = size == AppButtonSize.smallSize ? 0 : 12;
@@ -132,6 +158,7 @@ class AppButton extends StatelessWidget {
             shape: shapeStyle,
             backgroundColor: bgColor,
             foregroundColor: labelColor,
+            disabledForegroundColor: labelColor,
             textStyle: textStyle,
             tapTargetSize: MaterialTapTargetSize.shrinkWrap),
         child: Container(

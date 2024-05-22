@@ -5,14 +5,14 @@ class ContactDto extends Equatable {
   final String name;
   final String code;
   final String phone;
-  final String address;
+  final String? address;
 
   const ContactDto({
     required this.id,
     required this.name,
     required this.code,
     required this.phone,
-    required this.address,
+    this.address,
   });
 
   factory ContactDto.fromJson(Map<String, dynamic> json) {
@@ -25,6 +25,16 @@ class ContactDto extends Equatable {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'id': this.id,
+      'name': this.name,
+      'code': this.code,
+      'phone': this.phone,
+      'address': this.address,
+    };
+  }
+
   @override
-  List<Object> get props => [id, name, code, phone, address];
+  List<Object?> get props => [id, name, code, phone, address];
 }
