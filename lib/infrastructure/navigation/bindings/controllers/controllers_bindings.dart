@@ -1,5 +1,6 @@
 export 'package:hino_driver_app/infrastructure/navigation/bindings/controllers/activity_list.controller.binding.dart'; 
 export 'package:hino_driver_app/infrastructure/navigation/bindings/controllers/edit_profile.controller.binding.dart'; 
+export 'package:hino_driver_app/infrastructure/navigation/bindings/controllers/emergency_contact_list.controller.binding.dart'; 
 export 'package:hino_driver_app/infrastructure/navigation/bindings/controllers/event_list.controller.binding.dart'; 
 export 'package:hino_driver_app/infrastructure/navigation/bindings/controllers/face_recognition.controller.binding.dart'; 
 export 'package:hino_driver_app/infrastructure/navigation/bindings/controllers/face_scan_information.controller.binding.dart'; 

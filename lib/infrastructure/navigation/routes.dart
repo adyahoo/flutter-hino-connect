@@ -18,7 +18,8 @@ class Routes {
   static const SEARCH = '/search';
   static const SPLASH = '/splash';
   static const TRIP = '/trip';
-  static const TRIP_DETAIL = '/trip-detail';
+  static const TRIP_DETAIL = '/trip-detail/:id';
   static const TRIP_LIST = '/trip-list';
   static const EDIT_PROFILE = '/edit-profile';
+  static const EMERGENCY_CONTACT_LIST = '/emergency-contact-list';
 }

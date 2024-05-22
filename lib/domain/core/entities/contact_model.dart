@@ -5,16 +5,16 @@ class ContactModel extends Equatable {
   final String name;
   final String code;
   final String phone;
-  final String address;
+  final String? address;
 
   const ContactModel({
     required this.id,
     required this.name,
     required this.code,
     required this.phone,
-    required this.address,
+    this.address,
   });
 
   @override
-  List<Object> get props => [id, name, code, phone, address];
+  List<Object?> get props => [id, name, code, phone, address];
 }

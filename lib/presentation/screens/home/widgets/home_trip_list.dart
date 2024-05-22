@@ -41,7 +41,10 @@ class HomeTripList extends GetView<HomeController> {
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemCount: trips.length,
-              itemBuilder: (context, index) => TripCard(trip: trips[index]),
+              itemBuilder: (context, index) => TripCard(
+                trip: trips[index],
+                onTap: (trip) {},
+              ),
               separatorBuilder: (context, index) => const SizedBox(height: 16),
               padding: const EdgeInsets.symmetric(vertical: 0),
             );

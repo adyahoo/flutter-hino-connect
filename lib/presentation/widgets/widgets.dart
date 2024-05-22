@@ -2,8 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:hino_driver_app/domain/core/entities/feedback_model.dart';
 import 'package:hino_driver_app/domain/core/entities/model.dart';
 
@@ -17,13 +20,13 @@ import 'package:hino_driver_app/infrastructure/validation/app_validator.dart';
 import 'package:hino_driver_app/presentation/screens/maps/controllers/maps.controller.dart';
 import 'package:hino_driver_app/presentation/search/controllers/search.controller.dart';
 import 'package:hino_driver_app/presentation/widgets/bottom_sheets/activity/controllers/bs_activity_form.controller.dart';
+import 'package:hino_driver_app/presentation/widgets/bottom_sheets/emergency_contact/controllers/bs_emergency_contact_form.controller.dart';
 import 'package:hino_driver_app/presentation/widgets/bottom_sheets/event/controllers/bs_event_form.controller.dart';
 import 'package:hino_driver_app/presentation/widgets/bottom_sheets/single_picker/controllers/bs_single_picker.controller.dart';
 import 'package:hino_driver_app/presentation/widgets/chips/controllers/app_chip.controller.dart';
 import 'package:hino_driver_app/presentation/widgets/bottom_sheets/sos/controllers/bs_sos.controller.dart';
 import 'package:hino_driver_app/presentation/widgets/filter/controllers/app_filter.controller.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -63,5 +66,9 @@ part 'bottom_sheets/single_picker/bs_single_picker.dart';
 part 'bottom_sheets/bs_notch.dart';
 
 part 'bottom_sheets/sos/bs_sos.dart';
+
+part 'bottom_sheets/trip/bs_trip_detail_note.dart';
+
+part 'bottom_sheets/emergency_contact/bs_emergency_contact_form.dart';
 
 enum WidgetVariant { primary, danger, warning, success, info, yellow }

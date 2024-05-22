@@ -3,7 +3,6 @@ import 'package:hino_driver_app/data/data_sources/data_source.dart';
 import 'package:hino_driver_app/data/dtos/base_response_dto.dart';
 import 'package:hino_driver_app/domain/core/entities/trips_model.dart';
 import 'package:hino_driver_app/domain/core/interfaces/i_use_case.dart';
-import 'package:hino_driver_app/infrastructure/map_utils.dart';
 
 class TripUseCase implements ITripUseCase {
   const TripUseCase({
@@ -62,6 +61,35 @@ class TripUseCase implements ITripUseCase {
         data: data,
         links: response.links,
         meta: response.meta,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<TripDetailModel> getTripDetail(int id) async {
+    try {
+      final response = await dataSource.getTripDetail(id);
+      final data = response;
+
+      return TripDetailModel(
+        id: data.id,
+        origin: LatLng(data.origin.lat, data.origin.lng),
+        destination: LatLng(data.destination.lat, data.destination.lng),
+        penalties: data.penalties
+            .map(
+              (e) => PenaltyModel(
+                id: e.id,
+                coordinate: LatLng(e.coordinate.lat, e.coordinate.lng),
+                type: PenaltyType.values.firstWhere((element) {
+                  return element.name == e.type;
+                }),
+                datetime: e.dateTime,
+                note: e.note,
+              ),
+            )
+            .toList(),
       );
     } catch (e) {
       rethrow;

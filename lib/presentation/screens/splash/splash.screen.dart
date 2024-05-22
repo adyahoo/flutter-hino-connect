@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:hino_driver_app/data/locals/StorageService.dart';
-import 'package:hino_driver_app/infrastructure/di.dart';
-import 'package:hino_driver_app/infrastructure/navigation/routes.dart';
 import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
 
 import 'controllers/splash.controller.dart';
@@ -14,14 +11,7 @@ class SplashScreen extends GetView<SplashController> {
 
   @override
   Widget build(BuildContext context) {
-    controller.isLoading.listen((isLoading) {
-      if (!isLoading) {
-        if (inject<StorageService>().getToken() != null)
-          Get.offNamed(Routes.MAIN_TAB);
-        else
-          Get.offNamed(Routes.LOGIN);
-      }
-    });
+    Get.find<SplashController>();
 
     return Scaffold(
       body: Padding(

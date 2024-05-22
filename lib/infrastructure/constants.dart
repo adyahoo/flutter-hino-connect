@@ -21,19 +21,20 @@ class ButtonShapeValue {
 class MenuItem {
   final String title;
   final IconData icon;
-  final Function()? onTap;
+  final Function() onTap;
 
   const MenuItem({
     required this.title,
     required this.icon,
-    this.onTap,
+    required this.onTap,
   });
 }
 
 class Constants {
   static final MAP_API_KEY = "AIzaSyAzc3CqLAKvVzyciztdOcADxafOs1iYHbs";
-  static final DATE_FORMAT_TZ = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+  static const DATE_FORMAT_TZ = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
   static final DATE_FORMAT_PENALTY = "dd MMM yyyy, HH:mm";
+  static final DATE_FORMAT_TRIP = "EEEE, dd MMMM yyyy";
 
   static final bottomMainMenu = [
     BottomNavigationBarItem(
@@ -79,10 +80,13 @@ class Constants {
   ];
 
   static List<MenuItem> get profileMenuItems => [
-        MenuItem(title: 'edit_profile'.tr, icon: Iconsax.edit_24, onTap: () => 
-          Get.toNamed(Routes.EDIT_PROFILE)
-        ),
-        MenuItem(title: 'biometric_login'.tr, icon: Iconsax.scan4),
+        MenuItem(title: 'edit_profile'.tr, icon: Iconsax.edit_24, onTap: () {
+          Get.toNamed(Routes.EDIT_PROFILE);
+        }),
+        MenuItem(title: 'biometric_login'.tr, icon: Iconsax.scan4, onTap: () {}),
+      ];
+
+  static List<MenuItem> get settingMenuItems => [
         MenuItem(
           title: 'language'.tr,
           icon: Iconsax.language_circle4,
@@ -99,9 +103,14 @@ class Constants {
             );
           },
         ),
-        MenuItem(title: 'about_us'.tr, icon: Iconsax.note_21),
-        MenuItem(title: 'privacy_policy'.tr, icon: Iconsax.shield_tick4),
-        MenuItem(title: 'need_help'.tr, icon: Iconsax.message_2),
+        MenuItem(title: 'about_us'.tr, icon: Iconsax.note_21, onTap: () {}),
+        MenuItem(title: 'privacy_policy'.tr, icon: Iconsax.shield_tick4, onTap: () {}),
+        MenuItem(
+            title: 'emergency_contact'.tr,
+            icon: Iconsax.call_calling,
+            onTap: () {
+              Get.toNamed(Routes.EMERGENCY_CONTACT_LIST);
+            }),
         MenuItem(
           title: 'logout_title'.tr,
           icon: Iconsax.logout_1,
@@ -116,7 +125,7 @@ class Constants {
               ),
             );
           },
-        ),
+        )
       ];
 
   static final activityTypeItems = [
@@ -137,35 +146,4 @@ class Constants {
     PickerModel(id: 1, title: 'Indonesia', value: 'id'),
     PickerModel(id: 2, title: 'english'.tr, value: 'en'),
   ];
-
-  static final tripDetailData = TripDetailModel(
-    origin: LatLng(-8.681547132266411, 115.24069589508952),
-    destination: LatLng(-8.677846354619318, 115.23787020063237),
-    penalties: [
-      PenaltyModel(
-        id: 1,
-        coordinate: LatLng(-8.680087825062431, 115.24217508151388),
-        type: PenaltyType.brake,
-        datetime: "2023-07-20T01:09:49.000000Z",
-      ),
-      PenaltyModel(
-        id: 2,
-        coordinate: LatLng(-8.677138607855436, 115.2396055095573),
-        type: PenaltyType.over_speed,
-        datetime: "2023-07-20T01:09:49.000000Z",
-      ),
-      PenaltyModel(
-        id: 3,
-        coordinate: LatLng(-8.677677058199146, 115.24235824877428),
-        type: PenaltyType.acceleration,
-        datetime: "2023-07-20T01:09:49.000000Z",
-      ),
-      PenaltyModel(
-        id: 4,
-        coordinate: LatLng(-8.67707191777169, 115.24227885415357),
-        type: PenaltyType.lateral_accel,
-        datetime: "2023-07-20T01:09:49.000000Z",
-      ),
-    ],
-  );
 }

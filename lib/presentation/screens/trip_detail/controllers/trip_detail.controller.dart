@@ -6,15 +6,20 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hino_driver_app/domain/core/entities/trips_model.dart';
-import 'package:hino_driver_app/infrastructure/constants.dart';
+import 'package:hino_driver_app/domain/core/usecases/trip_use_case.dart';
 import 'package:hino_driver_app/infrastructure/map_utils.dart';
 import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
+import 'package:hino_driver_app/infrastructure/utils.dart';
 import 'package:hino_driver_app/presentation/screens.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 final _panelController = PanelController();
 
 class TripDetailController extends GetxController {
+  TripDetailController({required this.tripUseCase});
+
+  final TripUseCase tripUseCase;
+
   static const originMarkerId = 'originMarkerId';
   static const destinationMarkerId = 'destinationMarkerId';
 
@@ -26,6 +31,10 @@ class TripDetailController extends GetxController {
   late BitmapDescriptor overSpeedPin;
   late BitmapDescriptor acceleratePin;
   late BitmapDescriptor lateralAccelPin;
+  late BitmapDescriptor brakeSelectedPin;
+  late BitmapDescriptor overSpeedSelectedPin;
+  late BitmapDescriptor accelerateSelectedPin;
+  late BitmapDescriptor lateralAccelSelectedPin;
 
   Rx<Set<Marker>> _markers = Rx<Set<Marker>>({});
 
@@ -42,14 +51,15 @@ class TripDetailController extends GetxController {
 
   final panelController = _panelController;
 
+  final isFetching = true.obs;
   final currentPanel = TripPanel.detail.obs;
   final panelMaxHeight = 225.0.obs;
   final selectedPenalty = Rx<PenaltyModel?>(null);
-
-  final data = Constants.tripDetailData;
+  final data = Rx<TripDetailModel?>(null);
 
   @override
   void onInit() {
+    resetMarkerRoute();
     _createCustomMarker();
     super.onInit();
   }
@@ -64,11 +74,39 @@ class TripDetailController extends GetxController {
     super.onClose();
   }
 
+  Future<void> _getData() async {
+    isFetching.value = true;
+    showLoadingOverlay();
+
+    final detail = await tripUseCase.getTripDetail(int.parse(Get.parameters['id'] ?? "0"));
+    data.value = detail;
+    await Future.delayed(const Duration(seconds: 2));
+
+    panelController.open();
+    hideLoadingOverlay();
+    isFetching.value = false;
+  }
+
   void setController(GoogleMapController controller) {
     this.controller = controller;
   }
 
-  void initRouteMarker() {
+  void updateCurrentPenalty(String? note) {
+    final updatedPenalty = PenaltyModel(
+      id: selectedPenalty.value!.id,
+      coordinate: selectedPenalty.value!.coordinate,
+      type: selectedPenalty.value!.type,
+      datetime: selectedPenalty.value!.datetime,
+      address: selectedPenalty.value!.address,
+      note: note,
+    );
+
+    this.selectedPenalty.value = updatedPenalty;
+  }
+
+  void initRouteMarker() async {
+    await _getData();
+
     _setRoute();
     _markers.value = _createAllMarker();
   }
@@ -81,7 +119,7 @@ class TripDetailController extends GetxController {
         panelMaxHeight.value = 225;
         break;
       case TripPanel.penalty:
-        panelMaxHeight.value = 370;
+        panelMaxHeight.value = 410;
         break;
     }
 
@@ -97,7 +135,7 @@ class TripDetailController extends GetxController {
   void _setRoute() async {
     _polyline.value.clear();
 
-    final mapUtils = MapUtils(origin: data.origin, destination: data.destination);
+    final mapUtils = MapUtils(origin: data.value!.origin, destination: data.value!.destination);
     final coordinates = await mapUtils.getPolyLineRoute();
 
     final newPolyline = Polyline(
@@ -112,8 +150,8 @@ class TripDetailController extends GetxController {
   Set<Marker> _createAllMarker() {
     final createdMarkers = _createOriginDestinationMarker();
 
-    if (data.penalties.isNotEmpty) {
-      data.penalties.forEach((e) {
+    if (data.value!.penalties.isNotEmpty) {
+      data.value!.penalties.forEach((e) {
         createdMarkers.add(_createPenaltyMarker(e));
       });
     }
@@ -125,13 +163,13 @@ class TripDetailController extends GetxController {
     return {
       Marker(
         markerId: const MarkerId(originMarkerId),
-        position: data.origin,
+        position: data.value!.origin,
         anchor: const Offset(0.5, 0.5),
         icon: originPin,
       ),
       Marker(
         markerId: const MarkerId(destinationMarkerId),
-        position: data.destination,
+        position: data.value!.destination,
         anchor: const Offset(0.5, 0.5),
         icon: destinationPin,
       ),
@@ -140,19 +178,24 @@ class TripDetailController extends GetxController {
 
   Marker _createPenaltyMarker(PenaltyModel data) {
     BitmapDescriptor icon;
+    BitmapDescriptor selectedIcon;
 
     switch (data.type) {
       case PenaltyType.brake:
         icon = brakePin;
+        selectedIcon = brakeSelectedPin;
         break;
       case PenaltyType.over_speed:
         icon = overSpeedPin;
+        selectedIcon = overSpeedSelectedPin;
         break;
       case PenaltyType.acceleration:
         icon = acceleratePin;
+        selectedIcon = accelerateSelectedPin;
         break;
       case PenaltyType.lateral_accel:
         icon = lateralAccelPin;
+        selectedIcon = lateralAccelSelectedPin;
         break;
     }
 
@@ -162,11 +205,11 @@ class TripDetailController extends GetxController {
         anchor: const Offset(0.5, 0.5),
         icon: icon,
         onTap: () {
-          _penaltyTapHandler(data);
+          _penaltyTapHandler(data, icon, selectedIcon);
         });
   }
 
-  void _penaltyTapHandler(PenaltyModel penalty) async {
+  void _penaltyTapHandler(PenaltyModel penalty, BitmapDescriptor icon, BitmapDescriptor selectedIcon) async {
     final mapUtils = MapUtils(
       origin: penalty.coordinate,
       destination: penalty.coordinate,
@@ -178,13 +221,36 @@ class TripDetailController extends GetxController {
       type: penalty.type,
       datetime: penalty.datetime,
       address: placemarks[0].street,
+      note: penalty.note,
     );
 
-    selectedPenalty.value = penaltyData;
-
     Future.delayed(const Duration(milliseconds: 500), () {
+      _updateSelectedMarker(penalty, icon, selectedIcon);
       setPanel(TripPanel.penalty);
     });
+
+    selectedPenalty.value = penaltyData;
+  }
+
+  void _updateSelectedMarker(PenaltyModel newSelected, BitmapDescriptor icon, BitmapDescriptor selectedIcon) {
+    final newMarkers = _markers.value.map((e) {
+      print("sapi marker ${e.markerId} ${newSelected.id}");
+      if (e.markerId == newSelected.id.toString()) {
+        return e.copyWith(iconParam: acceleratePin);
+      } else
+        return e;
+    }).toSet();
+    print("sapi markers ${newMarkers.firstWhere((element) => element.markerId == newSelected.id.toString()).markerId}");
+
+    _markers.value = newMarkers;
+  }
+
+  void resetMarkerRoute() {
+    _markers.value.clear();
+    _markers.value = {};
+
+    _polyline.value.clear();
+    _polyline.value = {};
   }
 
   Future<void> _createCustomMarker() async {
@@ -195,16 +261,24 @@ class TripDetailController extends GetxController {
     destinationPin = BitmapDescriptor.fromBytes(destinationBytes);
 
     final brakeBytes = await _getBytesFromAsset("ic_brake_marker.png", 100);
+    final brakeSelectedBytes = await _getBytesFromAsset("ic_brake_marker_selected.png", 100);
     brakePin = BitmapDescriptor.fromBytes(brakeBytes);
+    brakeSelectedPin = BitmapDescriptor.fromBytes(brakeSelectedBytes);
 
     final overSpeedBytes = await _getBytesFromAsset("ic_over_speed_marker.png", 100);
+    final overSpeedSelectedBytes = await _getBytesFromAsset("ic_over_speed_marker_selected.png", 100);
     overSpeedPin = BitmapDescriptor.fromBytes(overSpeedBytes);
+    overSpeedSelectedPin = BitmapDescriptor.fromBytes(overSpeedSelectedBytes);
 
     final accelerateBytes = await _getBytesFromAsset("ic_accelerate_marker.png", 100);
+    final accelerateSelectedBytes = await _getBytesFromAsset("ic_accelerate_marker_selected.png", 100);
     acceleratePin = BitmapDescriptor.fromBytes(accelerateBytes);
+    accelerateSelectedPin = BitmapDescriptor.fromBytes(accelerateSelectedBytes);
 
     final lateralAccelBytes = await _getBytesFromAsset("ic_lateral_accel_marker.png", 100);
+    final lateralAccelSelectedBytes = await _getBytesFromAsset("ic_lateral_accel_marker_selected.png", 100);
     lateralAccelPin = BitmapDescriptor.fromBytes(lateralAccelBytes);
+    lateralAccelSelectedPin = BitmapDescriptor.fromBytes(lateralAccelSelectedBytes);
   }
 
   Future<Uint8List> _getBytesFromAsset(String assetName, int width) async {

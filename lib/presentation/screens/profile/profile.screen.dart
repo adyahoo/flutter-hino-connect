@@ -9,7 +9,6 @@ import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 
 import 'controllers/profile.controller.dart';
 import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class ProfileScreen extends GetView<ProfileController> {
   ProfileScreen({Key? key}) : super(key: key);
@@ -44,7 +43,7 @@ class ProfileScreen extends GetView<ProfileController> {
               ],
             ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Container(
               padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
               child: Column(
@@ -72,15 +71,14 @@ class ProfileScreen extends GetView<ProfileController> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text('periode_placeholder'.tr, style: Theme.of(context).textTheme.labelMedium?.copyWith(color: TextColor.secondary)),
-          SizedBox(height: 12),
+          const SizedBox(height: 12),
           Container(
-            height: 40,
             padding: const EdgeInsets.fromLTRB(12, 8, 8, 8),
             decoration: BoxDecoration(
-              color: Color(0xFFF1F8F4), //!REPLACE LATER
-              borderRadius: BorderRadius.circular(20), //!CHECK LATER
+              color: SuccessNewColor().surface, //!REPLACE LATER
+              borderRadius: BorderRadius.circular(100), //!CHECK LATER
               border: Border.all(
-                color: Color(0xFFBCDEC9), //!REPLACE LATER
+                color: SuccessNewColor().border, //!REPLACE LATER
                 width: 1,
               ),
             ),
@@ -93,13 +91,15 @@ class ProfileScreen extends GetView<ProfileController> {
                     children: [
                       Container(
                         decoration: BoxDecoration(
-                          color: Color(0xFF2D6E50), // Replace with your actual color
+                          color: SuccessNewColor().main, // Replace with your actual color
                           borderRadius: BorderRadius.all(Radius.circular(24)),
                         ),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                           child: Text(
-                            point + ' ' + 'point'.tr,
+                            'point'.trParams({
+                              'poin': point,
+                            }),
                             style: Theme.of(context).textTheme.labelMedium?.copyWith(color: Colors.white),
                           ),
                         ),
@@ -118,21 +118,18 @@ class ProfileScreen extends GetView<ProfileController> {
   Widget renderMenuItem(
     BuildContext context,
     String title,
-    IconData icon, {
-    bool isLastItem = false,
-    Function()? onTap,
-  }) {
+    IconData icon,
+    Function() onTap,
+  ) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 16),
         decoration: BoxDecoration(
           color: Colors.white,
-          border: isLastItem
-              ? null
-              : Border(
-                  bottom: BorderSide(color: BorderColor.primary, width: 1),
-                ),
+          border: Border(
+            bottom: BorderSide(color: BorderColor.primary, width: 1),
+          ),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -152,15 +149,15 @@ class ProfileScreen extends GetView<ProfileController> {
                           () => Column(
                             children: [
                               AppToggle(
-                                status: Get.find<ProfileController>().isBiometricLogin.value ? AppToggleStatus.active : AppToggleStatus.inactive,
+                                status: controller.isBiometricLogin.value ? AppToggleStatus.active : AppToggleStatus.inactive,
                                 onChanged: (isActive) {
-                                  Get.find<ProfileController>().toggleSwitch(isActive);
+                                  controller.toggleSwitch(isActive);
                                 },
                               ),
                             ],
                           ),
                         ),
-                        SizedBox(width: 16),
+                        const SizedBox(width: 16),
                         Icon(Icons.arrow_forward_ios, size: 16, color: IconColor.primary),
                       ],
                     ),
@@ -173,127 +170,48 @@ class ProfileScreen extends GetView<ProfileController> {
   }
 
   Widget content(BuildContext context) {
+    final profileMenuItems = Constants.profileMenuItems;
+    final settingMenuItems = Constants.settingMenuItems;
+
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          GestureDetector(
-            onTap: () {
-              // Navigate to "Feedback" screen
-              print('Navigate to Feedback screen');
-              controller.navigateToFeedback();
-            },
-            child: Container(
-              height: 64,
-              width: double.infinity,
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: BorderColor.primary,
-                  width: 1,
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      SvgPicture.asset(
-                        'assets/icons/note-text.svg',
-                        height: 40,
-                        width: 40,
-                      ),
-                      const SizedBox(width: 8),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('feedback_profile_title'.tr, style: Theme.of(context).textTheme.labelLarge),
-                          Text(
-                            'feedback_profile_subtitle'.tr,
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(color: TextColor.tertiary),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  Icon(Icons.arrow_forward_ios, size: 16, color: IconColor.primary),
-                ],
-              ),
-            ),
-          ),
-          SizedBox(height: 16),
           Text('account'.tr, style: Theme.of(context).textTheme.labelMedium),
-          ListView.separated(
-            itemCount: 2,
+          ListView.builder(
+            itemCount: profileMenuItems.length,
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
-            separatorBuilder: (context, index) => SizedBox(height: 0),
             itemBuilder: (context, index) {
-              final item = Constants.profileMenuItems[index];
-              return renderMenuItem(context, item.title, item.icon, onTap: item.onTap);
+              final item = profileMenuItems[index];
+
+              return renderMenuItem(
+                context,
+                item.title,
+                item.icon,
+                item.onTap,
+              );
             },
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Text('other_setting'.tr, style: Theme.of(context).textTheme.labelMedium),
-          ListView.separated(
-            itemCount: Constants.profileMenuItems.length - 2,
+          ListView.builder(
+            itemCount: settingMenuItems.length,
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
-            separatorBuilder: (context, index) => SizedBox(height: 0),
             itemBuilder: (context, index) {
-              final item = Constants.profileMenuItems[index + 2];
-              return renderMenuItem(context, item.title, item.icon, onTap: item.onTap);
+              final item = settingMenuItems[index];
+
+              return renderMenuItem(
+                context,
+                item.title,
+                item.icon,
+                item.onTap,
+              );
             },
           ),
         ],
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(56.0),
-        child: AppBar(
-          automaticallyImplyLeading: true,
-          titleSpacing: 0.0,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: IconColor.primary),
-            onPressed: () => Get.back(),
-          ),
-          title: Text(
-            'profile_title'.tr,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(color: TextColor.primary),
-          ),
-          backgroundColor: Color(0xffFFFFFF),
-          elevation: 1,
-          centerTitle: false,
-        ),
-      ),
-      body: LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints viewportConstraints) {
-          return SingleChildScrollView(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                minHeight: viewportConstraints.maxHeight,
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Obx(() => controller.isFetching.value ? _renderLoading() : profileHeader(context)),
-                  content(context),
-                  SizedBox(height: 20),
-                ],
-              ),
-            ),
-          );
-        },
       ),
     );
   }
@@ -332,7 +250,7 @@ class ProfileScreen extends GetView<ProfileController> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     ShimmerContainer(
                       child: Container(
                         width: 150,
@@ -343,7 +261,7 @@ class ProfileScreen extends GetView<ProfileController> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     ShimmerContainer(
                       child: Container(
                         width: 100,
@@ -359,7 +277,7 @@ class ProfileScreen extends GetView<ProfileController> {
               ],
             ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Container(
             padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
             child: Column(
@@ -390,6 +308,32 @@ class ProfileScreen extends GetView<ProfileController> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: CustomAppBar(title: 'profile_title'.tr),
+      body: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints viewportConstraints) {
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: viewportConstraints.maxHeight,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Obx(() => controller.isFetching.value ? _renderLoading() : profileHeader(context)),
+                  content(context),
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }

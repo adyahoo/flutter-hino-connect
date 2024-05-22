@@ -5,8 +5,10 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hino_driver_app/domain/core/entities/trips_model.dart';
 import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
+import 'package:hino_driver_app/infrastructure/utils.dart';
 import 'package:hino_driver_app/presentation/widgets/app_tag.dart';
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 import 'controllers/trip_detail.controller.dart';
@@ -66,6 +68,7 @@ class TripDetailScreen extends GetView<TripDetailController> {
                 minMaxZoomPreference: const MinMaxZoomPreference(5, 17),
                 onTap: this.controller.onMapTapped,
                 onMapCreated: (GoogleMapController controller) {
+                  this.controller.resetMarkerRoute();
                   this.controller.setController(controller);
                   this.controller.initRouteMarker();
                 },
@@ -77,4 +80,6 @@ class TripDetailScreen extends GetView<TripDetailController> {
       ),
     );
   }
+
+
 }

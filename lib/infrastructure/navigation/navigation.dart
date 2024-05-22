@@ -66,7 +66,7 @@ class Nav {
     ),
     GetPage(
       name: Routes.TRIP_DETAIL,
-      page: () => const TripDetailScreen(),
+      page: () => TripDetailScreen(),
       binding: TripDetailControllerBinding(),
     ),
     GetPage(
@@ -83,6 +83,11 @@ class Nav {
       name: Routes.EDIT_PROFILE,
       page: () => const EditProfileScreen(),
       binding: EditProfileControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.EMERGENCY_CONTACT_LIST,
+      page: () => const EmergencyContactListScreen(),
+      binding: EmergencyContactListControllerBinding(),
     ),
   ];
 }

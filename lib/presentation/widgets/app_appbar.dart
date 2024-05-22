@@ -1,14 +1,16 @@
 part of 'widgets.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const CustomAppBar({
+  CustomAppBar({
     super.key,
     required this.title,
+    this.bottom,
   });
 
   final String title;
+  final PreferredSizeWidget? bottom;
 
-  final height = 112.0;
+  final double height = 112.0;
 
   @override
   Widget build(BuildContext context) {
@@ -24,17 +26,27 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         style: Theme.of(context).textTheme.titleMedium,
       ),
       backgroundColor: Colors.white,
+      surfaceTintColor: Colors.white,
+      shape: bottom != null ? null : Border(bottom: BorderSide(width: 1, color: BorderColor.primary)),
       centerTitle: false,
-      bottom: AppbarBottomPicker(),
+      elevation: 1,
+      bottom: bottom ?? null,
     );
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(height);
+  Size get preferredSize => Size.fromHeight(bottom != null ? height : kToolbarHeight);
 }
 
 class AppbarBottomPicker extends StatelessWidget implements PreferredSizeWidget {
-  const AppbarBottomPicker({super.key});
+  const AppbarBottomPicker({
+    super.key,
+    required this.onTap,
+    required this.textEditingController,
+  });
+
+  final VoidCallback onTap;
+  final TextEditingController textEditingController;
 
   final height = 56.0;
 
@@ -44,9 +56,9 @@ class AppbarBottomPicker extends StatelessWidget implements PreferredSizeWidget 
       padding: const EdgeInsets.only(right: 16, bottom: 12, left: 16),
       decoration: BoxDecoration(border: Border(bottom: BorderSide(width: 1, color: BorderColor.primary))),
       child: AppTextField.picker(
-        onClick: () {},
+        onClick: onTap,
         placeholder: 'filter_by_date'.tr,
-        textEditingController: TextEditingController(),
+        textEditingController: textEditingController,
         state: AppTextFieldState(),
         type: AppTextFieldType.single_picker,
         shape: AppTextFieldShape.rounded,

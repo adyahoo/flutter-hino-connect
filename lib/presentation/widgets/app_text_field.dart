@@ -14,7 +14,17 @@ enum AppTextFieldType {
 
 enum AppTextFieldShape { rect, rounded }
 
+enum AppFormActionType { add, edit }
+
 class AppTextFieldState {
+  AppTextFieldState({
+    this.inputType = TextInputType.text,
+    this.maxLines = 1,
+  });
+
+  final TextInputType inputType;
+  final int maxLines;
+
   final suffixIcon = Rx<IconData>(Iconsax.eye);
   final errorText = Rx<String?>(null);
   final focusNode = FocusNode().obs;
@@ -27,11 +37,6 @@ class AppTextFieldState {
     isFocus.value = focusNode.value.hasFocus;
 
     print('\n focus: ${isFocus.value}');
-  }
-
-  AppTextFieldState() {
-    print('AppTextFieldState');
-    focusNode.value.addListener(onFocusChange);
   }
 
   void toggleObscure() {
@@ -53,6 +58,16 @@ class AppTextFieldState {
       this.errorText.value = null;
     }
   }
+
+  AppTextFieldState copyWith({
+    TextInputType? inputType,
+    int? maxLines,
+  }) {
+    return AppTextFieldState(
+      inputType: inputType ?? this.inputType,
+      maxLines: maxLines ?? this.maxLines,
+    );
+  }
 }
 
 class AppTextField extends StatelessWidget {
@@ -69,8 +84,8 @@ class AppTextField extends StatelessWidget {
     this.shape = AppTextFieldShape.rect,
     this.isRequired = true,
     this.isEditable = true,
-    this.withCounter = false,
     this.isDisabled = false,
+    this.length = null,
   })  : this.onClick = null,
         this.withIcon = false;
 
@@ -87,8 +102,8 @@ class AppTextField extends StatelessWidget {
     this.shape = AppTextFieldShape.rect,
     this.isRequired = true,
     this.isEditable = true,
-    this.withCounter = false,
     this.isDisabled = false,
+    this.length = null,
   })  : this.withIcon = true,
         this.onClick = null;
 
@@ -107,7 +122,7 @@ class AppTextField extends StatelessWidget {
     this.isRequired = true,
     this.isDisabled = false,
   })  : this.withIcon = true,
-        this.withCounter = false,
+        this.length = null,
         this.isEditable = false;
 
   AppTextField.search({
@@ -126,7 +141,7 @@ class AppTextField extends StatelessWidget {
         this.shape = AppTextFieldShape.rounded,
         this.isRequired = false,
         this.placeholder = "",
-        this.withCounter = false;
+        this.length = null;
 
   final String placeholder;
   final TextEditingController textEditingController;
@@ -135,10 +150,10 @@ class AppTextField extends StatelessWidget {
   final AppTextFieldShape shape;
   final bool isRequired;
   final bool isEditable;
-  final bool withCounter;
   final bool isDisabled;
   final bool withIcon;
   final String? label;
+  final int? length;
   final IconData? prefixIcon;
   final String? helperText;
   final VoidCallback? onClick;
@@ -205,8 +220,6 @@ class AppTextField extends StatelessWidget {
         Color helperColor = TextColor.helper;
         Color borderColor = BorderColor.secondary;
         double borderWidth = 1;
-        TextInputType inputType = TextInputType.text;
-        int maxLines = 1;
 
         final isObscure = state.isObscure.value;
         final suffixIcon = withIcon ? _renderSuffixIcon() : null;
@@ -224,8 +237,10 @@ class AppTextField extends StatelessWidget {
         }
 
         if (type == AppTextFieldType.multiline) {
-          maxLines = 4;
-          inputType = TextInputType.multiline;
+          state.copyWith(
+            maxLines: 4,
+            inputType: TextInputType.multiline,
+          );
         }
 
         return Column(
@@ -237,19 +252,17 @@ class AppTextField extends StatelessWidget {
               onTap: onClick,
               readOnly: !isEditable,
               enabled: !isDisabled,
-              keyboardType: inputType,
-              maxLines: maxLines,
-              obscureText:
-                  (type == AppTextFieldType.password) ? isObscure : false,
+              keyboardType: state.inputType,
+              maxLength: length,
+              maxLines: state.maxLines,
+              obscureText: (type == AppTextFieldType.password) ? isObscure : false,
               decoration: InputDecoration(
                   floatingLabelBehavior: FloatingLabelBehavior.never,
                   contentPadding:
                       const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
                   hintText: placeholder,
-                  hintStyle: Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.copyWith(color: TextColor.placeholder),
+                  hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.placeholder),
+                  counterStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.helper),
                   filled: true,
                   fillColor: bgColor,
                   border: InputBorder.none,
@@ -289,16 +302,6 @@ class AppTextField extends StatelessWidget {
                               ?.copyWith(color: helperColor),
                         ),
                       ),
-                      const SizedBox(width: 16),
-                      (withCounter)
-                          ? Text(
-                              "Max. 100 char",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(color: TextColor.helper),
-                            )
-                          : const SizedBox(),
                     ],
                   )
                 : const SizedBox(),

@@ -88,7 +88,7 @@ class BsSos extends GetView<BsSosController> {
             ),
             const SizedBox(height: 4),
             Text(
-              item.address,
+              item.address??"",
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.secondary),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
@@ -110,6 +110,8 @@ class BsSos extends GetView<BsSosController> {
 
   @override
   Widget build(BuildContext context) {
+    Get.put<BsSosController>(BsSosController(useCase: inject()));
+
     return SingleChildScrollView(
       child: Container(
         padding: const EdgeInsets.only(right: 16, bottom: 24, left: 16),
