@@ -137,10 +137,10 @@ class AppTextField extends StatelessWidget {
     this.prefixIcon,
     this.isDisabled = false,
     this.isEditable = true,
+    this.shape = AppTextFieldShape.rounded,
+    this.placeholder = 'Search',
   })  : this.withIcon = true,
-        this.shape = AppTextFieldShape.rounded,
         this.isRequired = false,
-        this.placeholder = "",
         this.length = null;
 
   final String placeholder;
@@ -194,9 +194,6 @@ class AppTextField extends StatelessWidget {
         break;
       case AppTextFieldType.time_picker:
         icon = Iconsax.clock;
-        break;
-      case AppTextFieldType.search:
-        icon = Icons.search;
         break;
       default:
         icon = null;
@@ -255,14 +252,21 @@ class AppTextField extends StatelessWidget {
               keyboardType: state.inputType,
               maxLength: length,
               maxLines: state.maxLines,
-              obscureText: (type == AppTextFieldType.password) ? isObscure : false,
+              obscureText:
+                  (type == AppTextFieldType.password) ? isObscure : false,
               decoration: InputDecoration(
                   floatingLabelBehavior: FloatingLabelBehavior.never,
                   contentPadding:
                       const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
                   hintText: placeholder,
-                  hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.placeholder),
-                  counterStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.helper),
+                  hintStyle: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.copyWith(color: TextColor.placeholder),
+                  counterStyle: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.copyWith(color: TextColor.helper),
                   filled: true,
                   fillColor: bgColor,
                   border: InputBorder.none,
@@ -311,113 +315,61 @@ class AppTextField extends StatelessWidget {
     );
   }
 
-  // Widget _renderSearchTextField(BuildContext context) {
-  //   return Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-  //     _renderSuffixIcon(),
-  //     Expanded(
-  //       child: TextField(
-  //         readOnly: !isEditable,
-  //         controller: textEditingController,
-  //         onTap: () {
-  //           print('TextField tapped');
-  //           if (onClick != null) onClick!();
-  //           // Add your action here
-  //         },
-  //         onChanged: (text) {
-  //           print('TextField edited');
-  //           onChanged?.call(text);
-  //         },
-  //         decoration: InputDecoration(
-  //           hintText: 'Cari tempat..',
-  //           hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-  //                 color: TextColor.placeholder,
-  //               ),
-  //           border: InputBorder.none,
-  //           // border: OutlineInputBorder(
-  //           //     borderSide: BorderSide(color: Colors.red),
-  //           //   ),
-  //           contentPadding:
-  //               const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
-  //         ),
-  //       ),
-  //     ),
-  //   ]);
-  // }
-
   Widget _renderSearchTextField(BuildContext context) {
+    print('Render search text field');
+    print('focus: ${state.focusNode.value.hasFocus}');
+    final prefixIcon = this.prefixIcon != null ? _renderPrefixIcon() : null;
+    Color bgColor = Colors.white;
+
     return Obx(() {
-      return Container(
-        // margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        width: double.infinity,
-        child: Container(
-          padding: const EdgeInsets.only(left: 16),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(24),
-            boxShadow: [
-              BoxShadow(
-                color: state.focusNode.value.hasFocus
-                    ? Colors.red.withOpacity(0.1)
-                    : Colors.black.withOpacity(0.1),
-                blurRadius: 4,
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextField(
+            focusNode: state.focusNode.value,
+            readOnly: !isEditable,
+            controller: textEditingController,
+            onTap: () {
+              print('TextField tapped');
+              if (onClick != null) onClick!();
+            },
+            onChanged: (text) {
+              print('TextField edited');
+              onChanged?.call(text);
+            },
+            decoration: InputDecoration(
+              floatingLabelBehavior: FloatingLabelBehavior.never,
+              fillColor: bgColor,
+              filled: true,
+              focusedBorder: getBorder(3, PrimaryColor.focus),
+              hintText: placeholder,
+              hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: TextColor.placeholder,
+                  ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(24),
               ),
-            ],
-            border: Border.all(
-              color: state.isError.value
-                  ? BorderColor.error
-                  : state.focusNode.value.hasFocus
-                      ? PrimaryColor.focus
-                      : BorderColor.secondary,
-              width: 1,
+              enabledBorder: getBorder(1, BorderColor.secondary),
+              contentPadding:
+                  const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+              prefixIcon: prefixIcon,
             ),
           ),
-          child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-            _renderSuffixIcon(),
-            Expanded(
-              child: TextField(
-                focusNode: state.focusNode.value,
-                readOnly: !isEditable,
-                controller: textEditingController,
-                onTap: () {
-                  print('TextField tapped');
-                  if (onClick != null) onClick!();
-                },
-                onChanged: (text) {
-                  print('TextField edited');
-                  onChanged?.call(text);
-                },
-                decoration: InputDecoration(
-                  hintText: 'Cari tempat..',
-                  hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: TextColor.placeholder,
-                      ),
-                  border: InputBorder.none,
-                  contentPadding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
-                ),
-              ),
-            ),
-          ]),
-        ),
+        ],
       );
     });
   }
 
   Widget _renderPhoneNumberField(BuildContext context) {
-    List<PickerModel> countryCodes = [
-      PickerModel(id: 1, title: '+62 (Indonesia)', value: 'ID'),
-      PickerModel(id: 2, title: '+61 (Malaysia)', value: 'MY'),
-      PickerModel(id: 3, title: '+63 (Thailand)', value: 'TH'),
-    ];
-
     return Row(
       children: [
         GestureDetector(
           onTap: () {
             Get.bottomSheet(
               BsSinglePicker(
-                options: countryCodes,
-                title: 'Select Country Code',
+                type: BsSinglePickerType.withSearch,
+                options: Constants.countryCodes,
+                title: 'Kode Negara',
                 selectedId: 1, // Set default selected id here
                 onSubmit: (PickerModel value) {
                   // Handle selected country code
@@ -483,7 +435,7 @@ class AppTextField extends StatelessWidget {
                   topRight: Radius.circular(8),
                   bottomRight: Radius.circular(8),
                 ),
-                borderSide: BorderSide(color: PrimaryColor.focus, width: 3),
+                borderSide: BorderSide(color: BorderColor.primary, width: 3),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.only(
@@ -491,20 +443,6 @@ class AppTextField extends StatelessWidget {
                   bottomRight: Radius.circular(8),
                 ),
                 borderSide: BorderSide(color: BorderColor.secondary, width: 1),
-              ),
-              errorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(8),
-                  bottomRight: Radius.circular(8),
-                ),
-                borderSide: BorderSide(color: BorderColor.error, width: 1),
-              ),
-              focusedErrorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(8),
-                  bottomRight: Radius.circular(8),
-                ),
-                borderSide: BorderSide(color: BorderColor.error, width: 3),
               ),
             ),
             validator: (value) {

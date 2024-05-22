@@ -9,7 +9,9 @@ import 'package:hino_driver_app/domain/core/entities/place_model.dart';
 import 'package:hino_driver_app/domain/core/usecases/place_use_case.dart';
 import 'package:hino_driver_app/infrastructure/map_utils.dart';
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 
 final _panelController = PanelController();
@@ -41,13 +43,18 @@ class MapsController extends GetxController {
   Marker? selectedMarker; //store last selected marker
   RxString selectedChip = RxString('');
 
-  final Rx<TextEditingController> searchbarController = TextEditingController().obs;
+  final Rx<TextEditingController> searchbarController =
+      TextEditingController().obs;
   final searchBarState = AppTextFieldState();
 
   final CameraPosition kGooglePlex = CameraPosition(
     target: LatLng(37.42796133580664, -122.085749655962),
     zoom: 14.4746,
   );
+
+  //rx lat and long
+  var lat = 37.42796133580664.obs;
+  var long = (-122.085749655962).obs;
 
   final CameraPosition kLake = CameraPosition(
     bearing: 192.8334901395799,
@@ -67,6 +74,7 @@ class MapsController extends GetxController {
   void onInit() {
     _createCustomMarker();
     super.onInit();
+    getCurrentLocation();
     // searchBarState.focusNode.value.addListener(searchBarState.onFocusChange);
     searchBarState.focusNode.value.addListener(searchBarState.onFocusChange);
   }
@@ -86,9 +94,49 @@ class MapsController extends GetxController {
     _controller = controller;
   }
 
-  void getCurrentLocation() {
+  Future<void> getCurrentLocation() async {
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied ||
+        permission == LocationPermission.deniedForever) {
+      // Permission denied, show a dialog to the user
+      permission = await Geolocator.requestPermission();
+      Get.dialog(
+        AlertDialog(
+          title: Text('Location Permission Required'),
+          content: Text(
+              'This app needs location permission to get your current location. Please grant the permission in the app settings.'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Open Settings'),
+              onPressed: () {
+                openAppSettings();
+                Get.back();
+              },
+            ),
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Get.back();
+              },
+            ),
+          ],
+        ),
+      );
+    }
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      print('Current location: ${position.latitude}, ${position.longitude}');
+      lat.value = position.latitude;
+      long.value = position.longitude;
+      print('lat: ${lat.value}, long: ${long.value}');
+      moveCamera(lat.value, long.value);
+    } catch (e) {
+      print('Error getting location: $e');
+    }
   }
-    
+
+  
 
   void moveCamera(double lat, double long) {
     initMarker(_controller, lat, long);
@@ -204,66 +252,67 @@ class MapsController extends GetxController {
     }
   }
 
-Future<String> fetchFormattedAddress(Marker marker) async {
-  List<Placemark> placemarks = await placemarkFromCoordinates(marker.position.latitude, marker.position.longitude);
-  print('\n placemarks: ${placemarks}');
+  Future<String> fetchFormattedAddress(Marker marker) async {
+    List<Placemark> placemarks = await placemarkFromCoordinates(
+        marker.position.latitude, marker.position.longitude);
+    print('\n placemarks: ${placemarks}');
 
-  String formattedAddress = placemarks.first.street! +
-      ', ' +
-      placemarks.first.subLocality! +
-      ', ' +
-      placemarks.first.locality! +
-      ', ' +
-      placemarks.first.administrativeArea! +
-      ', ' +
-      placemarks.first.postalCode!;
+    String formattedAddress = placemarks.first.street! +
+        ', ' +
+        placemarks.first.subLocality! +
+        ', ' +
+        placemarks.first.locality! +
+        ', ' +
+        placemarks.first.administrativeArea! +
+        ', ' +
+        placemarks.first.postalCode!;
 
-  print('\n formattedAddress: ${formattedAddress}');
+    print('\n formattedAddress: ${formattedAddress}');
 
-  return formattedAddress;
-}
+    return formattedAddress;
+  }
 
-void onMarkerTapped(Marker marker) {
-  // Update panel data
-  placeName.value = marker.markerId.value;
-  placeType.value = convertTypeName(
-      data.firstWhere((e) => e.name == marker.markerId.value).type);
-  phoneNumber.value =
-      data.firstWhere((e) => e.name == marker.markerId.value).phone!;
-  position.value =
-      '${marker.position.latitude}, ${marker.position.longitude}';
+  void onMarkerTapped(Marker marker) {
+    // Update panel data
+    placeName.value = marker.markerId.value;
+    placeType.value = convertTypeName(
+        data.firstWhere((e) => e.name == marker.markerId.value).type);
+    phoneNumber.value =
+        data.firstWhere((e) => e.name == marker.markerId.value).phone!;
+    position.value =
+        '${marker.position.latitude}, ${marker.position.longitude}';
 
-  // Fetch and update address in the background
-  fetchFormattedAddress(marker).then((formattedAddress) {
-    address.value = formattedAddress;
-  });
+    // Fetch and update address in the background
+    fetchFormattedAddress(marker).then((formattedAddress) {
+      address.value = formattedAddress;
+    });
 
-  // Update marker icon
-  updateMarkerIcon(marker.markerId.value);
+    // Update marker icon
+    updateMarkerIcon(marker.markerId.value);
 
-  // Check if marker is already selected
-  if (selectedMarker != null && selectedMarker!.markerId == marker.markerId) {
-    // Toggle panel
-    if (panelController.isPanelOpen) {
-      panelController.close();
-      // Close info window
-      _controller.hideMarkerInfoWindow(marker.markerId);
-      // Revert marker icon
-      revertMarkerIcon(marker.markerId.value);
+    // Check if marker is already selected
+    if (selectedMarker != null && selectedMarker!.markerId == marker.markerId) {
+      // Toggle panel
+      if (panelController.isPanelOpen) {
+        panelController.close();
+        // Close info window
+        _controller.hideMarkerInfoWindow(marker.markerId);
+        // Revert marker icon
+        revertMarkerIcon(marker.markerId.value);
+      } else {
+        panelController.open();
+      }
     } else {
+      // Revert last selected marker icon
+      if (selectedMarker != null) {
+        revertMarkerIcon(selectedMarker!.markerId.value);
+      }
+      // Store selected marker
+      selectedMarker = marker;
+      // Open panel
       panelController.open();
     }
-  } else {
-    // Revert last selected marker icon
-    if (selectedMarker != null) {
-      revertMarkerIcon(selectedMarker!.markerId.value);
-    }
-    // Store selected marker
-    selectedMarker = marker;
-    // Open panel
-    panelController.open();
   }
-}
 
   Future<void> _createCustomMarker() async {
     final gasStationBytes =

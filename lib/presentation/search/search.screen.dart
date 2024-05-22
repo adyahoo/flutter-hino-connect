@@ -114,6 +114,7 @@ class SearchScreen extends GetView<SearchPageController> {
           title: Padding(
             padding: const EdgeInsets.all(8),
             child: AppSearchBar(
+              hintText: 'Cari tempat..',
               // state: controller.mapsController.searchBarState,
               controller: controller.mapsController.searchbarController.value,
               onSearch: (input) {
@@ -181,7 +182,7 @@ class SearchScreen extends GetView<SearchPageController> {
                           return ListView.separated(
                             itemCount: controller.searchResults.length,
                             separatorBuilder: (context, index) =>
-                                SizedBox(height: 0),
+                                SizedBox(height: 16),
                             itemBuilder: (context, index) {
                               final result = controller.searchResults[index];
                               return GestureDetector(

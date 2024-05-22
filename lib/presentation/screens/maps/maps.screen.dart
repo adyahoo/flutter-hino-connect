@@ -29,7 +29,7 @@ class MapsScreen extends GetView<MapsController> {
               initialCameraPosition: controller.kGooglePlex,
               onMapCreated: (GoogleMapController controller) {
                 this.controller.initMarker(
-                    controller, 37.42796133580664, -122.085749655962);
+                    controller, this.controller.lat.value, this.controller.long.value);
               },
               markers: controller.markers,
               myLocationButtonEnabled: false,
@@ -48,7 +48,7 @@ class MapsScreen extends GetView<MapsController> {
               ),
               child: IconButton(
                 onPressed: () {
-                  //:TODO: Implement current location
+                  controller.getCurrentLocation();
                 },
                 splashColor: Colors.white,
                 icon: Icon(Icons.location_searching_outlined,
@@ -65,6 +65,7 @@ class MapsScreen extends GetView<MapsController> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: AppSearchBar(
+                    hintText: 'Cari tempat..',
                     // state: controller.searchBarState,
                     controller: controller.searchbarController.value,
                     editable: false,

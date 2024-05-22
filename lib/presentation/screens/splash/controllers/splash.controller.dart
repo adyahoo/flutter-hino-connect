@@ -16,6 +16,7 @@ class SplashController extends GetxController {
   void onReady() {
     super.onReady();
     _checkPermission();
+    changeLanguage();
   }
 
   @override
@@ -50,16 +51,31 @@ class SplashController extends GetxController {
     });
   }
 
-  void _openAppSetting(){
-
-  }
-
   void navigateLogin() {
     Future.delayed(const Duration(seconds: 3), () {
       if (inject<StorageService>().getToken() != null)
         Get.offNamed(Routes.MAIN_TAB);
       else
         Get.offNamed(Routes.LOGIN);
+    });
+  }
+
+  void changeLanguage() {
+    Future.value(inject<StorageService>().getSelectedLanguage()).then((value) {
+      print("check language: $value");
+      switch (value) {
+        case 1:
+          print('masuk case 1');
+          Get.updateLocale(Locale('id', 'ID'));
+          break;
+        case 2:
+          print('masuk case 2');
+          Get.updateLocale(Locale('en', 'US'));
+          break;
+        default:
+          print('masuk default');
+          break;
+      }
     });
   }
 }

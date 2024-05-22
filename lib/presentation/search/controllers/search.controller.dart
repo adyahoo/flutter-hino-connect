@@ -1,3 +1,4 @@
+import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:hino_driver_app/data/locals/StorageService.dart';
 import 'package:hino_driver_app/domain/core/entities/search_result_model.dart';
@@ -35,7 +36,6 @@ class SearchPageController extends GetxController {
   MapsController mapsController = Get.find<MapsController>();
 
   final searchBarState = AppTextFieldState();
-  
 
   @override
   Future<void> onInit() async {
@@ -66,9 +66,7 @@ class SearchPageController extends GetxController {
     //       lng: 106.8650),
     // ]);
 
-    
-  searchResults.value = await StorageService().loadRecentSearches();
-
+    searchResults.value = await StorageService().loadRecentSearches();
   }
 
   @override
@@ -82,8 +80,6 @@ class SearchPageController extends GetxController {
     searchBarState.focusNode.value.removeListener(searchBarState.onFocusChange);
   }
 
-  
-
   // bool onChangeListener(String value) {
   //   if (value.isEmpty) {
   //     isTextFieldEdited.value = false;
@@ -94,11 +90,34 @@ class SearchPageController extends GetxController {
   //   }
   // }
 
+  // void selectLocation(SearchResult result) {
+  //   print('Selected Location: ${result.name}');
+
+  //   //create new array of search result with a new object before overwriting the searchResults
+  //   final newSearchResults = [result, ...searchResults];
+
+  //   //update the searchResults
+  //   searchResults.value = newSearchResults;
+
+  //   inject<StorageService>().saveRecentSearches(searchResults);
+
+  //   Get.back();
+  //   Future.delayed(Duration(milliseconds: 500), () {
+  //     mapsController.moveCamera(result.lat, result.lng);
+  //     mapsController.searchbarController.value.text = result.name;
+  //   });
+  // }
+
   void selectLocation(SearchResult result) {
     print('Selected Location: ${result.name}');
 
     //create new array of search result with a new object before overwriting the searchResults
     final newSearchResults = [result, ...searchResults];
+
+    // If the list already has 5 items, remove the last one.
+    if (newSearchResults.length > 5) {
+      newSearchResults.removeLast();
+    }
 
     //update the searchResults
     searchResults.value = newSearchResults;
@@ -110,14 +129,11 @@ class SearchPageController extends GetxController {
       mapsController.moveCamera(result.lat, result.lng);
       mapsController.searchbarController.value.text = result.name;
     });
-
-
-
-
   }
 
   void removeRecentSearchSelected(SearchResult result) {
-    final newSearchResults = searchResults.where((element) => element != result).toList();
+    final newSearchResults =
+        searchResults.where((element) => element != result).toList();
     searchResults.value = newSearchResults;
 
     StorageService.instance().then((storage) {
@@ -126,7 +142,7 @@ class SearchPageController extends GetxController {
   }
 
   Future<void> search(String input) async {
-        currentInput.value = input;
+    currentInput.value = input;
     String apiKey = Constants.MAP_API_KEY;
     // currentInput.value = input;
 
@@ -142,6 +158,8 @@ class SearchPageController extends GetxController {
       // Parse the JSON response
       var jsonResponse = jsonDecode(response.body);
       print('Details JSON');
+      //print json response in json stringify format
+      print(jsonEncode(jsonResponse));
 
       // Clear the current results
       filteredResults.clear();
@@ -159,7 +177,7 @@ class SearchPageController extends GetxController {
           var vicinity = detailsJson['result']['formatted_address'];
 
           filteredResults.add(SearchResult(
-            name: item['description'],
+            name: item['structured_formatting']['main_text'],
             vicinity: vicinity,
             lat: location['lat'],
             lng: location['lng'],
@@ -173,4 +191,13 @@ class SearchPageController extends GetxController {
       throw Exception('Failed to load results');
     }
   }
+  
+  // Future<String> getFormattedNameAddress(double lat, double lng) async {
+  //   List<Placemark> placemarks = await placemarkFromCoordinates(
+  //     lat,
+  //     lng,
+  //   );
+  //   print('\n placemarks: ${placemarks}');
+  //   return placemarks[0].name.toString();
+  // }
 }
