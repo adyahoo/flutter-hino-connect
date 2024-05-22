@@ -1,5 +1,6 @@
 import 'package:hino_driver_app/data/data_sources/data_source.dart';
 import 'package:hino_driver_app/data/dtos/base_response_dto.dart';
+import 'package:hino_driver_app/data/dtos/events_dto.dart';
 import 'package:hino_driver_app/domain/core/entities/model.dart';
 import 'package:hino_driver_app/domain/core/interfaces/i_use_case.dart';
 import 'package:hino_driver_app/infrastructure/constants.dart';
@@ -26,6 +27,47 @@ class EventUseCase implements IEventUseCase {
       );
     } catch (e) {
       //call error handler dialog
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> addEvent(EventModel newData) async {
+    try {
+      final dto = EventDto(
+        id: newData.id,
+        type: newData.type.value,
+        note: newData.note,
+        createdAt: newData.createdAt,
+      );
+
+      await dataSource.addEvent(dto);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> deleteEvent(int id) async {
+    try {
+      await dataSource.deleteEvent(id);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> updateEvent(EventModel newData) async {
+    try {
+      final dto = EventDto(
+        id: newData.id,
+        type: newData.type.value,
+        note: newData.note,
+        createdAt: newData.createdAt,
+      );
+
+      await dataSource.updateEvent(dto);
+    } catch (e) {
       rethrow;
     }
   }

@@ -17,4 +17,13 @@ class EventDto {
         note: json["note"],
         createdAt: json["created_at"],
       );
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': this.id,
+      'type': this.type,
+      'note': this.note,
+      'created_at': this.createdAt,
+    };
+  }
 }

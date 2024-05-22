@@ -29,27 +29,35 @@ class EventListController extends GetxController {
   }
 
   void addEvent(EventModel data) async {
-    await Future.delayed(const Duration(milliseconds: 3000));
+    await Future.delayed(const Duration(milliseconds: 500));
+    showLoadingOverlay();
+    await Future.delayed(const Duration(milliseconds: 1000));
 
-    this.data.value = [data, ...this.data.value];
+    await _useCase.addEvent(data);
     hideLoadingOverlay();
+
+    getEventList();
   }
 
   void updateEvent(EventModel data) async {
-    await Future.delayed(const Duration(milliseconds: 3000));
+    await Future.delayed(const Duration(milliseconds: 500));
+    showLoadingOverlay();
+    await Future.delayed(const Duration(milliseconds: 1000));
 
-    final updatedIndex = this.data.value.indexWhere((element) => element.id == data.id);
-
-    this.data.value[updatedIndex] = data;
-    this.data.refresh();
+    await _useCase.updateEvent(data);
     hideLoadingOverlay();
+
+    getEventList();
   }
 
   void deleteEvent(int id) async {
-    await Future.delayed(const Duration(milliseconds: 3000));
+    await Future.delayed(const Duration(milliseconds: 500));
+    showLoadingOverlay();
+    await Future.delayed(const Duration(milliseconds: 1000));
 
-    this.data.value.removeWhere((element) => element.id == id);
-    this.data.refresh();
+    await _useCase.deleteEvent(id);
     hideLoadingOverlay();
+
+    getEventList();
   }
 }
