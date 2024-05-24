@@ -18,6 +18,14 @@ class ActivityDto extends Equatable {
         createdAt: json["created_at"],
       );
 
+  Map<String, dynamic> toJson() {
+    return {
+      'id': this.id,
+      'type': this.type,
+      'created_at': this.createdAt,
+    };
+  }
+
   @override
   List<Object> get props => [id, type, createdAt];
 }

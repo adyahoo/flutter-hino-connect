@@ -4,7 +4,7 @@ import 'package:hino_driver_app/data/locals/StorageService.dart';
 import 'package:hino_driver_app/domain/core/usecases/activity_use_case.dart';
 import 'package:hino_driver_app/domain/core/usecases/feedback_use_case.dart';
 import 'package:hino_driver_app/domain/core/usecases/place_use_case.dart';
-import 'package:hino_driver_app/domain/core/usecases/trip_use_case.dart';
+import 'package:hino_driver_app/domain/core/usecases/splash_use_case.dart';
 import 'package:hino_driver_app/domain/core/usecases/trip_use_case.dart';
 import 'package:hino_driver_app/domain/core/usecases/user_use_case.dart';
 import 'package:hino_driver_app/domain/core/usecases/contact_use_case.dart';
@@ -16,6 +16,9 @@ GetIt inject = GetIt.instance;
 Future setupInjection() async {
   final storageInstance = await StorageService.instance();
   inject.registerSingleton<StorageService>(storageInstance!);
+
+  //splash
+  inject.registerLazySingleton<SplashUseCase>(() => SplashUseCase());
 
   //activity
   inject.registerLazySingleton<ActivityDataSource>(() => ActivityDataSource());

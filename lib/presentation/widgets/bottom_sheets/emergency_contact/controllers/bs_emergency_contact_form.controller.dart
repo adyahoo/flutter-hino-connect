@@ -20,7 +20,7 @@ class BsEmergencyContactFormController extends GetxController {
     final data = ContactModel(
       id: editedId.value ?? 100,
       name: nameController.value.text,
-      code: "(0361)",
+      code: "0361",
       phone: phoneController.value.text,
     );
 

@@ -196,6 +196,15 @@ class TextColor {
   static const disabled = GrayColor.color50;
 }
 
+class BackgroundColor {
+  BackgroundColor._();
+
+  static const primary = Colors.white;
+  static const secondary = GrayColor.color20;
+  static const tertiary = GrayColor.color30;
+  static const disabled = GrayColor.color40;
+}
+
 class BorderColor {
   BorderColor._();
 

@@ -4,11 +4,10 @@ class ContactDataSource {
   Future<ListApiResponse<ContactDto>> getSosContacts() async {
     try {
       await Future.delayed(const Duration(seconds: 3));
-      final response = await DefaultAssetBundle.of(rootScaffoldMessengerKey.currentContext!).loadString('assets/response_helpers/contacts.json');
-      final data = await json.decode(response);
+      final data = await inject<StorageService>().getJsonData(StorageService.CONTACTS_JSON);
 
       return ListApiResponse.fromJson(
-        data,
+        data!,
         (json) => json
             .map(
               (e) => ContactDto.fromJson(e),
@@ -16,6 +15,51 @@ class ContactDataSource {
             .toList(),
       );
     } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<ContactDto?> getPersonalSosContacts() async {
+    try {
+      await Future.delayed(const Duration(seconds: 3));
+      final data = await inject<StorageService>().getJsonData(StorageService.PERSONAL_CONTACTS_JSON);
+
+      if (data != null) {
+        return ContactDto.fromJson(data["data"]);
+      }
+
+      return null;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> addPersonalSosContact(ContactDto newData) async {
+    try {
+      await Future.delayed(const Duration(seconds: 3));
+
+      inject<StorageService>().setJsonData(StorageService.PERSONAL_CONTACTS_JSON, {"data": newData.toJson()});
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  //it look simple because the contact only hold 1 data, so we can override using key only
+  Future<void> updatePersonalSosContact(ContactDto newData) async {
+    try {
+      await Future.delayed(const Duration(seconds: 3));
+
+      inject<StorageService>().setJsonData(StorageService.PERSONAL_CONTACTS_JSON, {"data": newData.toJson()});
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  //we clear the data by key because it only hold 1 data, and it can't edit without any data exist
+  Future<void> deletePersonalSosContact(int id) async {
+    try{
+      inject<StorageService>().clearByKey(StorageService.PERSONAL_CONTACTS_JSON);
+    }catch (e){
       rethrow;
     }
   }

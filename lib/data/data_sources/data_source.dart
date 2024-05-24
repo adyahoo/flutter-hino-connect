@@ -10,6 +10,9 @@ import 'package:hino_driver_app/data/dtos/single_base_response_dto.dart';
 import 'package:hino_driver_app/data/dtos/trips_dto.dart';
 import 'package:hino_driver_app/data/dtos/user_dto.dart';
 import 'package:hino_driver_app/infrastructure/constants.dart';
+import 'package:hino_driver_app/data/locals/StorageService.dart';
+import 'package:hino_driver_app/domain/core/entities/model.dart';
+import 'package:hino_driver_app/infrastructure/di.dart';
 import 'package:hino_driver_app/main.dart';
 import 'package:http/http.dart' as http;
 

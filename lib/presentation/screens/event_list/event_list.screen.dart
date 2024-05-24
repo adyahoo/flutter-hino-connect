@@ -42,7 +42,7 @@ class EventListScreen extends GetView<EventListController> {
       child: Column(
         children: [
           EventCardHeader(data: item),
-          (item.note != null) ? EventCardNote(note: item.note!) : const SizedBox(),
+          (item.note != null && item.note != "") ? EventCardNote(note: item.note!) : const SizedBox(),
           Container(
             margin: const EdgeInsets.symmetric(vertical: 16),
             child: const AppStrippedDivider(),
@@ -65,9 +65,6 @@ class EventListScreen extends GetView<EventListController> {
       BsEventForm(
         initialData: item,
         onSubmit: (data) async {
-          await Future.delayed(const Duration(milliseconds: 500));
-          showLoadingOverlay();
-
           controller.updateEvent(data);
         },
       ),
@@ -84,9 +81,6 @@ class EventListScreen extends GetView<EventListController> {
         positiveTitle: 'delete'.tr,
         positiveButtonOnClick: () async {
           Get.back();
-          await Future.delayed(const Duration(milliseconds: 500));
-          showLoadingOverlay();
-
           controller.deleteEvent(item.id);
         },
       ),
@@ -97,9 +91,6 @@ class EventListScreen extends GetView<EventListController> {
     Get.bottomSheet(
       BsEventForm(
         onSubmit: (data) async {
-          await Future.delayed(const Duration(milliseconds: 500));
-          showLoadingOverlay();
-
           controller.addEvent(data);
         },
       ),

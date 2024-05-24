@@ -1,11 +1,17 @@
-import 'package:flutter/material.dart';
+import 'dart:ui';
+
 import 'package:get/get.dart';
 import 'package:hino_driver_app/data/locals/StorageService.dart';
+import 'package:hino_driver_app/domain/core/usecases/splash_use_case.dart';
 import 'package:hino_driver_app/infrastructure/di.dart';
 import 'package:hino_driver_app/infrastructure/navigation/routes.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class SplashController extends GetxController {
+  SplashController({required this.useCase});
+
+  final SplashUseCase useCase;
+
   final isLoading = true.obs;
 
   void onInit() {
@@ -16,7 +22,8 @@ class SplashController extends GetxController {
   void onReady() {
     super.onReady();
     _checkPermission();
-    changeLanguage();
+    _changeLanguage();
+    _checkLocalJson();
   }
 
   @override
@@ -28,7 +35,6 @@ class SplashController extends GetxController {
     final permissions = [Permission.location];
 
     final result = await permissions.request();
-    print("sapi permission: $result");
 
     result.forEach((key, value) {
       switch (value) {
@@ -51,6 +57,8 @@ class SplashController extends GetxController {
     });
   }
 
+  void _openAppSetting() {}
+
   void navigateLogin() {
     Future.delayed(const Duration(seconds: 3), () {
       if (inject<StorageService>().getToken() != null)
@@ -60,7 +68,7 @@ class SplashController extends GetxController {
     });
   }
 
-  void changeLanguage() {
+  void _changeLanguage() {
     Future.value(inject<StorageService>().getSelectedLanguage()).then((value) {
       print("check language: $value");
       switch (value) {
@@ -78,4 +86,15 @@ class SplashController extends GetxController {
       }
     });
   }
+    
+  void _checkLocalJson() async {
+    final jsonData = await inject<StorageService>().getJsonData(StorageService.USERS_JSON);
+
+    if (jsonData != null) {
+      return;
+    }
+
+    useCase.writeLocalJson();
+  }
 }
+

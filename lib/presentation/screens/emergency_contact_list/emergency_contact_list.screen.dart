@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -28,7 +29,7 @@ class EmergencyContactListScreen extends GetView<EmergencyContactListController>
       BsEmergencyContactForm(
         initData: contact,
         onSubmit: (data) {
-          controller.addContact(data);
+          controller.updateContact(data);
         },
       ),
       canExpand: true,
@@ -92,10 +93,10 @@ class EmergencyContactListScreen extends GetView<EmergencyContactListController>
             child: const AppStrippedDivider(),
           ),
           AppCardAction(
-            onEdit: (){
+            onEdit: () {
               onEdit(contact);
             },
-            onDelete: (){
+            onDelete: () {
               onDelete(contact.id);
             },
           ),
@@ -104,21 +105,10 @@ class EmergencyContactListScreen extends GetView<EmergencyContactListController>
     );
   }
 
-  Widget _renderContent(BuildContext context) {
-    if (controller.isFetching.value) {
-      return _renderLoading();
-    }
-
-    final contacts = controller.data.value;
-
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: 1,
-      itemBuilder: (context, index) => _renderCardContact(
-        context,
-        contacts[0],
-      ),
+  Widget _renderContent(BuildContext context, ContactModel contact) {
+    return _renderCardContact(
+      context,
+      contact,
     );
   }
 
@@ -137,6 +127,32 @@ class EmergencyContactListScreen extends GetView<EmergencyContactListController>
     );
   }
 
+  Widget _renderEmpty(BuildContext context) {
+    return Expanded(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SvgPicture.asset(
+            "assets/icons/ic_call_calling_round.svg",
+            width: 56,
+            height: 56,
+          ),
+          const SizedBox(height: 20),
+          Text(
+            "empty_contact_title".tr,
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          const SizedBox(height: 4),
+          Text(
+            "empty_contact_subtitle".tr,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.secondary),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -149,21 +165,35 @@ class EmergencyContactListScreen extends GetView<EmergencyContactListController>
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
-              child: Column(
-                children: [
-                  AppTips(
-                    content: "emergency_tips_content".tr,
-                    variant: WidgetVariant.info,
-                  ),
-                  const SizedBox(height: 16),
-                  Obx(() => _renderContent(context)),
-                ],
-              ),
+              child: Obx(() {
+                if (controller.isFetching.value) {
+                  return _renderLoading();
+                }
+
+                final contact = controller.data.value;
+
+                if (contact == null) {
+                  return _renderEmpty(context);
+                }
+
+                return Column(
+                  children: [
+                    AppTips(
+                      content: "emergency_tips_content".tr,
+                      variant: WidgetVariant.info,
+                    ),
+                    const SizedBox(height: 16),
+                    _renderContent(context, contact),
+                  ],
+                );
+              }),
             ),
-            AppButton(
-              label: "add_emergency_contact".tr,
-              onPress: onAdd,
-              type: AppButtonType.filled,
+            Obx(
+              () => AppButton(
+                label: "add_emergency_contact".tr,
+                onPress: (controller.data.value != null) ? null : onAdd,
+                type: AppButtonType.filled,
+              ),
             ),
           ],
         ),
