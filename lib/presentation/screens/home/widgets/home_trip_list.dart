@@ -53,7 +53,9 @@ class HomeTripList extends GetView<HomeController> {
         const SizedBox(height: 16),
         AppButton(
           label: "see_all_trip".tr,
-          onPress: () {},
+          onPress: () {
+            Get.toNamed(Routes.TRIP_LIST);
+          },
           type: AppButtonType.alternate,
         ),
       ],

@@ -1,6 +1,6 @@
 part of '../home.screen.dart';
 
-class HomeAccountChip extends StatelessWidget {
+class HomeAccountChip extends GetView<HomeController> {
   const HomeAccountChip({super.key});
 
   @override
@@ -15,12 +15,16 @@ class HomeAccountChip extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(
-              width: 24,
-              height: 24,
-              child: CircleAvatar(
-                radius: 50,
-                backgroundImage: AssetImage("assets/images/face_scan_illust.svg"),
+            Obx(
+              () => SizedBox(
+                width: 24,
+                height: 24,
+                child: CircleAvatar(
+                  radius: 50,
+                  backgroundImage: NetworkImage(
+                    controller.user.value?.profilePic ?? "",
+                  ),
+                ),
               ),
             ),
             const SizedBox(width: 6),

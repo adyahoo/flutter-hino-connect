@@ -1,6 +1,6 @@
 part of '../home.screen.dart';
 
-class HomeAppBar extends StatelessWidget {
+class HomeAppBar extends GetView<HomeController> {
   const HomeAppBar({super.key});
 
   @override
@@ -33,9 +33,11 @@ class HomeAppBar extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 20),
-              Text(
-                "Selamat data, mamank skkrrttt",
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
+              Obx(
+                () => Text(
+                  "Selamat datang, ${controller.user.value?.name}",
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
+                ),
               ),
               const SizedBox(height: 4),
               Text(

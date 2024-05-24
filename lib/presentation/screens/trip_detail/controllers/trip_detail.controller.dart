@@ -59,7 +59,6 @@ class TripDetailController extends GetxController {
 
   @override
   void onInit() {
-    resetMarkerRoute();
     _createCustomMarker();
     super.onInit();
   }
@@ -176,7 +175,7 @@ class TripDetailController extends GetxController {
     };
   }
 
-  Marker _createPenaltyMarker(PenaltyModel data) {
+  Marker _createPenaltyMarker(PenaltyModel data, {bool isSelected = false}) {
     BitmapDescriptor icon;
     BitmapDescriptor selectedIcon;
 
@@ -203,7 +202,7 @@ class TripDetailController extends GetxController {
         markerId: MarkerId(data.id.toString()),
         position: data.coordinate,
         anchor: const Offset(0.5, 0.5),
-        icon: icon,
+        icon: isSelected ? selectedIcon : icon,
         onTap: () {
           _penaltyTapHandler(data, icon, selectedIcon);
         });
@@ -232,25 +231,37 @@ class TripDetailController extends GetxController {
     selectedPenalty.value = penaltyData;
   }
 
-  void _updateSelectedMarker(PenaltyModel newSelected, BitmapDescriptor icon, BitmapDescriptor selectedIcon) {
-    final newMarkers = _markers.value.map((e) {
-      print("sapi marker ${e.markerId} ${newSelected.id}");
-      if (e.markerId == newSelected.id.toString()) {
-        return e.copyWith(iconParam: acceleratePin);
-      } else
-        return e;
-    }).toSet();
-    print("sapi markers ${newMarkers.firstWhere((element) => element.markerId == newSelected.id.toString()).markerId}");
-
-    _markers.value = newMarkers;
-  }
-
-  void resetMarkerRoute() {
+  void _updateSelectedMarker(PenaltyModel newSelected, BitmapDescriptor icon, BitmapDescriptor selectedIcon) async {
+    final selectedMarker = _markers.value.firstWhere((element) => element.markerId.value == newSelected.id.toString());
+    final markers = _markers.value;
     _markers.value.clear();
     _markers.value = {};
 
+    markers.remove(selectedMarker);
+    print("sapi markers 1 $markers");
+
+    final newMarker = _createPenaltyMarker(newSelected, isSelected: true);
+    print("sapi markers 2 $markers");
+    markers.add(newMarker);
+
+    print("sapi markers $markers");
+    await Future.delayed(const Duration(milliseconds: 500));
+    _markers.value = markers;
+    this.refresh();
+  }
+
+  void resetMarker() {
+    _markers.value.clear();
+    _markers.value = {};
+  }
+
+  void resetPolyline(){
     _polyline.value.clear();
     _polyline.value = {};
+  }
+
+  void resetPanel(){
+    panelController.close();
   }
 
   Future<void> _createCustomMarker() async {

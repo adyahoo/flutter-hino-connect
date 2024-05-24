@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hino_driver_app/data/locals/StorageService.dart';
 import 'package:hino_driver_app/domain/core/entities/model.dart';
 import 'package:hino_driver_app/infrastructure/di.dart';
 import 'package:hino_driver_app/infrastructure/navigation/routes.dart';
 import 'package:hino_driver_app/presentation/screens/profile/controllers/profile.controller.dart';
-import 'package:hino_driver_app/domain/core/entities/trips_model.dart';
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -31,7 +29,7 @@ class MenuItem {
 }
 
 class Constants {
-  static final MAP_API_KEY = "AIzaSyAzc3CqLAKvVzyciztdOcADxafOs1iYHbs";
+  static final MAP_API_KEY = "AIzaSyDZKwVj-h7dPFpdgBRNZ4WhkFtd0Mkv128";
   static const DATE_FORMAT_TZ = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
   static final DATE_FORMAT_PENALTY = "dd MMM yyyy, HH:mm";
   static final DATE_FORMAT_TRIP = "EEEE, dd MMMM yyyy";
