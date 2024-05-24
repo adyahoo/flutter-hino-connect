@@ -1,7 +1,5 @@
-import 'dart:typed_data';
 import 'dart:ui' as ui;
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -101,6 +99,8 @@ class TripDetailController extends GetxController {
     );
 
     this.selectedPenalty.value = updatedPenalty;
+
+    tripUseCase.updateTripDetail(int.parse(Get.parameters['id'] ?? "0"), updatedPenalty);
   }
 
   void initRouteMarker() async {
@@ -126,6 +126,10 @@ class TripDetailController extends GetxController {
   }
 
   void onMapTapped(LatLng latLng) {
+    if (selectedPenalty.value != null) {
+      _updateSelectedMarker(selectedPenalty.value!, false);
+    }
+
     if (currentPanel.value == TripPanel.penalty) {
       setPanel(TripPanel.detail);
     }
@@ -199,16 +203,17 @@ class TripDetailController extends GetxController {
     }
 
     return Marker(
-        markerId: MarkerId(data.id.toString()),
-        position: data.coordinate,
-        anchor: const Offset(0.5, 0.5),
-        icon: isSelected ? selectedIcon : icon,
-        onTap: () {
-          _penaltyTapHandler(data, icon, selectedIcon);
-        });
+      markerId: MarkerId(data.id.toString()),
+      position: data.coordinate,
+      anchor: const Offset(0.5, 0.5),
+      icon: isSelected ? selectedIcon : icon,
+      onTap: () {
+        _penaltyTapHandler(data);
+      },
+    );
   }
 
-  void _penaltyTapHandler(PenaltyModel penalty, BitmapDescriptor icon, BitmapDescriptor selectedIcon) async {
+  void _penaltyTapHandler(PenaltyModel penalty) async {
     final mapUtils = MapUtils(
       origin: penalty.coordinate,
       destination: penalty.coordinate,
@@ -224,30 +229,30 @@ class TripDetailController extends GetxController {
     );
 
     Future.delayed(const Duration(milliseconds: 500), () {
-      _updateSelectedMarker(penalty, icon, selectedIcon);
-      setPanel(TripPanel.penalty);
-    });
+      //revert the selected marker into unselected if exist
+      if (selectedPenalty.value != null) {
+        _updateSelectedMarker(selectedPenalty.value!, false);
+      }
 
-    selectedPenalty.value = penaltyData;
+      //change marker into selected state
+      _updateSelectedMarker(penalty, true);
+
+      //open penalty detail panel
+      setPanel(TripPanel.penalty);
+
+      selectedPenalty.value = penaltyData;
+    });
   }
 
-  void _updateSelectedMarker(PenaltyModel newSelected, BitmapDescriptor icon, BitmapDescriptor selectedIcon) async {
-    final selectedMarker = _markers.value.firstWhere((element) => element.markerId.value == newSelected.id.toString());
-    final markers = _markers.value;
-    _markers.value.clear();
-    _markers.value = {};
+  void _updateSelectedMarker(PenaltyModel selected, isSelected) async {
+    final selectedMarker = _markers.value.firstWhere(
+      (element) => element.markerId.value == selected.id.toString(),
+    );
+    final newMarker = _createPenaltyMarker(selected, isSelected: isSelected);
 
-    markers.remove(selectedMarker);
-    print("sapi markers 1 $markers");
-
-    final newMarker = _createPenaltyMarker(newSelected, isSelected: true);
-    print("sapi markers 2 $markers");
-    markers.add(newMarker);
-
-    print("sapi markers $markers");
-    await Future.delayed(const Duration(milliseconds: 500));
-    _markers.value = markers;
-    this.refresh();
+    _markers.value = Set<Marker>.from(
+      _markers.value.where((element) => element.markerId != selectedMarker.markerId),
+    )..add(newMarker);
   }
 
   void resetMarker() {
@@ -255,12 +260,12 @@ class TripDetailController extends GetxController {
     _markers.value = {};
   }
 
-  void resetPolyline(){
+  void resetPolyline() {
     _polyline.value.clear();
     _polyline.value = {};
   }
 
-  void resetPanel(){
+  void resetPanel() {
     panelController.close();
   }
 

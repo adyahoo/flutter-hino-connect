@@ -73,6 +73,12 @@ class StorageService {
     await _preferences!.setString(key, jsonEncoded);
   }
 
+  void setJsonDataList(String key, List<dynamic> contents) async {
+    final jsonEncoded = json.encode(contents);
+
+    await _preferences!.setString(key, jsonEncoded);
+  }
+
   void clearByKey(String key) async {
     await _preferences!.remove(key);
   }

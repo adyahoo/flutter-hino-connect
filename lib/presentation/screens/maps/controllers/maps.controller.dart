@@ -7,11 +7,10 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hino_driver_app/domain/core/entities/place_model.dart';
 import 'package:hino_driver_app/domain/core/usecases/place_use_case.dart';
-import 'package:hino_driver_app/infrastructure/map_utils.dart';
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-import 'package:geolocator/geolocator.dart';
+// import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 
 final _panelController = PanelController();
@@ -95,48 +94,46 @@ class MapsController extends GetxController {
   }
 
   Future<void> getCurrentLocation() async {
-    LocationPermission permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied ||
-        permission == LocationPermission.deniedForever) {
-      // Permission denied, show a dialog to the user
-      permission = await Geolocator.requestPermission();
-      Get.dialog(
-        AlertDialog(
-          title: Text('Location Permission Required'),
-          content: Text(
-              'This app needs location permission to get your current location. Please grant the permission in the app settings.'),
-          actions: <Widget>[
-            TextButton(
-              child: Text('Open Settings'),
-              onPressed: () {
-                openAppSettings();
-                Get.back();
-              },
-            ),
-            TextButton(
-              child: Text('Cancel'),
-              onPressed: () {
-                Get.back();
-              },
-            ),
-          ],
-        ),
-      );
-    }
-    try {
-      Position position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high);
-      print('Current location: ${position.latitude}, ${position.longitude}');
-      lat.value = position.latitude;
-      long.value = position.longitude;
-      print('lat: ${lat.value}, long: ${long.value}');
-      moveCamera(lat.value, long.value);
-    } catch (e) {
-      print('Error getting location: $e');
-    }
+    // LocationPermission permission = await Geolocator.checkPermission();
+    // if (permission == LocationPermission.denied ||
+    //     permission == LocationPermission.deniedForever) {
+    //   // Permission denied, show a dialog to the user
+    //   permission = await Geolocator.requestPermission();
+    //   Get.dialog(
+    //     AlertDialog(
+    //       title: Text('Location Permission Required'),
+    //       content: Text(
+    //           'This app needs location permission to get your current location. Please grant the permission in the app settings.'),
+    //       actions: <Widget>[
+    //         TextButton(
+    //           child: Text('Open Settings'),
+    //           onPressed: () {
+    //             openAppSettings();
+    //             Get.back();
+    //           },
+    //         ),
+    //         TextButton(
+    //           child: Text('Cancel'),
+    //           onPressed: () {
+    //             Get.back();
+    //           },
+    //         ),
+    //       ],
+    //     ),
+    //   );
+    // }
+    // try {
+    //   Position position = await Geolocator.getCurrentPosition(
+    //       desiredAccuracy: LocationAccuracy.high);
+    //   print('Current location: ${position.latitude}, ${position.longitude}');
+    //   lat.value = position.latitude;
+    //   long.value = position.longitude;
+    //   print('lat: ${lat.value}, long: ${long.value}');
+    //   moveCamera(lat.value, long.value);
+    // } catch (e) {
+    //   print('Error getting location: $e');
+    // }
   }
-
-  
 
   void moveCamera(double lat, double long) {
     initMarker(_controller, lat, long);

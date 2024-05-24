@@ -39,6 +39,18 @@ class TripDto extends Equatable {
         duration,
         createdAt,
       ];
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': this.id,
+      'origin': this.origin.toJson(),
+      'destination': this.destination.toJson(),
+      'totalPoint': this.totalPoint,
+      'totalDistance': this.totalDistance,
+      'duration': this.duration,
+      'createdAt': this.createdAt,
+    };
+  }
 }
 
 class TripLocationDto extends Equatable {
@@ -95,7 +107,7 @@ class TripDetailDto extends Equatable {
       'origin': this.origin.toJson(),
       'destination': this.destination.toJson(),
       'total_point': this.totalPoint,
-      'penalties': this.penalties.map((e) => e.toJson()),
+      'penalties': this.penalties.map((e) => e.toJson()).toList(),
       'created_at': this.createdAt,
     };
   }

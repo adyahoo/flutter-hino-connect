@@ -1,6 +1,8 @@
+import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hino_driver_app/data/data_sources/data_source.dart';
 import 'package:hino_driver_app/data/dtos/base_response_dto.dart';
+import 'package:hino_driver_app/data/dtos/trips_dto.dart';
 import 'package:hino_driver_app/domain/core/entities/trips_model.dart';
 import 'package:hino_driver_app/domain/core/interfaces/i_use_case.dart';
 
@@ -91,6 +93,23 @@ class TripUseCase implements ITripUseCase {
             )
             .toList(),
       );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> updateTripDetail(int id, PenaltyModel penalty) async {
+    try {
+      final dto = Penalty(
+        id: penalty.id,
+        coordinate: TripCoordinate(lat: penalty.coordinate.latitude, lng: penalty.coordinate.longitude),
+        type: penalty.type.name,
+        note: penalty.note,
+        dateTime: penalty.datetime,
+      );
+
+      await dataSource.updateTripDetail(id, dto);
     } catch (e) {
       rethrow;
     }
