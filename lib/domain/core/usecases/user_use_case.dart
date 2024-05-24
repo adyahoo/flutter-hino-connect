@@ -19,6 +19,8 @@ class UserUseCase {
         profilePic: response.data.profilePic,
         status: response.data.status,
         score: response.data.score,
+        phoneCode: response.data.phoneCode,
+        phoneNumber: response.data.phoneNumber,
         createdAt: response.data.createdAt,
         updatedAt: response.data.updatedAt,
       );

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:get/get.dart';
 import 'package:hino_driver_app/data/locals/StorageService.dart';
 import 'package:hino_driver_app/domain/core/usecases/splash_use_case.dart';
@@ -20,6 +22,7 @@ class SplashController extends GetxController {
   void onReady() {
     super.onReady();
     _checkPermission();
+    _changeLanguage();
     _checkLocalJson();
   }
 
@@ -65,6 +68,25 @@ class SplashController extends GetxController {
     });
   }
 
+  void _changeLanguage() {
+    Future.value(inject<StorageService>().getSelectedLanguage()).then((value) {
+      print("check language: $value");
+      switch (value) {
+        case 1:
+          print('masuk case 1');
+          Get.updateLocale(Locale('id', 'ID'));
+          break;
+        case 2:
+          print('masuk case 2');
+          Get.updateLocale(Locale('en', 'US'));
+          break;
+        default:
+          print('masuk default');
+          break;
+      }
+    });
+  }
+    
   void _checkLocalJson() async {
     final jsonData = await inject<StorageService>().getJsonData(StorageService.USERS_JSON);
 
@@ -75,3 +97,4 @@ class SplashController extends GetxController {
     useCase.writeLocalJson();
   }
 }
+

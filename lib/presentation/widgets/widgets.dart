@@ -11,15 +11,21 @@ import 'package:hino_driver_app/domain/core/entities/feedback_model.dart';
 import 'package:hino_driver_app/domain/core/entities/model.dart';
 
 import 'package:hino_driver_app/infrastructure/constants.dart';
+
 import 'package:hino_driver_app/infrastructure/di.dart';
+import 'package:hino_driver_app/infrastructure/navigation/routes.dart';
+
 import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
 import 'package:hino_driver_app/infrastructure/validation/app_validator.dart';
+import 'package:hino_driver_app/presentation/screens/maps/controllers/maps.controller.dart';
+import 'package:hino_driver_app/presentation/search/controllers/search.controller.dart';
 import 'package:hino_driver_app/presentation/widgets/bottom_sheets/activity/controllers/bs_activity_form.controller.dart';
 import 'package:hino_driver_app/presentation/widgets/bottom_sheets/emergency_contact/controllers/bs_emergency_contact_form.controller.dart';
 import 'package:hino_driver_app/presentation/widgets/bottom_sheets/event/controllers/bs_event_form.controller.dart';
 import 'package:hino_driver_app/presentation/widgets/bottom_sheets/single_picker/controllers/bs_single_picker.controller.dart';
 import 'package:hino_driver_app/presentation/widgets/chips/controllers/app_chip.controller.dart';
 import 'package:hino_driver_app/presentation/widgets/bottom_sheets/sos/controllers/bs_sos.controller.dart';
+import 'package:hino_driver_app/presentation/widgets/filter/controllers/app_filter.controller.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:flutter_svg/svg.dart';
@@ -45,6 +51,7 @@ part 'app_card_action.dart';
 part 'app_appbar.dart';
 
 part 'chips/app_chip.dart';
+part 'filter/app_filter.dart';
 
 part 'bottom_sheets/bs_confirmation.dart';
 

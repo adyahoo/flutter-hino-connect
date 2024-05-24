@@ -1,3 +1,4 @@
+export 'package:hino_driver_app/presentation/screens/edit_profile/edit_profile.screen.dart';
 export 'package:hino_driver_app/presentation/screens/activity_list/activity_list.screen.dart';
 export 'package:hino_driver_app/presentation/screens/emergency_contact_list/emergency_contact_list.screen.dart';
 export 'package:hino_driver_app/presentation/screens/event_list/event_list.screen.dart';
@@ -15,3 +16,4 @@ export 'package:hino_driver_app/presentation/screens/splash/splash.screen.dart';
 export 'package:hino_driver_app/presentation/screens/trip/trip.screen.dart';
 export 'package:hino_driver_app/presentation/screens/trip_detail/trip_detail.screen.dart';
 export 'package:hino_driver_app/presentation/screens/trip_list/trip_list.screen.dart';
+export 'package:hino_driver_app/presentation/search/search.screen.dart';

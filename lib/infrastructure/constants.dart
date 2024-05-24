@@ -78,8 +78,14 @@ class Constants {
   ];
 
   static List<MenuItem> get profileMenuItems => [
-        MenuItem(title: 'edit_profile'.tr, icon: Iconsax.edit_24, onTap: () {}),
-        MenuItem(title: 'biometric_login'.tr, icon: Iconsax.scan4, onTap: () {}),
+        MenuItem(
+            title: 'edit_profile'.tr,
+            icon: Iconsax.edit_24,
+            onTap: () {
+              Get.toNamed(Routes.EDIT_PROFILE);
+            }),
+        MenuItem(
+            title: 'biometric_login'.tr, icon: Iconsax.scan4, onTap: () {}),
       ];
 
   static List<MenuItem> get settingMenuItems => [
@@ -94,13 +100,18 @@ class Constants {
                 selectedId: inject<StorageService>().getSelectedLanguage(),
                 onSubmit: (value) {
                   print('Selected language: ${value.title}');
+                  print('id: ${value.id}');
+                  Get.find<ProfileController>().changeLanguage(value.id);
                 },
               ),
             );
           },
         ),
         MenuItem(title: 'about_us'.tr, icon: Iconsax.note_21, onTap: () {}),
-        MenuItem(title: 'privacy_policy'.tr, icon: Iconsax.shield_tick4, onTap: () {}),
+        MenuItem(
+            title: 'privacy_policy'.tr,
+            icon: Iconsax.shield_tick4,
+            onTap: () {}),
         MenuItem(
             title: 'emergency_contact'.tr,
             icon: Iconsax.call_calling,
@@ -141,5 +152,11 @@ class Constants {
     PickerModel(id: 0, title: 'device_setting'.tr, value: 'default'),
     PickerModel(id: 1, title: 'Indonesia', value: 'id'),
     PickerModel(id: 2, title: 'english'.tr, value: 'en'),
+  ];
+
+  static final countryCodes = [
+    PickerModel(id: 1, title: '+62 (Indonesia)', value: 'ID'),
+    PickerModel(id: 2, title: '+61 (Malaysia)', value: 'MY'),
+    PickerModel(id: 3, title: '+63 (Thailand)', value: 'TH'),
   ];
 }

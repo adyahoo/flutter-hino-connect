@@ -9,7 +9,7 @@ class FeedbackUseCase implements IFeedbackUseCase {
   final FeedbackDataSource dataSource;
 
   @override
-  Future<ListPaginationApiResponse<FeedbackModel>> getFeedbackList() async {
+  Future<ListApiResponse<FeedbackModel>> getFeedbackList() async {
     try {
       final response = await dataSource.getFeedbackList();
       final data = response.data
@@ -24,10 +24,8 @@ class FeedbackUseCase implements IFeedbackUseCase {
           )
           .toList();
 
-      return ListPaginationApiResponse(
+      return ListApiResponse(
         data: data,
-        links: response.links,
-        meta: response.meta,
       );
     } catch (e) {
       //call error handler dialog

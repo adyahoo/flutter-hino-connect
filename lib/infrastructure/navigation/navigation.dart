@@ -70,9 +70,19 @@ class Nav {
       binding: TripDetailControllerBinding(),
     ),
     GetPage(
+      name: Routes.SEARCH,
+      page: () => const SearchScreen(),
+      binding: SearchControllerBinding(),
+    ),
+    GetPage(
       name: Routes.TRIP_LIST,
       page: () => const TripListScreen(),
       binding: TripListControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.EDIT_PROFILE,
+      page: () => const EditProfileScreen(),
+      binding: EditProfileControllerBinding(),
     ),
     GetPage(
       name: Routes.EMERGENCY_CONTACT_LIST,
