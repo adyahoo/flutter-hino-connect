@@ -64,7 +64,10 @@ class LoginScreen extends GetView<LoginController> {
                   const SizedBox(height: 8),
                   Text(
                     'login_subtitle'.tr,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.secondary),
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.copyWith(color: TextColor.secondary),
                   ),
                   const SizedBox(height: 24),
                   Form(
@@ -75,7 +78,8 @@ class LoginScreen extends GetView<LoginController> {
                         AppTextField(
                           label: 'Email',
                           placeholder: 'email_placeholder'.tr,
-                          textEditingController: controller.emailController.value,
+                          textEditingController:
+                              controller.emailController.value,
                           state: controller.emailState,
                           type: AppTextFieldType.email,
                         ),
@@ -83,7 +87,8 @@ class LoginScreen extends GetView<LoginController> {
                         AppTextField.icon(
                           label: 'password'.tr,
                           placeholder: 'password_placeholder'.tr,
-                          textEditingController: controller.passwordController.value,
+                          textEditingController:
+                              controller.passwordController.value,
                           state: controller.passwordState,
                           type: AppTextFieldType.password,
                         ),
@@ -95,6 +100,32 @@ class LoginScreen extends GetView<LoginController> {
                             onPress: doLogin,
                             isLoading: controller.isLoading.value,
                           ),
+                        ),
+                        const SizedBox(height: 16),
+                        Row(
+                          children: [
+                            Expanded(
+                                child: Container(
+                                    height: 1.0, child: Divider(color: BorderColor.primary,))),
+                            const SizedBox(width: 8),
+                            Text('atau',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.copyWith(color: TextColor.secondary)),
+                            const SizedBox(width: 8),
+                            Expanded(
+                                child: Container(
+                                    height: 1.0, child: Divider(color: BorderColor.primary,))),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        AppButton(
+                          type: AppButtonType.outline,
+                          label: 'Masuk dengan biometrik',
+                          onPress: () {
+                            controller.doLoginWithBiometric();
+                          },
                         ),
                       ],
                     ),

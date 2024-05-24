@@ -32,7 +32,7 @@ class SplashController extends GetxController {
   }
 
   Future<void> _checkPermission() async {
-    final permissions = [Permission.location];
+    final permissions = [Permission.location, Permission.camera, Permission.storage];
 
     final result = await permissions.request();
 

@@ -5,7 +5,7 @@ class UserModel extends Equatable {
   final String name;
   final String email;
   final String role;
-  final String profilePic;
+  late String profilePic;
   final String status;
   final String score;
   final String phoneCode;
@@ -14,7 +14,7 @@ class UserModel extends Equatable {
   final String updatedAt;
   
 
-  const UserModel({
+  UserModel({
     required this.id,
     required this.name,
     required this.email,
@@ -27,6 +27,35 @@ class UserModel extends Equatable {
     required this.createdAt,
     required this.updatedAt,
   });
+
+  //copy with
+  UserModel copyWith({
+    String? id,
+    String? name,
+    String? email,
+    String? role,
+    String? profilePic,
+    String? status,
+    String? score,
+    String? phoneCode,
+    String? phoneNumber,
+    String? createdAt,
+    String? updatedAt,
+  }) {
+    return UserModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      email: email ?? this.email,
+      role: role ?? this.role,
+      profilePic: profilePic ?? this.profilePic,
+      status: status ?? this.status,
+      score: score ?? this.score,
+      phoneCode: phoneCode ?? this.phoneCode,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
 
   @override
   List<Object> get props => [id, name, email, role, profilePic, status, score, phoneCode, phoneNumber, createdAt, updatedAt];

@@ -5,7 +5,7 @@ class UserDto extends Equatable{
   final String name;
   final String email;
   final String role;
-  final String profilePic;
+  late String profilePic;
   final String status;
   final String score;
   final String phoneCode;
@@ -13,7 +13,7 @@ class UserDto extends Equatable{
   final String createdAt;
   final String updatedAt;
 
-  const UserDto({
+  UserDto({
     required this.id,
     required this.name,
     required this.email,

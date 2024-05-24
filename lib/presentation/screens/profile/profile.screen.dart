@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -27,8 +29,8 @@ class ProfileScreen extends GetView<ProfileController> {
               children: [
                 CircleAvatar(
                   radius: 32,
-                  backgroundImage: NetworkImage(
-                    user.profilePic,
+                  backgroundImage: MemoryImage(
+                    base64Decode(user.profilePic),
                   ), //!PLEASE CHANGE LATER BASED ON THE IMAGE API
                 ),
                 const SizedBox(width: 16),

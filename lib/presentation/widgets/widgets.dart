@@ -22,6 +22,7 @@ import 'package:hino_driver_app/presentation/search/controllers/search.controlle
 import 'package:hino_driver_app/presentation/widgets/bottom_sheets/activity/controllers/bs_activity_form.controller.dart';
 import 'package:hino_driver_app/presentation/widgets/bottom_sheets/emergency_contact/controllers/bs_emergency_contact_form.controller.dart';
 import 'package:hino_driver_app/presentation/widgets/bottom_sheets/event/controllers/bs_event_form.controller.dart';
+import 'package:hino_driver_app/presentation/widgets/bottom_sheets/image_picker/controllers/bs_image_picker.controller.dart';
 import 'package:hino_driver_app/presentation/widgets/bottom_sheets/single_picker/controllers/bs_single_picker.controller.dart';
 import 'package:hino_driver_app/presentation/widgets/chips/controllers/app_chip.controller.dart';
 import 'package:hino_driver_app/presentation/widgets/bottom_sheets/sos/controllers/bs_sos.controller.dart';
@@ -70,5 +71,8 @@ part 'bottom_sheets/sos/bs_sos.dart';
 part 'bottom_sheets/trip/bs_trip_detail_note.dart';
 
 part 'bottom_sheets/emergency_contact/bs_emergency_contact_form.dart';
+
+part 'bottom_sheets/image_picker/bs_image_picker.dart';
+
 
 enum WidgetVariant { primary, danger, warning, success, info, yellow }
