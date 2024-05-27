@@ -30,7 +30,7 @@ class BsImagePicker extends GetView<BsImagePickerController> {
               const BsNotch(),
               const SizedBox(height: 8),
               Text(
-                'Pilih Foto',
+                'image_picker_gallery'.tr,
                 style: Theme.of(context)
                     .textTheme
                     .titleMedium
@@ -44,7 +44,7 @@ class BsImagePicker extends GetView<BsImagePickerController> {
                 leading: Icon(Icons.photo_camera, size: 20),
                 contentPadding: const EdgeInsets.symmetric(horizontal: 0),
                 title: Text(
-                  'Ambil dari Kamera',
+                  'image_picker_camera'.tr,
                   style: Theme.of(context)
                       .textTheme
                       .labelLarge
@@ -71,7 +71,7 @@ class BsImagePicker extends GetView<BsImagePickerController> {
               ),
               const SizedBox(height: 24),
               AppButton(
-                label: 'Confirm',
+                label: 'confirm'.tr,
                 onPress: () {
                   Get.back();
                 },

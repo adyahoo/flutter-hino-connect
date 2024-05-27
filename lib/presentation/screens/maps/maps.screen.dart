@@ -40,7 +40,7 @@ class MapsScreen extends GetView<MapsController> {
               ),
             ),
             Positioned(
-              top: (Platform.isIOS) ? 16.0 : 8.0 + MediaQuery.of(context).viewPadding.top,
+              top: (Platform.isIOS) ? MediaQuery.of(context).viewPadding.top : 8.0 + MediaQuery.of(context).viewPadding.top,
               right: 0.0,
               left: 0.0,
               child: Column(
@@ -48,7 +48,7 @@ class MapsScreen extends GetView<MapsController> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: AppSearchBar(
-                      hintText: 'Cari tempat..',
+                      hintText: "searchbar_placeholder".tr,
                       controller: controller.searchbarController.value,
                       state: controller.searchBarState,
                       canFocus: false,
@@ -87,7 +87,7 @@ class MapsScreen extends GetView<MapsController> {
               ),
             ),
             Positioned(
-              bottom: kBottomNavigationBarHeight + 40,
+              bottom: (Platform.isIOS) ? kBottomNavigationBarHeight + 80 : kBottomNavigationBarHeight + 40,
               right: 16.0,
               child: Container(
                 width: 52,

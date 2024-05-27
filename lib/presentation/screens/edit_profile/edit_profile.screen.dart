@@ -17,7 +17,7 @@ class EditProfileScreen extends GetView<EditProfileController> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Edit Profile',
+          'edit_profile'.tr,
           style: Theme.of(context)
               .textTheme
               .titleMedium
@@ -44,7 +44,7 @@ class EditProfileScreen extends GetView<EditProfileController> {
                       children: <Widget>[
                         //title edit profile
                         Text(
-                          'Foto Profil',
+                          'photo_profile'.tr,
                           style: Theme.of(context)
                               .textTheme
                               .bodyMedium
@@ -79,7 +79,7 @@ class EditProfileScreen extends GetView<EditProfileController> {
                       children: <Widget>[
                         // Full Name
                         AppTextField(
-                          label: 'Full Name',
+                          label: 'full_name'.tr,
                           placeholder: controller.user.value.name,
                           textEditingController: controller.fullNameController,
                           type: AppTextFieldType.text,
@@ -98,7 +98,7 @@ class EditProfileScreen extends GetView<EditProfileController> {
                         ),
                         const SizedBox(height: 16),
                         AppTextField(
-                          label: 'Phone Number',
+                          label: 'phone'.tr,
                           placeholder: controller.user.value.phoneNumber,
                           textEditingController: controller.phoneController,
                           state: controller.phoneState,
@@ -116,7 +116,7 @@ class EditProfileScreen extends GetView<EditProfileController> {
             child: Padding(
               padding: const EdgeInsets.all(16),
               child: AppButton(
-                label: 'Save Changes',
+                label: 'save_change'.tr,
                 onPress: () {},
                 type: AppButtonType.filled,
                 isLoading: controller.isLoading.value,

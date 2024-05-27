@@ -28,13 +28,13 @@ class SearchScreen extends GetView<SearchPageController> {
               child: Column(
                 children: [
                   Text(
-                    'Lokasi tidak ditemukan',
+                    'location_not_found_title'.tr,
                     style: Theme.of(context).textTheme.titleSmall,
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 4),
                   Text(
-                    'Coba menggunakan kata kunci lain untuk menemukan lokasi.',
+                    'location_not_found_subtitle'.tr,
                     style: Theme.of(context).textTheme.bodyMedium,
                     textAlign: TextAlign.center,
                   ),
@@ -108,7 +108,7 @@ class SearchScreen extends GetView<SearchPageController> {
           title: Padding(
             padding: const EdgeInsets.all(8),
             child: AppSearchBar(
-              hintText: 'Cari tempat..',
+              hintText: "searchbar_placeholder".tr,
               controller: controller.searchbarController.value,
               state: controller.searchBarState,
               onChanged: (input) {
@@ -167,7 +167,7 @@ class SearchScreen extends GetView<SearchPageController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Recent Search',
+                        "recent_search".tr,
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       SizedBox(height: 4),

@@ -108,7 +108,7 @@ class LoginScreen extends GetView<LoginController> {
                                 child: Container(
                                     height: 1.0, child: Divider(color: BorderColor.primary,))),
                             const SizedBox(width: 8),
-                            Text('atau',
+                            Text('or'.tr,
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodySmall
@@ -122,7 +122,7 @@ class LoginScreen extends GetView<LoginController> {
                         const SizedBox(height: 16),
                         AppButton(
                           type: AppButtonType.outline,
-                          label: 'Masuk dengan biometrik',
+                          label: 'biometric_login_title'.tr,
                           onPress: () {
                             controller.doLoginWithBiometric();
                           },

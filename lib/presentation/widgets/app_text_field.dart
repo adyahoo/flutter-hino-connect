@@ -346,7 +346,7 @@ class AppTextField extends StatelessWidget {
               BsSinglePicker(
                 type: BsSinglePickerType.withSearch,
                 options: Constants.countryCodes,
-                title: 'Kode Negara',
+                title: 'country_code'.tr,
                 selectedId: 1,
                 // Set default selected id here
                 onSubmit: (PickerModel value) {
