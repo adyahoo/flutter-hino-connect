@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hino_driver_app/data/locals/StorageService.dart';
+import 'package:hino_driver_app/domain/core/entities/map_filter_model.dart';
+import 'package:hino_driver_app/domain/core/entities/map_filter_model.dart';
+import 'package:hino_driver_app/domain/core/entities/map_filter_model.dart';
 import 'package:hino_driver_app/domain/core/entities/model.dart';
 import 'package:hino_driver_app/infrastructure/di.dart';
 import 'package:hino_driver_app/infrastructure/navigation/routes.dart';
@@ -84,8 +87,7 @@ class Constants {
             onTap: () {
               Get.toNamed(Routes.EDIT_PROFILE);
             }),
-        MenuItem(
-            title: 'biometric_login'.tr, icon: Iconsax.scan4, onTap: () {}),
+        MenuItem(title: 'biometric_login'.tr, icon: Iconsax.scan4, onTap: () {}),
       ];
 
   static List<MenuItem> get settingMenuItems => [
@@ -108,10 +110,7 @@ class Constants {
           },
         ),
         MenuItem(title: 'about_us'.tr, icon: Iconsax.note_21, onTap: () {}),
-        MenuItem(
-            title: 'privacy_policy'.tr,
-            icon: Iconsax.shield_tick4,
-            onTap: () {}),
+        MenuItem(title: 'privacy_policy'.tr, icon: Iconsax.shield_tick4, onTap: () {}),
         MenuItem(
             title: 'emergency_contact'.tr,
             icon: Iconsax.call_calling,
@@ -159,4 +158,50 @@ class Constants {
     PickerModel(id: 2, title: '+61 (Malaysia)', value: 'MY'),
     PickerModel(id: 3, title: '+63 (Thailand)', value: 'TH'),
   ];
+
+  static final searchFilterItems = [
+    AppChip(
+      id: 'filter_gas_station',
+      label: 'Gas Station',
+      icon: Iconsax.gas_station4,
+      onSelected: (p0) {
+        Get.back();
+      },
+    ),
+    AppChip(
+      id: 'filter_dealers',
+      label: 'Dealers',
+      icon: Iconsax.truck,
+      onSelected: (p0) {
+        Get.back();
+      },
+    ),
+    AppChip(
+      id: 'filter_restaurant',
+      label: 'Restaurant',
+      icon: Icons.coffee,
+      onSelected: (p0) {
+        Get.back();
+      },
+    ),
+  ];
+
+  static final mapScreenFilterItems = [
+    MapFilterItem(
+      id: 'filter_gas_station',
+      label: 'Gas Station',
+      icon: Iconsax.gas_station4,
+    ),
+    MapFilterItem(
+      id: 'filter_dealers',
+      label: 'Dealers',
+      icon: Iconsax.truck,
+    ),
+    MapFilterItem(
+      id: 'filter_restaurant',
+      label: 'Restaurant',
+      icon: Icons.coffee,
+    ),
+  ];
+
 }

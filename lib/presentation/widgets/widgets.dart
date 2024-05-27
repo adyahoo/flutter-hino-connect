@@ -8,6 +8,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:hino_driver_app/domain/core/entities/feedback_model.dart';
+import 'package:hino_driver_app/domain/core/entities/map_filter_model.dart';
 import 'package:hino_driver_app/domain/core/entities/model.dart';
 
 import 'package:hino_driver_app/infrastructure/constants.dart';

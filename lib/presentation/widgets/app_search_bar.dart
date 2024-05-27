@@ -8,6 +8,7 @@ class AppSearchBar extends StatelessWidget {
   final String hintText;
   final bool editable;
   final bool canFocus;
+  final Function(String? query)? onTap;
 
   AppSearchBar({
     Key? key,
@@ -15,6 +16,7 @@ class AppSearchBar extends StatelessWidget {
     required this.controller,
     required this.hintText,
     required this.state,
+    this.onTap,
     this.editable = true,
     this.shape = AppTextFieldShape.rounded,
     this.canFocus = true,
@@ -37,7 +39,9 @@ class AppSearchBar extends StatelessWidget {
               onChanged(value);
             },
             onClick: () {
-              editable ? null : Get.toNamed(Routes.SEARCH);
+              if (onTap != null) {
+                onTap!(controller.text);
+              }
             },
           ),
         ),
