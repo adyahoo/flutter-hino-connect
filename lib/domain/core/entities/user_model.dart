@@ -12,7 +12,6 @@ class UserModel extends Equatable {
   final String phoneNumber;
   final String createdAt;
   final String updatedAt;
-  
 
   const UserModel({
     required this.id,

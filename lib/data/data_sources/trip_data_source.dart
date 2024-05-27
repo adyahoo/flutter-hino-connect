@@ -27,7 +27,6 @@ class TripDataSource {
       await Future.delayed(const Duration(seconds: 3));
       final data = await inject<StorageService>().getJsonData(StorageService.TRIP_DETAILS_JSON);
 
-      print("sapi detail ${data}");
       final detailJson = (data!['data'] as Iterable).firstWhere((element) => element['id'] == id);
       final tripDetail = TripDetailDto.fromJson(detailJson);
 

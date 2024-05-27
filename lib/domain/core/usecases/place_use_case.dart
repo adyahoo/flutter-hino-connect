@@ -8,33 +8,16 @@ class PlaceUseCase {
   final PlaceDataSource dataSource;
 
   Future<List<PlaceModel>> getPlaceList(
-      double lat, double long, String type) async {
+    double lat,
+    double long,
+    String type,
+  ) async {
     try {
       final response = await dataSource.fetchNearbyPlaces(lat, long, type);
-      // final data = response.results
-      //     .map(
-      //       (e) => PlaceModel(
-      //         id: e.id,
-      //         name: e.name,
-      //         address: e.address,
-      //         longitude: e.longitude,
-      //         latitude: e.latitude,
-      //       ),
-      //     )
-      //     .toList();
-
-      print('response $response');
 
       final data = response.results
-          .where((e) =>
-              e.name != null && e.longitude != null && e.latitude != null)
+          .where((e) => e.name != null && e.longitude != null && e.latitude != null)
           .map(
-            // (e) => PlaceModel(
-            //   name: e.name!,
-            //   address: e.address,
-            //   longitude: e.longitude!.toString(),
-            //   latitude: e.latitude!.toString(),
-            // ),
             (e) => PlaceModel(
               name: e.name!,
               type: e.type!,
@@ -45,7 +28,6 @@ class PlaceUseCase {
             ),
           )
           .toList();
-      print("\n data $data");
 
       return data;
     } catch (e) {

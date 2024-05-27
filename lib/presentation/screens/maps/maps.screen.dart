@@ -1,14 +1,10 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:hino_driver_app/infrastructure/navigation/routes.dart';
 import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
-import 'package:hino_driver_app/presentation/screens.dart';
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -22,88 +18,95 @@ class MapsScreen extends GetView<MapsController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          Obx(
-            () => GoogleMap(
-              initialCameraPosition: controller.kGooglePlex,
-              onMapCreated: (GoogleMapController controller) {
-                this.controller.initMarker(
-                    controller, this.controller.lat.value, this.controller.long.value);
-              },
-              markers: controller.markers,
-              myLocationButtonEnabled: false,
-            ),
-          ),
-          // MapsSlidePanel(),
-          Positioned(
-            bottom: 20.0,
-            right: 20.0,
-            child: Container(
-              width: 52,
-              height: 52,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(100),
-              ),
-              child: IconButton(
-                onPressed: () {
-                  controller.getCurrentLocation();
+      body: MapsSlidePanel(
+        body: Stack(
+          children: [
+            Obx(
+              () => GoogleMap(
+                initialCameraPosition: controller.currentCameraPosition,
+                markers: controller.markers,
+                myLocationEnabled: false,
+                myLocationButtonEnabled: false,
+                zoomControlsEnabled: false,
+                tiltGesturesEnabled: false,
+                rotateGesturesEnabled: false,
+                compassEnabled: false,
+                minMaxZoomPreference: const MinMaxZoomPreference(5, 17),
+                onTap: controller.onMapTap,
+                onMapCreated: (GoogleMapController controller) {
+                  this.controller.setController(controller);
+                  this.controller.initMarker(this.controller.currentLocation);
                 },
-                splashColor: Colors.white,
-                icon: Icon(Icons.location_searching_outlined,
-                    size: 28, color: IconColor.primary),
               ),
             ),
-          ),
-          Positioned(
-            top: Platform.isIOS ? 60.0 : 30.0,
-            right: 0.0,
-            left: 0.0,
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: AppSearchBar(
-                    hintText: 'Cari tempat..',
-                    // state: controller.searchBarState,
-                    controller: controller.searchbarController.value,
-                    editable: false,
-                    onSearch: (value) {
-                      print(value);
-                    },
-                  ),
-                ),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Padding(
+            Positioned(
+              top: (Platform.isIOS) ? 16.0 : 8.0 + MediaQuery.of(context).viewPadding.top,
+              right: 0.0,
+              left: 0.0,
+              child: Column(
+                children: [
+                  Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: AppFilter(
-                      chips: [
-                        AppChip(
-                          label: 'Gas Station',
-                          icon: Iconsax.gas_station4,
-                          id: 'filter_gas_station',
-                        ),
-                        AppChip(
-                          label: 'Dealers',
-                          icon: Iconsax.truck,
-                          id: 'filter_dealers',
-                        ),
-                        AppChip(
-                          label: 'Restaurant',
-                          icon: Icons.coffee,
-                          id: 'filter_restaurant',
-                        ),
-                      ],
+                    child: AppSearchBar(
+                      hintText: 'Cari tempat..',
+                      controller: controller.searchbarController.value,
+                      state: controller.searchBarState,
+                      canFocus: false,
+                      editable: false,
+                      onChanged: (value) {
+                        print(value);
+                      },
                     ),
                   ),
-                ),
-              ],
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: AppFilter(
+                        chips: [
+                          AppChip(
+                            label: 'Gas Station',
+                            icon: Iconsax.gas_station4,
+                            id: 'filter_gas_station',
+                          ),
+                          AppChip(
+                            label: 'Dealers',
+                            icon: Iconsax.truck,
+                            id: 'filter_dealers',
+                          ),
+                          AppChip(
+                            label: 'Restaurant',
+                            icon: Icons.coffee,
+                            id: 'filter_restaurant',
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          MapsSlidePanel(),
-        ],
+            Positioned(
+              bottom: kBottomNavigationBarHeight + 40,
+              right: 16.0,
+              child: Container(
+                width: 52,
+                height: 52,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(100),
+                ),
+                child: IconButton(
+                  onPressed: () {
+                    controller.getCurrentLocation();
+                  },
+                  splashColor: Colors.white,
+                  icon: Icon(Icons.location_searching_outlined, size: 28, color: IconColor.primary),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
