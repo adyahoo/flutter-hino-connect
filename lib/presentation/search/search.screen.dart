@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:hino_driver_app/domain/core/entities/search_result_model.dart';
 import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
@@ -21,8 +20,7 @@ class SearchScreen extends GetView<SearchPageController> {
               color: Color(0xffF5F5F5),
               shape: BoxShape.circle,
             ),
-            child: Icon(Iconsax.location_cross5,
-                size: 32, color: IconColor.secondary),
+            child: Icon(Iconsax.location_cross5, size: 32, color: IconColor.secondary),
           ),
           SizedBox(height: 20),
           Container(
@@ -47,8 +45,7 @@ class SearchScreen extends GetView<SearchPageController> {
     );
   }
 
-  Widget _renderLocationInfo(
-      BuildContext context, SearchResult location, IconData icon) {
+  Widget _renderLocationInfo(BuildContext context, SearchResult location, IconData icon) {
     return GestureDetector(
       onTap: () {
         print('Location info tapped');
@@ -73,8 +70,7 @@ class SearchScreen extends GetView<SearchPageController> {
                     overflow: TextOverflow.ellipsis,
                   ),
                   SizedBox(height: 4),
-                  Text(location.vicinity,
-                      style: Theme.of(context).textTheme.bodySmall),
+                  Text(location.vicinity, style: Theme.of(context).textTheme.bodySmall),
                 ],
               ),
             ),
@@ -85,15 +81,13 @@ class SearchScreen extends GetView<SearchPageController> {
   }
 
   Widget onTypingState(BuildContext context) {
-    print('onTypingState called');
     return Obx(() {
       return ListView.separated(
         separatorBuilder: (context, index) => AppDivider(),
         itemCount: controller.filteredResults.length,
         itemBuilder: (context, index) {
           final result = controller.filteredResults[index];
-          return _renderLocationInfo(
-              context, result, Icons.location_on_outlined);
+          return _renderLocationInfo(context, result, Icons.location_on_outlined);
         },
       );
     });
@@ -115,9 +109,9 @@ class SearchScreen extends GetView<SearchPageController> {
             padding: const EdgeInsets.all(8),
             child: AppSearchBar(
               hintText: 'Cari tempat..',
-              // state: controller.mapsController.searchBarState,
-              controller: controller.mapsController.searchbarController.value,
-              onSearch: (input) {
+              controller: controller.searchbarController.value,
+              state: controller.searchBarState,
+              onChanged: (input) {
                 // Call the search function in your controller
                 controller.search(input);
                 // onTypingState(context, input);
@@ -158,86 +152,84 @@ class SearchScreen extends GetView<SearchPageController> {
       body: Padding(
         padding: const EdgeInsets.only(left: 16, top: 16),
         child: Expanded(
-          child: Obx(() {
-            if (controller.currentInput.isNotEmpty) {
-              // return onTypingState(context, controller.currentInput.value);
-              return onTypingState(context);
-            } else {
-              print('masuk else statement');
-              if (controller.searchResults.isEmpty) {
-                return emptyState(context);
+          child: Obx(
+            () {
+              if (controller.currentInput.isNotEmpty) {
+                // return onTypingState(context, controller.currentInput.value);
+                return onTypingState(context);
               } else {
-                print('Recent Search');
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Recent Search',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    SizedBox(height: 4),
-                    Expanded(
-                      child: Expanded(
-                        child: Obx(() {
-                          return ListView.separated(
-                            itemCount: controller.searchResults.length,
-                            separatorBuilder: (context, index) =>
-                                SizedBox(height: 16),
-                            itemBuilder: (context, index) {
-                              final result = controller.searchResults[index];
-                              return GestureDetector(
-                                onTap: () {
-                                  controller.selectLocation(result);
-                                },
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      padding: EdgeInsets.all(4.0),
-                                      decoration: BoxDecoration(
-                                        color: InfoColor.surface,
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: Icon(
-                                        Icons.access_time,
-                                        color: InfoColor.main,
-                                        size: 20,
-                                      ), // Time icon
-                                    ),
-                                    SizedBox(width: 12),
-                                    Expanded(
-                                      child: Text(
-                                        result.name,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyMedium,
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.zero,
-                                      child: IconButton(
-                                        icon: Icon(
-                                          Iconsax.close_circle,
-                                          size: 20,
-                                        ),
-                                        onPressed: () {
-                                          controller.removeRecentSearchSelected(
-                                              result);
-                                        },
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              );
-                            },
-                          );
-                        }),
+                print('masuk else statement');
+                if (controller.searchResults.isEmpty) {
+                  return emptyState(context);
+                } else {
+                  print('Recent Search');
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Recent Search',
+                        style: Theme.of(context).textTheme.bodyMedium,
                       ),
-                    ),
-                  ],
-                );
+                      SizedBox(height: 4),
+                      Expanded(
+                        child: Expanded(
+                          child: Obx(() {
+                            return ListView.separated(
+                              itemCount: controller.searchResults.length,
+                              separatorBuilder: (context, index) => SizedBox(height: 16),
+                              itemBuilder: (context, index) {
+                                final result = controller.searchResults[index];
+                                return GestureDetector(
+                                  onTap: () {
+                                    controller.selectLocation(result);
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        padding: EdgeInsets.all(4.0),
+                                        decoration: BoxDecoration(
+                                          color: InfoColor.surface,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: Icon(
+                                          Icons.access_time,
+                                          color: InfoColor.main,
+                                          size: 20,
+                                        ), // Time icon
+                                      ),
+                                      SizedBox(width: 12),
+                                      Expanded(
+                                        child: Text(
+                                          result.name,
+                                          style: Theme.of(context).textTheme.bodyMedium,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.zero,
+                                        child: IconButton(
+                                          icon: Icon(
+                                            Iconsax.close_circle,
+                                            size: 20,
+                                          ),
+                                          onPressed: () {
+                                            controller.removeRecentSearchSelected(result);
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            );
+                          }),
+                        ),
+                      ),
+                    ],
+                  );
+                }
               }
-            }
-          }),
+            },
+          ),
         ),
       ),
     );

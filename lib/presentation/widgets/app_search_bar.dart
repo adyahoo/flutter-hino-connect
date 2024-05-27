@@ -1,19 +1,23 @@
 part of 'widgets.dart';
 
 class AppSearchBar extends StatelessWidget {
-  final Function(String) onSearch;
-  final bool editable;
+  final Function(String) onChanged;
   final TextEditingController controller;
   final AppTextFieldShape shape;
-  final hintText;
+  final AppTextFieldState state;
+  final String hintText;
+  final bool editable;
+  final bool canFocus;
 
   AppSearchBar({
     Key? key,
-    required this.onSearch,
-    this.editable = true,
+    required this.onChanged,
     required this.controller,
-    this.shape = AppTextFieldShape.rounded,
     required this.hintText,
+    required this.state,
+    this.editable = true,
+    this.shape = AppTextFieldShape.rounded,
+    this.canFocus = true,
   }) : super(key: key);
 
   @override
@@ -26,15 +30,13 @@ class AppSearchBar extends StatelessWidget {
             shape: shape,
             prefixIcon: Icons.search,
             textEditingController: controller,
-            type: AppTextFieldType.search,
-            state: AppTextFieldState(),
+            state: state,
+            canFocus: canFocus,
             isEditable: editable,
             onChanged: (value) {
-              print(value);
-              onSearch(value);
+              onChanged(value);
             },
             onClick: () {
-              print('Search');
               editable ? null : Get.toNamed(Routes.SEARCH);
             },
           ),

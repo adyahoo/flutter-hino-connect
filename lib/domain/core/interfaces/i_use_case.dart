@@ -1,4 +1,5 @@
 import 'package:hino_driver_app/data/dtos/base_response_dto.dart';
+import 'package:hino_driver_app/data/dtos/trips_dto.dart';
 import 'package:hino_driver_app/domain/core/entities/model.dart';
 import 'package:hino_driver_app/domain/core/entities/trips_model.dart';
 

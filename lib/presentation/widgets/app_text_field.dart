@@ -1,16 +1,6 @@
 part of 'widgets.dart';
 
-enum AppTextFieldType {
-  email,
-  text,
-  password,
-  multiline,
-  single_picker,
-  date_picker,
-  time_picker,
-  search,
-  phoneNumber
-}
+enum AppTextFieldType { email, text, password, multiline, single_picker, date_picker, time_picker, search, phoneNumber }
 
 enum AppTextFieldShape { rect, rounded }
 
@@ -25,7 +15,6 @@ class AppTextFieldState {
   final TextInputType inputType;
   final int maxLines;
 
-  final suffixIcon = Rx<IconData>(Iconsax.eye);
   final errorText = Rx<String?>(null);
   final focusNode = FocusNode().obs;
   final isObscure = true.obs;
@@ -33,20 +22,7 @@ class AppTextFieldState {
   final isError = false.obs;
 
   void onFocusChange() {
-    print('\n FOCUS JALAN: ${focusNode.value.hasFocus}');
     isFocus.value = focusNode.value.hasFocus;
-
-    print('\n focus: ${isFocus.value}');
-  }
-
-  void toggleObscure() {
-    isObscure.value = !isObscure.value;
-
-    if (isObscure.value) {
-      suffixIcon.value = Iconsax.eye;
-    } else {
-      suffixIcon.value = Iconsax.eye_slash;
-    }
   }
 
   void setError(String? errorText) {
@@ -87,6 +63,7 @@ class AppTextField extends StatelessWidget {
     this.isDisabled = false,
     this.length = null,
   })  : this.onClick = null,
+        this.canFocus = true,
         this.withIcon = false;
 
   AppTextField.icon({
@@ -105,6 +82,7 @@ class AppTextField extends StatelessWidget {
     this.isDisabled = false,
     this.length = null,
   })  : this.withIcon = true,
+        this.canFocus = true,
         this.onClick = null;
 
   AppTextField.picker({
@@ -123,12 +101,12 @@ class AppTextField extends StatelessWidget {
     this.isDisabled = false,
   })  : this.withIcon = true,
         this.length = null,
+        this.canFocus = true,
         this.isEditable = false;
 
   AppTextField.search({
     super.key,
     required this.textEditingController,
-    required this.type,
     required this.onClick,
     required this.state,
     required this.onChanged,
@@ -139,7 +117,9 @@ class AppTextField extends StatelessWidget {
     this.isEditable = true,
     this.shape = AppTextFieldShape.rounded,
     this.placeholder = 'Search',
+    this.canFocus = true,
   })  : this.withIcon = true,
+        this.type = AppTextFieldType.search,
         this.isRequired = false,
         this.length = null;
 
@@ -152,6 +132,7 @@ class AppTextField extends StatelessWidget {
   final bool isEditable;
   final bool isDisabled;
   final bool withIcon;
+  final bool canFocus;
   final String? label;
   final int? length;
   final IconData? prefixIcon;
@@ -162,8 +143,7 @@ class AppTextField extends StatelessWidget {
   OutlineInputBorder getBorder(double width, Color color) {
     return OutlineInputBorder(
       borderSide: BorderSide(width: width, color: color),
-      borderRadius:
-          BorderRadius.circular(shape == AppTextFieldShape.rect ? 8 : 24),
+      borderRadius: BorderRadius.circular(shape == AppTextFieldShape.rect ? 8 : 24),
     );
   }
 
@@ -177,6 +157,7 @@ class AppTextField extends StatelessWidget {
 
   Widget _renderSuffixIcon() {
     IconData? icon;
+    VoidCallback? onTap;
 
     switch (type) {
       case AppTextFieldType.password:
@@ -185,6 +166,9 @@ class AppTextField extends StatelessWidget {
         } else {
           icon = Iconsax.eye_slash;
         }
+        onTap = () {
+          state.isObscure.value = !state.isObscure.value;
+        };
         break;
       case AppTextFieldType.single_picker:
         icon = Iconsax.arrow_down_1;
@@ -195,13 +179,20 @@ class AppTextField extends StatelessWidget {
       case AppTextFieldType.time_picker:
         icon = Iconsax.clock;
         break;
+      case AppTextFieldType.search:
+        icon = Iconsax.close_circle5;
+        onTap = () {
+          textEditingController.clear();
+          state.focusNode.value.unfocus();
+        };
+        break;
       default:
         icon = null;
         break;
     }
 
     return InkWell(
-      onTap: state.toggleObscure,
+      onTap: onTap,
       child: Icon(
         icon,
         size: 20,
@@ -252,21 +243,13 @@ class AppTextField extends StatelessWidget {
               keyboardType: state.inputType,
               maxLength: length,
               maxLines: state.maxLines,
-              obscureText:
-                  (type == AppTextFieldType.password) ? isObscure : false,
+              obscureText: (type == AppTextFieldType.password) ? isObscure : false,
               decoration: InputDecoration(
                   floatingLabelBehavior: FloatingLabelBehavior.never,
-                  contentPadding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+                  contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
                   hintText: placeholder,
-                  hintStyle: Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.copyWith(color: TextColor.placeholder),
-                  counterStyle: Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.copyWith(color: TextColor.helper),
+                  hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.placeholder),
+                  counterStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.helper),
                   filled: true,
                   fillColor: bgColor,
                   border: InputBorder.none,
@@ -279,8 +262,7 @@ class AppTextField extends StatelessWidget {
                   errorStyle: TextStyle(fontSize: 0)),
               style: Theme.of(context).textTheme.bodyMedium,
               validator: (value) {
-                final error =
-                    inputValidator(type, value, label ?? "", isRequired);
+                final error = inputValidator(type, value, label ?? "", isRequired);
                 state.setError(error);
 
                 if (error != null)
@@ -300,10 +282,7 @@ class AppTextField extends StatelessWidget {
                       Expanded(
                         child: Text(
                           state.errorText.value ?? helperText ?? "",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium
-                              ?.copyWith(color: helperColor),
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: helperColor),
                         ),
                       ),
                     ],
@@ -316,8 +295,7 @@ class AppTextField extends StatelessWidget {
   }
 
   Widget _renderSearchTextField(BuildContext context) {
-    print('Render search text field');
-    print('focus: ${state.focusNode.value.hasFocus}');
+    final suffixIcon = withIcon ? _renderSuffixIcon() : null;
     final prefixIcon = this.prefixIcon != null ? _renderPrefixIcon() : null;
     Color bgColor = Colors.white;
 
@@ -327,14 +305,13 @@ class AppTextField extends StatelessWidget {
         children: [
           TextField(
             focusNode: state.focusNode.value,
-            readOnly: !isEditable,
             controller: textEditingController,
+            readOnly: !isEditable,
+            canRequestFocus: canFocus,
             onTap: () {
-              print('TextField tapped');
               if (onClick != null) onClick!();
             },
             onChanged: (text) {
-              print('TextField edited');
               onChanged?.call(text);
             },
             decoration: InputDecoration(
@@ -350,9 +327,9 @@ class AppTextField extends StatelessWidget {
                 borderRadius: BorderRadius.circular(24),
               ),
               enabledBorder: getBorder(1, BorderColor.secondary),
-              contentPadding:
-                  const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+              contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
               prefixIcon: prefixIcon,
+              suffixIcon: state.isFocus.value ? suffixIcon : null,
             ),
           ),
         ],
@@ -370,7 +347,8 @@ class AppTextField extends StatelessWidget {
                 type: BsSinglePickerType.withSearch,
                 options: Constants.countryCodes,
                 title: 'Kode Negara',
-                selectedId: 1, // Set default selected id here
+                selectedId: 1,
+                // Set default selected id here
                 onSubmit: (PickerModel value) {
                   // Handle selected country code
                   print('Selected: ${value.title}');
@@ -414,13 +392,9 @@ class AppTextField extends StatelessWidget {
             style: Theme.of(context).textTheme.bodyMedium,
             decoration: InputDecoration(
               floatingLabelBehavior: FloatingLabelBehavior.never,
-              contentPadding:
-                  const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+              contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
               hintText: placeholder,
-              hintStyle: Theme.of(context)
-                  .textTheme
-                  .bodyMedium
-                  ?.copyWith(color: TextColor.placeholder),
+              hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.placeholder),
               filled: true,
               fillColor: Colors.white,
               border: OutlineInputBorder(
@@ -446,8 +420,7 @@ class AppTextField extends StatelessWidget {
               ),
             ),
             validator: (value) {
-              final error =
-                  inputValidator(type, value, label ?? "", isRequired);
+              final error = inputValidator(type, value, label ?? "", isRequired);
               state.setError(error);
 
               if (error != null)
@@ -477,19 +450,9 @@ class AppTextField extends StatelessWidget {
               children: [
                 TextSpan(
                   text: label,
-                  style: Theme.of(context)
-                      .textTheme
-                      .labelLarge
-                      ?.copyWith(color: TextColor.secondary),
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(color: TextColor.secondary),
                 ),
-                (isRequired)
-                    ? TextSpan(
-                        text: "*",
-                        style: Theme.of(context)
-                            .textTheme
-                            .labelLarge
-                            ?.copyWith(color: Colors.red))
-                    : const TextSpan(),
+                (isRequired) ? TextSpan(text: "*", style: Theme.of(context).textTheme.labelLarge?.copyWith(color: Colors.red)) : const TextSpan(),
               ],
             ),
           ),

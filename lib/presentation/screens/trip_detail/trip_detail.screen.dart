@@ -68,7 +68,9 @@ class TripDetailScreen extends GetView<TripDetailController> {
                 minMaxZoomPreference: const MinMaxZoomPreference(5, 17),
                 onTap: this.controller.onMapTapped,
                 onMapCreated: (GoogleMapController controller) {
-                  this.controller.resetMarkerRoute();
+                  this.controller.resetMarker();
+                  this.controller.resetPolyline();
+
                   this.controller.setController(controller);
                   this.controller.initRouteMarker();
                 },

@@ -6,6 +6,6 @@ import '../../../../presentation/screens/trip_detail/controllers/trip_detail.con
 class TripDetailControllerBinding extends Bindings {
   @override
   void dependencies() {
-    Get.put<TripDetailController>(TripDetailController(tripUseCase: inject()), permanent: true);
+    Get.lazyPut<TripDetailController>(() => TripDetailController(tripUseCase: inject()));
   }
 }

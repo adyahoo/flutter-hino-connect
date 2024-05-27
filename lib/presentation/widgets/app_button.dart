@@ -90,7 +90,7 @@ class AppButton extends StatelessWidget {
       );
 
   void _settingColor() {
-    if(onPress==null) {
+    if (onPress == null) {
       switch (type) {
         case AppButtonType.filled:
           bgColor = BackgroundColor.disabled;
@@ -110,7 +110,7 @@ class AppButton extends StatelessWidget {
           labelColor = TextColor.disabled;
           break;
       }
-    }else {
+    } else {
       switch (type) {
         case AppButtonType.filled:
           bgColor = PrimaryNewColor().main;
@@ -144,8 +144,16 @@ class AppButton extends StatelessWidget {
     _settingColor();
 
     // Adjust padding and text style based on the selected size here
-    final double verticalPadding = size == AppButtonSize.smallSize ? 0 : 12;
-    final double horizontalPadding = size == AppButtonSize.smallSize ? 0 : 24;
+    final double verticalPadding = size != AppButtonSize.smallSize
+        ? 12
+        : type != AppButtonType.text
+            ? 8
+            : 0;
+    final double horizontalPadding = size != AppButtonSize.smallSize
+        ? 24
+        : type != AppButtonType.text
+            ? 16
+            : 0;
     final TextStyle? textStyle = size == AppButtonSize.smallSize ? Theme.of(context).textTheme.labelMedium : Theme.of(context).textTheme.titleSmall;
 
     return ConstrainedBox(

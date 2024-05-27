@@ -6,6 +6,7 @@ import 'package:hino_driver_app/data/locals/StorageService.dart';
 import 'package:hino_driver_app/domain/core/entities/model.dart';
 import 'package:hino_driver_app/infrastructure/di.dart';
 import 'package:hino_driver_app/presentation/screens/profile/controllers/profile.controller.dart';
+import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 
 class BsSinglePickerController extends GetxController {
   var selectedOption = 0.obs;
@@ -13,16 +14,16 @@ class BsSinglePickerController extends GetxController {
 
   var items = <PickerModel>[].obs;
   var filteredItems = <PickerModel>[].obs;
+
   TextEditingController searchController = TextEditingController();
+  final searchState = AppTextFieldState();
 
   BsSinglePickerController(this.items,) {
     filteredItems.value = items;
-    print('filteredItems: $filteredItems');
   }
 
   Future<void> search(String query) async {
     await Future.delayed(Duration(milliseconds: 500));
-    print('query: $query');
     if (query.isEmpty) {
       filteredItems.value = items;
     } else {
@@ -32,8 +33,6 @@ class BsSinglePickerController extends GetxController {
           .toList();
       filteredItems.value = results;
     }
-
-    print('filteredItems: $filteredItems');
   }
 
   void setSelectedOption(int id) {

@@ -1,10 +1,11 @@
 part of '../maps.screen.dart';
 
 class MapsSlidePanel extends GetView<MapsController> {
-  MapsSlidePanel();
+  const MapsSlidePanel({required this.body});
 
-  Widget _renderLocationInfo(
-      BuildContext context, String title, String value, IconData icon) {
+  final Widget body;
+
+  Widget _renderLocationInfo(BuildContext context, String title, String value, IconData icon) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -57,7 +58,7 @@ class MapsSlidePanel extends GetView<MapsController> {
                   ],
                 ),
               ),
-              SizedBox(width: 16),
+              const SizedBox(width: 16),
               Container(
                 width: 70,
                 child: AppButton(
@@ -80,22 +81,19 @@ class MapsSlidePanel extends GetView<MapsController> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Detail Tempat',
-                    style: Theme.of(context).textTheme.labelLarge),
+                Text('Detail Tempat', style: Theme.of(context).textTheme.labelLarge),
                 SizedBox(height: 16),
-                Obx(() => _renderLocationInfo(context, 'Posisi',
-                    controller.position.value.toString(), Iconsax.location5)),
+                Obx(() => _renderLocationInfo(context, 'Posisi', controller.position.value.toString(), Iconsax.location5)),
                 SizedBox(height: 16),
-                Obx(() => _renderLocationInfo(
-                    context, 'Alamat', controller.address.value, Iconsax.gps5)),
+                Obx(() => _renderLocationInfo(context, 'Alamat', controller.address.value, Iconsax.gps5)),
                 SizedBox(height: 16),
-                Obx(() => _renderLocationInfo(context, 'Nomor Telepon',
-                    controller.phoneNumber.value, Iconsax.call5)),
+                Obx(() => _renderLocationInfo(context, 'Nomor Telepon', controller.phoneNumber.value, Iconsax.call5)),
               ],
             ),
           )),
         ],
       ),
+      body: body,
     );
   }
 }

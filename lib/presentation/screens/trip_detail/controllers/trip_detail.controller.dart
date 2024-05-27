@@ -1,7 +1,5 @@
-import 'dart:typed_data';
 import 'dart:ui' as ui;
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -59,7 +57,6 @@ class TripDetailController extends GetxController {
 
   @override
   void onInit() {
-    resetMarkerRoute();
     _createCustomMarker();
     super.onInit();
   }
@@ -102,6 +99,8 @@ class TripDetailController extends GetxController {
     );
 
     this.selectedPenalty.value = updatedPenalty;
+
+    tripUseCase.updateTripDetail(int.parse(Get.parameters['id'] ?? "0"), updatedPenalty);
   }
 
   void initRouteMarker() async {
@@ -127,6 +126,10 @@ class TripDetailController extends GetxController {
   }
 
   void onMapTapped(LatLng latLng) {
+    if (selectedPenalty.value != null) {
+      _updateSelectedMarker(selectedPenalty.value!, false);
+    }
+
     if (currentPanel.value == TripPanel.penalty) {
       setPanel(TripPanel.detail);
     }
@@ -176,7 +179,7 @@ class TripDetailController extends GetxController {
     };
   }
 
-  Marker _createPenaltyMarker(PenaltyModel data) {
+  Marker _createPenaltyMarker(PenaltyModel data, {bool isSelected = false}) {
     BitmapDescriptor icon;
     BitmapDescriptor selectedIcon;
 
@@ -200,16 +203,17 @@ class TripDetailController extends GetxController {
     }
 
     return Marker(
-        markerId: MarkerId(data.id.toString()),
-        position: data.coordinate,
-        anchor: const Offset(0.5, 0.5),
-        icon: icon,
-        onTap: () {
-          _penaltyTapHandler(data, icon, selectedIcon);
-        });
+      markerId: MarkerId(data.id.toString()),
+      position: data.coordinate,
+      anchor: const Offset(0.5, 0.5),
+      icon: isSelected ? selectedIcon : icon,
+      onTap: () {
+        _penaltyTapHandler(data);
+      },
+    );
   }
 
-  void _penaltyTapHandler(PenaltyModel penalty, BitmapDescriptor icon, BitmapDescriptor selectedIcon) async {
+  void _penaltyTapHandler(PenaltyModel penalty) async {
     final mapUtils = MapUtils(
       origin: penalty.coordinate,
       destination: penalty.coordinate,
@@ -225,32 +229,44 @@ class TripDetailController extends GetxController {
     );
 
     Future.delayed(const Duration(milliseconds: 500), () {
-      _updateSelectedMarker(penalty, icon, selectedIcon);
+      //revert the selected marker into unselected if exist
+      if (selectedPenalty.value != null) {
+        _updateSelectedMarker(selectedPenalty.value!, false);
+      }
+
+      //change marker into selected state
+      _updateSelectedMarker(penalty, true);
+
+      //open penalty detail panel
       setPanel(TripPanel.penalty);
+
+      selectedPenalty.value = penaltyData;
     });
-
-    selectedPenalty.value = penaltyData;
   }
 
-  void _updateSelectedMarker(PenaltyModel newSelected, BitmapDescriptor icon, BitmapDescriptor selectedIcon) {
-    final newMarkers = _markers.value.map((e) {
-      print("sapi marker ${e.markerId} ${newSelected.id}");
-      if (e.markerId == newSelected.id.toString()) {
-        return e.copyWith(iconParam: acceleratePin);
-      } else
-        return e;
-    }).toSet();
-    print("sapi markers ${newMarkers.firstWhere((element) => element.markerId == newSelected.id.toString()).markerId}");
+  void _updateSelectedMarker(PenaltyModel selected, isSelected) async {
+    final selectedMarker = _markers.value.firstWhere(
+      (element) => element.markerId.value == selected.id.toString(),
+    );
+    final newMarker = _createPenaltyMarker(selected, isSelected: isSelected);
 
-    _markers.value = newMarkers;
+    _markers.value = Set<Marker>.from(
+      _markers.value.where((element) => element.markerId != selectedMarker.markerId),
+    )..add(newMarker);
   }
 
-  void resetMarkerRoute() {
+  void resetMarker() {
     _markers.value.clear();
     _markers.value = {};
+  }
 
+  void resetPolyline() {
     _polyline.value.clear();
     _polyline.value = {};
+  }
+
+  void resetPanel() {
+    panelController.close();
   }
 
   Future<void> _createCustomMarker() async {

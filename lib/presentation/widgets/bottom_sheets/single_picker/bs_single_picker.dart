@@ -90,7 +90,8 @@ class BsSinglePicker extends GetView<BsSinglePickerController> {
                     hintText: 'Cari kode negara..',
                     shape: AppTextFieldShape.rect,
                     controller: controller.searchController,
-                    onSearch: (value) {
+                    state: controller.searchState,
+                    onChanged: (value) {
                       controller.search(value);
                     },
                   ),
