@@ -16,17 +16,12 @@ class ProfileController extends GetxController {
   final UserUseCase useCase;
 
   final data = Rx<UserModel>(UserModel(
-    id: '',
+    id: 0,
     name: '',
     email: '',
-    role: '',
-    status: '',
     profilePic: '',
-    score: '',
     phoneCode: '',
-    phoneNumber: '',
-    createdAt: '',
-    updatedAt: '',
+    phone: '',
   ));
   final isFetching = true.obs;
 
@@ -53,7 +48,7 @@ class ProfileController extends GetxController {
     isFetching.value = true;
 
     final res = await useCase.getUser();
-    data.value = res.data;
+    data.value = res;
 
     isFetching.value = false;
   }

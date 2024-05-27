@@ -36,6 +36,7 @@ class Constants {
   static const DATE_FORMAT_TZ = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
   static final DATE_FORMAT_PENALTY = "dd MMM yyyy, HH:mm";
   static final DATE_FORMAT_TRIP = "EEEE, dd MMMM yyyy";
+  static final BASE_URL = "https://dev-weeo.timedoor-host.web.id/api/v1/";
 
   static final bottomMainMenu = [
     BottomNavigationBarItem(
@@ -71,11 +72,11 @@ class Constants {
 
   static final faceScanInformationItems = [
     {
-      'icon': Iconsax.user_search,
+      'icon': "ic_user_search.svg",
       'content': 'face_scan_item_1'.tr,
     },
     {
-      'icon': Iconsax.glass_1,
+      'icon': "ic_glass.svg",
       'content': 'face_scan_item_2'.tr,
     },
   ];

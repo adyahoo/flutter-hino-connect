@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 import 'package:get/get.dart';
-import 'package:get/get_utils/get_utils.dart';
 import 'package:hino_driver_app/infrastructure/constants.dart';
 import 'package:hino_driver_app/presentation/widgets/app_toggle.dart';
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';
@@ -21,7 +19,7 @@ class ProfileScreen extends GetView<ProfileController> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-        Container(
+          Container(
             padding: const EdgeInsets.all(16),
             child: Row(
               children: [
@@ -37,7 +35,7 @@ class ProfileScreen extends GetView<ProfileController> {
                   children: [
                     Text(user.name, style: Theme.of(context).textTheme.titleMedium),
                     Text(user.email, style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.tertiary)),
-                    Text(user.role, style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.tertiary)),
+                    Text('user.role', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.tertiary)),
                   ],
                 ),
               ],
@@ -51,7 +49,7 @@ class ProfileScreen extends GetView<ProfileController> {
                 children: [
                   Text('score_title'.tr, style: Theme.of(context).textTheme.titleSmall?.copyWith(color: TextColor.secondary)),
                   const SizedBox(height: 8),
-                  scoreCard(user.score, context),
+                  scoreCard("user.score", context),
                 ],
               )),
         ],

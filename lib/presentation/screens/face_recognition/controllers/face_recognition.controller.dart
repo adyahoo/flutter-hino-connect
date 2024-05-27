@@ -2,18 +2,22 @@ import 'package:camera/camera.dart';
 import 'package:get/get.dart';
 
 class FaceRecognitionController extends GetxController {
-  CameraController? cameraController;
+  late CameraController cameraController;
 
-  void initCamera() async {
+  Future<void> initCamera() async {
     final _cameras = await availableCameras();
 
-    cameraController = CameraController(_cameras[0], ResolutionPreset.max);
+    cameraController = CameraController(
+      _cameras[1],
+      ResolutionPreset.medium,
+    );
+
+    await cameraController.initialize();
   }
 
   @override
   void onInit() {
     super.onInit();
-    initCamera();
   }
 
   @override
@@ -24,6 +28,6 @@ class FaceRecognitionController extends GetxController {
   @override
   void onClose() {
     super.onClose();
-    cameraController?.dispose();
+    cameraController.dispose();
   }
 }

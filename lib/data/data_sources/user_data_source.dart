@@ -1,12 +1,25 @@
 part of 'data_source.dart';
 
 class UserDataSource {
-  Future<SingleApiResponse<UserDto>> getUser() async {
-    try {
-      await Future.delayed(const Duration(seconds: 3));
-      final res = await inject<StorageService>().getJsonData(StorageService.USERS_JSON);
+  const UserDataSource({required this.services});
 
-      return SingleApiResponse.fromJson(res!, (json) => UserDto.fromJson(json));
+  final UserServices services;
+
+  Future<void> login(LoginBodyDto body) async {
+    try {
+      final res = await services.login(body);
+
+      inject<StorageService>().setToken(res.data.token);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<UserDto> getUser() async {
+    try {
+      final res = await services.getProfile();
+
+      return res.data;
     } catch (e) {
       rethrow;
     }

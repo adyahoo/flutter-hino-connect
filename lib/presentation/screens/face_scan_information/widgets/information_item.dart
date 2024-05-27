@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
 
 class InformationItem extends StatelessWidget {
@@ -11,10 +12,10 @@ class InformationItem extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(
-          data['icon'] as IconData,
-          size: 32,
-          color: PrimaryColor.main,
+        SvgPicture.asset(
+          "assets/icons/${data['icon']}",
+          width: 32,
+          height: 32,
         ),
         const SizedBox(width: 14),
         Expanded(
