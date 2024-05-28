@@ -2,17 +2,16 @@ import 'package:equatable/equatable.dart';
 
 class SingleApiResponse<T> extends Equatable {
   final T data;
-  final String message;
-  final bool success;
+  final String? message;
+  final bool? success;
 
   const SingleApiResponse({
     required this.data,
-    required this.message,
-    required this.success,
+    this.message,
+    this.success,
   });
 
-  factory SingleApiResponse.fromJson(
-      Map<String, dynamic> json, T Function(Map<String, dynamic> json) create) {
+  factory SingleApiResponse.fromJson(Map<String, dynamic> json, T Function(Map<String, dynamic> json) create) {
     // Check if 'data' is a list
     if (json['data'] is List) {
       // If 'data' is a list, take the first element and pass it to the 'create' function

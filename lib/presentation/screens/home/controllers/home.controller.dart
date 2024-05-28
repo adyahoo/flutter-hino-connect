@@ -4,7 +4,6 @@ import 'package:hino_driver_app/domain/core/entities/user_model.dart';
 import 'package:hino_driver_app/domain/core/usecases/trip_use_case.dart';
 import 'package:hino_driver_app/domain/core/usecases/user_use_case.dart';
 import 'package:hino_driver_app/infrastructure/utils.dart';
-import 'package:hino_driver_app/presentation/screens/profile/controllers/profile.controller.dart';
 
 class HomeController extends GetxController {
   HomeController({
@@ -47,7 +46,8 @@ class HomeController extends GetxController {
 
   void _getUser() async {
     final res = await userUseCase.getUser();
-    user.value = res.data;
+    print("sapi user $res");
+    user.value = res;
   }
 
   void verifyVehicle() async {

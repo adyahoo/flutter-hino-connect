@@ -81,7 +81,7 @@ class HomeContentCard extends StatelessWidget {
 
   void doVerifyVehicle() {
     // _homeController.verifyVehicle();
-    Get.toNamed(Routes.TRIP_LIST);
+    Get.toNamed(Routes.FACE_SCAN_INFORMATION);
   }
 
   @override

@@ -1,47 +1,74 @@
 import 'package:equatable/equatable.dart';
 
-class UserDto extends Equatable{
-  final String id;
+class LoginBodyDto extends Equatable {
+  final String email;
+  final String password;
+
+  const LoginBodyDto({
+    required this.email,
+    required this.password,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'email': this.email,
+      'password': this.password,
+    };
+  }
+
+  @override
+  List<Object> get props => [email, password];
+}
+
+class LoginDto extends Equatable {
+  final String token;
+
+  const LoginDto({
+    required this.token,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'access_token': this.token,
+    };
+  }
+
+  factory LoginDto.fromJson(Map<String, dynamic> json) {
+    return LoginDto(
+      token: json['access_token'],
+    );
+  }
+
+  @override
+  List<Object> get props => [token];
+}
+
+class UserDto extends Equatable {
+  final int id;
   final String name;
   final String email;
-  final String role;
-  late String profilePic;
-  final String status;
-  final String score;
-  final String phoneCode;
-  final String phoneNumber;
-  final String createdAt;
-  final String updatedAt;
+  final String profilePic;
+  final String? phoneCode;
+  final String? phone;
 
   UserDto({
     required this.id,
     required this.name,
     required this.email,
-    required this.role,
     required this.profilePic,
-    required this.status,
-    required this.score,
-    required this.phoneCode,
-    required this.phoneNumber,
-    required this.createdAt,
-    required this.updatedAt,
+    this.phoneCode,
+    this.phone,
   });
 
-  factory UserDto.fromJson(Map<String, dynamic> json) =>
-      UserDto(
-        id: json["id"].toString(),
+  factory UserDto.fromJson(Map<String, dynamic> json) => UserDto(
+        id: json["user_id"],
         name: json["name"],
-      email: json["email"],
-        role: json["role"],
-        profilePic: json["profilePic"],
-        status: json["status"],
-        score: json["score"].toString(),
+        email: json["email"],
+        profilePic: json["profile_picture"],
         phoneCode: json["phone_code"],
-        phoneNumber: json["phone_number"],
-        createdAt: json["created_at"],
-        updatedAt: json["updated_at"],
+        phone: json["phone"],
       );
 
   @override
-  List<Object> get props => [id, name, email, role, profilePic, status, score, createdAt, updatedAt];
+  List<Object?> get props => [id, name, email, profilePic, phoneCode, phone];
 }

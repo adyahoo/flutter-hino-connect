@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:hino_driver_app/infrastructure/constants.dart';
 import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 import 'package:iconsax/iconsax.dart';
@@ -53,8 +54,9 @@ class MapsScreen extends GetView<MapsController> {
                       state: controller.searchBarState,
                       canFocus: false,
                       editable: false,
-                      onChanged: (value) {
-                        print(value);
+                      onChanged: (value) {},
+                      onTap: (query) {
+                        controller.navigateSearch(query);
                       },
                     ),
                   ),
@@ -63,23 +65,10 @@ class MapsScreen extends GetView<MapsController> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: AppFilter(
-                        chips: [
-                          AppChip(
-                            label: 'Gas Station',
-                            icon: Iconsax.gas_station4,
-                            id: 'filter_gas_station',
-                          ),
-                          AppChip(
-                            label: 'Dealers',
-                            icon: Iconsax.truck,
-                            id: 'filter_dealers',
-                          ),
-                          AppChip(
-                            label: 'Restaurant',
-                            icon: Icons.coffee,
-                            id: 'filter_restaurant',
-                          ),
-                        ],
+                        chips: Constants.mapScreenFilterItems,
+                        onClick: (item) {
+                          controller.filterMarkers(item);
+                        },
                       ),
                     ),
                   ),

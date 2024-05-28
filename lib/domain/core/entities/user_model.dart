@@ -1,61 +1,61 @@
 import 'package:equatable/equatable.dart';
 
 class UserModel extends Equatable {
-  final String id;
+  final int id;
   final String name;
   final String email;
-  final String role;
-  late String profilePic;
-  final String status;
-  final String score;
-  final String phoneCode;
-  final String phoneNumber;
-  final String createdAt;
-  final String updatedAt;
+  final String profilePic;
+  final String? phoneCode;
+  final String? phone;
 
   UserModel({
     required this.id,
     required this.name,
     required this.email,
-    required this.role,
     required this.profilePic,
-    required this.status,
-    required this.score,
-    required this.phoneCode,
-    required this.phoneNumber,
-    required this.createdAt,
-    required this.updatedAt,
+    this.phoneCode,
+    this.phone,
   });
 
   //copy with
   UserModel copyWith({
-    String? id,
+    int? id,
     String? name,
     String? email,
-    String? role,
     String? profilePic,
-    String? status,
-    String? score,
     String? phoneCode,
-    String? phoneNumber,
-    String? createdAt,
-    String? updatedAt,
+    String? phone,
   }) {
     return UserModel(
       id: id ?? this.id,
       name: name ?? this.name,
       email: email ?? this.email,
-      role: role ?? this.role,
       profilePic: profilePic ?? this.profilePic,
-      status: status ?? this.status,
-      score: score ?? this.score,
       phoneCode: phoneCode ?? this.phoneCode,
-      phoneNumber: phoneNumber ?? this.phoneNumber,
-      createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
+      phone: phone ?? this.phone,
     );
   }
 
   @override
-  List<Object> get props => [id, name, email, role, profilePic, status, score, phoneCode, phoneNumber, createdAt, updatedAt];
+  List<Object?> get props => [id, name, email, profilePic, phoneCode, phone];
+}
+
+class LoginBody extends Equatable {
+  final String email;
+  final String password;
+
+  const LoginBody({
+    required this.email,
+    required this.password,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'email': this.email,
+      'password': this.password,
+    };
+  }
+
+  @override
+  List<Object> get props => [email, password];
 }

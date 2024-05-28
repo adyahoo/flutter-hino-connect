@@ -4,6 +4,8 @@ class Routes {
   }
 
   static const ACTIVITY_LIST = '/activity-list';
+  static const EDIT_PROFILE = '/edit-profile';
+  static const EMERGENCY_CONTACT_LIST = '/emergency-contact-list';
   static const EVENT_LIST = '/event-list';
   static const FACE_RECOGNITION = '/face-recognition';
   static const FACE_SCAN_INFORMATION = '/face-scan-information';
@@ -20,6 +22,4 @@ class Routes {
   static const TRIP = '/trip';
   static const TRIP_DETAIL = '/trip-detail/:id';
   static const TRIP_LIST = '/trip-list';
-  static const EDIT_PROFILE = '/edit-profile';
-  static const EMERGENCY_CONTACT_LIST = '/emergency-contact-list';
 }

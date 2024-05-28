@@ -99,7 +99,7 @@ class EditProfileScreen extends GetView<EditProfileController> {
                         const SizedBox(height: 16),
                         AppTextField(
                           label: 'phone'.tr,
-                          placeholder: controller.user.value.phoneNumber,
+                          placeholder: controller.user.value.phone ?? "",
                           textEditingController: controller.phoneController,
                           state: controller.phoneState,
                           type: AppTextFieldType.phoneNumber,

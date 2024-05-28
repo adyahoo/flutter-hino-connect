@@ -15,17 +15,12 @@ class EditProfileController extends GetxController {
 
   //rx user
   var user = UserModel(
-    id: '',
+    id: 0,
     name: '',
     email: '',
-    role: '',
-    status: '',
     profilePic: '',
-    score: '',
     phoneCode: '',
-    phoneNumber: '',
-    createdAt: '',
-    updatedAt: '',
+    phone: '',
   ).obs;
 
   final picState = AppTextFieldState();
@@ -39,11 +34,31 @@ class EditProfileController extends GetxController {
 
   final isLoading = false.obs;
 
+  // Future<void> onEditSave() async {
+  //   isLoading.value = true;
+  //   await Future.delayed(const Duration(seconds: 3));
+  //   isLoading.value = false;
+  // }
+
+  Future<void> onEditSave() async {
+    isLoading.value = true;
+
+    //edit the value from the textfield
+    this.user.value = UserModel(
+      id: user.value.id,
+      name: fullNameController.text,
+      email: emailController.text,
+      profilePic: picController.text,
+      phoneCode: user.value.phoneCode,
+      phone: phoneController.text,
+    );
+
+    isLoading.value = false;
+  }
+
   //get user
   void getUser() {
     UserModel userData = profileController.data.value;
-
-    print('userData: $userData');
 
     this.user.value = userData;
   }
@@ -72,13 +87,14 @@ void onEditProfilePic() async {
 }
 
   final count = 0.obs;
+
   @override
   void onInit() {
     super.onInit();
     getUser();
     fullNameController.text = user.value.name;
     emailController.text = user.value.email;
-    phoneController.text = user.value.phoneNumber;
+    phoneController.text = user.value.phone ?? "";
   }
 
   @override

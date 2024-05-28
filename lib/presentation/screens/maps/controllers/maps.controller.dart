@@ -5,8 +5,11 @@ import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:hino_driver_app/domain/core/entities/map_filter_model.dart';
 import 'package:hino_driver_app/domain/core/entities/place_model.dart';
 import 'package:hino_driver_app/domain/core/usecases/place_use_case.dart';
+import 'package:hino_driver_app/infrastructure/constants.dart';
+import 'package:hino_driver_app/infrastructure/navigation/routes.dart';
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -196,11 +199,13 @@ class MapsController extends GetxController {
         .toSet();
   }
 
-  void filterMarkers(String label, bool isSelected, String chipId) {
-    String type = convertLabelToType(label);
+  void filterMarkers(String id) {
+    if (id != '') {
+      final item = Constants.mapScreenFilterItems
+          .firstWhere((element) => element.id == id);
+      String type = convertLabelToType(item.label);
 
-    if (isSelected) {
-      selectedChip.value = chipId;
+      selectedChip.value = item.id;
       _markers.value = _places
           .where((e) => e.type == type)
           .map(
@@ -215,7 +220,6 @@ class MapsController extends GetxController {
               ),
               icon: getIconForType(e.type),
               onTap: () {
-                print('Marker tapped');
                 onMarkerTapped(
                   Marker(
                     markerId: MarkerId(generateMarkerId(
@@ -224,7 +228,6 @@ class MapsController extends GetxController {
                         double.parse(e.latitude), double.parse(e.longitude)),
                   ),
                 );
-                print('\n type: ${e.type}');
               },
             ),
           )
@@ -463,5 +466,14 @@ class MapsController extends GetxController {
       default:
         return 'Unknown';
     }
+  }
+
+  void navigateSearch(String? query) async {
+    final callback = await Get.toNamed(
+      Routes.SEARCH,
+      arguments: {'query': query},
+    );
+
+    filterMarkers(callback);
   }
 }

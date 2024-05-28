@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hino_driver_app/data/locals/StorageService.dart';
+import 'package:hino_driver_app/domain/core/entities/user_model.dart';
+import 'package:hino_driver_app/domain/core/usecases/user_use_case.dart';
 import 'package:hino_driver_app/infrastructure/di.dart';
 import 'package:hino_driver_app/infrastructure/navigation/routes.dart';
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 import 'package:local_auth/local_auth.dart';
 
 class LoginController extends GetxController {
+  LoginController({required this.useCase});
+
+  final UserUseCase useCase;
+
   final emailState = AppTextFieldState();
   final passwordState = AppTextFieldState();
+
   final emailController = TextEditingController().obs;
   final passwordController = TextEditingController().obs;
   final isLoading = false.obs;
@@ -44,13 +51,11 @@ class LoginController extends GetxController {
   Future<void> doLogin() async {
     isLoading.value = true;
 
-    Future.delayed(const Duration(milliseconds: 2000), () {
-      inject<StorageService>().setToken(
-          "ini email ${emailController.value.text} dan pass ${passwordController.value.text}");
+    final body = LoginBody(email: emailController.value.text, password: passwordController.value.text);
+    await useCase.login(body);
 
-      Get.offNamed(Routes.MAIN_TAB);
-      isLoading.value = false;
-    });
+    Get.offNamed(Routes.MAIN_TAB);
+    isLoading.value = false;
   }
 
   Future<void> doLoginWithBiometric() async {

@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
 class AppFilterController extends GetxController {
-  final selectedChipId = ''.obs;
+  final selectedId = ''.obs;
 
   @override
   void onInit() {
@@ -18,13 +18,12 @@ class AppFilterController extends GetxController {
     super.onClose();
   }
 
-  void handleChipSelection(String chipId, bool isSelected) {
-    if (isSelected) {
-      selectedChipId.value = chipId;
-    } else if (selectedChipId.value == chipId) {
-      // If the currently selected chip is deselected, clear the selectedChipId
-      selectedChipId.value = '';
+  void setSelectedId(String id){
+    if(selectedId.value == id) {
+      this.selectedId.value = '';
+      return;
     }
-    update();
+
+    this.selectedId.value = id;
   }
 }

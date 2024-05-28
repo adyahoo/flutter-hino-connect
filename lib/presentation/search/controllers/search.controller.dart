@@ -26,6 +26,7 @@ class SearchPageController extends GetxController {
   MapsController mapsController = Get.find<MapsController>();
 
   final searchBarState = AppTextFieldState();
+  String? query;
 
   @override
   Future<void> onInit() async {
@@ -37,12 +38,22 @@ class SearchPageController extends GetxController {
   @override
   void onReady() {
     super.onReady();
+    _getScreenArguments();
   }
 
   @override
   void onClose() {
     super.onClose();
     searchBarState.focusNode.value.removeListener(searchBarState.onFocusChange);
+  }
+
+  void _getScreenArguments() {
+    final arguments = Get.arguments ?? {};
+    query = arguments['query'];
+
+    if (query != null) {
+      searchbarController.value.text = query!;
+    }
   }
 
   void selectLocation(SearchResult result) {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hino_driver_app/domain/core/entities/search_result_model.dart';
+import 'package:hino_driver_app/infrastructure/constants.dart';
 import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 import 'package:iconsax/iconsax.dart';
@@ -114,7 +115,6 @@ class SearchScreen extends GetView<SearchPageController> {
               onChanged: (input) {
                 // Call the search function in your controller
                 controller.search(input);
-                // onTypingState(context, input);
                 onTypingState(context);
               },
             ),
@@ -126,23 +126,10 @@ class SearchScreen extends GetView<SearchPageController> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: AppFilter(
-                  chips: [
-                    AppChip(
-                      label: 'Gas Station',
-                      icon: Iconsax.gas_station4,
-                      id: 'filter_gas_station',
-                    ),
-                    AppChip(
-                      label: 'Dealers',
-                      icon: Iconsax.truck,
-                      id: 'filter_dealers',
-                    ),
-                    AppChip(
-                      label: 'Restaurant',
-                      icon: Icons.coffee,
-                      id: 'filter_restaurant',
-                    ),
-                  ],
+                  chips: Constants.mapScreenFilterItems,
+                  onClick: (item) {
+                    Get.back(result: item);
+                  },
                 ),
               ),
             ),
@@ -154,8 +141,9 @@ class SearchScreen extends GetView<SearchPageController> {
         child: Expanded(
           child: Obx(
             () {
-              if (controller.currentInput.isNotEmpty) {
-                // return onTypingState(context, controller.currentInput.value);
+              if (controller.currentInput.value.isNotEmpty || controller.searchbarController.value.text.isNotEmpty) {
+                controller.search(controller.searchbarController.value.text);
+
                 return onTypingState(context);
               } else {
                 print('masuk else statement');

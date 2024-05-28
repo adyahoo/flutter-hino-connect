@@ -10,29 +10,34 @@ class FaceRecognitionScreen extends GetView<FaceRecognitionController> {
 
   @override
   Widget build(BuildContext context) {
-    if(controller.cameraController?.value.isInitialized == false) {
-      return const SizedBox();
-    }
-
-    return Stack(
-      alignment: FractionalOffset.center,
-      children: <Widget>[
-        // Positioned.fill(
-        //   child: AspectRatio(
-        //     aspectRatio: 16/9,
-        //     child: CameraPreview(controller.cameraController!),
-        //   ),
-        // ),
-        Positioned.fill(
-          child: Opacity(
-            opacity: 0.3,
-            child: Image.network(
-              'https://picsum.photos/3000/4000',
-              fit: BoxFit.fill,
-            ),
-          ),
-        ),
-      ],
+    return FutureBuilder(
+      future: controller.initCamera(),
+      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          return Stack(
+            alignment: FractionalOffset.center,
+            children: [
+              Positioned.fill(
+                child: AspectRatio(
+                  aspectRatio: 16 / 9,
+                  child: CameraPreview(controller.cameraController),
+                ),
+              ),
+              Positioned.fill(
+                child: Opacity(
+                  opacity: 0.3,
+                  child: Image.asset(
+                    'assets/images/camera_overlay.png',
+                    fit: BoxFit.fill,
+                  ),
+                ),
+              ),
+            ],
+          );
+        } else {
+          return const SizedBox();
+        }
+      },
     );
   }
 }
