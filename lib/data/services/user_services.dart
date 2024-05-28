@@ -23,4 +23,12 @@ class UserServices {
       return SingleApiResponse.fromJson(res.data, (json) => UserDto.fromJson(json));
     });
   }
+
+  Future<SingleApiResponse<UserDto>> updateProfile(UserDto body) async {
+    return clientExecutor(execute: () async {
+      final res = await client.patch("user/profile", data: body.toJson());
+
+      return SingleApiResponse.fromJson(res.data, (json) => UserDto.fromJson(json));
+    });
+  }
 }

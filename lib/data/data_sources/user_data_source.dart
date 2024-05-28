@@ -24,4 +24,13 @@ class UserDataSource {
       rethrow;
     }
   }
+
+  Future<void> updateUser(UserDto body) async {
+    try {
+      await services.updateProfile(body);
+    } catch (e) {
+      rethrow;
+    }
+  }
+  
 }

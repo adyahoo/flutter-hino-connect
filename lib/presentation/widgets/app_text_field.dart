@@ -1,6 +1,16 @@
 part of 'widgets.dart';
 
-enum AppTextFieldType { email, text, password, multiline, single_picker, date_picker, time_picker, search, phoneNumber }
+enum AppTextFieldType {
+  email,
+  text,
+  password,
+  multiline,
+  single_picker,
+  date_picker,
+  time_picker,
+  search,
+  phoneNumber
+}
 
 enum AppTextFieldShape { rect, rounded }
 
@@ -143,7 +153,8 @@ class AppTextField extends StatelessWidget {
   OutlineInputBorder getBorder(double width, Color color) {
     return OutlineInputBorder(
       borderSide: BorderSide(width: width, color: color),
-      borderRadius: BorderRadius.circular(shape == AppTextFieldShape.rect ? 8 : 24),
+      borderRadius:
+          BorderRadius.circular(shape == AppTextFieldShape.rect ? 8 : 24),
     );
   }
 
@@ -243,13 +254,21 @@ class AppTextField extends StatelessWidget {
               keyboardType: state.inputType,
               maxLength: length,
               maxLines: state.maxLines,
-              obscureText: (type == AppTextFieldType.password) ? isObscure : false,
+              obscureText:
+                  (type == AppTextFieldType.password) ? isObscure : false,
               decoration: InputDecoration(
                   floatingLabelBehavior: FloatingLabelBehavior.never,
-                  contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+                  contentPadding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
                   hintText: placeholder,
-                  hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.placeholder),
-                  counterStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.helper),
+                  hintStyle: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.copyWith(color: TextColor.placeholder),
+                  counterStyle: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.copyWith(color: TextColor.helper),
                   filled: true,
                   fillColor: bgColor,
                   border: InputBorder.none,
@@ -262,7 +281,8 @@ class AppTextField extends StatelessWidget {
                   errorStyle: TextStyle(fontSize: 0)),
               style: Theme.of(context).textTheme.bodyMedium,
               validator: (value) {
-                final error = inputValidator(type, value, label ?? "", isRequired);
+                final error =
+                    inputValidator(type, value, label ?? "", isRequired);
                 state.setError(error);
 
                 if (error != null)
@@ -282,7 +302,10 @@ class AppTextField extends StatelessWidget {
                       Expanded(
                         child: Text(
                           state.errorText.value ?? helperText ?? "",
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: helperColor),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(color: helperColor),
                         ),
                       ),
                     ],
@@ -327,7 +350,8 @@ class AppTextField extends StatelessWidget {
                 borderRadius: BorderRadius.circular(24),
               ),
               enabledBorder: getBorder(1, BorderColor.secondary),
-              contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+              contentPadding:
+                  const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
               prefixIcon: prefixIcon,
               suffixIcon: state.isFocus.value ? suffixIcon : null,
             ),
@@ -347,12 +371,15 @@ class AppTextField extends StatelessWidget {
                 type: BsSinglePickerType.withSearch,
                 options: Constants.countryCodes,
                 title: 'country_code'.tr,
-                selectedId: 1,
+                selectedId:
+                    Get.find<BsSinglePickerController>().selectedOption.value,
                 // Set default selected id here
                 onSubmit: (PickerModel value) {
                   // Handle selected country code
                   print('Selected: ${value.title}');
                   // Update the text field controller or state with the selected country code
+                  Get.find<BsSinglePickerController>()
+                      .setSelectedOption(value.id);
                 },
               ),
               isScrollControlled: true,
@@ -370,10 +397,22 @@ class AppTextField extends StatelessWidget {
             ),
             child: Row(
               children: [
-                Text(
-                  '+62', // Initial country code
-                  style: TextStyle(color: Colors.black),
-                ),
+                //!! Change the selected country code here
+                Obx(() {
+                  final selectedId =
+                      Get.find<BsSinglePickerController>().selectedOption.value;
+                  final selectedOption = Constants.countryCodes.firstWhere(
+                      (option) => option.id == selectedId,
+                      orElse: () => Constants.countryCodes[0]);
+                  final match =
+                      RegExp(r'\+(\d+)').firstMatch(selectedOption.title);
+                  final phoneCode =
+                      match != null ? match.group(0) : '+62'; // default value
+                  return Text(
+                    phoneCode ?? '+62',
+                    style: TextStyle(color: Colors.black),
+                  );
+                }),
                 SizedBox(width: 4),
                 Icon(
                   Iconsax.arrow_down_1,
@@ -392,9 +431,13 @@ class AppTextField extends StatelessWidget {
             style: Theme.of(context).textTheme.bodyMedium,
             decoration: InputDecoration(
               floatingLabelBehavior: FloatingLabelBehavior.never,
-              contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+              contentPadding:
+                  const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
               hintText: placeholder,
-              hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.placeholder),
+              hintStyle: Theme.of(context)
+                  .textTheme
+                  .bodyMedium
+                  ?.copyWith(color: TextColor.placeholder),
               filled: true,
               fillColor: Colors.white,
               border: OutlineInputBorder(
@@ -420,7 +463,8 @@ class AppTextField extends StatelessWidget {
               ),
             ),
             validator: (value) {
-              final error = inputValidator(type, value, label ?? "", isRequired);
+              final error =
+                  inputValidator(type, value, label ?? "", isRequired);
               state.setError(error);
 
               if (error != null)
@@ -450,9 +494,19 @@ class AppTextField extends StatelessWidget {
               children: [
                 TextSpan(
                   text: label,
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(color: TextColor.secondary),
+                  style: Theme.of(context)
+                      .textTheme
+                      .labelLarge
+                      ?.copyWith(color: TextColor.secondary),
                 ),
-                (isRequired) ? TextSpan(text: "*", style: Theme.of(context).textTheme.labelLarge?.copyWith(color: Colors.red)) : const TextSpan(),
+                (isRequired)
+                    ? TextSpan(
+                        text: "*",
+                        style: Theme.of(context)
+                            .textTheme
+                            .labelLarge
+                            ?.copyWith(color: Colors.red))
+                    : const TextSpan(),
               ],
             ),
           ),

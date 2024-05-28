@@ -27,8 +27,9 @@ class ProfileScreen extends GetView<ProfileController> {
               children: [
                 CircleAvatar(
                   radius: 32,
-                  backgroundImage: MemoryImage(
-                    base64Decode(user.profilePic),
+                  // backgroundImage: MemoryImage(
+                  //   base64Decode(user.profilePic),
+                  backgroundImage: NetworkImage(user.profilePic
                   ), //!PLEASE CHANGE LATER BASED ON THE IMAGE API
                 ),
                 const SizedBox(width: 16),
@@ -37,7 +38,7 @@ class ProfileScreen extends GetView<ProfileController> {
                   children: [
                     Text(user.name, style: Theme.of(context).textTheme.titleMedium),
                     Text(user.email, style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.tertiary)),
-                    Text('user.role', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.tertiary)),
+                    Text('Driver', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.tertiary)),
                   ],
                 ),
               ],
@@ -51,7 +52,8 @@ class ProfileScreen extends GetView<ProfileController> {
                 children: [
                   Text('score_title'.tr, style: Theme.of(context).textTheme.titleSmall?.copyWith(color: TextColor.secondary)),
                   const SizedBox(height: 8),
-                  scoreCard("user.score", context),
+                  // scoreCard("user.score", context),
+                  scoreCard("100", context)
                 ],
               )),
         ],

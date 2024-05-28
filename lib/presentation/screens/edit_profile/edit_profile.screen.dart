@@ -57,8 +57,9 @@ class EditProfileScreen extends GetView<EditProfileController> {
                           onTap: controller.onEditProfilePic,
                           child: Obx(() => CircleAvatar(
                                 radius: 32,
-                                backgroundImage: MemoryImage(
-                                  base64Decode(controller.user.value.profilePic), //!PLEASE CHANGE LATER BASED ON THE IMAGE API
+                                // backgroundImage: MemoryImage(
+                                //   base64Decode(controller.user.value.profilePic), //!PLEASE CHANGE LATER BASED ON THE IMAGE API
+                                backgroundImage: NetworkImage(controller.user.value.profilePic
                                 ),
                               )),
                         ),
@@ -117,7 +118,9 @@ class EditProfileScreen extends GetView<EditProfileController> {
               padding: const EdgeInsets.all(16),
               child: AppButton(
                 label: 'save_change'.tr,
-                onPress: () {},
+                onPress: () {
+                  controller.onEditSave();
+                },
                 type: AppButtonType.filled,
                 isLoading: controller.isLoading.value,
               ),

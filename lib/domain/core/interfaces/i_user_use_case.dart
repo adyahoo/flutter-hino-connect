@@ -6,4 +6,6 @@ abstract class IUserUseCase {
   Future<void> login(LoginBody body);
 
   Future<UserModel> getUser();
+
+  Future<void> updateUser(UserModel body);
 }

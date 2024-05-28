@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:hino_driver_app/domain/core/entities/user_model.dart';
+import 'package:hino_driver_app/infrastructure/di.dart';
 
 import '../../../../presentation/screens/edit_profile/controllers/edit_profile.controller.dart';
 
@@ -10,6 +11,8 @@ class EditProfileControllerBinding extends Bindings {
 
   @override
   void dependencies() {
-    Get.put(EditProfileController());
+    Get.lazyPut<EditProfileController>(
+      () => EditProfileController(useCase: inject()),
+    );
   }
 }

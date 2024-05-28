@@ -38,4 +38,22 @@ class UserUseCase implements IUserUseCase {
       rethrow;
     }
   }
+
+  @override
+  Future<void> updateUser(UserModel body) async {
+    try {
+      final bodyData = UserDto(
+        id: body.id,
+        name: body.name,
+        email: body.email,
+        profilePic: body.profilePic,
+        phoneCode: body.phoneCode,
+        phone: body.phone,
+      );
+      await dataSource.updateUser(bodyData);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
 }

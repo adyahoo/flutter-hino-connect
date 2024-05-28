@@ -155,9 +155,9 @@ class Constants {
   ];
 
   static final countryCodes = [
-    PickerModel(id: 1, title: '+62 (Indonesia)', value: 'ID'),
-    PickerModel(id: 2, title: '+61 (Malaysia)', value: 'MY'),
-    PickerModel(id: 3, title: '+63 (Thailand)', value: 'TH'),
+    PickerModel(id: 0, title: '+62 (Indonesia)', value: '+62'),
+    PickerModel(id: 1, title: '+61 (Malaysia)', value: '+61'),
+    PickerModel(id: 2, title: '+63 (Thailand)', value: '+63'),
   ];
 
   static final searchFilterItems = [

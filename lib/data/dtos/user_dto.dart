@@ -69,6 +69,15 @@ class UserDto extends Equatable {
         phone: json["phone"],
       );
 
+  Map<String, dynamic> toJson() => {
+        "user_id": id,
+        "name": name,
+        "email": email,
+        "profile_picture": profilePic,
+        "phone_code": phoneCode,
+        "phone": phone,
+      };
+
   @override
   List<Object?> get props => [id, name, email, profilePic, phoneCode, phone];
 }
