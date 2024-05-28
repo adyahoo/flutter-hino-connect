@@ -3,6 +3,15 @@ part of '../home.screen.dart';
 class HomeAccountChip extends GetView<HomeController> {
   const HomeAccountChip({super.key});
 
+  Widget _renderLoadingAvatar() {
+    return ShimmerContainer(
+      child: CircleAvatar(
+        radius: 50,
+        backgroundColor: Colors.black,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -19,12 +28,14 @@ class HomeAccountChip extends GetView<HomeController> {
               () => SizedBox(
                 width: 24,
                 height: 24,
-                child: CircleAvatar(
-                  radius: 50,
-                  backgroundImage: NetworkImage(
-                    controller.user.value?.profilePic ?? "",
-                  ),
-                ),
+                child: controller.isFetchingUser.value
+                    ? _renderLoadingAvatar()
+                    : CircleAvatar(
+                        radius: 50,
+                        backgroundImage: NetworkImage(
+                          controller.user.value?.profilePic ?? "",
+                        ),
+                      ),
               ),
             ),
             const SizedBox(width: 6),
