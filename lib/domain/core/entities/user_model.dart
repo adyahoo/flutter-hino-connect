@@ -4,7 +4,7 @@ class UserModel extends Equatable {
   final int id;
   final String name;
   final String email;
-  final String profilePic;
+  String profilePic;
   final String? phoneCode;
   final String? phone;
 
