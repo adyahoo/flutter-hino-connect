@@ -87,7 +87,7 @@ class BsSinglePicker extends GetView<BsSinglePickerController> {
                 const SizedBox(height: 10),
                 if (type == BsSinglePickerType.withSearch)
                   AppSearchBar(
-                    hintText: 'Cari kode negara..',
+                    hintText: 'searchbar_phonecode_placeholder'.tr,
                     shape: AppTextFieldShape.rect,
                     controller: controller.searchController,
                     state: controller.searchState,

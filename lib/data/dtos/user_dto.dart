@@ -51,7 +51,7 @@ class UserDto extends Equatable {
   final String? phoneCode;
   final String? phone;
 
-  const UserDto({
+  UserDto({
     required this.id,
     required this.name,
     required this.email,

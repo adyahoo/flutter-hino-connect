@@ -50,8 +50,12 @@
     	<string>en</string>
     	<string>nb</string>
     </array>
+	<key>NSFaceIDUsageDescription</key>
+	<string> This app needs access to FaceID to authenticate the user </string>
     <key>NSCameraUsageDescription</key>
-    <string>your usage description here</string>
+    <string> This app needs access to the camera to take photos when changing the profile picture </string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string> This app needs access to the photo library to upload photos for the profile picture </string>
     <key>NSMicrophoneUsageDescription</key>
     <string>your usage description here</string>
 	<key>NSLocationWhenInUseUsageDescription</key>

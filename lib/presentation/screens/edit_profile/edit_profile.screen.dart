@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import 'package:get/get.dart';
 import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
@@ -9,15 +12,12 @@ import 'controllers/edit_profile.controller.dart';
 class EditProfileScreen extends GetView<EditProfileController> {
   const EditProfileScreen({Key? key}) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
-    final user = controller.user.value;
-
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Edit Profile',
+          'edit_profile'.tr,
           style: Theme.of(context)
               .textTheme
               .titleMedium
@@ -44,19 +44,23 @@ class EditProfileScreen extends GetView<EditProfileController> {
                       children: <Widget>[
                         //title edit profile
                         Text(
-                          'Foto Profil',
+                          'photo_profile'.tr,
                           style: Theme.of(context)
                               .textTheme
                               .bodyMedium
                               ?.copyWith(color: TextColor.secondary),
                         ),
                         SizedBox(height: 11),
+                        
                         // Avatar
-                        CircleAvatar(
-                          radius: 32,
-                          backgroundImage: NetworkImage(
-                            user.profilePic,
-                          ), //!PLEASE CHANGE LATER BASED ON THE IMAGE API
+                        GestureDetector(
+                          onTap: controller.onEditProfilePic,
+                          child: Obx(() => CircleAvatar(
+                                radius: 32,
+                                backgroundImage: MemoryImage(
+                                  base64Decode(controller.user.value.profilePic), //!PLEASE CHANGE LATER BASED ON THE IMAGE API
+                                ),
+                              )),
                         ),
                       ],
                     ),
@@ -75,8 +79,8 @@ class EditProfileScreen extends GetView<EditProfileController> {
                       children: <Widget>[
                         // Full Name
                         AppTextField(
-                          label: 'Full Name',
-                          placeholder: user.name,
+                          label: 'full_name'.tr,
+                          placeholder: controller.user.value.name,
                           textEditingController: controller.fullNameController,
                           type: AppTextFieldType.text,
                           state: controller.fullNameState,
@@ -86,7 +90,7 @@ class EditProfileScreen extends GetView<EditProfileController> {
                         // Email
                         AppTextField(
                           label: 'Email',
-                          placeholder: user.email,
+                          placeholder: controller.user.value.email,
                           textEditingController: controller.emailController,
                           type: AppTextFieldType.email,
                           isRequired: true,
@@ -94,8 +98,8 @@ class EditProfileScreen extends GetView<EditProfileController> {
                         ),
                         const SizedBox(height: 16),
                         AppTextField(
-                          label: 'Phone Number',
-                          placeholder: user.phone??"",
+                          label: 'phone'.tr,
+                          placeholder: controller.user.value.phone ?? "",
                           textEditingController: controller.phoneController,
                           state: controller.phoneState,
                           type: AppTextFieldType.phoneNumber,
@@ -112,9 +116,8 @@ class EditProfileScreen extends GetView<EditProfileController> {
             child: Padding(
               padding: const EdgeInsets.all(16),
               child: AppButton(
-                label: 'Save Changes',
-                onPress: controller.onEditSave,
-
+                label: 'save_change'.tr,
+                onPress: () {},
                 type: AppButtonType.filled,
                 isLoading: controller.isLoading.value,
               ),

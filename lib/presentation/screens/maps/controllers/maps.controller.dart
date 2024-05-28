@@ -13,8 +13,6 @@ import 'package:hino_driver_app/infrastructure/navigation/routes.dart';
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-import 'package:geocoding/geocoding.dart';
-
 final _panelController = PanelController();
 
 class MapsController extends GetxController {
@@ -36,7 +34,7 @@ class MapsController extends GetxController {
 
   final panelController = _panelController;
 
-  final List<PlaceModel> _places = <PlaceModel>[].obs;
+  List<PlaceModel> _places = <PlaceModel>[].obs;
 
   List<PlaceModel> get places => _places;
 
@@ -52,7 +50,7 @@ class MapsController extends GetxController {
 
   CameraPosition currentCameraPosition = CameraPosition(
     target: LatLng(-8.681547132266411, 115.24069589508952),
-    zoom: 16,
+    zoom: 20,
   );
   LatLng currentLocation = LatLng(-8.681547132266411, 115.24069589508952);
 
@@ -67,12 +65,13 @@ class MapsController extends GetxController {
   void onInit() {
     _createCustomMarker();
     super.onInit();
-    getCurrentLocation();
+    // getCurrentLocation();
   }
 
   @override
   void onReady() {
     super.onReady();
+    getCurrentLocation();
   }
 
   @override
@@ -100,19 +99,89 @@ class MapsController extends GetxController {
 
   void moveCamera(LatLng coordinate) {
     initMarker(coordinate);
-
     // Then animate the camera
-    _controller.animateCamera(CameraUpdate.newLatLngZoom(coordinate, 15));
+    _controller.animateCamera(CameraUpdate.newLatLngZoom(coordinate, 20));
   }
 
   void initMarker(LatLng coordinate) {
-    fetchAllPlaces(coordinate.latitude, coordinate.longitude);
+    fetchAllPlaces(
+      coordinate.latitude,
+      coordinate.longitude,
+      isFetchingCurrentLocation: true,
+    );
   }
 
-  Future<void> fetchAllPlaces(double lat, double long) async {
+  Future<void> initSpecificMarker(PlaceModel place) async {
+    // Wait for fetchAllPlaces to complete
+    await fetchAllPlaces(double.parse(place.latitude), double.parse(place.longitude));
+
+    // Check if the fetched places contain the specific marker we want to initialize
+    String markerId = generateMarkerId(double.parse(place.latitude), double.parse(place.longitude));
+
+    // Search for marker in _markers
+    Marker? marker;
+    for (var element in _markers.value) {
+      if (element.markerId.value == markerId) {
+        marker = element;
+        break;
+      }
+    }
+
+    if (marker != null) {
+      print('Marker found');
+      onMarkerTapped(marker);
+    } else {
+      print('Marker not found');
+
+      // Add new marker
+      Marker newMarker = Marker(
+        markerId: MarkerId(markerId),
+        position: LatLng(double.parse(place.latitude), double.parse(place.longitude)),
+        icon: getIconForType(place.type),
+        onTap: () {
+          print('Marker tapped blabla');
+          onMarkerTapped(Marker(
+            markerId: MarkerId(markerId),
+            position: LatLng(double.parse(place.latitude), double.parse(place.longitude)),
+          ));
+        },
+      );
+      _markers.value = Set<Marker>.from(_markers.value)..add(newMarker);
+      // Call onMarkerTapped with the new marker
+      PlaceModel newPlace = PlaceModel(
+        name: place.name,
+        type: place.type,
+        address: place.address,
+        latitude: place.latitude,
+        longitude: place.longitude,
+        phone: place.phone,
+      );
+
+      final newPlaceList = [newPlace, ..._places];
+      _places = newPlaceList;
+      onMarkerTapped(newMarker);
+    }
+  }
+
+  Future<void> fetchAllPlaces(double lat, double long, {bool isFetchingCurrentLocation = false}) async {
     await fetchPlaces(lat, long, 'gas_station');
     await fetchPlaces(lat, long, 'restaurant');
     await fetchPlaces(lat, long, 'car_dealer');
+
+    if (isFetchingCurrentLocation) {
+      // Add the initial marker after all places have been fetched
+      _markers.value = Set<Marker>.from(_markers.value)
+        ..add(
+          Marker(
+            markerId: MarkerId('Initial Position'),
+            position: LatLng(lat, long),
+            icon: BitmapDescriptor.defaultMarker,
+          ),
+        );
+      return;
+    } else {
+      _controller.animateCamera(CameraUpdate.newLatLngZoom(LatLng(lat, long), 20));
+    }
   }
 
   Future<void> fetchPlaces(double lat, double long, String type) async {
@@ -124,16 +193,6 @@ class MapsController extends GetxController {
           (e) => _createMarker(e),
         )
         .toSet();
-
-    //add marker to the initial position
-    _markers.value = Set<Marker>.from(_markers.value)
-      ..add(
-        Marker(
-          markerId: MarkerId('Initial Position'),
-          position: LatLng(lat, long),
-          icon: BitmapDescriptor.defaultMarker,
-        ),
-      );
   }
 
   void filterMarkers(String id) {
@@ -146,7 +205,7 @@ class MapsController extends GetxController {
           .where((e) => e.type == type)
           .map(
             (e) => Marker(
-              markerId: MarkerId(e.name),
+              markerId: MarkerId(generateMarkerId(double.parse(e.latitude), double.parse(e.longitude))),
               position: LatLng(double.parse(e.latitude), double.parse(e.longitude)),
               infoWindow: InfoWindow(
                 title: e.name,
@@ -156,7 +215,7 @@ class MapsController extends GetxController {
               onTap: () {
                 onMarkerTapped(
                   Marker(
-                    markerId: MarkerId(e.name),
+                    markerId: MarkerId(generateMarkerId(double.parse(e.latitude), double.parse(e.longitude))),
                     position: LatLng(double.parse(e.latitude), double.parse(e.longitude)),
                   ),
                 );
@@ -166,48 +225,14 @@ class MapsController extends GetxController {
           .toSet();
     } else {
       selectedChip.value = '';
-      fetchAllPlaces(37.42796133580664, -122.085749655962);
+      fetchAllPlaces(currentLocation.latitude, currentLocation.longitude);
     }
-  }
-
-  String convertLabelToType(String label) {
-    switch (label) {
-      case 'Gas Station':
-        return 'gas_station';
-      case 'Dealers':
-        return 'car_dealer';
-      case 'Restaurant':
-        return 'restaurant';
-      default:
-        return '';
-    }
-  }
-
-  String convertTypeName(String type) {
-    switch (type) {
-      case 'gas_station':
-        return 'Gas Station';
-      case 'restaurant':
-        return 'Restaurant';
-      case 'car_dealer':
-        return 'Car Dealer';
-      default:
-        return 'Unknown';
-    }
-  }
-
-  Future<String> fetchFormattedAddress(Marker marker) async {
-    List<Placemark> placemarks = await placemarkFromCoordinates(marker.position.latitude, marker.position.longitude);
-
-    String formattedAddress =
-        placemarks.first.street! + ', ' + placemarks.first.subLocality! + ', ' + placemarks.first.locality! + ', ' + placemarks.first.administrativeArea! + ', ' + placemarks.first.postalCode!;
-
-    return formattedAddress;
   }
 
   Marker _createMarker(PlaceModel place) {
+    String markerId = generateMarkerId(double.parse(place.latitude), double.parse(place.longitude));
     return Marker(
-      markerId: MarkerId(place.name),
+      markerId: MarkerId(markerId),
       position: LatLng(
         double.parse(place.latitude),
         double.parse(place.longitude),
@@ -218,9 +243,10 @@ class MapsController extends GetxController {
       ),
       icon: getIconForType(place.type),
       onTap: () {
+        print('KETAP HIKS');
         onMarkerTapped(
           Marker(
-            markerId: MarkerId(place.name),
+            markerId: MarkerId(markerId),
             position: LatLng(
               double.parse(place.latitude),
               double.parse(place.longitude),
@@ -233,15 +259,15 @@ class MapsController extends GetxController {
 
   void onMarkerTapped(Marker marker) {
     // Update panel data
-    placeName.value = marker.markerId.value;
-    placeType.value = convertTypeName(_places.firstWhere((e) => e.name == marker.markerId.value).type);
-    phoneNumber.value = _places.firstWhere((e) => e.name == marker.markerId.value).phone!;
-    position.value = '${marker.position.latitude}, ${marker.position.longitude}';
+    final selectedPlace = _places.firstWhere((e) => generateMarkerId(double.parse(e.latitude), double.parse(e.longitude)) == marker.markerId.value);
 
-    // Fetch and update address in the background
-    fetchFormattedAddress(marker).then((formattedAddress) {
-      address.value = formattedAddress;
-    });
+    print('MARKER INFO: ${marker.markerId.value}');
+
+    placeName.value = selectedPlace.name;
+    placeType.value = convertTypeName(selectedPlace.type);
+    phoneNumber.value = selectedPlace.phone!;
+    position.value = '${marker.position.latitude}, ${marker.position.longitude}';
+    address.value = selectedPlace.address ?? '';
 
     // Update marker icon
     updateMarkerIcon(marker.markerId.value);
@@ -310,7 +336,7 @@ class MapsController extends GetxController {
 
   void updateMarkerIcon(String markerId) {
     final marker = _markers.value.firstWhere((element) => element.markerId.value == markerId);
-    final type = _places.firstWhere((e) => e.name == markerId).type;
+    final type = _places.firstWhere((e) => generateMarkerId(double.parse(e.latitude), double.parse(e.longitude)) == markerId).type;
 
     BitmapDescriptor selectedIcon;
     switch (type) {
@@ -340,28 +366,28 @@ class MapsController extends GetxController {
 
   void revertMarkerIcon(String markerId) {
     final marker = _markers.value.firstWhere((element) => element.markerId.value == markerId);
-    final type = _places.firstWhere((e) => e.name == markerId).type;
+    final type = _places.firstWhere((e) => generateMarkerId(double.parse(e.latitude), double.parse(e.longitude)) == markerId).type;
 
-    BitmapDescriptor selectedIcon;
+    BitmapDescriptor icon;
     switch (type) {
       case 'gas_station':
-        selectedIcon = gasStation;
+        icon = gasStation;
         break;
       case 'restaurant':
-        selectedIcon = restaurant;
+        icon = restaurant;
         break;
       case 'car_dealer':
-        selectedIcon = carDealer;
+        icon = carDealer;
         break;
       default:
-        selectedIcon = BitmapDescriptor.defaultMarker;
+        icon = BitmapDescriptor.defaultMarker;
     }
 
     final updatedMarker = Marker(
       markerId: marker.markerId,
       position: marker.position,
       infoWindow: marker.infoWindow,
-      icon: selectedIcon,
+      icon: icon,
       onTap: marker.onTap,
     );
 
@@ -373,6 +399,36 @@ class MapsController extends GetxController {
       revertMarkerIcon(selectedMarker!.markerId.value);
     }
     panelController.close();
+  }
+
+  String generateMarkerId(double latitude, double longitude) {
+    return '$latitude,$longitude';
+  }
+
+  String convertLabelToType(String label) {
+    switch (label) {
+      case 'Gas Station':
+        return 'gas_station';
+      case 'Dealers':
+        return 'car_dealer';
+      case 'Restaurant':
+        return 'restaurant';
+      default:
+        return '';
+    }
+  }
+
+  String convertTypeName(String type) {
+    switch (type) {
+      case 'gas_station':
+        return 'Gas Station';
+      case 'restaurant':
+        return 'Restaurant';
+      case 'car_dealer':
+        return 'Car Dealer';
+      default:
+        return 'Unknown';
+    }
   }
 
   void navigateSearch(String? query) async {

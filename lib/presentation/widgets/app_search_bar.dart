@@ -22,6 +22,13 @@ class AppSearchBar extends StatelessWidget {
     this.canFocus = true,
   }) : super(key: key);
 
+  void debounceOnChange(String value) {
+    var lastClickTime = 0;
+
+
+    onChanged(value);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -36,7 +43,7 @@ class AppSearchBar extends StatelessWidget {
             canFocus: canFocus,
             isEditable: editable,
             onChanged: (value) {
-              onChanged(value);
+              debounceOnChange(value);
             },
             onClick: () {
               if (onTap != null) {

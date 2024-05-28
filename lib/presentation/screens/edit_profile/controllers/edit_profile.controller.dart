@@ -3,15 +3,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:hino_driver_app/data/dtos/user_dto.dart';
+
 import 'package:hino_driver_app/domain/core/entities/user_model.dart';
 import 'package:hino_driver_app/presentation/screens/profile/controllers/profile.controller.dart';
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 
 class EditProfileController extends GetxController {
-  // final UserModel user;
-
-  // EditProfileController({required this.user});
 
   //profile controller
   ProfileController profileController = Get.find();
@@ -65,6 +62,29 @@ class EditProfileController extends GetxController {
 
     this.user.value = userData;
   }
+
+void onEditProfilePic() async {
+  final pickedFile = await Get.bottomSheet(
+    BsImagePicker(),
+  );
+
+  if (pickedFile != null) {
+    final isUrl = Uri.tryParse(pickedFile.path)?.hasScheme ?? false;
+
+    if (isUrl) {
+      user.update((val) {
+        val!.profilePic = pickedFile.path;
+      });
+    } else {
+      final bytes = await pickedFile.readAsBytes();
+      final base64Image = base64Encode(bytes);
+      
+      var userTest = user.value.copyWith(profilePic: base64Image);
+
+      user.value = userTest;
+    }
+  }
+}
 
   final count = 0.obs;
 
