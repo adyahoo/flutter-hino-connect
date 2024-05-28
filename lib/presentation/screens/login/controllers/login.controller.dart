@@ -15,8 +15,8 @@ class LoginController extends GetxController {
   final emailState = AppTextFieldState();
   final passwordState = AppTextFieldState();
 
-  final emailController = TextEditingController().obs;
-  final passwordController = TextEditingController().obs;
+  final emailController = TextEditingController(text: "test@gmail.com").obs;
+  final passwordController = TextEditingController(text: "password").obs;
   final isLoading = false.obs;
 
   @override
@@ -39,12 +39,16 @@ class LoginController extends GetxController {
   }
 
   Future<void> doLogin() async {
-    isLoading.value = true;
+    try {
+      isLoading.value = true;
 
-    final body = LoginBody(email: emailController.value.text, password: passwordController.value.text);
-    await useCase.login(body);
+      final body = LoginBody(email: emailController.value.text, password: passwordController.value.text);
+      await useCase.login(body);
 
-    Get.offNamed(Routes.MAIN_TAB);
-    isLoading.value = false;
+      Get.offNamed(Routes.MAIN_TAB);
+      isLoading.value = false;
+    } catch (e) {
+      isLoading.value = false;
+    }
   }
 }

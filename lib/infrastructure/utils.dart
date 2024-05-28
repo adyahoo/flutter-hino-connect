@@ -1,11 +1,46 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hino_driver_app/domain/core/entities/api_model.dart';
+import 'package:hino_driver_app/infrastructure/client/exceptions/ApiException.dart';
 import 'package:hino_driver_app/infrastructure/constants.dart';
 import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
-import 'package:hino_driver_app/main.dart';
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';
+
+void errorHandler(ApiException e) {
+  ErrorResponseModel? error;
+
+  if (e.response?.error.code == 422) {
+    error = ErrorResponseModel(
+      code: 422,
+      title: e.response!.error.title,
+      message: e.response!.error.message,
+    );
+  } else {
+    error = ErrorResponseModel(
+      code: e.response!.error.code,
+      title: e.response!.error.title,
+      message: e.response!.error.message,
+      errors: e.response!.error.errors
+          .map(
+            (element) => ErrorModel(
+              key: element.key,
+              message: element.message,
+            ),
+          )
+          .toList(),
+    );
+  }
+
+  showGetBottomSheet(
+    BsConfirmation(
+      type: BsConfirmationType.danger,
+      title: error.title,
+      description: error.message,
+      positiveButtonOnClick: () {},
+    ),
+  );
+}
 
 void showLoadingOverlay() {
   Get.dialog(

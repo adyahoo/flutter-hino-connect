@@ -11,14 +11,14 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class SearchPageController extends GetxController {
-  var searchResults = <SearchResult>[].obs;
-
+  final searchResults = <SearchResult>[].obs;
   final filteredResults = <SearchResult>[].obs;
 
-  var currentInput = ''.obs;
-
-  var isTextFieldEdited = false.obs;
   final Rx<TextEditingController> searchbarController = TextEditingController().obs;
+
+  final currentInput = ''.obs;
+  final isTextFieldEdited = false.obs;
+  final isBusySearch = false.obs;
 
   //map controller
   MapsController mapsController = Get.find<MapsController>();
