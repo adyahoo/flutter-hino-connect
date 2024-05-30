@@ -7,6 +7,7 @@ import 'package:hino_driver_app/domain/core/entities/map_filter_model.dart';
 import 'package:hino_driver_app/domain/core/entities/model.dart';
 import 'package:hino_driver_app/infrastructure/di.dart';
 import 'package:hino_driver_app/infrastructure/navigation/routes.dart';
+import 'package:hino_driver_app/infrastructure/utils.dart';
 import 'package:hino_driver_app/presentation/screens/profile/controllers/profile.controller.dart';
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 import 'package:iconsax/iconsax.dart';
@@ -127,7 +128,14 @@ class Constants {
                 type: BsConfirmationType.danger,
                 title: 'quit_account'.tr,
                 description: 'are_you_sure_logout'.tr,
-                positiveButtonOnClick: Get.find<ProfileController>().logout,
+                positiveButtonOnClick: () async {
+                  Get.back();
+
+                  await Future.delayed(const Duration(milliseconds: 500));
+                  showLoadingOverlay();
+
+                  Get.find<ProfileController>().logout();
+                },
                 positiveTitle: 'quit'.tr,
               ),
             );
@@ -204,5 +212,4 @@ class Constants {
       icon: Icons.coffee,
     ),
   ];
-
 }

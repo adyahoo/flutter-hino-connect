@@ -1,7 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:hino_driver_app/data/data_sources/data_source.dart';
-import 'package:hino_driver_app/data/dtos/base_response_dto.dart';
-import 'package:hino_driver_app/data/dtos/single_base_response_dto.dart';
 import 'package:hino_driver_app/data/dtos/user_dto.dart';
 import 'package:hino_driver_app/domain/core/entities/user_model.dart';
 import 'package:hino_driver_app/domain/core/interfaces/i_user_use_case.dart';
@@ -26,8 +23,8 @@ class UserUseCase implements IUserUseCase {
       );
 
       return data;
-    } catch (e) {
-      //call error handler dialog
+    }on ApiException catch (e) {
+      errorHandler(e);
       rethrow;
     }
   }
@@ -37,6 +34,16 @@ class UserUseCase implements IUserUseCase {
     try {
       final bodyData = LoginBodyDto(email: body.email, password: body.password);
       await dataSource.login(bodyData);
+    } on ApiException catch (e) {
+      errorHandler(e);
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> logout() async {
+    try {
+      await dataSource.logout();
     } on ApiException catch (e) {
       errorHandler(e);
       rethrow;

@@ -23,4 +23,12 @@ class UserServices {
       return SingleApiResponse.fromJson(res.data, (json) => UserDto.fromJson(json));
     });
   }
+
+  Future<void> logout() async {
+    return clientExecutor(execute: () async {
+      final res = await client.post("user/logout");
+
+      return;
+    });
+  }
 }

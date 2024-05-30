@@ -20,6 +20,7 @@ class MapsController extends GetxController {
 
   final PlaceUseCase useCase;
 
+  static final zoom = 20.0;
   late GoogleMapController _controller;
 
   //initial custom marker
@@ -39,6 +40,7 @@ class MapsController extends GetxController {
   List<PlaceModel> get places => _places;
 
   Rx<Set<Marker>> _markers = Rx<Set<Marker>>({});
+  Rx<Set<Marker>> currentMarker = Rx<Set<Marker>>({});
 
   Set<Marker> get markers => _markers.value;
 
@@ -48,11 +50,11 @@ class MapsController extends GetxController {
   final Rx<TextEditingController> searchbarController = TextEditingController().obs;
   final searchBarState = AppTextFieldState();
 
+  LatLng currentLocation = LatLng(-8.681547132266411, 115.24069589508952);
   CameraPosition currentCameraPosition = CameraPosition(
     target: LatLng(-8.681547132266411, 115.24069589508952),
-    zoom: 20,
+    zoom: zoom,
   );
-  LatLng currentLocation = LatLng(-8.681547132266411, 115.24069589508952);
 
   //place model default rx value
   var placeName = 'Name'.obs;
@@ -65,13 +67,13 @@ class MapsController extends GetxController {
   void onInit() {
     _createCustomMarker();
     super.onInit();
-    // getCurrentLocation();
   }
 
   @override
   void onReady() {
     super.onReady();
     getCurrentLocation();
+    _addCurrentLocationMarker();
   }
 
   @override
@@ -86,10 +88,13 @@ class MapsController extends GetxController {
   Future<void> getCurrentLocation() async {
     try {
       Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
+        desiredAccuracy: LocationAccuracy.low,
       );
 
-      currentLocation = LatLng(position.latitude, position.longitude);
+      if (currentLocation.latitude.isEqual(position.latitude)) {
+        currentLocation = LatLng(position.latitude, position.longitude);
+        _addCurrentLocationMarker();
+      }
 
       moveCamera(currentLocation);
     } catch (e) {
@@ -98,9 +103,9 @@ class MapsController extends GetxController {
   }
 
   void moveCamera(LatLng coordinate) {
+    _controller.animateCamera(CameraUpdate.newLatLngZoom(coordinate, zoom));
+    // Then init marker
     initMarker(coordinate);
-    // Then animate the camera
-    _controller.animateCamera(CameraUpdate.newLatLngZoom(coordinate, 20));
   }
 
   void initMarker(LatLng coordinate) {
@@ -113,6 +118,7 @@ class MapsController extends GetxController {
 
   Future<void> initSpecificMarker(PlaceModel place) async {
     // Wait for fetchAllPlaces to complete
+    moveCamera(LatLng(double.parse(place.latitude), double.parse(place.longitude)));
     await fetchAllPlaces(double.parse(place.latitude), double.parse(place.longitude));
 
     // Check if the fetched places contain the specific marker we want to initialize
@@ -167,21 +173,16 @@ class MapsController extends GetxController {
     await fetchPlaces(lat, long, 'gas_station');
     await fetchPlaces(lat, long, 'restaurant');
     await fetchPlaces(lat, long, 'car_dealer');
+  }
 
-    if (isFetchingCurrentLocation) {
-      // Add the initial marker after all places have been fetched
-      _markers.value = Set<Marker>.from(_markers.value)
-        ..add(
-          Marker(
-            markerId: MarkerId('Initial Position'),
-            position: LatLng(lat, long),
-            icon: BitmapDescriptor.defaultMarker,
-          ),
-        );
-      return;
-    } else {
-      _controller.animateCamera(CameraUpdate.newLatLngZoom(LatLng(lat, long), 20));
-    }
+  void _addCurrentLocationMarker() {
+    currentMarker.value = {
+      Marker(
+        markerId: MarkerId('Initial Position'),
+        position: currentLocation,
+        icon: BitmapDescriptor.defaultMarker,
+      ),
+    };
   }
 
   Future<void> fetchPlaces(double lat, double long, String type) async {
@@ -243,7 +244,6 @@ class MapsController extends GetxController {
       ),
       icon: getIconForType(place.type),
       onTap: () {
-        print('KETAP HIKS');
         onMarkerTapped(
           Marker(
             markerId: MarkerId(markerId),

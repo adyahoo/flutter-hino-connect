@@ -4,6 +4,6 @@ import 'package:hino_driver_app/domain/core/entities/user_model.dart';
 
 abstract class IUserUseCase {
   Future<void> login(LoginBody body);
-
+  Future<void> logout();
   Future<UserModel> getUser();
 }

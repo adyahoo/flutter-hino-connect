@@ -24,4 +24,15 @@ class UserDataSource {
       rethrow;
     }
   }
+
+  Future<void> logout() async {
+    try {
+      await services.logout();
+
+      inject<StorageService>().clearToken();
+      return;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

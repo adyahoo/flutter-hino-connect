@@ -6,6 +6,7 @@ import 'package:hino_driver_app/data/locals/StorageService.dart';
 import 'package:hino_driver_app/domain/core/entities/user_model.dart';
 import 'package:hino_driver_app/domain/core/usecases/user_use_case.dart';
 import 'package:hino_driver_app/infrastructure/navigation/routes.dart';
+import 'package:hino_driver_app/infrastructure/utils.dart';
 import 'package:hino_driver_app/presentation/widgets/bottom_sheets/single_picker/controllers/bs_single_picker.controller.dart';
 
 import '../../../../infrastructure/di.dart';
@@ -25,8 +26,7 @@ class ProfileController extends GetxController {
   ));
   final isFetching = true.obs;
 
-  final isBiometricLogin =
-      (inject<StorageService>().getIsBiometricLogin() ?? false).obs;
+  final isBiometricLogin = (inject<StorageService>().getIsBiometricLogin() ?? false).obs;
 
   @override
   void onInit() {
@@ -75,14 +75,16 @@ class ProfileController extends GetxController {
         Get.updateLocale(Get.deviceLocale!);
         break;
     }
-    print('abis Get.updateLocale');
+
     isFetching.value = false;
-    print('abis isFetching false');
     inject<StorageService>().setSelectedLanguage(id);
   }
 
-  void logout() {
-    inject<StorageService>().clearToken();
+  void logout() async {
+    useCase.logout();
+
+    await Future.delayed(const Duration(milliseconds: 500));
+    hideLoadingOverlay();
     Get.offAllNamed(Routes.LOGIN);
   }
 }
