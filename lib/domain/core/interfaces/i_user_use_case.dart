@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:hino_driver_app/data/dtos/base_response_dto.dart';
 import 'package:hino_driver_app/data/dtos/single_base_response_dto.dart';
 import 'package:hino_driver_app/domain/core/entities/user_model.dart';
@@ -8,4 +10,6 @@ abstract class IUserUseCase {
   Future<UserModel> getUser();
 
   Future<void> updateUser(UserModel body);
+
+  Future<void> updateProfilePicture(File profilePic);
 }
