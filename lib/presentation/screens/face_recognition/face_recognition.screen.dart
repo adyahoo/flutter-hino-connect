@@ -57,14 +57,28 @@ class FaceRecognitionScreen extends GetView<FaceRecognitionController> {
                         height: kToolbarHeight + Get.width,
                       ),
                       Text(
-                        "Pastikan wajah anda berada di frame oval askdjfhksd",
+                        "Pastikan wajah anda berada di frame oval",
                         style: Theme.of(context).textTheme.labelLarge?.copyWith(color: Colors.white),
                       ),
                       const Expanded(child: SizedBox()),
-                      Text(
-                        "Sedang memindai wajah...",
-                        style: Theme.of(context).textTheme.labelLarge?.copyWith(color: Colors.white),
+                      GestureDetector(
+                        onTap: (){
+                          controller.captureFace();
+                        },
+                        child: Container(
+                          width: 80,
+                          height: 80,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100),
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
+                      // const Expanded(child: SizedBox()),
+                      // Text(
+                      //   "Sedang memindai wajah...",
+                      //   style: Theme.of(context).textTheme.labelLarge?.copyWith(color: Colors.white),
+                      // ),
                       const SizedBox(height: 14),
                     ],
                   ),

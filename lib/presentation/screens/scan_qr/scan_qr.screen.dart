@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 import 'controllers/scan_qr.controller.dart';
 
+//gajadi dipake
 class ScanQrScreen extends GetView<ScanQrController> {
   const ScanQrScreen({Key? key}) : super(key: key);
   @override
