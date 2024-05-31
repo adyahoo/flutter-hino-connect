@@ -3,20 +3,30 @@ part of 'data_source.dart';
 class TripDataSource {
   // you should use real http client here later (ex: dio)
 
-  Future<ListPaginationApiResponse<TripDto>> getTripList() async {
+  Future<ListPaginationApiResponse<TripDto>> getTripList(Map<TripFilter, dynamic>? filter) async {
     try {
       await Future.delayed(const Duration(seconds: 3));
       final data = await inject<StorageService>().getJsonData(StorageService.TRIPS_JSON);
 
-      return ListPaginationApiResponse.fromJson(
+      final trips = ListPaginationApiResponse<TripDto>.fromJson(
         data!,
-            (json) =>
-            json
-                .map(
-                  (e) => TripDto.fromJson(e),
+        (json) => json
+            .map(
+              (e) => TripDto.fromJson(e),
             )
-                .toList(),
+            .toList(),
       );
+
+      if (filter != null) {
+        final filtered = _getFilteredTrips(trips.data, filter);
+        final filteredTrips = trips.copyWith(
+          data: filtered,
+        );
+
+        return filteredTrips;
+      }
+
+      return trips;
     } catch (e) {
       rethrow;
     }
@@ -55,5 +65,22 @@ class TripDataSource {
     } catch (e) {
       rethrow;
     }
+  }
+
+  _getFilteredTrips(List<TripDto> trips, Map<TripFilter, dynamic> filter) {
+    List<TripDto> newTrips = trips;
+
+    if (filter.containsKey(TripFilter.date)) {
+      final date = DateFormat("yyyy-MM-dd").format(filter[TripFilter.date] as DateTime);
+
+      newTrips = trips.where((element) {
+        final tripDate = DateFormat("yyy-MM-dd").parse(element.createdAt);
+        final formattedDate = DateFormat("yyy-MM-dd").format(tripDate);
+
+        return formattedDate == date;
+      }).toList();
+    }
+
+    return newTrips;
   }
 }

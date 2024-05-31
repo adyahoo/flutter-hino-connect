@@ -6,6 +6,8 @@ import 'package:hino_driver_app/domain/core/usecases/trip_use_case.dart';
 import 'package:hino_driver_app/infrastructure/constants.dart';
 import 'package:hino_driver_app/infrastructure/extension.dart';
 
+enum TripFilter { date }
+
 class TripListController extends GetxController {
   TripListController({required this.useCase});
 
@@ -16,6 +18,7 @@ class TripListController extends GetxController {
   final isFetching = false.obs;
 
   DateTime date = DateTime.now();
+  Map<TripFilter, dynamic>? _filter = null;
 
   @override
   void onInit() {
@@ -36,7 +39,7 @@ class TripListController extends GetxController {
   Future<void> getTripList() async {
     isFetching.value = true;
 
-    final res = await useCase.getTripList();
+    final res = await useCase.getTripList(_filter);
     final groupedItem = _groupByDate(res.data);
 
     trips.value = groupedItem;
@@ -64,12 +67,17 @@ class TripListController extends GetxController {
   void setDate(DateTime? value) {
     if (value != null) {
       isFetching.value = true;
+
       date = value;
       filterEditingController.value.text = value.getActivityDate();
+      _filter = {
+        ...?_filter,
+        TripFilter.date: date,
+      };
 
+      getTripList();
 
-
-      isFetching.value = true;
+      isFetching.value = false;
     }
   }
 }

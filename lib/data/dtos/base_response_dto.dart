@@ -44,6 +44,18 @@ class ListPaginationApiResponse<T> extends Equatable {
     };
   }
 
+  ListPaginationApiResponse<T> copyWith({
+    List<T>? data,
+    Links? links,
+    Meta? meta,
+  }) {
+    return ListPaginationApiResponse(
+      data: data ?? this.data,
+      links: links ?? this.links,
+      meta: meta ?? this.meta,
+    );
+  }
+
   @override
   List<Object> get props => [data, links, meta];
 }

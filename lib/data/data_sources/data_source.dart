@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hino_driver_app/data/dtos/activities_dto.dart';
 import 'package:hino_driver_app/data/dtos/base_response_dto.dart';
@@ -15,6 +16,7 @@ import 'package:hino_driver_app/data/locals/StorageService.dart';
 import 'package:hino_driver_app/domain/core/entities/model.dart';
 import 'package:hino_driver_app/infrastructure/di.dart';
 import 'package:hino_driver_app/main.dart';
+import 'package:hino_driver_app/presentation/screens/trip_list/controllers/trip_list.controller.dart';
 import 'package:http/http.dart' as http;
 
 
