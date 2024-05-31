@@ -5,7 +5,7 @@ class PlaceDataSource {
 
   Future<PlacesApiResponse> fetchNearbyPlaces(double lat, double lng, String type) async {
     final apiKey = Constants.MAP_API_KEY;
-    final apiUrl = '$baseUrl?location=$lat,$lng&radius=5000&type=$type&key=$apiKey';
+    final apiUrl = '$baseUrl?location=$lat,$lng&radius=400&type=$type&key=$apiKey';
     final response = await http.get(Uri.parse(apiUrl));
 
     if (response.statusCode == 200) {

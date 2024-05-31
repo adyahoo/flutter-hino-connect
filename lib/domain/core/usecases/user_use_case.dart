@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:hino_driver_app/data/data_sources/data_source.dart';
 import 'package:hino_driver_app/data/dtos/base_response_dto.dart';
 import 'package:hino_driver_app/data/dtos/single_base_response_dto.dart';
@@ -51,6 +53,15 @@ class UserUseCase implements IUserUseCase {
         phone: body.phone,
       );
       await dataSource.updateUser(bodyData);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> updateProfilePicture(File profilePic) async {
+    try {
+      await dataSource.updateProfilePicture(profilePic);
     } catch (e) {
       rethrow;
     }

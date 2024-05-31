@@ -6,6 +6,7 @@ import 'package:hino_driver_app/data/services/user_services.dart';
 import 'package:hino_driver_app/domain/core/usecases/activity_use_case.dart';
 import 'package:hino_driver_app/domain/core/usecases/feedback_use_case.dart';
 import 'package:hino_driver_app/domain/core/usecases/place_use_case.dart';
+import 'package:hino_driver_app/domain/core/usecases/recent_search_use_case.dart';
 import 'package:hino_driver_app/domain/core/usecases/splash_use_case.dart';
 import 'package:hino_driver_app/domain/core/usecases/trip_use_case.dart';
 import 'package:hino_driver_app/domain/core/usecases/user_use_case.dart';
@@ -52,4 +53,8 @@ Future setupInjection() async {
   //bs sos
   inject.registerLazySingleton<ContactDataSource>(() => ContactDataSource());
   inject.registerLazySingleton<ContactUseCase>(() => ContactUseCase(dataSource: inject()));
+
+  //recent search
+  inject.registerLazySingleton<RecentSearchDataSource>(() => RecentSearchDataSource());
+  inject.registerLazySingleton<RecentSearchUseCase>(() => RecentSearchUseCase(dataSource: inject()));
 }
