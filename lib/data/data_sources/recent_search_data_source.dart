@@ -75,4 +75,37 @@ class RecentSearchDataSource {
       rethrow;
     }
   }
+
+  Future<Map<String, dynamic>> fetchAutocompleteResults(
+      String input, double latitude, double longitude) async {
+    String apiKey = Constants.MAP_API_KEY;
+    final type = "gas_station|restaurant|car_dealer";
+    String url =
+        'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input'
+        '&key=$apiKey'
+        '&types=$type'
+        '&components=country:ID'
+        '&location=$latitude,$longitude'
+        '&radius=400';
+
+    var response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception('Failed to load autocomplete results');
+    }
+  }
+
+  Future<Map<String, dynamic>> fetchPlaceDetails(String placeId) async {
+    String apiKey = Constants.MAP_API_KEY;
+    String url =
+        'https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&key=$apiKey&fields=address_component,geometry,formatted_address,name,types';
+
+    var response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception('Failed to load place details');
+    }
+  }
 }

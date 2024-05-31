@@ -66,7 +66,6 @@ class MapsController extends GetxController {
   void onInit() {
     _createCustomMarker();
     super.onInit();
-    // getCurrentLocation();
   }
 
   @override
@@ -241,6 +240,8 @@ class MapsController extends GetxController {
   Marker _createMarker(PlaceModel place) {
     String markerId = generateMarkerId(
         double.parse(place.latitude), double.parse(place.longitude));
+    
+
     return Marker(
       markerId: MarkerId(markerId),
       position: LatLng(

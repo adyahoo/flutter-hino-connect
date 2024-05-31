@@ -24,7 +24,7 @@ class PlaceUseCase {
               address: e.address,
               latitude: e.latitude!.toString(),
               longitude: e.longitude!.toString(),
-              phone: e.phone ?? '-',
+              phone: e.phone ?? 'N/A',
             ),
           )
           .toList();

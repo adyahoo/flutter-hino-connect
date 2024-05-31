@@ -138,86 +138,84 @@ class SearchScreen extends GetView<SearchPageController> {
       ),
       body: Padding(
         padding: const EdgeInsets.only(left: 16, top: 16),
-        child: Expanded(
-          child: Obx(
-            () {
-              if (controller.currentInput.value.isNotEmpty || controller.searchbarController.value.text.isNotEmpty) {
-                controller.search(controller.searchbarController.value.text);
-
-                return onTypingState(context);
+        child: Obx(
+          () {
+            if (controller.currentInput.value.isNotEmpty || controller.searchbarController.value.text.isNotEmpty) {
+              controller.search(controller.searchbarController.value.text);
+        
+              return onTypingState(context);
+            } else {
+              print('masuk else statement');
+              if (controller.searchResults.isEmpty) {
+                return emptyState(context);
               } else {
-                print('masuk else statement');
-                if (controller.searchResults.isEmpty) {
-                  return emptyState(context);
-                } else {
-                  print('Recent Search');
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "recent_search".tr,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      SizedBox(height: 4),
-                      Expanded(
-                        child: Expanded(
-                          child: Obx(() {
-                            return ListView.separated(
-                              itemCount: controller.searchResults.length,
-                              separatorBuilder: (context, index) => SizedBox(height: 16),
-                              itemBuilder: (context, index) {
-                                final result = controller.searchResults[index];
-                                return GestureDetector(
-                                  onTap: () {
-                                    controller.selectLocation(result);
-                                  },
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        padding: EdgeInsets.all(4.0),
-                                        decoration: BoxDecoration(
-                                          color: InfoColor.surface,
-                                          shape: BoxShape.circle,
-                                        ),
-                                        child: Icon(
-                                          Icons.access_time,
-                                          color: InfoColor.main,
+                print('Recent Search');
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "recent_search".tr,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    SizedBox(height: 4),
+                    Expanded(
+                      child: Expanded(
+                        child: Obx(() {
+                          return ListView.separated(
+                            itemCount: controller.searchResults.length,
+                            separatorBuilder: (context, index) => SizedBox(height: 16),
+                            itemBuilder: (context, index) {
+                              final result = controller.searchResults[index];
+                              return GestureDetector(
+                                onTap: () {
+                                  controller.selectLocation(result);
+                                },
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.all(4.0),
+                                      decoration: BoxDecoration(
+                                        color: InfoColor.surface,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: Icon(
+                                        Icons.access_time,
+                                        color: InfoColor.main,
+                                        size: 20,
+                                      ), // Time icon
+                                    ),
+                                    SizedBox(width: 12),
+                                    Expanded(
+                                      child: Text(
+                                        result.name,
+                                        style: Theme.of(context).textTheme.bodyMedium,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.zero,
+                                      child: IconButton(
+                                        icon: Icon(
+                                          Iconsax.close_circle,
                                           size: 20,
-                                        ), // Time icon
-                                      ),
-                                      SizedBox(width: 12),
-                                      Expanded(
-                                        child: Text(
-                                          result.name,
-                                          style: Theme.of(context).textTheme.bodyMedium,
                                         ),
+                                        onPressed: () {
+                                          controller.removeRecentSearchSelected(result);
+                                        },
                                       ),
-                                      Padding(
-                                        padding: EdgeInsets.zero,
-                                        child: IconButton(
-                                          icon: Icon(
-                                            Iconsax.close_circle,
-                                            size: 20,
-                                          ),
-                                          onPressed: () {
-                                            controller.removeRecentSearchSelected(result);
-                                          },
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              },
-                            );
-                          }),
-                        ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          );
+                        }),
                       ),
-                    ],
-                  );
-                }
+                    ),
+                  ],
+                );
               }
-            },
-          ),
+            }
+          },
         ),
       ),
     );
