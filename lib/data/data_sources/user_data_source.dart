@@ -33,9 +33,31 @@ class UserDataSource {
     }
   }
 
+
+  Future<void> logout() async {
+    try {
+      await services.logout();
+
+      inject<StorageService>().clearToken();
+      return;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<void> updateProfilePicture(File profilePic) async {
     try {
       await services.updateProfilePicture(profilePic);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<UserDto> verifyDriverFace(File image) async {
+    try {
+      final res = await services.verifyDriverFace(image);
+
+      return res.data;
     } catch (e) {
       rethrow;
     }

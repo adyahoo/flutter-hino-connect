@@ -89,5 +89,10 @@ class Nav {
       page: () => const EmergencyContactListScreen(),
       binding: EmergencyContactListControllerBinding(),
     ),
+    GetPage(
+      name: Routes.VEHICLE_SCAN,
+      page: () => const VehicleScanScreen(),
+      binding: VehicleScanControllerBinding(),
+    ),
   ];
 }

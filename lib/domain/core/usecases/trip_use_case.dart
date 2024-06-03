@@ -5,6 +5,7 @@ import 'package:hino_driver_app/data/dtos/base_response_dto.dart';
 import 'package:hino_driver_app/data/dtos/trips_dto.dart';
 import 'package:hino_driver_app/domain/core/entities/trips_model.dart';
 import 'package:hino_driver_app/domain/core/interfaces/i_use_case.dart';
+import 'package:hino_driver_app/presentation/screens/trip_list/controllers/trip_list.controller.dart';
 
 class TripUseCase implements ITripUseCase {
   const TripUseCase({
@@ -14,9 +15,9 @@ class TripUseCase implements ITripUseCase {
   final TripDataSource dataSource;
 
   @override
-  Future<ListPaginationApiResponse<TripModel>> getTripList() async {
+  Future<ListPaginationApiResponse<TripModel>> getTripList(Map<TripFilter, dynamic>? filter) async {
     try {
-      final response = await dataSource.getTripList();
+      final response = await dataSource.getTripList(filter);
       final data = response.data
           .map(
             (e) => TripModel(
@@ -44,7 +45,7 @@ class TripUseCase implements ITripUseCase {
   @override
   Future<ListPaginationApiResponse<TripModel>> getTodayTripList() async {
     try {
-      final response = await dataSource.getTripList();
+      final response = await dataSource.getTripList(null);
       final data = response.data
           .map(
             (e) => TripModel(

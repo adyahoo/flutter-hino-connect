@@ -13,3 +13,4 @@ export 'package:hino_driver_app/infrastructure/navigation/bindings/controllers/s
 export 'package:hino_driver_app/infrastructure/navigation/bindings/controllers/splash.controller.binding.dart';
 export 'package:hino_driver_app/infrastructure/navigation/bindings/controllers/trip_detail.controller.binding.dart'; 
 export 'package:hino_driver_app/infrastructure/navigation/bindings/controllers/trip_list.controller.binding.dart'; 
+export 'package:hino_driver_app/infrastructure/navigation/bindings/controllers/vehicle_scan.controller.binding.dart'; 

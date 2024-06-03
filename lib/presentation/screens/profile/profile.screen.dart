@@ -27,10 +27,7 @@ class ProfileScreen extends GetView<ProfileController> {
               children: [
                 CircleAvatar(
                   radius: 32,
-                  // backgroundImage: MemoryImage(
-                  //   base64Decode(user.profilePic),
-                  backgroundImage: NetworkImage(user.profilePic
-                  ), //!PLEASE CHANGE LATER BASED ON THE IMAGE API
+                  backgroundImage: NetworkImage(user.profilePic),
                 ),
                 const SizedBox(width: 16),
                 Column(

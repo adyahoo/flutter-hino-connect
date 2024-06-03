@@ -7,6 +7,7 @@ import 'package:hino_driver_app/presentation/screens/maps/controllers/maps.contr
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 
 class SearchPageController extends GetxController {
+
   SearchPageController({required this.useCase});
 
   var searchResults = <SearchResult>[].obs;
@@ -15,6 +16,8 @@ class SearchPageController extends GetxController {
   var isTextFieldEdited = false.obs;
   final Rx<TextEditingController> searchbarController =
       TextEditingController().obs;
+
+  final isBusySearch = false.obs;
 
   final RecentSearchUseCase useCase;
 

@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:hino_driver_app/data/locals/StorageService.dart';
-import 'package:hino_driver_app/domain/core/interfaces/i_splash_use_case.dart';
+import 'package:hino_driver_app/domain/core/interfaces/i_use_case.dart';
 import 'package:hino_driver_app/infrastructure/di.dart';
 import 'package:hino_driver_app/main.dart';
 

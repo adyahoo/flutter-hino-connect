@@ -33,7 +33,7 @@
             "lng": 115.24235824877428
           },
           "type": "acceleration",
-          "note": "dikejar begal",
+          "note": "accelerate above 60km",
           "date_time": "2023-07-20T01:09:49.000000Z"
         }
       ],
@@ -83,7 +83,7 @@
             "lng": 115.24217508151388
           },
           "type": "brake",
-          "note": "hampir nabrak",
+          "note": "traffic accident",
           "date_time": "2023-07-20T01:09:49.000000Z"
         },
         {

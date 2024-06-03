@@ -3,6 +3,19 @@ part of '../home.screen.dart';
 class HomeAppBar extends GetView<HomeController> {
   const HomeAppBar({super.key});
 
+  Widget _renderLoadinName(){
+    return ShimmerContainer(
+      child: Container(
+        width: 200,
+        height: 12,
+        decoration: BoxDecoration(
+          color: Colors.black,
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -34,10 +47,12 @@ class HomeAppBar extends GetView<HomeController> {
               ),
               const SizedBox(height: 20),
               Obx(
-                () => Text(
-                  "Selamat datang, ${controller.user.value?.name}",
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
-                ),
+                () => controller.isFetchingUser.value
+                    ? _renderLoadinName()
+                    : Text(
+                        "Selamat datang, ${controller.user.value?.name}",
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
+                      ),
               ),
               const SizedBox(height: 4),
               Text(

@@ -25,7 +25,7 @@ class MapsScreen extends GetView<MapsController> {
             Obx(
               () => GoogleMap(
                 initialCameraPosition: controller.currentCameraPosition,
-                markers: controller.markers,
+                markers: {...controller.markers, ...controller.currentMarker.value},
                 myLocationEnabled: false,
                 myLocationButtonEnabled: false,
                 zoomControlsEnabled: false,

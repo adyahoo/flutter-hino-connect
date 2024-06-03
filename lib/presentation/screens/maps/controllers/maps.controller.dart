@@ -20,6 +20,7 @@ class MapsController extends GetxController {
 
   final PlaceUseCase useCase;
 
+  static final zoom = 20.0;
   late GoogleMapController _controller;
 
   //initial custom marker
@@ -39,21 +40,21 @@ class MapsController extends GetxController {
   List<PlaceModel> get places => _places;
 
   Rx<Set<Marker>> _markers = Rx<Set<Marker>>({});
+  Rx<Set<Marker>> currentMarker = Rx<Set<Marker>>({});
 
   Set<Marker> get markers => _markers.value;
 
   Marker? selectedMarker; //store last selected marker
   RxString selectedChip = RxString('');
 
-  final Rx<TextEditingController> searchbarController =
-      TextEditingController().obs;
+  final Rx<TextEditingController> searchbarController = TextEditingController().obs;
   final searchBarState = AppTextFieldState();
 
+  LatLng currentLocation = LatLng(-8.681547132266411, 115.24069589508952);
   CameraPosition currentCameraPosition = CameraPosition(
     target: LatLng(-8.681547132266411, 115.24069589508952),
-    zoom: 16,
+    zoom: zoom,
   );
-  LatLng currentLocation = LatLng(-8.681547132266411, 115.24069589508952);
 
   //place model default rx value
   var placeName = 'Name'.obs;
@@ -72,6 +73,7 @@ class MapsController extends GetxController {
   void onReady() {
     super.onReady();
     getCurrentLocation();
+    _addCurrentLocationMarker();
   }
 
   @override
@@ -86,10 +88,13 @@ class MapsController extends GetxController {
   Future<void> getCurrentLocation() async {
     try {
       Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
+        desiredAccuracy: LocationAccuracy.low,
       );
 
-      currentLocation = LatLng(position.latitude, position.longitude);
+      if (currentLocation.latitude.isEqual(position.latitude)) {
+        currentLocation = LatLng(position.latitude, position.longitude);
+        _addCurrentLocationMarker();
+      }
 
       moveCamera(currentLocation);
     } catch (e) {
@@ -98,24 +103,26 @@ class MapsController extends GetxController {
   }
 
   void moveCamera(LatLng coordinate) {
+    _controller.animateCamera(CameraUpdate.newLatLngZoom(coordinate, zoom));
+    // Then init marker
     initMarker(coordinate);
-    // Then animate the camera
-    _controller.animateCamera(CameraUpdate.newLatLngZoom(coordinate, 15));
   }
 
   void initMarker(LatLng coordinate) {
-    fetchAllPlaces(coordinate.latitude, coordinate.longitude,
-        isFetchingCurrentLocation: true);
+    fetchAllPlaces(
+      coordinate.latitude,
+      coordinate.longitude,
+      isFetchingCurrentLocation: true,
+    );
   }
 
   Future<void> initSpecificMarker(PlaceModel place) async {
     // Wait for fetchAllPlaces to complete
-    await fetchAllPlaces(
-        double.parse(place.latitude), double.parse(place.longitude));
+    moveCamera(LatLng(double.parse(place.latitude), double.parse(place.longitude)));
+    await fetchAllPlaces(double.parse(place.latitude), double.parse(place.longitude));
 
     // Check if the fetched places contain the specific marker we want to initialize
-    String markerId = generateMarkerId(
-        double.parse(place.latitude), double.parse(place.longitude));
+    String markerId = generateMarkerId(double.parse(place.latitude), double.parse(place.longitude));
 
     // Search for marker in _markers
     Marker? marker;
@@ -135,15 +142,13 @@ class MapsController extends GetxController {
       // Add new marker
       Marker newMarker = Marker(
         markerId: MarkerId(markerId),
-        position:
-            LatLng(double.parse(place.latitude), double.parse(place.longitude)),
+        position: LatLng(double.parse(place.latitude), double.parse(place.longitude)),
         icon: getIconForType(place.type),
         onTap: () {
           print('Marker tapped blabla');
           onMarkerTapped(Marker(
             markerId: MarkerId(markerId),
-            position: LatLng(
-                double.parse(place.latitude), double.parse(place.longitude)),
+            position: LatLng(double.parse(place.latitude), double.parse(place.longitude)),
           ));
         },
       );
@@ -164,27 +169,20 @@ class MapsController extends GetxController {
     }
   }
 
-  Future<void> fetchAllPlaces(double lat, double long,
-      {bool isFetchingCurrentLocation = false}) async {
+  Future<void> fetchAllPlaces(double lat, double long, {bool isFetchingCurrentLocation = false}) async {
     await fetchPlaces(lat, long, 'gas_station');
     await fetchPlaces(lat, long, 'restaurant');
     await fetchPlaces(lat, long, 'car_dealer');
+  }
 
-    if (isFetchingCurrentLocation) {
-      // Add the initial marker after all places have been fetched
-      _markers.value = Set<Marker>.from(_markers.value)
-        ..add(
-          Marker(
-            markerId: MarkerId('Initial Position'),
-            position: LatLng(lat, long),
-            icon: BitmapDescriptor.defaultMarker,
-          ),
-        );
-      return;
-    } else {
-      _controller
-          .animateCamera(CameraUpdate.newLatLngZoom(LatLng(lat, long), 15));
-    }
+  void _addCurrentLocationMarker() {
+    currentMarker.value = {
+      Marker(
+        markerId: MarkerId('Initial Position'),
+        position: currentLocation,
+        icon: BitmapDescriptor.defaultMarker,
+      ),
+    };
   }
 
   Future<void> fetchPlaces(double lat, double long, String type) async {
@@ -200,8 +198,7 @@ class MapsController extends GetxController {
 
   void filterMarkers(String id) {
     if (id != '') {
-      final item = Constants.mapScreenFilterItems
-          .firstWhere((element) => element.id == id);
+      final item = Constants.mapScreenFilterItems.firstWhere((element) => element.id == id);
       String type = convertLabelToType(item.label);
 
       selectedChip.value = item.id;
@@ -209,10 +206,8 @@ class MapsController extends GetxController {
           .where((e) => e.type == type)
           .map(
             (e) => Marker(
-              markerId: MarkerId(generateMarkerId(
-                  double.parse(e.latitude), double.parse(e.longitude))),
-              position:
-                  LatLng(double.parse(e.latitude), double.parse(e.longitude)),
+              markerId: MarkerId(generateMarkerId(double.parse(e.latitude), double.parse(e.longitude))),
+              position: LatLng(double.parse(e.latitude), double.parse(e.longitude)),
               infoWindow: InfoWindow(
                 title: e.name,
                 snippet: e.address,
@@ -221,10 +216,8 @@ class MapsController extends GetxController {
               onTap: () {
                 onMarkerTapped(
                   Marker(
-                    markerId: MarkerId(generateMarkerId(
-                        double.parse(e.latitude), double.parse(e.longitude))),
-                    position: LatLng(
-                        double.parse(e.latitude), double.parse(e.longitude)),
+                    markerId: MarkerId(generateMarkerId(double.parse(e.latitude), double.parse(e.longitude))),
+                    position: LatLng(double.parse(e.latitude), double.parse(e.longitude)),
                   ),
                 );
               },
@@ -233,7 +226,7 @@ class MapsController extends GetxController {
           .toSet();
     } else {
       selectedChip.value = '';
-      fetchAllPlaces(37.42796133580664, -122.085749655962);
+      fetchAllPlaces(currentLocation.latitude, currentLocation.longitude);
     }
   }
 
@@ -254,7 +247,6 @@ class MapsController extends GetxController {
       ),
       icon: getIconForType(place.type),
       onTap: () {
-        print('KETAP HIKS');
         onMarkerTapped(
           Marker(
             markerId: MarkerId(markerId),
@@ -270,17 +262,14 @@ class MapsController extends GetxController {
 
   void onMarkerTapped(Marker marker) {
     // Update panel data
-    final selectedPlace = _places.firstWhere((e) =>
-        generateMarkerId(double.parse(e.latitude), double.parse(e.longitude)) ==
-        marker.markerId.value);
+    final selectedPlace = _places.firstWhere((e) => generateMarkerId(double.parse(e.latitude), double.parse(e.longitude)) == marker.markerId.value);
 
     print('MARKER INFO: ${marker.markerId.value}');
 
     placeName.value = selectedPlace.name;
     placeType.value = convertTypeName(selectedPlace.type);
     phoneNumber.value = selectedPlace.phone!;
-    position.value =
-        '${marker.position.latitude}, ${marker.position.longitude}';
+    position.value = '${marker.position.latitude}, ${marker.position.longitude}';
     address.value = selectedPlace.address ?? '';
 
     // Update marker icon
@@ -311,18 +300,13 @@ class MapsController extends GetxController {
   }
 
   Future<void> _createCustomMarker() async {
-    final gasStationBytes =
-        await _getBytesFromAsset("ic_maps_gas_station.png", 120);
-    final restaurantBytes =
-        await _getBytesFromAsset("ic_maps_restaurant.png", 120);
+    final gasStationBytes = await _getBytesFromAsset("ic_maps_gas_station.png", 120);
+    final restaurantBytes = await _getBytesFromAsset("ic_maps_restaurant.png", 120);
     final hinoDealerBytes = await _getBytesFromAsset("ic_maps_dealer.png", 120);
 
-    final selectedGasStationBytes =
-        await _getBytesFromAsset("ic_maps_gas_station_selected.png", 120);
-    final selectedRestaurantBytes =
-        await _getBytesFromAsset("ic_maps_restaurant_selected.png", 120);
-    final selectedHinoDealerBytes =
-        await _getBytesFromAsset("ic_maps_dealer_selected.png", 120);
+    final selectedGasStationBytes = await _getBytesFromAsset("ic_maps_gas_station_selected.png", 120);
+    final selectedRestaurantBytes = await _getBytesFromAsset("ic_maps_restaurant_selected.png", 120);
+    final selectedHinoDealerBytes = await _getBytesFromAsset("ic_maps_dealer_selected.png", 120);
 
     gasStation = BitmapDescriptor.fromBytes(gasStationBytes);
     restaurant = BitmapDescriptor.fromBytes(restaurantBytes);
@@ -335,12 +319,9 @@ class MapsController extends GetxController {
 
   Future<Uint8List> _getBytesFromAsset(String assetName, int width) async {
     ByteData data = await rootBundle.load("assets/icons/${assetName}");
-    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
-        targetWidth: width);
+    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
     ui.FrameInfo fi = await codec.getNextFrame();
-    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!
-        .buffer
-        .asUint8List();
+    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!.buffer.asUint8List();
   }
 
   BitmapDescriptor getIconForType(String type) {
@@ -357,14 +338,8 @@ class MapsController extends GetxController {
   }
 
   void updateMarkerIcon(String markerId) {
-    final marker = _markers.value
-        .firstWhere((element) => element.markerId.value == markerId);
-    final type = _places
-        .firstWhere((e) =>
-            generateMarkerId(
-                double.parse(e.latitude), double.parse(e.longitude)) ==
-            markerId)
-        .type;
+    final marker = _markers.value.firstWhere((element) => element.markerId.value == markerId);
+    final type = _places.firstWhere((e) => generateMarkerId(double.parse(e.latitude), double.parse(e.longitude)) == markerId).type;
 
     BitmapDescriptor selectedIcon;
     switch (type) {
@@ -389,20 +364,12 @@ class MapsController extends GetxController {
       onTap: marker.onTap,
     );
 
-    _markers.value = Set<Marker>.from(
-        _markers.value.where((m) => m.markerId != marker.markerId))
-      ..add(updatedMarker);
+    _markers.value = Set<Marker>.from(_markers.value.where((m) => m.markerId != marker.markerId))..add(updatedMarker);
   }
 
   void revertMarkerIcon(String markerId) {
-    final marker = _markers.value
-        .firstWhere((element) => element.markerId.value == markerId);
-    final type = _places
-        .firstWhere((e) =>
-            generateMarkerId(
-                double.parse(e.latitude), double.parse(e.longitude)) ==
-            markerId)
-        .type;
+    final marker = _markers.value.firstWhere((element) => element.markerId.value == markerId);
+    final type = _places.firstWhere((e) => generateMarkerId(double.parse(e.latitude), double.parse(e.longitude)) == markerId).type;
 
     BitmapDescriptor icon;
     switch (type) {
@@ -427,9 +394,7 @@ class MapsController extends GetxController {
       onTap: marker.onTap,
     );
 
-    _markers.value = Set<Marker>.from(
-        _markers.value.where((m) => m.markerId != marker.markerId))
-      ..add(updatedMarker);
+    _markers.value = Set<Marker>.from(_markers.value.where((m) => m.markerId != marker.markerId))..add(updatedMarker);
   }
 
   void onMapTap(LatLng coordinate) {

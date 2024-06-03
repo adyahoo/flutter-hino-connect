@@ -142,7 +142,7 @@ class SearchScreen extends GetView<SearchPageController> {
           () {
             if (controller.currentInput.value.isNotEmpty || controller.searchbarController.value.text.isNotEmpty) {
               controller.search(controller.searchbarController.value.text);
-        
+      
               return onTypingState(context);
             } else {
               print('masuk else statement');

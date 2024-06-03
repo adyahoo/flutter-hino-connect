@@ -18,6 +18,7 @@ class HomeController extends GetxController {
   final user = Rx<UserModel?>(null);
   final isVehicleVerified = false.obs;
   final isFetchingTrip = false.obs;
+  final isFetchingUser = false.obs;
 
   @override
   void onInit() {
@@ -45,9 +46,12 @@ class HomeController extends GetxController {
   }
 
   void _getUser() async {
+    isFetchingUser.value = true;
+
     final res = await userUseCase.getUser();
-    print("sapi user $res");
     user.value = res;
+
+    isFetchingUser.value = false;
   }
 
   void verifyVehicle() async {

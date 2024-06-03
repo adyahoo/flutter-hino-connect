@@ -22,4 +22,5 @@ class Routes {
   static const TRIP = '/trip';
   static const TRIP_DETAIL = '/trip-detail/:id';
   static const TRIP_LIST = '/trip-list';
+  static const VEHICLE_SCAN = '/vehicle-scan';
 }
