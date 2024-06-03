@@ -4,6 +4,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hino_driver_app/data/locals/StorageService.dart';
 import 'package:hino_driver_app/domain/core/entities/place_model.dart';
 import 'package:hino_driver_app/domain/core/entities/search_result_model.dart';
+import 'package:hino_driver_app/domain/core/usecases/recent_search_use_case.dart';
 import 'package:hino_driver_app/infrastructure/constants.dart';
 import 'package:hino_driver_app/infrastructure/di.dart';
 import 'package:hino_driver_app/presentation/screens/maps/controllers/maps.controller.dart';
@@ -12,14 +13,17 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class SearchPageController extends GetxController {
+
+  SearchPageController({required this.useCase});
+
+  final RecentSearchUseCase useCase;
+
   final searchResults = <SearchResult>[].obs;
   final filteredResults = <SearchResult>[].obs;
-
-  final Rx<TextEditingController> searchbarController = TextEditingController().obs;
-
   final currentInput = ''.obs;
   final isTextFieldEdited = false.obs;
-  final isBusySearch = false.obs;
+  final Rx<TextEditingController> searchbarController =
+      TextEditingController().obs;
 
   //map controller
   MapsController mapsController = Get.find<MapsController>();
@@ -31,7 +35,9 @@ class SearchPageController extends GetxController {
   Future<void> onInit() async {
     super.onInit();
     searchBarState.focusNode.value.addListener(searchBarState.onFocusChange);
-    searchResults.value = await StorageService().loadRecentSearches();
+    await useCase.getRecentSearch().then((value) {
+      searchResults.value = value.reversed.toList();
+    });
   }
 
   @override
@@ -55,8 +61,7 @@ class SearchPageController extends GetxController {
     }
   }
 
-  void selectLocation(SearchResult result) {
-    //create new array of search result with a new object before overwriting the searchResults
+  Future<void> selectLocation(SearchResult result) async {
     final newSearchResults = [result, ...searchResults];
 
     // If the list already has 5 items, remove the last one.
@@ -66,25 +71,22 @@ class SearchPageController extends GetxController {
 
     //update the searchResults
     searchResults.value = newSearchResults;
-
-    inject<StorageService>().saveRecentSearches(searchResults);
+    await useCase.addRecentSearch(result);
 
     Get.back();
     Future.delayed(Duration(milliseconds: 500), () async {
       final placeDetails = await getPlaceDetails(result.lat, result.lng);
 
-      mapsController.initSpecificMarker(placeDetails);
+      mapsController.initSpecificMarker(placeDetails!);
       mapsController.searchbarController.value.text = result.name;
     });
   }
 
-  void removeRecentSearchSelected(SearchResult result) {
-    final newSearchResults =
-        searchResults.where((element) => element != result).toList();
-    searchResults.value = newSearchResults;
+  Future<void> removeRecentSearchSelected(SearchResult result) async {
+    await useCase.removeRecentSearch(result);
 
-    StorageService.instance().then((storage) {
-      storage!.saveRecentSearches(searchResults);
+    await useCase.getRecentSearch().then((value) {
+      searchResults.value = value.reversed.toList();
     });
   }
 
@@ -98,8 +100,9 @@ class SearchPageController extends GetxController {
         'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input'
         '&key=$apiKey'
         '&types=$type'
+        '&components=country:ID'
         '&location=${mapsController.currentLocation.latitude}%2C${mapsController.currentLocation.longitude}'
-        '&radius=5000';
+        '&radius=400';
 
     // Send a GET request to the API
     var response = await http.get(Uri.parse(url));
@@ -108,9 +111,7 @@ class SearchPageController extends GetxController {
     if (response.statusCode == 200) {
       // Parse the JSON response
       var jsonResponse = jsonDecode(response.body);
-      print('Details JSON');
-      //print json response in json stringify format
-      print(jsonEncode(jsonResponse));
+      // print('Details JSON: \n$jsonResponse');
 
       // Clear the current results
       filteredResults.clear();
@@ -119,23 +120,33 @@ class SearchPageController extends GetxController {
       for (var item in jsonResponse['predictions']) {
         // Get the place details
         var detailsResponse = await http.get(Uri.parse(
-            'https://maps.googleapis.com/maps/api/place/details/json?place_id=${item['place_id']}&key=$apiKey'));
+            'https://maps.googleapis.com/maps/api/place/details/json?place_id=${item['place_id']}&key=$apiKey&fields=address_component,geometry,formatted_address,name,types'));
 
         if (detailsResponse.statusCode == 200) {
           var detailsJson = jsonDecode(detailsResponse.body);
 
-          var location = detailsJson['result']['geometry']['location'];
-          var vicinity = detailsJson['result']['formatted_address'];
+          if (detailsJson['result'] != null) {
+            var location = detailsJson['result']['geometry']?['location'];
+            var vicinity = detailsJson['result']['formatted_address'];
+            var placeType = detailsJson['result']['types']?[0];
 
-          var placeType = detailsJson['result']['types'][0];
-
-          filteredResults.add(SearchResult(
-            name: item['structured_formatting']['main_text'],
-            vicinity: vicinity,
-            lat: location['lat'],
-            lng: location['lng'],
-            type: placeType,
-          ));
+            if (location != null && vicinity != null && placeType != null) {
+              // print('location: $location');
+              // print('vicinity: $vicinity');
+              print('placeType: $placeType');
+              filteredResults.add(SearchResult(
+                name: item['structured_formatting']['main_text'],
+                vicinity: vicinity,
+                lat: location['lat'],
+                lng: location['lng'],
+                type: placeType,
+              ));
+            } else {
+              print('Incomplete place details for ${item['description']}');
+            }
+          } else {
+            print('No result found for place_id: ${item['place_id']}');
+          }
         } else {
           throw Exception('Failed to load place details');
         }
@@ -146,7 +157,7 @@ class SearchPageController extends GetxController {
     }
   }
 
-  Future<PlaceModel> getPlaceDetails(double lat, double lng) async {
+  Future<PlaceModel?> getPlaceDetails(double lat, double lng) async {
     String apiKey = Constants.MAP_API_KEY;
 
     // Reverse Geocoding URL
@@ -166,7 +177,7 @@ class SearchPageController extends GetxController {
 
       // Place Details URL
       String placeDetailsUrl =
-          'https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&key=$apiKey';
+          'https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&key=$apiKey&fields=address_component,geometry,formatted_address,name,types';
 
       // Send a GET request to the Place Details API
       var detailsResponse = await http.get(Uri.parse(placeDetailsUrl));
@@ -176,24 +187,28 @@ class SearchPageController extends GetxController {
         // Parse the JSON response
         var detailsJson = jsonDecode(detailsResponse.body);
 
-        // Create a new Place object from the JSON response
-        PlaceModel place = PlaceModel(
-          name: detailsJson['result']['name'],
-          address: detailsJson['result']['formatted_address'],
-          phone: detailsJson['result']['formatted_phone_number'],
-          latitude:
-              detailsJson['result']['geometry']['location']['lat'].toString(),
-          longitude:
-              detailsJson['result']['geometry']['location']['lng'].toString(),
-          type: detailsJson['result']['types'][0],
-        );
+        print('place type: ${detailsJson['result']['types'][0]}');
 
-        return place;
+        if (detailsJson['result'] != null) {
+          // Create a new Place object from the JSON response
+          PlaceModel place = PlaceModel(
+            name: detailsJson['result']['name'],
+            address: detailsJson['result']['formatted_address'],
+            phone: 'N/A',
+            latitude:
+            detailsJson['result']['geometry']['location']['lat'].toString(),
+            longitude:
+            detailsJson['result']['geometry']['location']['lng'].toString(),
+            type: detailsJson['result']['types'][0],
+          );
+
+          return place;
+        } else {
+          throw Exception('Failed to load place details');
+        }
       } else {
-        throw Exception('Failed to load place details');
+        throw Exception('Failed to load place ID');
       }
-    } else {
-      throw Exception('Failed to load place ID');
     }
   }
 }

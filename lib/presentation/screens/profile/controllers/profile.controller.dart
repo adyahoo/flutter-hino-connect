@@ -50,6 +50,8 @@ class ProfileController extends GetxController {
     final res = await useCase.getUser();
     data.value = res;
 
+    print('data: ${data.value}');
+
     isFetching.value = false;
   }
 

@@ -1,8 +1,6 @@
-import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-
 import 'package:get/get.dart';
 import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';
@@ -42,7 +40,7 @@ class EditProfileScreen extends GetView<EditProfileController> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        //title edit profile
+                        // Title edit profile
                         Text(
                           'photo_profile'.tr,
                           style: Theme.of(context)
@@ -53,15 +51,12 @@ class EditProfileScreen extends GetView<EditProfileController> {
                         SizedBox(height: 11),
                         
                         // Avatar
-                        GestureDetector(
-                          onTap: controller.onEditProfilePic,
-                          child: Obx(() => CircleAvatar(
-                                radius: 32,
-                                backgroundImage: MemoryImage(
-                                  base64Decode(controller.user.value.profilePic), //!PLEASE CHANGE LATER BASED ON THE IMAGE API
-                                ),
-                              )),
-                        ),
+                        Obx(() => CircleAvatar(
+                              radius: 32,
+                              backgroundImage: controller.isProfilePicLocal.value
+                                  ? FileImage(File(controller.user.value.profilePic))
+                                  : NetworkImage(controller.user.value.profilePic) as ImageProvider,
+                            )),
                       ],
                     ),
                   ),
@@ -117,7 +112,9 @@ class EditProfileScreen extends GetView<EditProfileController> {
               padding: const EdgeInsets.all(16),
               child: AppButton(
                 label: 'save_change'.tr,
-                onPress: () {},
+                onPress: () {
+                  controller.onEditSave();
+                },
                 type: AppButtonType.filled,
                 isLoading: controller.isLoading.value,
               ),
@@ -128,3 +125,4 @@ class EditProfileScreen extends GetView<EditProfileController> {
     );
   }
 }
+

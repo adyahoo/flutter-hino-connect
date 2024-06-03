@@ -45,4 +45,20 @@ class UserDataSource {
       rethrow;
     }
   }
+
+  Future<void> updateUser(UserDto body) async {
+    try {
+      await services.updateProfile(body);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> updateProfilePicture(File profilePic) async {
+    try {
+      await services.updateProfilePicture(profilePic);
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

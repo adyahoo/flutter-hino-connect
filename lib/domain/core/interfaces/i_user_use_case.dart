@@ -6,4 +6,8 @@ abstract class IUserUseCase {
   Future<void> logout();
 
   Future<UserModel> getUser();
+
+  Future<void> updateUser(UserModel body);
+
+  Future<void> updateProfilePicture(File profilePic);
 }

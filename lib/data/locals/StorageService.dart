@@ -20,6 +20,7 @@ class StorageService {
   static final String TRIP_DETAILS_JSON = "trip_details_json";
   static final String TRIPS_JSON = "trip_json";
   static final String USERS_JSON = "users_json";
+  static final String RECENT_SEARCHES_JSON = "recent_searches_json";
 
   static Future<StorageService?> instance() async {
     _instance ??= StorageService();
@@ -83,28 +84,9 @@ class StorageService {
     await _preferences!.remove(key);
   }
 
-  void clearById(String key, int id) async {
-
-  }
+  void clearById(String key, int id) async {}
 
   void clearToken() async {
     await _preferences!.remove(TOKEN);
-  }
-
-  Future<void> saveRecentSearches(List<SearchResult> searchResults) async {
-    final searchesJson =
-        jsonEncode(searchResults.map((e) => e.toJson()).toList());
-    await _preferences!.setString('recent_searches', searchesJson);
-  }
-
-  Future<List<SearchResult>> loadRecentSearches() async {
-    final searchesJson = _preferences!.getString('recent_searches');
-
-    if (searchesJson != null) {
-      final List<dynamic> searchesList = jsonDecode(searchesJson);
-      return searchesList.map((json) => SearchResult.fromJson(json)).toList();
-    }
-
-    return [];
   }
 }

@@ -1,19 +1,25 @@
-import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import 'package:hino_driver_app/domain/core/entities/user_model.dart';
+import 'package:hino_driver_app/domain/core/usecases/user_use_case.dart';
+import 'package:hino_driver_app/infrastructure/constants.dart';
 import 'package:hino_driver_app/presentation/screens/profile/controllers/profile.controller.dart';
+import 'package:hino_driver_app/presentation/widgets/bottom_sheets/single_picker/controllers/bs_single_picker.controller.dart';
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 
 class EditProfileController extends GetxController {
+  EditProfileController({required this.useCase});
 
-  //profile controller
+  // Profile controller
   ProfileController profileController = Get.find();
 
-  //rx user
+  // User use case
+  final UserUseCase useCase;
+
+  // Rx user
   var user = UserModel(
     id: 0,
     name: '',
@@ -23,6 +29,7 @@ class EditProfileController extends GetxController {
     phone: '',
   ).obs;
 
+  // Text field states and controllers
   final picState = AppTextFieldState();
   final emailState = AppTextFieldState();
   final phoneState = AppTextFieldState();
@@ -33,65 +40,114 @@ class EditProfileController extends GetxController {
   final fullNameController = TextEditingController();
 
   final isLoading = false.obs;
+  File? selectedProfilePic;
+  var isProfilePicLocal =
+      false.obs; // Flag to check if the profile pic is local
 
-  // Future<void> onEditSave() async {
-  //   isLoading.value = true;
-  //   await Future.delayed(const Duration(seconds: 3));
-  //   isLoading.value = false;
-  // }
+  static const int maxFileSizeInBytes = 2048 * 1024; // 2048 kilobytes
 
   Future<void> onEditSave() async {
     isLoading.value = true;
 
-    //edit the value from the textfield
-    this.user.value = UserModel(
-      id: user.value.id,
-      name: fullNameController.text,
-      email: emailController.text,
-      profilePic: picController.text,
-      phoneCode: user.value.phoneCode,
-      phone: phoneController.text,
-    );
+    // Get selected phone code from bs single picker
+    final selectedId =
+        Get.find<BsSinglePickerController>().selectedOption.value;
+    final phoneCode =
+        Get.find<BsSinglePickerController>().items[selectedId].value;
 
-    isLoading.value = false;
+    print('selected id: $selectedId');
+    print('phone code: $phoneCode');
+
+    try {
+      // Update user details
+      final userTest = user.value.copyWith(
+        name: fullNameController.text,
+        email: emailController.text,
+        phone: phoneController.text,
+        phoneCode: phoneCode,
+      );
+
+      await useCase.updateUser(userTest);
+
+      // // Update profile picture if a new one was selected
+      // if (selectedProfilePic != null) {
+      //   await useCase.updateProfilePicture(selectedProfilePic!);
+      //   // After successful upload, update the profile picture URL
+      //   user.update((val) {
+      //     val!.profilePic = selectedProfilePic!.path; // Assuming API returns the path
+      //   });
+      //   isProfilePicLocal.value = false;
+      // }
+
+      profileController.getUser();
+      Get.back();
+    } catch (e) {
+        Get.bottomSheet(
+          BsConfirmation(
+            type: BsConfirmationType.danger,
+            title: 'Error',
+            description: e.toString(),
+            isMultiAction: false,
+            positiveButtonOnClick: () {
+              Get.back();
+            },
+          ),
+        );
+    } finally {
+      isLoading.value = false;
+    }
   }
 
-  //get user
+  // Get user
   void getUser() {
     UserModel userData = profileController.data.value;
-
     this.user.value = userData;
   }
 
-void onEditProfilePic() async {
-  final pickedFile = await Get.bottomSheet(
-    BsImagePicker(),
-  );
-
-  if (pickedFile != null) {
-    final isUrl = Uri.tryParse(pickedFile.path)?.hasScheme ?? false;
-
-    if (isUrl) {
-      user.update((val) {
-        val!.profilePic = pickedFile.path;
-      });
-    } else {
-      final bytes = await pickedFile.readAsBytes();
-      final base64Image = base64Encode(bytes);
-      
-      var userTest = user.value.copyWith(profilePic: base64Image);
-
-      user.value = userTest;
-    }
+  int getSelectedIdx() {
+    final phoneCode = user.value.phoneCode;
+    final idx = Constants.countryCodes
+        .indexWhere((element) => element.value == phoneCode);
+    return idx;
   }
-}
 
-  final count = 0.obs;
+  // void onEditProfilePic() async {
+  //   final pickedFile = await Get.bottomSheet(
+  //     BsImagePicker(),
+  //   );
+
+  //   if (pickedFile != null) {
+  //     final file = File(pickedFile.path);
+
+  //     // Check if file size is within the limit
+  //     final fileSize = await file.length();
+  //     if (fileSize > maxFileSizeInBytes) {
+  //       Get.snackbar(
+  //         'Error',
+  //         'The profile picture must not be greater than 2048 kilobytes.',
+  //         snackPosition: SnackPosition.BOTTOM,
+  //         backgroundColor: Colors.red,
+  //         colorText: Colors.white,
+  //       );
+  //       return;
+  //     }
+
+  //     selectedProfilePic = file;
+  //     isProfilePicLocal.value = true;
+
+  //     // Update the profile pic preview in the UI
+  //     user.update((val) {
+  //       val!.profilePic = pickedFile.path;
+  //     });
+  //   }
+  // }
 
   @override
   void onInit() {
     super.onInit();
     getUser();
+    Get.put(BsSinglePickerController(Constants.countryCodes.obs));
+    Get.find<BsSinglePickerController>().setSelectedOption(getSelectedIdx());
     fullNameController.text = user.value.name;
     emailController.text = user.value.email;
     phoneController.text = user.value.phone ?? "";
@@ -106,6 +162,4 @@ void onEditProfilePic() async {
   void onClose() {
     super.onClose();
   }
-
-  void increment() => count.value++;
 }

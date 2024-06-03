@@ -56,4 +56,26 @@ class UserServices {
       return SingleApiResponse.fromJson(res.data, (json) => UserDto.fromJson(json));
     });
   }
+
+  Future<SingleApiResponse<UserDto>> updateProfile(UserDto body) async {
+    return clientExecutor(execute: () async {
+      final res = await client.patch("user/profile", data: body.toJson());
+
+      return SingleApiResponse.fromJson(res.data, (json) => UserDto.fromJson(json));
+    });
+  }
+
+  //update photo profile which accept multiform part data
+    Future<SingleApiResponse<UserDto>> updateProfilePicture(File profilePic) async {
+    return clientExecutor(execute: () async {
+      final formData = FormData.fromMap({
+        'profile_picture': await MultipartFile.fromFile(profilePic.path),
+      });
+
+      final res = await client.post("user/profile/picture", data: formData);
+
+      return SingleApiResponse<UserDto>.fromJson(res.data, (json) => UserDto.fromJson(json));
+    });
+  }
+
 }

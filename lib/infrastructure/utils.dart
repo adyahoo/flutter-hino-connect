@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hino_driver_app/domain/core/entities/api_model.dart';
@@ -65,6 +66,19 @@ void showGetBottomSheet(Widget content, {bool canExpand = false}) {
       borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)),
     ),
     isScrollControlled: canExpand,
+  );
+}
+
+void showScanQrBottomSheet(Widget content) {
+  Get.bottomSheet(
+    content,
+    backgroundColor: Colors.white,
+    barrierColor: Colors.transparent,
+    enableDrag: false,
+    isDismissible: false,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)),
+    ),
   );
 }
 

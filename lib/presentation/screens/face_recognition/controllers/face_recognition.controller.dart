@@ -1,11 +1,8 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
-import 'package:dio/dio.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:hino_driver_app/domain/core/usecases/face_recognition_use_case.dart';
-import 'package:hino_driver_app/infrastructure/di.dart';
 import 'package:hino_driver_app/infrastructure/navigation/routes.dart';
 import 'package:hino_driver_app/infrastructure/utils.dart';
 
@@ -54,7 +51,7 @@ class FaceRecognitionController extends GetxController {
 
       useCase.verifyDriverFace(file);
 
-      Get.offNamed(Routes.MAIN_TAB);
+      Get.offNamed(Routes.VEHICLE_SCAN);
     } catch (e) {
       hideLoadingOverlay();
     }
