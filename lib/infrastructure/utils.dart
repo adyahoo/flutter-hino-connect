@@ -6,6 +6,7 @@ import 'package:hino_driver_app/infrastructure/client/exceptions/ApiException.da
 import 'package:hino_driver_app/infrastructure/constants.dart';
 import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';
+import 'dart:math';
 
 void errorHandler(ApiException e) {
   ErrorResponseModel? error;
@@ -37,7 +38,10 @@ void errorHandler(ApiException e) {
       type: BsConfirmationType.danger,
       title: error.title,
       description: error.message,
-      positiveButtonOnClick: () {},
+      isMultiAction: false,
+      positiveButtonOnClick: () {
+        Get.back();
+      },
     ),
   );
 }
@@ -89,4 +93,10 @@ String formatDate(String date, String destFormat, {String sourceFormat = Constan
   DateTime sourceDate = DateFormat(sourceFormat).parse(date);
 
   return DateFormat(destFormat).format(sourceDate);
+}
+
+double calculateDistance(double lat1, double lng1, double lat2, double lng2) {
+  const p = 0.017453292519943295; // PI / 180
+  final a = 0.5 - cos((lat2 - lat1) * p) / 2 + cos(lat1 * p) * cos(lat2 * p) * (1 - cos((lng2 - lng1) * p)) / 2;
+  return 12742 * asin(sqrt(a)); // 2 * R * asin...
 }

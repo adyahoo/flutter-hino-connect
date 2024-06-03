@@ -23,6 +23,12 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+
+    print('isVehicleVerified: $isVehicleVerified');
+    // Get the argument passed from the previous screen
+    if (Get.arguments != null && Get.arguments['isVehicleVerified'] != null) {
+      isVehicleVerified.value = Get.arguments['isVehicleVerified'];
+    }
   }
 
   @override

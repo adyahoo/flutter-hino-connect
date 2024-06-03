@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:hino_driver_app/domain/core/usecases/face_recognition_use_case.dart';
@@ -54,8 +55,8 @@ class FaceRecognitionController extends GetxController {
 
       useCase.verifyDriverFace(file);
 
-      Get.offNamed(Routes.MAIN_TAB);
     } catch (e) {
+      print('Error capturing face: $e');
       hideLoadingOverlay();
     }
   }

@@ -66,7 +66,7 @@ class FeedbackScreen extends GetView<FeedbackController> {
               ),
               TextButton(
                 onPressed: () {
-                  Get.bottomSheet(SuccessBottomSheet(feedback: feedback, onButtonPressed: () => Get.back()));
+
                 },
                 style: TextButton.styleFrom(
                   padding: const EdgeInsets.all(0),

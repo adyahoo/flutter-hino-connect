@@ -35,7 +35,7 @@ class Constants {
   static const DATE_FORMAT_TZ = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
   static final DATE_FORMAT_PENALTY = "dd MMM yyyy, HH:mm";
   static final DATE_FORMAT_TRIP = "EEEE, dd MMMM yyyy";
-  static final BASE_URL = "https://dev-weeo.timedoor-host.web.id/api/v1/";
+  static final BASE_URL = "https://dev-weeo.timedoor-host.web.id/api/mobile/v1/";
 
   static final bottomMainMenu = [
     BottomNavigationBarItem(

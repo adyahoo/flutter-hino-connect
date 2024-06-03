@@ -21,7 +21,8 @@ class FaceRecognitionScreen extends GetView<FaceRecognitionController> {
             children: [
               Positioned.fill(
                 child: AspectRatio(
-                  aspectRatio: 16 / 9,
+                  aspectRatio: controller.cameraController.value.aspectRatio,
+                  // aspectRatio: 3 / 4,
                   child: CameraPreview(controller.cameraController),
                 ),
               ),
