@@ -53,7 +53,7 @@ class FaceRecognitionController extends GetxController {
 
       useCase.verifyDriverFace(file);
 
-      Get.offNamed(Routes.VEHICLE_SCAN);
+      // Get.offNamed(Routes.VEHICLE_SCAN);
     } catch (e) {
       print('Error capturing face: $e');
       hideLoadingOverlay();

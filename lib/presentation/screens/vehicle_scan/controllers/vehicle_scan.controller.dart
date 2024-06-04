@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hino_driver_app/infrastructure/navigation/routes.dart';
+// import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -41,6 +43,11 @@ class VehicleScanController extends GetxController {
 
   void setController(QRViewController controller) {
     this.controller = controller;
+    if(Platform.isAndroid){
+      controller.pauseCamera();
+      controller.resumeCamera();
+    }
+    controller.resumeCamera();
 
     _listenQr();
   }
@@ -48,6 +55,8 @@ class VehicleScanController extends GetxController {
   void _listenQr() {
     controller.scannedDataStream.listen((event) {
       result.value = event;
+      controller.dispose();
+
       _startRedirectTimer();
     });
   }
@@ -65,7 +74,62 @@ class VehicleScanController extends GetxController {
     counter.value = Duration(seconds: counter.value.inSeconds - 1);
 
     if(counter.value.inSeconds == 0) {
-      Get.offAllNamed(Routes.MAIN_TAB);
+      Get.offAllNamed(Routes.MAIN_TAB, arguments: {'isVehicleVerified': true});
     }
   }
 }
+
+// class VehicleScanController extends GetxController {
+//   late MobileScannerController controller;
+//   late Timer timer;
+
+//   final qrKey = GlobalKey(debugLabel: 'QR');
+//   final panelController = PanelController();
+//   final result = Rx<Barcode?>(null);
+//   final counter = Duration(seconds: 3).obs;
+
+//   @override
+//   void onInit() {
+//     controller = MobileScannerController();
+//     super.onInit();
+//   }
+
+//   @override
+//   void onReady() {
+//     super.onReady();
+//   }
+
+//   @override
+//   void onClose() {
+//     controller.dispose();
+//     if (timer.isActive) {
+//       timer.cancel();
+//     }
+//     super.onClose();
+//   }
+
+//   // void _startRedirectTimer() {
+//   //   timer = Timer.periodic(
+//   //     const Duration(seconds: 1),
+//   //     (timer) {
+//   //       _setTimer();
+//   //     },
+//   //   );
+//   // }
+
+//   void startRedirectTimer() {
+//     timer = Timer.periodic(
+//       const Duration(seconds: 1),
+//       (timer) {
+//         _setTimer();
+//       },
+//     );
+//   }
+
+//   void _setTimer() {
+//     counter.value = Duration(seconds: counter.value.inSeconds - 1);
+//     if (counter.value.inSeconds == 0) {
+//       Get.offAllNamed(Routes.MAIN_TAB, arguments: {'isVehicleVerified': true});
+//     }
+//   }
+// }

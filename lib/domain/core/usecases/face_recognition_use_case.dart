@@ -67,7 +67,7 @@ class FaceRecognitionUseCase implements IFaceRecognitionUseCase {
         if (Get.isDialogOpen ?? false) {
           Get.back(); // Close the dialog
           
-          Get.toNamed(Routes.SCAN_QR);
+          Get.toNamed(Routes.VEHICLE_SCAN);
         }
       // });
 
