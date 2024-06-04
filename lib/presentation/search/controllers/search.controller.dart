@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:hino_driver_app/data/locals/StorageService.dart';
 import 'package:hino_driver_app/domain/core/entities/place_model.dart';
 import 'package:hino_driver_app/domain/core/entities/search_result_model.dart';
 import 'package:hino_driver_app/domain/core/usecases/recent_search_use_case.dart';
@@ -21,8 +23,9 @@ class SearchPageController extends GetxController {
 
   final RecentSearchUseCase useCase;
 
-  // Map controller
+  //map controller
   MapsController mapsController = Get.find<MapsController>();
+
   final searchBarState = AppTextFieldState();
   String? query;
 
@@ -64,7 +67,7 @@ class SearchPageController extends GetxController {
       newSearchResults.removeLast();
     }
 
-    // Update the searchResults
+    //update the searchResults
     searchResults.value = newSearchResults;
     await useCase.addRecentSearch(result);
 

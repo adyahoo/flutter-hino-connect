@@ -4,6 +4,8 @@ import 'package:hino_driver_app/data/dtos/base_response_dto.dart';
 import 'package:hino_driver_app/domain/core/entities/model.dart';
 import 'package:hino_driver_app/domain/core/entities/search_result_model.dart';
 import 'package:hino_driver_app/domain/core/entities/place_model.dart';
+import 'package:hino_driver_app/domain/core/entities/place_model.dart';
+import 'package:hino_driver_app/domain/core/entities/search_result_model.dart';
 import 'package:hino_driver_app/domain/core/entities/trips_model.dart';
 import 'package:hino_driver_app/domain/core/entities/user_model.dart';
 import 'package:hino_driver_app/presentation/screens/trip_list/controllers/trip_list.controller.dart';
