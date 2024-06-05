@@ -58,7 +58,7 @@ class BsVehicleDetail extends StatelessWidget {
                         ),
                       ),
                       TextSpan(
-                        text: " " + "Hino 500 FG 260 TH",
+                        text: " " + "Hino 500 FG 250 TH",
                         style: Theme.of(context).textTheme.titleSmall?.copyWith(color: TextColor.secondary),
                       )
                     ],

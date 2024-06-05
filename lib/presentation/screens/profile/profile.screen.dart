@@ -156,8 +156,6 @@ class ProfileScreen extends GetView<ProfileController> {
                             ],
                           ),
                         ),
-                        const SizedBox(width: 16),
-                        Icon(Icons.arrow_forward_ios, size: 16, color: IconColor.primary),
                       ],
                     ),
                   )

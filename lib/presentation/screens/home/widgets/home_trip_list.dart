@@ -58,6 +58,7 @@ class HomeTripList extends GetView<HomeController> {
           },
           type: AppButtonType.alternate,
         ),
+        const SizedBox(height: 40),
       ],
     );
   }

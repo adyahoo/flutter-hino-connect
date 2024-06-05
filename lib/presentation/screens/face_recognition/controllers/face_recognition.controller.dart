@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hino_driver_app/domain/core/usecases/face_recognition_use_case.dart';
-import 'package:hino_driver_app/infrastructure/navigation/routes.dart';
+import 'package:hino_driver_app/infrastructure/client/exceptions/ApiException.dart';
 import 'package:hino_driver_app/infrastructure/utils.dart';
 
 class FaceRecognitionController extends GetxController {
@@ -51,9 +51,15 @@ class FaceRecognitionController extends GetxController {
       imageFile = await cameraController.takePicture();
       final file = File(imageFile?.path ?? "");
 
-      useCase.verifyDriverFace(file);
+      try{
+        await useCase.verifyDriverFace(file);
+        cameraController.dispose();
+      } on ApiException catch(e){
+        print('Error capturing face: $e');
+        hideLoadingOverlay();
+        errorHandler(e);
+      }
 
-      // Get.offNamed(Routes.VEHICLE_SCAN);
     } catch (e) {
       print('Error capturing face: $e');
       hideLoadingOverlay();

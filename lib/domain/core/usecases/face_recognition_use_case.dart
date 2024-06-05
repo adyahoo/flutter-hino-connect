@@ -51,9 +51,10 @@ class FaceRecognitionUseCase implements IFaceRecognitionUseCase {
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     "ID wajah sukses dikenali",
-                    style: Theme.of(Get.context!).textTheme.titleMedium?.copyWith(
-                          color: Colors.white,
-                        ),
+                    style:
+                        Theme.of(Get.context!).textTheme.titleMedium?.copyWith(
+                              color: Colors.white,
+                            ),
                   ),
                 ),
               ],
@@ -64,11 +65,11 @@ class FaceRecognitionUseCase implements IFaceRecognitionUseCase {
 
       // Close the dialog after 3 seconds and navigate to the Scan QR page
       // await Future.delayed(Duration(seconds: 3), () {
-        if (Get.isDialogOpen ?? false) {
-          Get.back(); // Close the dialog
-          
-          Get.toNamed(Routes.VEHICLE_SCAN);
-        }
+      if (Get.isDialogOpen ?? false) {
+        Get.back(); // Close the dialog
+
+        Get.toNamed(Routes.VEHICLE_SCAN);
+      }
       // });
 
       return data;

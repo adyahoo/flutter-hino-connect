@@ -3,7 +3,7 @@ part of '../home.screen.dart';
 class HomeAppBar extends GetView<HomeController> {
   const HomeAppBar({super.key});
 
-  Widget _renderLoadinName(){
+  Widget _renderLoadinName() {
     return ShimmerContainer(
       child: Container(
         width: 200,
@@ -23,6 +23,7 @@ class HomeAppBar extends GetView<HomeController> {
         Image.asset(
           "assets/images/home_header_illust.png",
           height: 220,
+          width: MediaQuery.of(context).size.width,
           fit: BoxFit.cover,
         ),
         Container(
@@ -50,14 +51,20 @@ class HomeAppBar extends GetView<HomeController> {
                 () => controller.isFetchingUser.value
                     ? _renderLoadinName()
                     : Text(
-                        "Selamat datang, ${controller.user.value?.name}",
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
+                        "welcome".tr + ", ${controller.user.value?.name}",
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleLarge
+                            ?.copyWith(color: Colors.white),
                       ),
               ),
               const SizedBox(height: 4),
               Text(
-                "Scan mobil untuk mendapatkan tugas dan rute perjalanan Anda",
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.white),
+                "welcome_subtitle".tr,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(color: Colors.white),
               ),
             ],
           ),

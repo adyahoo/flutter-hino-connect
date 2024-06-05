@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:get/get.dart';
@@ -8,6 +9,8 @@ import 'package:hino_driver_app/domain/core/usecases/user_use_case.dart';
 import 'package:hino_driver_app/infrastructure/navigation/routes.dart';
 import 'package:hino_driver_app/infrastructure/utils.dart';
 import 'package:hino_driver_app/presentation/widgets/bottom_sheets/single_picker/controllers/bs_single_picker.controller.dart';
+import 'package:hino_driver_app/presentation/widgets/widgets.dart';
+import 'package:local_auth/local_auth.dart';
 
 import '../../../../infrastructure/di.dart';
 
@@ -26,7 +29,10 @@ class ProfileController extends GetxController {
   ));
   final isFetching = true.obs;
 
-  final isBiometricLogin = (inject<StorageService>().getIsBiometricLogin() ?? false).obs;
+  final isBiometricLogin =
+      (inject<StorageService>().getIsBiometricLogin() ?? false).obs;
+  final LocalAuthentication localAuth = LocalAuthentication();
+  final isLoadingBio = false.obs;
 
   @override
   void onInit() {
@@ -55,10 +61,45 @@ class ProfileController extends GetxController {
     isFetching.value = false;
   }
 
-  void toggleSwitch(bool isBiometricLogin) {
-    this.isBiometricLogin.value = isBiometricLogin;
-    inject<StorageService>().setIsBiometricLogin(isBiometricLogin);
-    update();
+  Future<void> toggleSwitch(bool isBiometricLogin) async {
+    // this.isBiometricLogin.value = isBiometricLogin;
+    // inject<StorageService>().setIsBiometricLogin(isBiometricLogin);
+    // update();
+
+    isLoadingBio.value = true;
+    print("doLoginWithBiometric");
+
+    final bool canAuthenticateWithBiometrics =
+        await localAuth.canCheckBiometrics;
+    final bool canAuthenticate =
+        canAuthenticateWithBiometrics || await localAuth.isDeviceSupported();
+
+    if (canAuthenticate) {
+      try {
+        final isAuthenticated = await localAuth.authenticate(
+          localizedReason:
+              'Please authenticate to change biometric login setting',
+          options: const AuthenticationOptions(
+            stickyAuth: true,
+            biometricOnly: true,
+          ),
+        );
+
+        if (isAuthenticated) {
+          inject<StorageService>().setIsBiometricLogin(isBiometricLogin);
+          this.isBiometricLogin.value = isBiometricLogin;
+          update();
+        } else {
+          // Handle the case where the user cancels the authentication
+          print('User cancelled authentication');
+        }
+      } catch (e) {
+        // Handle the case where an error occurs
+        print('Error occurred: $e');
+      } finally {
+        isLoadingBio.value = false;
+      }
+    }
   }
 
   Future<void> changeLanguage(int id) async {

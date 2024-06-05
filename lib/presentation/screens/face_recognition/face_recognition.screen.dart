@@ -18,12 +18,14 @@ class FaceRecognitionScreen extends GetView<FaceRecognitionController> {
             alignment: FractionalOffset.center,
             children: [
               Positioned.fill(
-                child: AspectRatio(
-                  aspectRatio: controller.cameraController.value.aspectRatio,
-                  // aspectRatio: 3 / 4,
-                  child: CameraPreview(controller.cameraController),
+                // child: Expanded(
+                  child: AspectRatio(
+                    // aspectRatio: controller.cameraController.value.aspectRatio,
+                    aspectRatio: 4/3,
+                    child: CameraPreview(controller.cameraController),
+                  ),
                 ),
-              ),
+              // ),
               Positioned.fill(
                 child: Opacity(
                   opacity: 0.3,

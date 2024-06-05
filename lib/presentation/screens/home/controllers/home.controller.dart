@@ -35,6 +35,9 @@ class HomeController extends GetxController {
   void onReady() {
     super.onReady();
     _getUser();
+    if(isVehicleVerified.value) {
+      getTodayTrip();
+    }
   }
 
   @override
