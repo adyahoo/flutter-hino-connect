@@ -40,7 +40,7 @@ class HomeAccountChip extends GetView<HomeController> {
             ),
             const SizedBox(width: 6),
             Text(
-              "Akun",
+              "account".tr,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(color: TextColor.secondary),
             )
           ],

@@ -26,12 +26,13 @@ class FaceScanInformationScreen extends GetView<FaceScanInformationController> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(forceMaterialTransparency: true),
-      body: Center(
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    resizeToAvoidBottomInset: false,
+    appBar: AppBar(forceMaterialTransparency: true),
+    body: SingleChildScrollView( 
+      child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -70,12 +71,14 @@ class FaceScanInformationScreen extends GetView<FaceScanInformationController> {
                     type: AppButtonType.filled,
                     icon: Iconsax.scan,
                   ),
+                  const SizedBox(height: 24),
                 ],
               ),
             )
           ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 }

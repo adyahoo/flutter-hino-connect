@@ -74,7 +74,7 @@ class EmergencyContactListScreen extends GetView<EmergencyContactListController>
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      "(${contact.code}) ${contact.phone}",
+                      "${contact.code}${contact.phone}",
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.secondary),
                     ),
                   ],

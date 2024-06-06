@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hino_driver_app/domain/core/entities/model.dart';
+import 'package:hino_driver_app/infrastructure/constants.dart';
+import 'package:hino_driver_app/presentation/widgets/bottom_sheets/single_picker/controllers/bs_single_picker.controller.dart';
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 
 class BsEmergencyContactFormController extends GetxController {
@@ -14,13 +16,14 @@ class BsEmergencyContactFormController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    Get.put(BsSinglePickerController(Constants.countryCodes.obs));
   }
 
   ContactModel submit() {
     final data = ContactModel(
       id: editedId.value ?? 100,
       name: nameController.value.text,
-      code: "0361",
+      code: "+62",
       phone: phoneController.value.text,
     );
 

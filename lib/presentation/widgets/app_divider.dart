@@ -19,9 +19,10 @@ class AppDivider extends StatelessWidget {
 enum AppDividerDirection { horizontal, vertical }
 
 class AppStrippedDivider extends StatelessWidget {
-  const AppStrippedDivider({super.key, this.direction = AppDividerDirection.horizontal});
+  const AppStrippedDivider({super.key, this.direction = AppDividerDirection.horizontal, this.verticalSpace = 0});
 
   final AppDividerDirection direction;
+  final double verticalSpace;
 
   @override
   Widget build(BuildContext context) {
@@ -38,18 +39,21 @@ class AppStrippedDivider extends StatelessWidget {
           dashCount = (boxHeight / (2 * dashWidth)).floor();
         }
 
-        return Flex(
-          children: List.generate(dashCount, (_) {
-            return SizedBox(
-              width: (direction == AppDividerDirection.horizontal) ? dashWidth : dashHeight,
-              height: (direction == AppDividerDirection.horizontal) ? dashHeight : dashWidth,
-              child: DecoratedBox(
-                decoration: BoxDecoration(color: BorderColor.primary),
-              ),
-            );
-          }),
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          direction: (direction == AppDividerDirection.horizontal) ? Axis.horizontal : Axis.vertical,
+        return Container(
+          margin: EdgeInsets.symmetric(vertical: verticalSpace),
+          child: Flex(
+            children: List.generate(dashCount, (_) {
+              return SizedBox(
+                width: (direction == AppDividerDirection.horizontal) ? dashWidth : dashHeight,
+                height: (direction == AppDividerDirection.horizontal) ? dashHeight : dashWidth,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(color: BorderColor.primary),
+                ),
+              );
+            }),
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            direction: (direction == AppDividerDirection.horizontal) ? Axis.horizontal : Axis.vertical,
+          ),
         );
       },
     );

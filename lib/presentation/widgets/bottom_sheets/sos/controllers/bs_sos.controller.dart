@@ -29,9 +29,17 @@ class BsSosController extends GetxController {
   void getSosContact() async {
     isFetching.value = true;
 
-    final data = await useCase.getSosContact();
+    final data1 = await useCase.getSosContact();
+    final data2 = await useCase.getPersonalSosContact();
 
-    this.data.value = data;
+    if (data2 != null) {
+      data.value = [...data1, data2];
+    } else {
+      data.value = data1;
+    }
+
+    print('data 2' + data2.toString());
+
     isFetching.value = false;
   }
 }

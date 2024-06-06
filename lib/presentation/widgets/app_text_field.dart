@@ -133,6 +133,25 @@ class AppTextField extends StatelessWidget {
         this.isRequired = false,
         this.length = null;
 
+  AppTextField.phoneNumber({
+    super.key,
+    required this.textEditingController,
+    required this.state,
+    required this.onChanged,
+    this.label,
+    this.helperText,
+    this.prefixIcon,
+    this.withIcon = false,
+    this.isEditable = true,
+    this.shape = AppTextFieldShape.rect,
+    this.placeholder = 'Phone Number',
+    this.canFocus = true,
+  })  : this.isDisabled = false,
+        this.type = AppTextFieldType.phoneNumber,
+        this.isRequired = false,
+        this.onClick = null,
+        this.length = null;
+
   final String placeholder;
   final TextEditingController textEditingController;
   final AppTextFieldState state;
@@ -366,24 +385,27 @@ class AppTextField extends StatelessWidget {
       children: [
         GestureDetector(
           onTap: () {
-            Get.bottomSheet(
-              BsSinglePicker(
-                type: BsSinglePickerType.withSearch,
-                options: Constants.countryCodes,
-                title: 'country_code'.tr,
-                selectedId:
-                    Get.find<BsSinglePickerController>().selectedOption.value,
-                // Set default selected id here
-                onSubmit: (PickerModel value) {
-                  // Handle selected country code
-                  print('Selected: ${value.title}');
-                  // Update the text field controller or state with the selected country code
-                  Get.find<BsSinglePickerController>()
-                      .setSelectedOption(value.id);
-                },
-              ),
-              isScrollControlled: true,
-            );
+            isDisabled
+                ? null
+                : Get.bottomSheet(
+                    BsSinglePicker(
+                      type: BsSinglePickerType.withSearch,
+                      options: Constants.countryCodes,
+                      title: 'country_code'.tr,
+                      selectedId: Get.find<BsSinglePickerController>()
+                          .selectedOption
+                          .value,
+                      // Set default selected id here
+                      onSubmit: (PickerModel value) {
+                        // Handle selected country code
+                        print('Selected: ${value.title}');
+                        // Update the text field controller or state with the selected country code
+                        Get.find<BsSinglePickerController>()
+                            .setSelectedOption(value.id);
+                      },
+                    ),
+                    isScrollControlled: true,
+                  );
           },
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 8, vertical: 13),
@@ -414,11 +436,13 @@ class AppTextField extends StatelessWidget {
                   );
                 }),
                 SizedBox(width: 4),
-                Icon(
-                  Iconsax.arrow_down_1,
-                  size: 12,
-                  color: IconColor.primary,
-                ),
+                isDisabled
+                    ? const SizedBox()
+                    : Icon(
+                        Iconsax.arrow_down_1,
+                        size: 12,
+                        color: IconColor.primary,
+                      ),
               ],
             ),
           ),
