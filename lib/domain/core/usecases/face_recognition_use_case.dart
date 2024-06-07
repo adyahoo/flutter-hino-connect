@@ -1,8 +1,6 @@
 import 'dart:io';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:hino_driver_app/data/data_sources/data_source.dart';
 import 'package:hino_driver_app/domain/core/entities/user_model.dart';
@@ -30,7 +28,7 @@ class FaceRecognitionUseCase implements IFaceRecognitionUseCase {
       );
 
       // Show the success dialog
-      await Get.dialog(
+      Get.dialog(
         Center(
           child: Container(
             padding: const EdgeInsets.all(16),
@@ -61,20 +59,22 @@ class FaceRecognitionUseCase implements IFaceRecognitionUseCase {
             ),
           ),
         ),
+        barrierDismissible: false, // Prevent closing the dialog by tapping outside
       );
 
       // Close the dialog after 3 seconds and navigate to the Scan QR page
-      // await Future.delayed(Duration(seconds: 3), () {
-      if (Get.isDialogOpen ?? false) {
-        Get.back(); // Close the dialog
-
-        Get.toNamed(Routes.VEHICLE_SCAN);
-      }
-      // });
+      await Future.delayed(Duration(seconds: 3), () {
+        if (Get.isDialogOpen ?? false) {
+          Get.back(); // Close the dialog
+          Get.toNamed(Routes.VEHICLE_SCAN); // Navigate to the next screen
+        }
+      });
 
       return data;
     } on ApiException catch (e) {
-      Get.back(); // Close the dialog
+      if (Get.isDialogOpen ?? false) {
+        Get.back(); // Close the dialog if open
+      }
       errorHandler(e);
       rethrow;
     }

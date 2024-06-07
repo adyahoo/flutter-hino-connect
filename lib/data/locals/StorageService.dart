@@ -21,6 +21,7 @@ class StorageService {
   static final String TRIPS_JSON = "trip_json";
   static final String USERS_JSON = "users_json";
   static final String RECENT_SEARCHES_JSON = "recent_searches_json";
+  static final String HINO_DEALERS_JSON = "hino_dealers_json";
 
   static Future<StorageService?> instance() async {
     _instance ??= StorageService();

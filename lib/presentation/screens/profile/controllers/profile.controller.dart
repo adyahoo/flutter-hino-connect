@@ -1,15 +1,15 @@
-import 'dart:math';
+import 'dart:io';
 import 'dart:ui';
 
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:hino_driver_app/data/dtos/base_response_dto.dart';
+import 'package:hino_driver_app/data/dtos/api_dto.dart';
 import 'package:hino_driver_app/data/locals/StorageService.dart';
 import 'package:hino_driver_app/domain/core/entities/user_model.dart';
 import 'package:hino_driver_app/domain/core/usecases/user_use_case.dart';
+import 'package:hino_driver_app/infrastructure/client/exceptions/ApiException.dart';
 import 'package:hino_driver_app/infrastructure/navigation/routes.dart';
 import 'package:hino_driver_app/infrastructure/utils.dart';
-import 'package:hino_driver_app/presentation/widgets/bottom_sheets/single_picker/controllers/bs_single_picker.controller.dart';
-import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 import 'package:local_auth/local_auth.dart';
 
 import '../../../../infrastructure/di.dart';
@@ -62,10 +62,6 @@ class ProfileController extends GetxController {
   }
 
   Future<void> toggleSwitch(bool isBiometricLogin) async {
-    // this.isBiometricLogin.value = isBiometricLogin;
-    // inject<StorageService>().setIsBiometricLogin(isBiometricLogin);
-    // update();
-
     isLoadingBio.value = true;
     print("doLoginWithBiometric");
 
@@ -93,9 +89,24 @@ class ProfileController extends GetxController {
           // Handle the case where the user cancels the authentication
           print('User cancelled authentication');
         }
-      } catch (e) {
-        // Handle the case where an error occurs
-        print('Error occurred: $e');
+      } on PlatformException catch (e) {
+        print('Error: $e');
+        if (e.code == "auth_in_progress") {
+          print("Authentication in progress");
+          return;
+        }
+
+        errorHandler(ApiException(
+          response: ErrorResponseDto(
+            error: ErrorDto(
+              code: 500,
+              title: 'Error Authenticating Biometric',
+              message: e.message ?? 'Error authenticating',
+              errors: [],
+            ),
+          ),
+          exception: null,
+        ));
       } finally {
         isLoadingBio.value = false;
       }

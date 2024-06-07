@@ -32,5 +32,9 @@ class SplashUseCase implements ISplashUseCase {
     final userRes = await DefaultAssetBundle.of(rootScaffoldMessengerKey.currentContext!).loadString('assets/response_helpers/users.json');
     final userData = await json.decode(userRes);
     inject<StorageService>().setJsonData(StorageService.USERS_JSON, userData);
+
+    final hinoDealerRes = await DefaultAssetBundle.of(rootScaffoldMessengerKey.currentContext!).loadString('assets/response_helpers/hino_dealers.json');
+    final hinoDealerData = await json.decode(hinoDealerRes);
+    inject<StorageService>().setJsonData(StorageService.HINO_DEALERS_JSON, hinoDealerData);
   }
 }

@@ -380,35 +380,34 @@ class AppTextField extends StatelessWidget {
     });
   }
 
-  Widget _renderPhoneNumberField(BuildContext context) {
-    return Row(
+Widget _renderPhoneNumberField(BuildContext context) {
+  return Container(
+    height: 48,
+    decoration: BoxDecoration(
+      border: Border.all(color: BorderColor.secondary),
+      borderRadius: BorderRadius.circular(8),
+    ),
+    child: Row(
       children: [
         GestureDetector(
           onTap: () {
-            isDisabled
-                ? null
-                : Get.bottomSheet(
-                    BsSinglePicker(
-                      type: BsSinglePickerType.withSearch,
-                      options: Constants.countryCodes,
-                      title: 'country_code'.tr,
-                      selectedId: Get.find<BsSinglePickerController>()
-                          .selectedOption
-                          .value,
-                      // Set default selected id here
-                      onSubmit: (PickerModel value) {
-                        // Handle selected country code
-                        print('Selected: ${value.title}');
-                        // Update the text field controller or state with the selected country code
-                        Get.find<BsSinglePickerController>()
-                            .setSelectedOption(value.id);
-                      },
-                    ),
-                    isScrollControlled: true,
-                  );
+            if (!isDisabled) {
+              Get.bottomSheet(
+                BsSinglePicker(
+                  type: BsSinglePickerType.withSearch,
+                  options: Constants.countryCodes,
+                  title: 'country_code'.tr,
+                  selectedId: Get.find<BsSinglePickerController>().selectedOption.value,
+                  onSubmit: (PickerModel value) {
+                    Get.find<BsSinglePickerController>().setSelectedOption(value.id);
+                  },
+                ),
+                isScrollControlled: true,
+              );
+            }
           },
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 13),
+            padding: EdgeInsets.symmetric(horizontal: 8),
             decoration: BoxDecoration(
               border: Border.all(color: BorderColor.secondary),
               borderRadius: BorderRadius.only(
@@ -417,32 +416,28 @@ class AppTextField extends StatelessWidget {
               ),
               color: BorderColor.secondary,
             ),
+            alignment: Alignment.center,
             child: Row(
               children: [
-                //!! Change the selected country code here
                 Obx(() {
-                  final selectedId =
-                      Get.find<BsSinglePickerController>().selectedOption.value;
+                  final selectedId = Get.find<BsSinglePickerController>().selectedOption.value;
                   final selectedOption = Constants.countryCodes.firstWhere(
                       (option) => option.id == selectedId,
                       orElse: () => Constants.countryCodes[0]);
-                  final match =
-                      RegExp(r'\+(\d+)').firstMatch(selectedOption.title);
-                  final phoneCode =
-                      match != null ? match.group(0) : '+62'; // default value
+                  final match = RegExp(r'\+(\d+)').firstMatch(selectedOption.title);
+                  final phoneCode = match != null ? match.group(0) : '+62'; // default value
                   return Text(
                     phoneCode ?? '+62',
                     style: TextStyle(color: Colors.black),
                   );
                 }),
                 SizedBox(width: 4),
-                isDisabled
-                    ? const SizedBox()
-                    : Icon(
-                        Iconsax.arrow_down_1,
-                        size: 12,
-                        color: IconColor.primary,
-                      ),
+                if (!isDisabled)
+                  Icon(
+                    Iconsax.arrow_down_1,
+                    size: 12,
+                    color: IconColor.primary,
+                  ),
               ],
             ),
           ),
@@ -455,13 +450,9 @@ class AppTextField extends StatelessWidget {
             style: Theme.of(context).textTheme.bodyMedium,
             decoration: InputDecoration(
               floatingLabelBehavior: FloatingLabelBehavior.never,
-              contentPadding:
-                  const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+              contentPadding: const EdgeInsets.symmetric(vertical: 18, horizontal: 12),
               hintText: placeholder,
-              hintStyle: Theme.of(context)
-                  .textTheme
-                  .bodyMedium
-                  ?.copyWith(color: TextColor.placeholder),
+              hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.placeholder),
               filled: true,
               fillColor: Colors.white,
               border: OutlineInputBorder(
@@ -469,7 +460,14 @@ class AppTextField extends StatelessWidget {
                   topRight: Radius.circular(8),
                   bottomRight: Radius.circular(8),
                 ),
-                borderSide: BorderSide(color: BorderColor.secondary),
+                borderSide: BorderSide.none,
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(8),
+                  bottomRight: Radius.circular(8),
+                ),
+                borderSide: BorderSide.none,
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.only(
@@ -478,17 +476,9 @@ class AppTextField extends StatelessWidget {
                 ),
                 borderSide: BorderSide(color: BorderColor.primary, width: 3),
               ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(8),
-                  bottomRight: Radius.circular(8),
-                ),
-                borderSide: BorderSide(color: BorderColor.secondary, width: 1),
-              ),
             ),
             validator: (value) {
-              final error =
-                  inputValidator(type, value, label ?? "", isRequired);
+              final error = inputValidator(type, value, label ?? "", isRequired);
               state.setError(error);
 
               if (error != null)
@@ -504,8 +494,10 @@ class AppTextField extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
+    ),
+  );
+}
+
 
   @override
   Widget build(BuildContext context) {

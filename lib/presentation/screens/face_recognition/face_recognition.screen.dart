@@ -8,6 +8,22 @@ import 'controllers/face_recognition.controller.dart';
 class FaceRecognitionScreen extends GetView<FaceRecognitionController> {
   const FaceRecognitionScreen({Key? key}) : super(key: key);
 
+  Widget cameraWidget(context) {
+    var camera = controller.cameraController.value;
+    final size = MediaQuery.of(context).size;
+    var scale = size.aspectRatio * camera.aspectRatio;
+    if (scale < 1) scale = 1 / scale;
+
+    var zoom = 1.0;
+
+    return Transform.scale(
+      scale: scale * zoom,
+      child: Center(
+        child: CameraPreview(controller.cameraController),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -18,14 +34,8 @@ class FaceRecognitionScreen extends GetView<FaceRecognitionController> {
             alignment: FractionalOffset.center,
             children: [
               Positioned.fill(
-                // child: Expanded(
-                  child: AspectRatio(
-                    // aspectRatio: controller.cameraController.value.aspectRatio,
-                    aspectRatio: 4/3,
-                    child: CameraPreview(controller.cameraController),
-                  ),
-                ),
-              // ),
+                child: cameraWidget(context),
+              ),
               Positioned.fill(
                 child: Opacity(
                   opacity: 0.3,
@@ -75,11 +85,6 @@ class FaceRecognitionScreen extends GetView<FaceRecognitionController> {
                           ),
                         ),
                       ),
-                      // const Expanded(child: SizedBox()),
-                      // Text(
-                      //   "Sedang memindai wajah...",
-                      //   style: Theme.of(context).textTheme.labelLarge?.copyWith(color: Colors.white),
-                      // ),
                       const SizedBox(height: 14),
                     ],
                   ),
