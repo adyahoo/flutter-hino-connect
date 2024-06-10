@@ -72,20 +72,6 @@ class FaceRecognitionScreen extends GetView<FaceRecognitionController> {
                         style: Theme.of(context).textTheme.labelLarge?.copyWith(color: Colors.white),
                       ),
                       const Expanded(child: SizedBox()),
-                      GestureDetector(
-                        onTap: (){
-                          controller.captureFace();
-                        },
-                        child: Container(
-                          width: 80,
-                          height: 80,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(100),
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 14),
                     ],
                   ),
                 ),

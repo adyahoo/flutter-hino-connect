@@ -9,7 +9,7 @@ import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 import 'dart:math';
 
-void errorHandler(ApiException e) {
+void errorHandler(ApiException e, {VoidCallback? onDismiss}) {
   ErrorResponseModel? error;
 
   if (e.response?.error.code == 422) {
@@ -42,6 +42,7 @@ void errorHandler(ApiException e) {
       isMultiAction: false,
       positiveButtonOnClick: () {
         Get.back();
+        onDismiss?.call();
       },
     ),
   );
