@@ -68,7 +68,7 @@ class FaceRecognitionScreen extends GetView<FaceRecognitionController> {
                         height: kToolbarHeight + Get.width,
                       ),
                       Text(
-                        "Pastikan wajah anda berada di frame oval",
+                        "face_recognition_subtitle".tr,
                         style: Theme.of(context).textTheme.labelLarge?.copyWith(color: Colors.white),
                       ),
                       const Expanded(child: SizedBox()),

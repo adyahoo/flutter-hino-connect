@@ -62,4 +62,8 @@ Future setupInjection() async {
   //recent search
   inject.registerLazySingleton<RecentSearchDataSource>(() => RecentSearchDataSource());
   inject.registerLazySingleton<RecentSearchUseCase>(() => RecentSearchUseCase(dataSource: inject()));
+
+  //hino dealer
+  inject.registerLazySingleton<HinoDealerDataSource>(() => HinoDealerDataSource());
+  
 }

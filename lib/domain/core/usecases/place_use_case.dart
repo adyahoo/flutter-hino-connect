@@ -51,41 +51,71 @@ class PlaceUseCase {
     String type,
   ) async {
     try {
-      final response = await dataSource.fetchNearbyPlaces(lat, long, type);
-      final hinoResponse = await hinoDataSource.getHinoDealers();
+      if (type == 'car_dealer') {
+        final hinoResponse = await hinoDataSource.getHinoDealers();
+        final data = hinoResponse.data
+            .where((e) =>
+                e.facility == '1S' ||
+                e.facility == '3S')
+            .map(
+              (e) => PlaceModel(
+                name: e.name!,
+                type: 'car_dealer',
+                address: e.address,
+                latitude: e.latitude.toString(),
+                longitude: e.longitude.toString(),
+                phone: 'N/A',
+              ),
+            )
+            .toList();
 
-      final data = response.results
-          .where((e) => e.name != null && e.longitude != null && e.latitude != null)
-          .map(
-            (e) => PlaceModel(
-              name: e.name!,
-              type: e.type!,
-              address: e.address,
-              latitude: e.latitude!.toString(),
-              longitude: e.longitude!.toString(),
-              phone: e.phone ?? 'N/A',
-            ),
-          )
-          .toList();
+        print('Hino Dealers aaaaaaa: $data');
+        print('latitute type: $lat');
+        print('longitude: $long');
+        return data;
+      } else if (type == 'service_center') {
+        final hinoResponse = await hinoDataSource.getHinoDealers();
+        final data = hinoResponse.data
+            .where((e) =>
+                e.facility == '2S' ||
+                e.facility == '3S')
+            .map(
+              (e) => PlaceModel(
+                name: e.name!,
+                type: 'service_center',
+                address: e.address,
+                latitude: e.latitude.toString(),
+                longitude: e.longitude.toString(),
+                phone: 'N/A',
+              ),
+            )
+            .toList();
 
-      // final hinoData = hinoResponse.data
-      //     .map(
-      //       (e) => PlaceModel(
-      //         name: e.name!,
-      //         type: e.type!,
-      //         address: e.address,
-      //         latitude: e.latitude.toString(),
-      //         longitude: e.longitude.toString(),
-      //         phone: e.phone,
-      //       ),
-      //     )
-      //     .toList();
+        return data;
+      } else {
+        final response = await dataSource.fetchNearbyPlaces(lat, long, type);
 
-      return data;
+        final data = response.results
+            .where((e) =>
+                e.name != null && e.longitude != null && e.latitude != null)
+            .map(
+              (e) => PlaceModel(
+                name: e.name!,
+                type: e.type!,
+                address: e.address,
+                latitude: e.latitude!.toString(),
+                longitude: e.longitude!.toString(),
+                phone: e.phone ?? 'N/A',
+              ),
+            )
+            .toList();
+
+        return data;
+      }
     } catch (e) {
       //call error handler dialog
+      print('error in place use case: $e');
       rethrow;
     }
   }
 }
-

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hino_driver_app/data/locals/StorageService.dart';
 import 'package:hino_driver_app/domain/core/entities/map_filter_model.dart';
 import 'package:hino_driver_app/domain/core/entities/model.dart';
@@ -36,6 +37,8 @@ class Constants {
   static final DATE_FORMAT_PENALTY = "dd MMM yyyy, HH:mm";
   static final DATE_FORMAT_TRIP = "EEEE, dd MMMM yyyy";
   static final BASE_URL = "https://dev-weeo.timedoor-host.web.id/api/mobile/v1/";
+
+  static final venueLocation = LatLng(-6.3003589142707925, 106.63645869332062);
 
   static final bottomMainMenu = [
     BottomNavigationBarItem(
@@ -209,5 +212,16 @@ class Constants {
       label: 'Restaurant',
       icon: Icons.coffee,
     ),
+    MapFilterItem(
+      id: 'filter_service_center',
+      label: 'Service Center',
+      icon: Iconsax.setting_25,
+    ),
+    MapFilterItem(
+      id: 'filter_drive_to',
+      label: 'Drive to',
+      icon: Iconsax.direct_up,
+    ),
+
   ];
 }

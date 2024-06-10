@@ -139,7 +139,10 @@ class AppTranslations extends Translations {
           "welcome_subtitle": "Scan your vehicle to get your task and trip route",
           "face_scan_success": "Face ID recognized successfully",
           "biometric_warning_title": "The biometric feature is not yet active",
-          "biometric_warning_description": "You have not enabled biometrics in the Hino Driver application on your device. Please login first, then activate the \"Biometric Login\" feature in the profile menu."
+          "biometric_warning_description": "You have not enabled biometrics in the Hino Driver application on your device. Please login first, then activate the \"Biometric Login\" feature in the profile menu.",
+          "no_today_trip_title": "No Trip list for today yet",
+          "no_today_trip_subtitle": "You dont have list of today trips to view yet.",
+          "face_recognition_subtitle": "Make sure your face is within the oval frame",
         },
         'id_ID': {
           'home': 'Home',
@@ -276,7 +279,10 @@ class AppTranslations extends Translations {
           "welcome_subtitle": "Scan mobil anda untuk mendapatkan tugas dan rute perjalanan Anda",
           "face_scan_success": "ID wajah sukses dikenali",
           "biometric_warning_title": "Fitur biometrik belum aktif",
-          "biometric_warning_description": "Anda belum mengaktifkan biometrik di aplikasi Hino Driver di perangkat Anda. Silakan login terlebih dahulu, kemudian aktifkan fitur \"Login Biometrik\" pada menu profil."
+          "biometric_warning_description": "Anda belum mengaktifkan biometrik di aplikasi Hino Driver di perangkat Anda. Silakan login terlebih dahulu, kemudian aktifkan fitur \"Login Biometrik\" pada menu profil.",
+          "no_today_trip_title": "Daftar perjalanan hari ini belum ada",
+          "no_today_trip_subtitle": "Anda belum mempunyai daftar perjalanan hari ini untuk dilihat.",
+          "face_recognition_subtitle": "Pastikan wajah anda berada di frame oval",
         }
       };
 }

@@ -50,7 +50,7 @@ class TripListScreen extends GetView<TripListController> {
     showDatePicker(
       context: context,
       firstDate: DateTime(1900),
-      lastDate: DateTime(2200),
+      lastDate: DateTime.now(),
       initialDate: controller.date,
     ).then((pickedDate) {
       controller.setDate(pickedDate);

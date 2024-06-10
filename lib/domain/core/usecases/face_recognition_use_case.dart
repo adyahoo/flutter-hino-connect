@@ -48,7 +48,7 @@ class FaceRecognitionUseCase implements IFaceRecognitionUseCase {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    "ID wajah sukses dikenali",
+                    "face_scan_success".tr,
                     style:
                         Theme.of(Get.context!).textTheme.titleMedium?.copyWith(
                               color: Colors.white,
