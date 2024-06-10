@@ -46,7 +46,7 @@ Future setupInjection() async {
 
   //maps
   inject.registerLazySingleton<PlaceDataSource>(() => PlaceDataSource());
-  inject.registerLazySingleton<PlaceUseCase>(() => PlaceUseCase(dataSource: inject()));
+  inject.registerLazySingleton<PlaceUseCase>(() => PlaceUseCase(dataSource: inject(), hinoDataSource: inject()));
 
   //trip
   inject.registerLazySingleton<TripDataSource>(() => TripDataSource());
