@@ -6,6 +6,7 @@ import 'package:hino_driver_app/domain/core/entities/user_model.dart';
 import 'package:hino_driver_app/domain/core/usecases/user_use_case.dart';
 import 'package:hino_driver_app/infrastructure/di.dart';
 import 'package:hino_driver_app/infrastructure/navigation/routes.dart';
+import 'package:hino_driver_app/infrastructure/utils.dart';
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 import 'package:local_auth/local_auth.dart';
 
@@ -137,6 +138,9 @@ class LoginController extends GetxController {
       await storage.write(key: 'email', value: emailController.value.text);
       await storage.write(key: 'password', value: passwordController.value.text);
 
+      //start 5 minutes scheduled local trip notification
+      showScheduledNewTripNotif();
+
       Get.offNamed(Routes.MAIN_TAB);
       isLoading.value = false;
     } catch (e) {
@@ -184,6 +188,9 @@ class LoginController extends GetxController {
             final body = LoginBody(email: email, password: password);
             await useCase.login(body);
             Get.offNamed(Routes.MAIN_TAB);
+
+            //start 5 minutes scheduled local trip notification
+            showScheduledNewTripNotif();
           } else {
             print('Stored credentials not found.');
           }
@@ -199,6 +206,4 @@ class LoginController extends GetxController {
       print('Biometric authentication is not available.');
     }
   }
-
-
 }

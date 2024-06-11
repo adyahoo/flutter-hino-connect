@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:hino_driver_app/domain/core/entities/api_model.dart';
 import 'package:hino_driver_app/infrastructure/client/exceptions/ApiException.dart';
@@ -8,6 +8,9 @@ import 'package:hino_driver_app/infrastructure/constants.dart';
 import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 import 'dart:math';
+import 'package:timezone/timezone.dart' as tz;
+
+import '../main.dart';
 
 void errorHandler(ApiException e, {VoidCallback? onDismiss}) {
   ErrorResponseModel? error;
@@ -114,4 +117,43 @@ double calculateDistance(double lat1, double lng1, double lat2, double lng2) {
   const p = 0.017453292519943295; // PI / 180
   final a = 0.5 - cos((lat2 - lat1) * p) / 2 + cos(lat1 * p) * cos(lat2 * p) * (1 - cos((lng2 - lng1) * p)) / 2;
   return 12742 * asin(sqrt(a)); // 2 * R * asin...
+}
+
+Future<void> showScheduledNewTripNotif() async {
+  await flutterLocalNotificationsPlugin.zonedSchedule(
+    0,
+    'Check your recent completed trip',
+    'there is new trip available according to your recent trip.',
+    tz.TZDateTime.now(tz.local).add(const Duration(minutes: 5)),
+    NotificationDetails(
+      android: AndroidNotificationDetails(
+        channel.id,
+        channel.name,
+        channelDescription: channel.description,
+        icon: "@mipmap/ic_launcher",
+        importance: Importance.high,
+        priority: Priority.high,
+      ),
+    ),
+    androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+    uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+  );
+}
+
+Future<void> showNewTripNotif() async {
+  await flutterLocalNotificationsPlugin.show(
+    0,
+    'Check your recent completed trip',
+    'there is new trip available according to your recent trip.',
+    NotificationDetails(
+      android: AndroidNotificationDetails(
+        channel.id,
+        channel.name,
+        channelDescription: channel.description,
+        icon: "@mipmap/ic_launcher",
+        importance: Importance.high,
+        priority: Priority.high,
+      ),
+    ),
+  );
 }
