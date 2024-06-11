@@ -87,7 +87,8 @@ class MapsScreen extends GetView<MapsController> {
                 ),
                 child: IconButton(
                   onPressed: () {
-                    controller.getCurrentLocation();
+                    // controller.getCurrentLocation();
+                    controller.loadVenueAsCurrentLocation();
                   },
                   splashColor: Colors.white,
                   icon: Icon(Icons.location_searching_outlined, size: 28, color: IconColor.primary),

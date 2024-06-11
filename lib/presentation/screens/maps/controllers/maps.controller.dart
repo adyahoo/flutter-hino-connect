@@ -53,7 +53,7 @@ class MapsController extends GetxController {
 
   LatLng currentLocation = LatLng(-8.681547132266411, 115.24069589508952);
   CameraPosition currentCameraPosition = CameraPosition(
-    target: LatLng(-8.681547132266411, 115.24069589508952),
+    target: LatLng(-6.3003589142707925, 106.63645869332062),
     zoom: zoom,
   );
 
@@ -76,8 +76,8 @@ class MapsController extends GetxController {
   @override
   void onReady() {
     super.onReady();
-    getCurrentLocation();
-    // loadVenueAsCurrentLocation();
+    // getCurrentLocation();
+    loadVenueAsCurrentLocation();
     _addCurrentLocationMarker();
   }
 
@@ -98,22 +98,22 @@ class MapsController extends GetxController {
     moveCamera(currentLocation);
   }
 
-  Future<void> getCurrentLocation() async {
-    try {
-      Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.low,
-      );
+  // Future<void> getCurrentLocation() async {
+  //   try {
+  //     Position position = await Geolocator.getCurrentPosition(
+  //       desiredAccuracy: LocationAccuracy.low,
+  //     );
 
-      if (currentLocation.latitude.isEqual(position.latitude)) {
-        currentLocation = LatLng(position.latitude, position.longitude);
-        _addCurrentLocationMarker();
-      }
+  //     if (currentLocation.latitude.isEqual(position.latitude)) {
+  //       currentLocation = LatLng(position.latitude, position.longitude);
+  //       _addCurrentLocationMarker();
+  //     }
 
-      moveCamera(currentLocation);
-    } catch (e) {
-      print('Error getting location: $e');
-    }
-  }
+  //     moveCamera(currentLocation);
+  //   } catch (e) {
+  //     print('Error getting location: $e');
+  //   }
+  // }
 
   void moveCamera(LatLng coordinate) {
     _controller.animateCamera(CameraUpdate.newLatLngZoom(coordinate, zoom));

@@ -143,6 +143,11 @@ class AppTranslations extends Translations {
           "no_today_trip_title": "No Trip list for today yet",
           "no_today_trip_subtitle": "You dont have list of today trips to view yet.",
           "face_recognition_subtitle": "Make sure your face is within the oval frame",
+          "trip_not_found_title": "Trip not found",
+          "trip_not_found_subtitle": "Try using different dates or remove the filter to find your trips.",
+          "remove_filter": "Remove Filter",
+          "empty_trip_title": "No trip list yet",
+          "empty_trip_subtitle": "Trip list will display after you complete your tasks and will be add by the Hino Driver Admin.",
         },
         'id_ID': {
           'home': 'Home',
@@ -283,6 +288,11 @@ class AppTranslations extends Translations {
           "no_today_trip_title": "Daftar perjalanan hari ini belum ada",
           "no_today_trip_subtitle": "Anda belum mempunyai daftar perjalanan hari ini untuk dilihat.",
           "face_recognition_subtitle": "Pastikan wajah anda berada di frame oval",
+          "trip_not_found_title": "Perjalanan tidak ditemukan",
+          "trip_not_found_subtitle": "Coba menggunakan tanggal lain atau hapus filter tanggal untuk menemukan perjalanan yang Anda.",
+          "remove_filter": "Hapus Filter",
+          "empty_trip_title": "Daftar perjalanan belum ada",
+          "empty_trip_subtitle": "Daftar perjalanan akan ditampilkan setelah Anda menyelesaikan tugas Anda dan akan diinputkan oleh Admin Hino Driver.",
         }
       };
 }
