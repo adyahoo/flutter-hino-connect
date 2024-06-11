@@ -77,5 +77,6 @@ part 'bottom_sheets/emergency_contact/bs_emergency_contact_form.dart';
 
 part 'bottom_sheets/image_picker/bs_image_picker.dart';
 
+part 'empty/empty_log.dart';
 
 enum WidgetVariant { primary, danger, warning, success, info, yellow }

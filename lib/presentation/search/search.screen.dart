@@ -83,9 +83,14 @@ class SearchScreen extends GetView<SearchPageController> {
 
   Widget onTypingState(BuildContext context) {
     return Obx(() {
+      if(controller.filteredResults.isEmpty) {
+        return emptyState(context);
+      }
+
       return ListView.separated(
         separatorBuilder: (context, index) => AppDivider(),
         itemCount: controller.filteredResults.length,
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         itemBuilder: (context, index) {
           final result = controller.filteredResults[index];
           return _renderLocationInfo(context, result, Icons.location_on_outlined);
@@ -102,6 +107,8 @@ class SearchScreen extends GetView<SearchPageController> {
         child: AppBar(
           automaticallyImplyLeading: true,
           titleSpacing: 0.0,
+          backgroundColor: Colors.white,
+          shape: Border(bottom: BorderSide(width: 1, color: BorderColor.primary)),
           leading: IconButton(
             icon: Icon(Icons.arrow_back, color: IconColor.primary),
             onPressed: () => Get.back(),
@@ -136,34 +143,34 @@ class SearchScreen extends GetView<SearchPageController> {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(left: 16, top: 16),
-        child: Obx(
-          () {
-            if (controller.currentInput.value.isNotEmpty || controller.searchbarController.value.text.isNotEmpty) {
-              controller.search(controller.searchbarController.value.text);
-      
-              return onTypingState(context);
+      body: Obx(
+        () {
+          if (controller.currentInput.value.isNotEmpty || controller.searchbarController.value.text.isNotEmpty) {
+            controller.search(controller.searchbarController.value.text);
+
+            return onTypingState(context);
+          } else {
+            print('masuk else statement');
+            if (controller.searchResults.isEmpty) {
+              return emptyState(context);
             } else {
-              print('masuk else statement');
-              if (controller.searchResults.isEmpty) {
-                return emptyState(context);
-              } else {
-                print('Recent Search');
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "recent_search".tr,
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    SizedBox(height: 4),
-                    Expanded(
-                      child: Expanded(
-                        child: Obx(() {
+              print('Recent Search');
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "recent_search".tr,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  SizedBox(height: 4),
+                  Expanded(
+                    child: Expanded(
+                      child: Obx(
+                        () {
                           return ListView.separated(
                             itemCount: controller.searchResults.length,
                             separatorBuilder: (context, index) => SizedBox(height: 16),
+                            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                             itemBuilder: (context, index) {
                               final result = controller.searchResults[index];
                               return GestureDetector(
@@ -208,15 +215,15 @@ class SearchScreen extends GetView<SearchPageController> {
                               );
                             },
                           );
-                        }),
+                        },
                       ),
                     ),
-                  ],
-                );
-              }
+                  ),
+                ],
+              );
             }
-          },
-        ),
+          }
+        },
       ),
     );
   }

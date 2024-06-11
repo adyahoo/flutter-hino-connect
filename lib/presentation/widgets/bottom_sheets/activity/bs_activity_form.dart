@@ -116,6 +116,7 @@ class BsActivityForm extends GetView<BsActivityFormController> {
               controller.setType(value);
             },
           ),
+          isScrollControlled: true,
         );
         break;
       case AppTextFieldType.date_picker:
@@ -164,16 +165,18 @@ class BsActivityForm extends GetView<BsActivityFormController> {
         color: Colors.white,
         borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)),
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          BsNotch(),
-          const SizedBox(height: 8),
-          _renderHeader(context),
-          const SizedBox(height: 16),
-          _renderForm(context),
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            BsNotch(),
+            const SizedBox(height: 8),
+            _renderHeader(context),
+            const SizedBox(height: 16),
+            _renderForm(context),
+          ],
+        ),
       ),
     );
   }

@@ -134,12 +134,17 @@ class AppTranslations extends Translations {
           "scan_qr_code_desc": "Application will scan the QR code automatically",
           "scan_code_success": "Code scanned successfully",
           "scan_code_success_desc": "Scan proccess success for @vehicle vehicle with @plate",
-          "redirect_home":"Redirecting to home in...@counter",
+          "redirect_home": "Redirecting to home in...@counter",
           "welcome": "Welcome",
           "welcome_subtitle": "Scan your vehicle to get your task and trip route",
           "face_scan_success": "Face ID recognized successfully",
           "biometric_warning_title": "The biometric feature is not yet active",
-          "biometric_warning_description": "You have not enabled biometrics in the Hino Driver application on your device. Please login first, then activate the \"Biometric Login\" feature in the profile menu."
+          "biometric_warning_description":
+              "You have not enabled biometrics in the Hino Driver application on your device. Please login first, then activate the \"Biometric Login\" feature in the profile menu.",
+          "empty_activity_title": "Activities not exist",
+          "empty_activity_desc": "You dont have any activities to show. Please add activity to record your activities on duty",
+          "empty_event_title": "Events not exist",
+          "empty_event_desc": "You dont have any events to show. You can add event or the Admin will add the event for you",
         },
         'id_ID': {
           'home': 'Home',
@@ -271,12 +276,17 @@ class AppTranslations extends Translations {
           "scan_qr_code_desc": "Aplikasi akan otomatis melakukan scan pada kode QR kendaraan.",
           "scan_code_success": "Kode berhasil dibaca",
           "scan_code_success_desc": "Scan berhasil untuk mobil @vehicle dengan @plate",
-          "redirect_home":"Mengarahkan ke beranda dalam...@counter",
+          "redirect_home": "Mengarahkan ke beranda dalam...@counter",
           "welcome": "Selamat datang",
           "welcome_subtitle": "Scan mobil anda untuk mendapatkan tugas dan rute perjalanan Anda",
           "face_scan_success": "ID wajah sukses dikenali",
           "biometric_warning_title": "Fitur biometrik belum aktif",
-          "biometric_warning_description": "Anda belum mengaktifkan biometrik di aplikasi Hino Driver di perangkat Anda. Silakan login terlebih dahulu, kemudian aktifkan fitur \"Login Biometrik\" pada menu profil."
+          "biometric_warning_description":
+              "Anda belum mengaktifkan biometrik di aplikasi Hino Driver di perangkat Anda. Silakan login terlebih dahulu, kemudian aktifkan fitur \"Login Biometrik\" pada menu profil.",
+          "empty_activity_title": "Aktivitas belum ada",
+          "empty_activity_desc": "Anda belum punya aktivitas untuk ditampilkan. Tambah aktivitas untuk mempermudah pencatatan aktivitas saat bertugas.",
+          "empty_event_title": "Event belum ada",
+          "empty_event_desc": "Anda belum punya event untuk ditampilkan. Anda dapat menambahkan event atau Admin akan menambahkan event untuk Anda.",
         }
       };
 }

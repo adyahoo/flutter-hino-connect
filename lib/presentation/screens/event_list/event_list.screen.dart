@@ -114,6 +114,14 @@ class EventListScreen extends GetView<EventListController> {
 
               final data = controller.data.value;
 
+              if (data.isEmpty) {
+                return EmptyLog(
+                  icon: "ic_empty_event.svg",
+                  title: "empty_event_title".tr,
+                  description: "empty_event_desc".tr,
+                );
+              }
+
               return ListView.separated(
                 itemCount: data.length,
                 itemBuilder: (context, index) => _renderContent(data[index]),
