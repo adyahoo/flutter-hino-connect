@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:camera/camera.dart';
+import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:hino_driver_app/data/dtos/base_response_dto.dart';
 import 'package:hino_driver_app/domain/core/entities/model.dart';
 import 'package:hino_driver_app/domain/core/entities/search_result_model.dart';

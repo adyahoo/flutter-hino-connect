@@ -4,9 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:hino_driver_app/infrastructure/navigation/routes.dart';
 import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
-import 'package:hino_driver_app/presentation/screens/vehicle_scan/widgets/vehicle_scan_slide_panel.dart';
-import 'package:hino_driver_app/presentation/widgets/widgets.dart';
-import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 import 'controllers/vehicle_scan.controller.dart';
