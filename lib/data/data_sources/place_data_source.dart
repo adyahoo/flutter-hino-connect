@@ -1,71 +1,46 @@
-// part of 'data_source.dart';
-
-// class PlaceDataSource {
-//   final String baseUrl = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json';
-
-//   Future<PlacesApiResponse> fetchNearbyPlaces(double lat, double lng, String type) async {
-//     final apiKey = Constants.MAP_API_KEY;
-//     final apiUrl = '$baseUrl?location=$lat,$lng&radius=400&type=$type&key=$apiKey';
-//     final response = await http.get(Uri.parse(apiUrl));
-
-//     if (response.statusCode == 200) {
-//       final decodedData = json.decode(response.body);
-//       print('decoded DATA: ' + const JsonEncoder.withIndent('  ').convert(decodedData));
-//       return PlacesApiResponse.fromJson(decodedData);
-//     } else {
-//       throw Exception('Failed to load data');
-//     }
-//   }
-
-  
-// }
-
 part of 'data_source.dart';
 
 class PlaceDataSource {
   final String baseUrl = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json';
+  final double cacheRadius = 200; // 200 meters
 
-  PlacesApiResponse? _cachedResponse;
-  double? _cachedLat;
-  double? _cachedLng;
-  final double _cacheRadius = 500; // 500 meters
+  Future<PlacesApiResponse>getPlaceList(double lat, double long, String type) async {
+    final LatLng venueLocation = Constants.venueLocation;
+    final distance = calculateDistance(lat, long, venueLocation.latitude, venueLocation.longitude);
 
-  Future<PlacesApiResponse> fetchNearbyPlaces(double lat, double lng, String type) async {
-    final apiKey = Constants.MAP_API_KEY;
-    final apiUrl = '$baseUrl?location=$lat,$lng&radius=400&type=$type&key=$apiKey';
-    final response = await http.get(Uri.parse(apiUrl));
-
-    if (response.statusCode == 200) {
-      final decodedData = json.decode(response.body);
-      print('decoded DATA: ' + const JsonEncoder.withIndent('  ').convert(decodedData));
-      return PlacesApiResponse.fromJson(decodedData);
-    } else {
-      throw Exception('Failed to load data');
-    }
-  }
-
-  Future<PlacesApiResponse> fetchPlacesWithCache(double lat, double lng, String type) async {
-    // Check if the cached location is within the cache radius
-    if (_cachedResponse != null && _cachedLat != null && _cachedLng != null) {
-      double distance = calculateDistance(lat, lng, _cachedLat!, _cachedLng!);
-      if (distance <= _cacheRadius) {
+    // Check if it's within the cache radius
+    if (distance <= cacheRadius && (type != 'car_dealer' && type != 'service_center')) {
+      print('within venue location radius');
+      // Check if cached data is available
+      final cachedPlacesJson = await inject<StorageService>().getJsonData(StorageService.PLACE_NEAR_VENUE_JSON);
+      print('cachedPlacesJson: $cachedPlacesJson');
+      if (cachedPlacesJson?['results'].length != 0) {
         print('Using cached response');
-        return _cachedResponse!;
+        if (cachedPlacesJson != null) {
+          return PlacesApiResponse.fromJson(cachedPlacesJson);
+        }
       }
     }
 
-    // Fetch new data from the API
+    print('Fetching new data');
+    // Fetch data from the API
     final apiKey = Constants.MAP_API_KEY;
-    final apiUrl = '$baseUrl?location=$lat,$lng&radius=400&type=$type&key=$apiKey';
+    final apiUrl = '$baseUrl?location=$lat,$long&radius=400&type=$type&key=$apiKey';
     final response = await http.get(Uri.parse(apiUrl));
 
     if (response.statusCode == 200) {
       final decodedData = json.decode(response.body);
-      print('decoded DATA: ' + const JsonEncoder.withIndent('  ').convert(decodedData));
-      _cachedResponse = PlacesApiResponse.fromJson(decodedData);
-      _cachedLat = lat;
-      _cachedLng = lng;
-      return _cachedResponse!;
+
+
+      // Cache the fetched data if it's within the cache radius
+      if (distance <= cacheRadius && (type != 'car_dealer' && type != 'service_center')) {
+        inject<StorageService>().setJsonData(
+          StorageService.PLACE_NEAR_VENUE_JSON,
+          decodedData,
+        );
+      }
+
+      return PlacesApiResponse.fromJson(decodedData);
     } else {
       throw Exception('Failed to load data');
     }

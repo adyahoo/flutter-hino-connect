@@ -30,7 +30,6 @@ class HinoDealerDto extends Equatable {
     if (json["latlng"] != null) {
       var latlng = json["latlng"].split(',');
       if (latlng.length == 2) {
-        print('Parsing latlng: ${latlng[0].trim()} and ${latlng[1].trim()}');
         latitude = double.tryParse(latlng[0].trim());
         longitude = double.tryParse(latlng[1].trim());
         

@@ -8,12 +8,6 @@ class PlacesApiResponse extends Equatable {
     required this.results,
   });
 
-  // factory PlacesApiResponse.fromJson(List<dynamic> json) {
-  //   return PlacesApiResponse(
-  //     results: json.map((e) => PlacesDto.fromJson(e as Map<String, dynamic>)).toList(),
-  //   );
-  // }
-
   factory PlacesApiResponse.fromJson(Map<String, dynamic> json) {
   return PlacesApiResponse(
     results: (json['results'] as List<dynamic>)
