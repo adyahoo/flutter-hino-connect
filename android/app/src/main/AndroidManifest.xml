@@ -67,5 +67,18 @@
             <action android:name="android.intent.action.PROCESS_TEXT"/>
             <data android:mimeType="text/plain"/>
         </intent>
+            <intent>
+      <action android:name="android.intent.action.VIEW" />
+      <data android:scheme="https" android:host="www.google.com" android:pathPrefix="/maps" />
+    </intent>
+    <!-- If your app checks for Apple Maps support -->
+    <intent>
+      <action android:name="android.intent.action.VIEW" />
+      <data android:scheme="https" android:host="maps.apple.com" />
+    </intent>
+    <!-- If your app checks for inAppBrowserView launch mode support -->
+    <intent>
+      <action android:name="android.support.customtabs.action.CustomTabsService" />
+    </intent>
     </queries>
 </manifest>

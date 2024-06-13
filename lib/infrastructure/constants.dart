@@ -40,6 +40,25 @@ class Constants {
 
   static final venueLocation = LatLng(-6.3003589142707925, 106.63645869332062);
 
+  //hino dealer facility
+  static final String FACILITY_1S = '1S';
+  static final String FACILITY_2S = '2S';
+  static final String FACILITY_HMSI_2S = 'HMSI 2S';
+  static final String FACILITY_3S = '3S';
+  static final String FACILITY_SERPO = 'SERPO';
+
+  //type of marker
+  static const String TYPE_CAR_DEALER = 'car_dealer';
+  static const String TYPE_SERVICE_CENTER = 'service_center';
+  static const String TYPE_GAS_STATION = 'gas_station';
+  static const String TYPE_RESTAURANT = 'restaurant';
+
+  //label type of marker
+  static const String LABEL_CAR_DEALER = 'Dealers';
+  static const String LABEL_SERVICE_CENTER = 'Service Center';
+  static const String LABEL_GAS_STATION = 'Gas Station';
+  static const String LABEL_RESTAURANT = 'Restaurant';
+
   static final bottomMainMenu = [
     BottomNavigationBarItem(
       label: 'home'.tr,
@@ -220,8 +239,9 @@ class Constants {
     MapFilterItem(
       id: 'filter_drive_to',
       label: 'Drive to',
-      icon: Iconsax.direct_up,
+      icon: Iconsax.direct_up5,
     ),
 
   ];
 }
+

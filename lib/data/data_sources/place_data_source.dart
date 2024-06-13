@@ -2,7 +2,7 @@ part of 'data_source.dart';
 
 class PlaceDataSource {
   final String baseUrl = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json';
-  final double cacheRadius = 200; // 200 meters
+  final double cacheRadius = 400;
 
   Future<PlacesApiResponse>getPlaceList(double lat, double long, String type) async {
     final LatLng venueLocation = Constants.venueLocation;
