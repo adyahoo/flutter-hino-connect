@@ -89,12 +89,13 @@ class FaceRecognitionController extends GetxController {
       for (Face face in faces) {
         //check if face alreaady cover the overlay or not
         //bottom = 330-340, top = 100-120, left = 120-140, right = 350-380
-        final width = face.boundingBox.size.width >= 170 && face.boundingBox.size.width <= 240;
-        final top = face.boundingBox.top >= 90 && face.boundingBox.top <= 120;
-        final right = face.boundingBox.right >= 350 && face.boundingBox.right <= 380;
-        final bottom = face.boundingBox.bottom >= 320 && face.boundingBox.bottom <= 350;
-        final left = face.boundingBox.left >= 120 && face.boundingBox.left <= 150;
+        final width = face.boundingBox.size.width >= 150;
+        final top = face.boundingBox.top >= 100;
+        final right = face.boundingBox.right >= 340;
+        final bottom = face.boundingBox.bottom >= 300;
+        final left = face.boundingBox.left >= 100;
 
+        // text.value = "${face.boundingBox.top} ${face.boundingBox.bottom} ${face.boundingBox.right} ${face.boundingBox.left} ${face.boundingBox.size.width}";
         if (width && top && right && bottom & left) {
           isScanning.value = true;
 
