@@ -21,13 +21,29 @@ class SplashUseCase implements ISplashUseCase {
     final eventData = await json.decode(eventRes);
     inject<StorageService>().setJsonData(StorageService.EVENTS_JSON, eventData);
 
-    final tripDetailRes = await DefaultAssetBundle.of(rootScaffoldMessengerKey.currentContext!).loadString('assets/response_helpers/trip_details.json');
-    final tripDetailData = await json.decode(tripDetailRes);
-    inject<StorageService>().setJsonData(StorageService.TRIP_DETAILS_JSON, tripDetailData);
+    final tripDetailOneRes = await DefaultAssetBundle.of(rootScaffoldMessengerKey.currentContext!).loadString('assets/response_helpers/trip_details_one.json');
+    final tripDetailOneData = await json.decode(tripDetailOneRes);
+    inject<StorageService>().setJsonData(StorageService.TRIP_DETAILS_ONE_JSON, tripDetailOneData);
 
-    final tripRes = await DefaultAssetBundle.of(rootScaffoldMessengerKey.currentContext!).loadString('assets/response_helpers/trips.json');
-    final tripData = await json.decode(tripRes);
-    inject<StorageService>().setJsonData(StorageService.TRIPS_JSON, tripData);
+    final tripOneRes = await DefaultAssetBundle.of(rootScaffoldMessengerKey.currentContext!).loadString('assets/response_helpers/trip_one.json');
+    final tripOneData = await json.decode(tripOneRes);
+    inject<StorageService>().setJsonData(StorageService.TRIPS_ONE_JSON, tripOneData);
+
+    final tripDetailTwoRes = await DefaultAssetBundle.of(rootScaffoldMessengerKey.currentContext!).loadString('assets/response_helpers/trip_details_two.json');
+    final tripDetailTwoData = await json.decode(tripDetailTwoRes);
+    inject<StorageService>().setJsonData(StorageService.TRIP_DETAILS_ONE_JSON, tripDetailTwoData);
+
+    final tripTwoRes = await DefaultAssetBundle.of(rootScaffoldMessengerKey.currentContext!).loadString('assets/response_helpers/trip_two.json');
+    final tripTwoData = await json.decode(tripTwoRes);
+    inject<StorageService>().setJsonData(StorageService.TRIPS_ONE_JSON, tripTwoData);
+
+    final tripDetailThreeRes = await DefaultAssetBundle.of(rootScaffoldMessengerKey.currentContext!).loadString('assets/response_helpers/trip_details_three.json');
+    final tripDetailThreeData = await json.decode(tripDetailThreeRes);
+    inject<StorageService>().setJsonData(StorageService.TRIP_DETAILS_ONE_JSON, tripDetailThreeData);
+
+    final tripThreeRes = await DefaultAssetBundle.of(rootScaffoldMessengerKey.currentContext!).loadString('assets/response_helpers/trip_three.json');
+    final tripThreeData = await json.decode(tripThreeRes);
+    inject<StorageService>().setJsonData(StorageService.TRIPS_ONE_JSON, tripThreeData);
 
     final userRes = await DefaultAssetBundle.of(rootScaffoldMessengerKey.currentContext!).loadString('assets/response_helpers/users.json');
     final userData = await json.decode(userRes);

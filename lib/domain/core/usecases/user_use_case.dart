@@ -2,9 +2,11 @@ import 'dart:io';
 
 import 'package:hino_driver_app/data/data_sources/data_source.dart';
 import 'package:hino_driver_app/data/dtos/user_dto.dart';
+import 'package:hino_driver_app/data/locals/StorageService.dart';
 import 'package:hino_driver_app/domain/core/entities/user_model.dart';
 import 'package:hino_driver_app/domain/core/interfaces/i_use_case.dart';
 import 'package:hino_driver_app/infrastructure/client/exceptions/ApiException.dart';
+import 'package:hino_driver_app/infrastructure/di.dart';
 import 'package:hino_driver_app/infrastructure/utils.dart';
 
 class UserUseCase implements IUserUseCase {
@@ -25,7 +27,7 @@ class UserUseCase implements IUserUseCase {
       );
 
       return data;
-    }on ApiException catch (e) {
+    } on ApiException catch (e) {
       errorHandler(e);
       rethrow;
     }
@@ -36,6 +38,9 @@ class UserUseCase implements IUserUseCase {
     try {
       final bodyData = LoginBodyDto(email: body.email, password: body.password);
       await dataSource.login(bodyData);
+
+      int counter = inject<StorageService>().getLoginAttempt() ?? 0;
+      inject<StorageService>().setLoginAttempt(counter++);
     } on ApiException catch (e) {
       errorHandler(e);
       rethrow;
@@ -77,5 +82,4 @@ class UserUseCase implements IUserUseCase {
       rethrow;
     }
   }
-
 }

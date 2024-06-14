@@ -46,7 +46,6 @@ class TripUseCase implements ITripUseCase {
   Future<ListPaginationApiResponse<TripModel>> getTodayTripList() async {
     try {
       final response = await dataSource.getTodayTripList();
-      print('hiks banget ${response.data.length}');
       final data = response.data
           .map(
             (e) => TripModel(
