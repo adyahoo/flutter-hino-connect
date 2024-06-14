@@ -2,8 +2,11 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
 
 import 'controllers/face_recognition.controller.dart';
+
+part 'widgets/face_detected_dialog.dart';
 
 class FaceRecognitionScreen extends GetView<FaceRecognitionController> {
   const FaceRecognitionScreen({Key? key}) : super(key: key);
@@ -19,7 +22,9 @@ class FaceRecognitionScreen extends GetView<FaceRecognitionController> {
     return Transform.scale(
       scale: scale * zoom,
       child: Center(
-        child: CameraPreview(controller.cameraController),
+        child: CameraPreview(
+          controller.cameraController,
+        ),
       ),
     );
   }
@@ -65,14 +70,54 @@ class FaceRecognitionScreen extends GetView<FaceRecognitionController> {
                   child: Column(
                     children: [
                       SizedBox(
-                        height: kToolbarHeight + Get.width,
+                        height: Get.width,
                       ),
                       Text(
-                        "Pastikan wajah anda berada di frame oval",
+                        "make_sure_face".tr,
                         style: Theme.of(context).textTheme.labelLarge?.copyWith(color: Colors.white),
                       ),
                       const Expanded(child: SizedBox()),
                     ],
+                  ),
+                ),
+              ),
+              Obx(
+                () => Visibility(
+                  visible: controller.isScanning.value,
+                  child: Positioned(
+                    left: 16,
+                    right: 16,
+                    bottom: 16,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          "scanning_face".tr,
+                          style: Theme.of(context).textTheme.labelLarge?.copyWith(color: Colors.white),
+                        ),
+                        const SizedBox(height: 16),
+                        TweenAnimationBuilder(
+                          duration: const Duration(milliseconds: 3000),
+                          tween: Tween<double>(
+                            begin: 0.0,
+                            end: 0.9,
+                          ),
+                          builder: (context, value, child) {
+                            controller.loadingValue.value = value;
+
+                            return Obx(
+                              () => LinearProgressIndicator(
+                                backgroundColor: SuccesColor.surface,
+                                color: PrimaryNewColor().main,
+                                borderRadius: BorderRadius.circular(20),
+                                minHeight: 6,
+                                value: controller.loadingValue.value,
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

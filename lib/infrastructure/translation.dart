@@ -21,6 +21,9 @@ class AppTranslations extends Translations {
           'error_required': '@label is required',
           'error_email_invalid': 'Email has invalid format',
           'error_password_invalid': 'Password must between 6 and 12 characters',
+          'error_phone_invalid': 'Invalid phone number',
+          'error_biometric_title': 'Error Authenticating Biometric',
+          'error_biometric_not_found': 'Biometric feature is not available on your device',
           'profile_title': 'My Account',
           "score_title": "Score Card",
           "driver_score_title": "Driver Score",
@@ -145,6 +148,10 @@ class AppTranslations extends Translations {
           "empty_activity_desc": "You dont have any activities to show. Please add activity to record your activities on duty",
           "empty_event_title": "Events not exist",
           "empty_event_desc": "You dont have any events to show. You can add event or the Admin will add the event for you",
+          "make_sure_face": "Make sure your face is inside the shape",
+          "scanning_face": "Scanning face...",
+          "scan_face_completed": "Scanning face complete...",
+          "face_detected_successfully": "Face ID detected successfully"
         },
         'id_ID': {
           'home': 'Home',
@@ -163,6 +170,9 @@ class AppTranslations extends Translations {
           'error_required': '@label wajib diisi',
           'error_email_invalid': 'Format email salah',
           'error_password_invalid': 'Kata sandi harus 6 sampai 12 karakter',
+          'error_phone_invalid': 'Nomor telepon tidak valid',
+          'error_biometric_title': 'Autentikasi Biometrik Gagal',
+          'error_biometric_not_found': 'Fitur biometrik tidak tersedia pada perangkat anda',
           'profile_title': 'Akun Saya',
           "score_title": "Kartu Skor",
           "driver_score_title": "Skor Driver",
@@ -287,6 +297,10 @@ class AppTranslations extends Translations {
           "empty_activity_desc": "Anda belum punya aktivitas untuk ditampilkan. Tambah aktivitas untuk mempermudah pencatatan aktivitas saat bertugas.",
           "empty_event_title": "Event belum ada",
           "empty_event_desc": "Anda belum punya event untuk ditampilkan. Anda dapat menambahkan event atau Admin akan menambahkan event untuk Anda.",
+          "make_sure_face": "Pastikan wajah anda berada di frame oval",
+          "scanning_face": "Sedang memindai wajah...",
+          "scan_face_completed": "Berhasil memindai wajah...",
+          "face_detected_successfully": "ID wajah sukses dikenali"
         }
       };
 }

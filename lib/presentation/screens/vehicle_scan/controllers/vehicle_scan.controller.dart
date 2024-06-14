@@ -104,6 +104,7 @@ class VehicleScanController extends GetxController {
 
   @override
   void onClose() {
+    result.value = null;
     qrController.dispose();
     if (timer.isActive) {
       timer.cancel();
@@ -113,6 +114,7 @@ class VehicleScanController extends GetxController {
 
   void setController(QRViewController controller) {
     qrController = controller;
+    print("sapi ahayy ${result.value}");
 
     if (Platform.isAndroid) {
       controller.pauseCamera();
@@ -153,61 +155,3 @@ class VehicleScanController extends GetxController {
     }
   }
 }
-
-
-//================
-
-// class VehicleScanController extends GetxController {
-//   late MobileScannerController controller;
-//   late Timer timer;
-
-//   final qrKey = GlobalKey(debugLabel: 'QR');
-//   final panelController = PanelController();
-//   final result = Rx<Barcode?>(null);
-//   final counter = Duration(seconds: 3).obs;
-
-//   @override
-//   void onInit() {
-//     controller = MobileScannerController();
-//     super.onInit();
-//   }
-
-//   @override
-//   void onReady() {
-//     super.onReady();
-//   }
-
-//   @override
-//   void onClose() {
-//     controller.dispose();
-//     if (timer.isActive) {
-//       timer.cancel();
-//     }
-//     super.onClose();
-//   }
-
-//   // void _startRedirectTimer() {
-//   //   timer = Timer.periodic(
-//   //     const Duration(seconds: 1),
-//   //     (timer) {
-//   //       _setTimer();
-//   //     },
-//   //   );
-//   // }
-
-//   void startRedirectTimer() {
-//     timer = Timer.periodic(
-//       const Duration(seconds: 1),
-//       (timer) {
-//         _setTimer();
-//       },
-//     );
-//   }
-
-//   void _setTimer() {
-//     counter.value = Duration(seconds: counter.value.inSeconds - 1);
-//     if (counter.value.inSeconds == 0) {
-//       Get.offAllNamed(Routes.MAIN_TAB, arguments: {'isVehicleVerified': true});
-//     }
-//   }
-// }

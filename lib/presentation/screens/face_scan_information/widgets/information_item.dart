@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
 
 class InformationItem extends StatelessWidget {
@@ -20,7 +21,7 @@ class InformationItem extends StatelessWidget {
         const SizedBox(width: 14),
         Expanded(
           child: Text(
-            data['content'] as String,
+            (data['content'] as String).tr,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.secondary),
           ),
         )

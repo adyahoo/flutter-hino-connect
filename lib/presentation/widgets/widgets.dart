@@ -1,27 +1,18 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:hino_driver_app/domain/core/entities/feedback_model.dart';
 import 'package:hino_driver_app/domain/core/entities/map_filter_model.dart';
 import 'package:hino_driver_app/domain/core/entities/model.dart';
 
 import 'package:hino_driver_app/infrastructure/constants.dart';
 
 import 'package:hino_driver_app/infrastructure/di.dart';
-import 'package:hino_driver_app/infrastructure/navigation/routes.dart';
 
 import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
-import 'package:hino_driver_app/infrastructure/utils.dart';
 import 'package:hino_driver_app/infrastructure/validation/app_validator.dart';
-import 'package:hino_driver_app/presentation/screens/maps/controllers/maps.controller.dart';
-import 'package:hino_driver_app/presentation/search/controllers/search.controller.dart';
 import 'package:hino_driver_app/presentation/widgets/bottom_sheets/activity/controllers/bs_activity_form.controller.dart';
 import 'package:hino_driver_app/presentation/widgets/bottom_sheets/emergency_contact/controllers/bs_emergency_contact_form.controller.dart';
 import 'package:hino_driver_app/presentation/widgets/bottom_sheets/event/controllers/bs_event_form.controller.dart';

@@ -81,7 +81,7 @@ class Nav {
     ),
     GetPage(
       name: Routes.EDIT_PROFILE,
-      page: () => const EditProfileScreen(),
+      page: () =>  EditProfileScreen(),
       binding: EditProfileControllerBinding(),
     ),
     GetPage(

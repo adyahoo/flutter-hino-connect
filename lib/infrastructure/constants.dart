@@ -72,11 +72,11 @@ class Constants {
   static final faceScanInformationItems = [
     {
       'icon': "ic_user_search.svg",
-      'content': 'face_scan_item_1'.tr,
+      'content': 'face_scan_item_1',
     },
     {
       'icon': "ic_glass.svg",
-      'content': 'face_scan_item_2'.tr,
+      'content': 'face_scan_item_2',
     },
   ];
 
@@ -209,5 +209,16 @@ class Constants {
       label: 'Restaurant',
       icon: Icons.coffee,
     ),
+    MapFilterItem(
+      id: 'filter_service_center',
+      label: 'Service Center',
+      icon: Iconsax.setting_25,
+    ),
+    MapFilterItem(
+      id: 'filter_drive_to',
+      label: 'Drive to',
+      icon: Iconsax.direct_up5,
+    ),
+
   ];
 }

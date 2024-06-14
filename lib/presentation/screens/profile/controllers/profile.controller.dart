@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/services.dart';
@@ -29,8 +28,7 @@ class ProfileController extends GetxController {
   ));
   final isFetching = true.obs;
 
-  final isBiometricLogin =
-      (inject<StorageService>().getIsBiometricLogin() ?? false).obs;
+  final isBiometricLogin = (inject<StorageService>().getIsBiometricLogin() ?? false).obs;
   final LocalAuthentication localAuth = LocalAuthentication();
   final isLoadingBio = false.obs;
 
@@ -63,18 +61,14 @@ class ProfileController extends GetxController {
 
   Future<void> toggleSwitch(bool isBiometricLogin) async {
     isLoadingBio.value = true;
-    print("doLoginWithBiometric");
 
-    final bool canAuthenticateWithBiometrics =
-        await localAuth.canCheckBiometrics;
-    final bool canAuthenticate =
-        canAuthenticateWithBiometrics || await localAuth.isDeviceSupported();
+    final bool canAuthenticateWithBiometrics = await localAuth.canCheckBiometrics;
+    final bool canAuthenticate = canAuthenticateWithBiometrics || await localAuth.isDeviceSupported();
 
     if (canAuthenticate) {
       try {
         final isAuthenticated = await localAuth.authenticate(
-          localizedReason:
-              'Please authenticate to change biometric login setting',
+          localizedReason: 'Please authenticate to change biometric login setting',
           options: const AuthenticationOptions(
             stickyAuth: true,
             biometricOnly: true,
@@ -96,17 +90,7 @@ class ProfileController extends GetxController {
           return;
         }
 
-        errorHandler(ApiException(
-          response: ErrorResponseDto(
-            error: ErrorDto(
-              code: 500,
-              title: 'Error Authenticating Biometric',
-              message: e.message ?? 'Error authenticating',
-              errors: [],
-            ),
-          ),
-          exception: null,
-        ));
+        errorHandler(e);
       } finally {
         isLoadingBio.value = false;
       }

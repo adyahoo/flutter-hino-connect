@@ -7,6 +7,8 @@ import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 import 'package:iconsax/iconsax.dart';
 import 'controllers/search.controller.dart';
 
+part 'widgets/search_app_bar.dart';
+
 class SearchScreen extends GetView<SearchPageController> {
   const SearchScreen({Key? key}) : super(key: key);
 
@@ -81,11 +83,77 @@ class SearchScreen extends GetView<SearchPageController> {
     );
   }
 
+  Widget _renderRecentSearchList(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "recent_search".tr,
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+          const SizedBox(height: 4),
+          Expanded(
+            child: Obx(
+              () {
+                return ListView.separated(
+                  separatorBuilder: (context, index) => const SizedBox(height: 0),
+                  itemCount: controller.searchResults.length,
+                  itemBuilder: (context, index) {
+                    final result = controller.searchResults[index];
+
+                    return GestureDetector(
+                      onTap: () {
+                        controller.selectLocation(result);
+                      },
+                      child: Row(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              color: InfoColor.surface,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(
+                              Icons.access_time,
+                              color: InfoColor.main,
+                              size: 20,
+                            ), // Time icon
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              result.name,
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              Iconsax.close_circle,
+                              size: 20,
+                            ),
+                            onPressed: () {
+                              controller.removeRecentSearchSelected(result);
+                            },
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget onTypingState(BuildContext context) {
     return Obx(() {
-      if(controller.filteredResults.isEmpty) {
-        return emptyState(context);
-      }
+      // if (controller.filteredResults.isEmpty) {
+      //   return emptyState(context);
+      // }
 
       return ListView.separated(
         separatorBuilder: (context, index) => AppDivider(),
@@ -102,126 +170,34 @@ class SearchScreen extends GetView<SearchPageController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(100.0),
-        child: AppBar(
-          automaticallyImplyLeading: true,
-          titleSpacing: 0.0,
-          backgroundColor: Colors.white,
-          shape: Border(bottom: BorderSide(width: 1, color: BorderColor.primary)),
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: IconColor.primary),
-            onPressed: () => Get.back(),
-          ),
-          title: Padding(
-            padding: const EdgeInsets.all(8),
-            child: AppSearchBar(
-              hintText: "searchbar_placeholder".tr,
-              controller: controller.searchbarController.value,
-              state: controller.searchBarState,
-              onChanged: (input) {
-                // Call the search function in your controller
-                controller.search(input);
-                onTypingState(context);
-              },
-            ),
-          ),
-          bottom: PreferredSize(
-            preferredSize: Size.fromHeight(60.0),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: AppFilter(
-                  chips: Constants.mapScreenFilterItems,
-                  onClick: (item) {
-                    Get.back(result: item);
-                  },
-                ),
-              ),
-            ),
-          ),
-        ),
+      appBar: SearchAppBar(
+        controller: controller,
+        onTyping: () {
+          // onTypingState(context);
+        },
       ),
       body: Obx(
         () {
-          if (controller.currentInput.value.isNotEmpty || controller.searchbarController.value.text.isNotEmpty) {
-            controller.search(controller.searchbarController.value.text);
+          // if (controller.currentInput.value.isNotEmpty || controller.searchbarController.value.text.isNotEmpty) {
+          //   controller.search(controller.searchbarController.value.text);
+          //
+          //   return onTypingState(context);
+          // } else {
+          //   if (controller.searchResults.isEmpty) {
+          //     return emptyState(context);
+          //   } else {
+          //     return _renderRecentSearchList(context);
+          //   }
+          // }
 
+          if (controller.filteredResults.isNotEmpty) {
             return onTypingState(context);
           } else {
-            print('masuk else statement');
-            if (controller.searchResults.isEmpty) {
+            if (controller.searchResults.isEmpty || (controller.filteredResults.isEmpty && controller.searchbarController.value.text.isNotEmpty)) {
               return emptyState(context);
-            } else {
-              print('Recent Search');
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "recent_search".tr,
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                  SizedBox(height: 4),
-                  Expanded(
-                    child: Expanded(
-                      child: Obx(
-                        () {
-                          return ListView.separated(
-                            itemCount: controller.searchResults.length,
-                            separatorBuilder: (context, index) => SizedBox(height: 16),
-                            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                            itemBuilder: (context, index) {
-                              final result = controller.searchResults[index];
-                              return GestureDetector(
-                                onTap: () {
-                                  controller.selectLocation(result);
-                                },
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      padding: EdgeInsets.all(4.0),
-                                      decoration: BoxDecoration(
-                                        color: InfoColor.surface,
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: Icon(
-                                        Icons.access_time,
-                                        color: InfoColor.main,
-                                        size: 20,
-                                      ), // Time icon
-                                    ),
-                                    SizedBox(width: 12),
-                                    Expanded(
-                                      child: Text(
-                                        result.name,
-                                        style: Theme.of(context).textTheme.bodyMedium,
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.zero,
-                                      child: IconButton(
-                                        icon: Icon(
-                                          Iconsax.close_circle,
-                                          size: 20,
-                                        ),
-                                        onPressed: () {
-                                          controller.removeRecentSearchSelected(result);
-                                        },
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                ],
-              );
             }
+
+            return _renderRecentSearchList(context);
           }
         },
       ),

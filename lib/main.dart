@@ -3,12 +3,12 @@ import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 
 import 'package:get/get.dart';
 import 'package:hino_driver_app/infrastructure/di.dart';
 import 'package:hino_driver_app/infrastructure/theme/app_theme.dart';
 import 'package:hino_driver_app/infrastructure/translation.dart';
-import 'package:hino_driver_app/infrastructure/utils.dart';
 
 import 'infrastructure/navigation/navigation.dart';
 import 'infrastructure/navigation/routes.dart';
@@ -70,6 +70,11 @@ class Main extends StatelessWidget {
       theme: AppTheme.getLightTheme(),
       translations: AppTranslations(),
       locale: Get.deviceLocale,
+      supportedLocales: [
+        Locale('en', 'US'),
+        Locale('id', 'ID'),
+      ],
+      localizationsDelegates: FlutterLocalization.instance.localizationsDelegates,
       initialRoute: initialRoute,
       getPages: Nav.routes,
     );
