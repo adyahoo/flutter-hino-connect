@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hino_driver_app/data/locals/StorageService.dart';
@@ -36,7 +37,8 @@ class Constants {
   static const DATE_FORMAT_TZ = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
   static final DATE_FORMAT_PENALTY = "dd MMM yyyy, HH:mm";
   static final DATE_FORMAT_TRIP = "EEEE, dd MMMM yyyy";
-  static final BASE_URL = "https://dev-weeo.timedoor-host.web.id/api/mobile/v1/";
+  static final BASE_URL =
+      "https://dev-weeo.timedoor-host.web.id/api/mobile/v1/";
 
   static final venueLocation = LatLng(-6.3003589142707925, 106.63645869332062);
 
@@ -109,7 +111,8 @@ class Constants {
             onTap: () {
               Get.toNamed(Routes.EDIT_PROFILE);
             }),
-        MenuItem(title: 'biometric_login'.tr, icon: Iconsax.scan4, onTap: () {}),
+        MenuItem(
+            title: 'biometric_login'.tr, icon: Iconsax.scan4, onTap: () {}),
       ];
 
   static List<MenuItem> get settingMenuItems => [
@@ -132,7 +135,10 @@ class Constants {
           },
         ),
         MenuItem(title: 'about_us'.tr, icon: Iconsax.note_21, onTap: () {}),
-        MenuItem(title: 'privacy_policy'.tr, icon: Iconsax.shield_tick4, onTap: () {}),
+        MenuItem(
+            title: 'privacy_policy'.tr,
+            icon: Iconsax.shield_tick4,
+            onTap: () {}),
         MenuItem(
             title: 'emergency_contact'.tr,
             icon: Iconsax.call_calling,
@@ -192,7 +198,7 @@ class Constants {
     AppChip(
       id: 'filter_gas_station',
       label: 'Gas Station',
-      icon: Iconsax.gas_station4,
+      icon: Icon(Iconsax.gas_station4),
       onSelected: (p0) {
         Get.back();
       },
@@ -200,7 +206,11 @@ class Constants {
     AppChip(
       id: 'filter_dealers',
       label: 'Dealers',
-      icon: Iconsax.truck,
+      icon: SvgPicture.asset(
+        "assets/icons/ic_filter_car_dealer.svg",
+        width: 16,
+        height: 16,
+      ),
       onSelected: (p0) {
         Get.back();
       },
@@ -208,7 +218,7 @@ class Constants {
     AppChip(
       id: 'filter_restaurant',
       label: 'Restaurant',
-      icon: Icons.coffee,
+      icon: Icon(Icons.coffee),
       onSelected: (p0) {
         Get.back();
       },
@@ -219,29 +229,36 @@ class Constants {
     MapFilterItem(
       id: 'filter_gas_station',
       label: 'Gas Station',
-      icon: Iconsax.gas_station4,
+      icon: Icon(Iconsax.gas_station4),
     ),
     MapFilterItem(
       id: 'filter_dealers',
       label: 'Dealers',
-      icon: Iconsax.truck,
+      icon: SvgPicture.asset(
+        "assets/icons/ic_filter_car_dealer.svg",
+        width: 16,
+        height: 16,
+      ),
     ),
     MapFilterItem(
       id: 'filter_restaurant',
       label: 'Restaurant',
-      icon: Icons.coffee,
+      icon: Icon(Icons.coffee),
     ),
     MapFilterItem(
       id: 'filter_service_center',
       label: 'Service Center',
-      icon: Iconsax.setting_25,
+      // icon: Icon(Iconsax.setting_25),
+      icon: SvgPicture.asset(
+        "assets/icons/ic_filter_service_center.svg",
+        width: 16,
+        height: 16,
+      ),
     ),
     MapFilterItem(
       id: 'filter_drive_to',
       label: 'Drive to',
-      icon: Iconsax.direct_up5,
+      icon: Icon(Iconsax.direct_up5),
     ),
-
   ];
 }
-

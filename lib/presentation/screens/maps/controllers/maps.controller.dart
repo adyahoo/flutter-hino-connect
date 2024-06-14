@@ -107,7 +107,7 @@ class MapsController extends GetxController {
   Future<void> loadVenueAsCurrentLocation() async {
     currentLocation = Constants.venueLocation;
     initMarker(currentLocation);
-    // _addCurrentLocationMarker();
+    _addCurrentLocationMarker();
     _moveCamera(currentLocation);
   }
 
@@ -121,6 +121,16 @@ class MapsController extends GetxController {
   void _moveCamera(LatLng coordinate) {
     _controller.animateCamera(CameraUpdate.newLatLngZoom(coordinate, _zoom));
     initMarker(coordinate);
+  }
+
+  void _addCurrentLocationMarker() {
+    currentMarker.value = {
+      Marker(
+        markerId: MarkerId('current_location'),
+        position: currentLocation,
+        icon: BitmapDescriptor.defaultMarker,
+      )
+    };
   }
 
   void initMarker(LatLng coordinate) {
