@@ -9,6 +9,7 @@ class AppSearchBar extends StatelessWidget {
   final bool editable;
   final bool canFocus;
   final Function(String? query)? onTap;
+  final Function()? onClear;
 
   AppSearchBar({
     Key? key,
@@ -16,6 +17,7 @@ class AppSearchBar extends StatelessWidget {
     required this.controller,
     required this.hintText,
     required this.state,
+    this.onClear,
     this.onTap,
     this.editable = true,
     this.shape = AppTextFieldShape.rounded,
@@ -46,6 +48,7 @@ class AppSearchBar extends StatelessWidget {
             canFocus: canFocus,
             isEditable: editable,
             onChanged: debounceOnChange,
+            onClear: onClear,
             onClick: () {
               if (onTap != null) {
                 onTap!(controller.text);

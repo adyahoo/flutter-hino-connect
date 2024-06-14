@@ -1,7 +1,12 @@
+import 'dart:io';
+
+import 'package:camera/camera.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:hino_driver_app/domain/core/entities/api_model.dart';
 import 'package:hino_driver_app/infrastructure/client/exceptions/ApiException.dart';
 import 'package:hino_driver_app/infrastructure/constants.dart';
@@ -12,36 +17,45 @@ import 'package:timezone/timezone.dart' as tz;
 
 import '../main.dart';
 
-void errorHandler(ApiException e, {VoidCallback? onDismiss}) {
+void errorHandler(Exception e, {VoidCallback? onDismiss}) {
   ErrorResponseModel? error;
 
-  if (e.response?.error.code == 422) {
+  if (e is ApiException) {
+    if (e.response?.error.code == 422) {
+      error = ErrorResponseModel(
+        code: 422,
+        title: e.response!.error.title,
+        message: e.response!.error.message,
+      );
+    } else {
+      error = ErrorResponseModel(
+        code: e.response!.error.code,
+        title: e.response!.error.title,
+        message: e.response!.error.message,
+        errors: e.response!.error.errors
+            .map(
+              (element) => ErrorModel(
+                key: element.key,
+                message: element.message,
+              ),
+            )
+            .toList(),
+      );
+    }
+  } else if (e is PlatformException) {
     error = ErrorResponseModel(
-      code: 422,
-      title: e.response!.error.title,
-      message: e.response!.error.message,
-    );
-  } else {
-    error = ErrorResponseModel(
-      code: e.response!.error.code,
-      title: e.response!.error.title,
-      message: e.response!.error.message,
-      errors: e.response!.error.errors
-          .map(
-            (element) => ErrorModel(
-              key: element.key,
-              message: element.message,
-            ),
-          )
-          .toList(),
+      code: 500,
+      title: 'error_biometric_title',
+      message: 'error_biometric_not_found',
+      errors: [],
     );
   }
 
   showGetBottomSheet(
     BsConfirmation(
       type: BsConfirmationType.danger,
-      title: error.title,
-      description: error.message,
+      title: error?.title ?? "",
+      description: error?.message ?? "",
       isMultiAction: false,
       positiveButtonOnClick: () {
         Get.back();
@@ -171,4 +185,44 @@ Future<void> showNewTripNotif() async {
       ),
     ),
   );
+}
+
+double translateX(
+  double x,
+  Size canvasSize,
+  Size imageSize,
+  InputImageRotation rotation,
+  CameraLensDirection cameraLensDirection,
+) {
+  switch (rotation) {
+    case InputImageRotation.rotation90deg:
+      return x * canvasSize.width / (Platform.isIOS ? imageSize.width : imageSize.height);
+    case InputImageRotation.rotation270deg:
+      return canvasSize.width - x * canvasSize.width / (Platform.isIOS ? imageSize.width : imageSize.height);
+    case InputImageRotation.rotation0deg:
+    case InputImageRotation.rotation180deg:
+      switch (cameraLensDirection) {
+        case CameraLensDirection.back:
+          return x * canvasSize.width / imageSize.width;
+        default:
+          return canvasSize.width - x * canvasSize.width / imageSize.width;
+      }
+  }
+}
+
+double translateY(
+  double y,
+  Size canvasSize,
+  Size imageSize,
+  InputImageRotation rotation,
+  CameraLensDirection cameraLensDirection,
+) {
+  switch (rotation) {
+    case InputImageRotation.rotation90deg:
+    case InputImageRotation.rotation270deg:
+      return y * canvasSize.height / (Platform.isIOS ? imageSize.height : imageSize.width);
+    case InputImageRotation.rotation0deg:
+    case InputImageRotation.rotation180deg:
+      return y * canvasSize.height / imageSize.height;
+  }
 }

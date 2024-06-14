@@ -136,6 +136,10 @@ class BsSos extends GetView<BsSosController> {
 
     return Container(
       padding: const EdgeInsets.only(right: 16, bottom: 24, left: 16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)),
+      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,

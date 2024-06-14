@@ -94,11 +94,11 @@ class Constants {
   static final faceScanInformationItems = [
     {
       'icon': "ic_user_search.svg",
-      'content': 'face_scan_item_1'.tr,
+      'content': 'face_scan_item_1',
     },
     {
       'icon': "ic_glass.svg",
-      'content': 'face_scan_item_2'.tr,
+      'content': 'face_scan_item_2',
     },
   ];
 

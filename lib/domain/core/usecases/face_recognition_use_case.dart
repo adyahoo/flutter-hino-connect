@@ -30,52 +30,6 @@ class FaceRecognitionUseCase implements IFaceRecognitionUseCase {
         phone: response.phone,
       );
 
-      // Show the success dialog
-      Get.dialog(
-        Center(
-          child: Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Color(0xff333333),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Image(
-                  image: AssetImage('assets/images/face_recog_success.gif'),
-                  height: 140,
-                  width: 140,
-                ),
-                const SizedBox(height: 16),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    "face_scan_success".tr,
-                    style:
-                        Theme.of(Get.context!).textTheme.titleMedium?.copyWith(
-                              color: Colors.white,
-                            ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        barrierDismissible: false, // Prevent closing the dialog by tapping outside
-      );
-
-      // Close the dialog after 3 seconds and navigate to the Scan QR page
-      await Future.delayed(Duration(seconds: 3), () {
-        if (Get.isDialogOpen ?? false) {
-          // Get.back(); // Close the dialog
-
-          Future.delayed(const Duration(milliseconds: 500), () {
-            Get.offNamed(Routes.VEHICLE_SCAN); // Navigate to the next screen
-          });
-        }
-      });
-
       return data;
     } on ApiException catch (e) {
       rethrow;

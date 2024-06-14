@@ -50,12 +50,12 @@ class BsConfirmation extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         Text(
-          title,
+          title.tr,
           style: Theme.of(context).textTheme.titleMedium,
         ),
         const SizedBox(height: 8),
         Text(
-          description,
+          description.tr,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.tertiary),
           textAlign: TextAlign.center,
         ),

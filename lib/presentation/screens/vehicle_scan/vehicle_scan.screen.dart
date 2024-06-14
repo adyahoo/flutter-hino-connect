@@ -105,7 +105,7 @@ class VehicleScanScreen extends GetView<VehicleScanController> {
             left: 16,
             child: InkWell(
               onTap: () {
-                Get.offAllNamed(Routes.MAIN_TAB); 
+                Get.back();
               },
               child: Container(
                 width: 40,

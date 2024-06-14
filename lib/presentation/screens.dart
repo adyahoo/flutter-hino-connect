@@ -17,4 +17,4 @@ export 'package:hino_driver_app/presentation/screens/trip/trip.screen.dart';
 export 'package:hino_driver_app/presentation/screens/trip_detail/trip_detail.screen.dart';
 export 'package:hino_driver_app/presentation/screens/trip_list/trip_list.screen.dart';
 export 'package:hino_driver_app/presentation/screens/vehicle_scan/vehicle_scan.screen.dart';
-export 'package:hino_driver_app/presentation/search/search.screen.dart';
+export 'package:hino_driver_app/presentation/screens/search/search.screen.dart';

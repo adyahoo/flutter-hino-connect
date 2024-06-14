@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -55,6 +54,7 @@ class ActivityListScreen extends GetView<ActivityListController> {
           controller.addActivity(data);
         },
       ),
+      isScrollControlled: true,
     );
   }
 
@@ -116,6 +116,14 @@ class ActivityListScreen extends GetView<ActivityListController> {
               }
 
               final data = controller.data.value;
+
+              if (data.isEmpty) {
+                return EmptyLog(
+                  icon: "ic_empty_activity.svg",
+                  title: "empty_activity_title".tr,
+                  description: "empty_activity_desc".tr,
+                );
+              }
 
               return ListView.separated(
                 itemCount: data.length,

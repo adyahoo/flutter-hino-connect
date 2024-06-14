@@ -5,7 +5,6 @@ import 'package:hino_driver_app/data/locals/StorageService.dart';
 import 'package:hino_driver_app/data/services/user_services.dart';
 import 'package:hino_driver_app/domain/core/usecases/activity_use_case.dart';
 import 'package:hino_driver_app/domain/core/usecases/face_recognition_use_case.dart';
-import 'package:hino_driver_app/domain/core/usecases/face_recognition_use_case.dart';
 import 'package:hino_driver_app/domain/core/usecases/feedback_use_case.dart';
 import 'package:hino_driver_app/domain/core/usecases/place_use_case.dart';
 import 'package:hino_driver_app/domain/core/usecases/recent_search_use_case.dart';

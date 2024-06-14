@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 
@@ -20,7 +21,7 @@ String? inputValidator(AppTextFieldType type, String? value, String label, bool 
       }
       break;
     case AppTextFieldType.phoneNumber:
-      if (!GetUtils.isPhoneNumber(value!)) {
+      if (!GetUtils.isPhoneNumber(value!) || RegExp(r'^0+').hasMatch(value)) {
         return "error_phone_invalid".tr;
       }
       break;

@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:get/get.dart' as getx;
 import 'package:hino_driver_app/data/locals/StorageService.dart';
 import 'package:hino_driver_app/infrastructure/client/exceptions/ApiException.dart';
 import 'package:hino_driver_app/infrastructure/constants.dart';
@@ -11,6 +12,7 @@ class ApiClient {
     final headers = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
+      'x-app-locale': getx.Get.locale?.languageCode ?? "",
     };
 
     client.options = BaseOptions(

@@ -1,16 +1,6 @@
 part of 'widgets.dart';
 
-enum AppTextFieldType {
-  email,
-  text,
-  password,
-  multiline,
-  single_picker,
-  date_picker,
-  time_picker,
-  search,
-  phoneNumber
-}
+enum AppTextFieldType { email, text, password, multiline, single_picker, date_picker, time_picker, search, phoneNumber }
 
 enum AppTextFieldShape { rect, rounded }
 
@@ -74,6 +64,7 @@ class AppTextField extends StatelessWidget {
     this.length = null,
   })  : this.onClick = null,
         this.canFocus = true,
+        this.onClear = null,
         this.withIcon = false;
 
   AppTextField.icon({
@@ -93,6 +84,7 @@ class AppTextField extends StatelessWidget {
     this.length = null,
   })  : this.withIcon = true,
         this.canFocus = true,
+        this.onClear = null,
         this.onClick = null;
 
   AppTextField.picker({
@@ -112,6 +104,7 @@ class AppTextField extends StatelessWidget {
   })  : this.withIcon = true,
         this.length = null,
         this.canFocus = true,
+        this.onClear = null,
         this.isEditable = false;
 
   AppTextField.search({
@@ -120,6 +113,7 @@ class AppTextField extends StatelessWidget {
     required this.onClick,
     required this.state,
     required this.onChanged,
+    required this.onClear,
     this.label,
     this.helperText,
     this.prefixIcon,
@@ -150,6 +144,7 @@ class AppTextField extends StatelessWidget {
         this.type = AppTextFieldType.phoneNumber,
         this.isRequired = false,
         this.onClick = null,
+        this.onClear = null,
         this.length = null;
 
   final String placeholder;
@@ -167,13 +162,13 @@ class AppTextField extends StatelessWidget {
   final IconData? prefixIcon;
   final String? helperText;
   final VoidCallback? onClick;
+  final VoidCallback? onClear;
   final ValueChanged<String>? onChanged;
 
   OutlineInputBorder getBorder(double width, Color color) {
     return OutlineInputBorder(
       borderSide: BorderSide(width: width, color: color),
-      borderRadius:
-          BorderRadius.circular(shape == AppTextFieldShape.rect ? 8 : 24),
+      borderRadius: BorderRadius.circular(shape == AppTextFieldShape.rect ? 8 : 24),
     );
   }
 
@@ -214,6 +209,7 @@ class AppTextField extends StatelessWidget {
         onTap = () {
           textEditingController.clear();
           state.focusNode.value.unfocus();
+          onClear?.call();
         };
         break;
       default:
@@ -273,21 +269,13 @@ class AppTextField extends StatelessWidget {
               keyboardType: state.inputType,
               maxLength: length,
               maxLines: state.maxLines,
-              obscureText:
-                  (type == AppTextFieldType.password) ? isObscure : false,
+              obscureText: (type == AppTextFieldType.password) ? isObscure : false,
               decoration: InputDecoration(
                   floatingLabelBehavior: FloatingLabelBehavior.never,
-                  contentPadding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+                  contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
                   hintText: placeholder,
-                  hintStyle: Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.copyWith(color: TextColor.placeholder),
-                  counterStyle: Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.copyWith(color: TextColor.helper),
+                  hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.placeholder),
+                  counterStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.helper),
                   filled: true,
                   fillColor: bgColor,
                   border: InputBorder.none,
@@ -300,8 +288,7 @@ class AppTextField extends StatelessWidget {
                   errorStyle: TextStyle(fontSize: 0)),
               style: Theme.of(context).textTheme.bodyMedium,
               validator: (value) {
-                final error =
-                    inputValidator(type, value, label ?? "", isRequired);
+                final error = inputValidator(type, value, label ?? "", isRequired);
                 state.setError(error);
 
                 if (error != null)
@@ -321,10 +308,7 @@ class AppTextField extends StatelessWidget {
                       Expanded(
                         child: Text(
                           state.errorText.value ?? helperText ?? "",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium
-                              ?.copyWith(color: helperColor),
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: helperColor),
                         ),
                       ),
                     ],
@@ -369,8 +353,7 @@ class AppTextField extends StatelessWidget {
                 borderRadius: BorderRadius.circular(24),
               ),
               enabledBorder: getBorder(1, BorderColor.secondary),
-              contentPadding:
-                  const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+              contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
               prefixIcon: prefixIcon,
               suffixIcon: state.isFocus.value ? suffixIcon : null,
             ),
@@ -380,124 +363,140 @@ class AppTextField extends StatelessWidget {
     });
   }
 
-Widget _renderPhoneNumberField(BuildContext context) {
-  return Container(
-    height: 48,
-    decoration: BoxDecoration(
-      border: Border.all(color: BorderColor.secondary),
-      borderRadius: BorderRadius.circular(8),
-    ),
-    child: Row(
-      children: [
-        GestureDetector(
-          onTap: () {
-            if (!isDisabled) {
-              Get.bottomSheet(
-                BsSinglePicker(
-                  type: BsSinglePickerType.withSearch,
-                  options: Constants.countryCodes,
-                  title: 'country_code'.tr,
-                  selectedId: Get.find<BsSinglePickerController>().selectedOption.value,
-                  onSubmit: (PickerModel value) {
-                    Get.find<BsSinglePickerController>().setSelectedOption(value.id);
-                  },
-                ),
-                isScrollControlled: true,
-              );
-            }
-          },
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 8),
+  Widget _renderPhoneNumberField(BuildContext context) {
+    return Obx(
+      () => Column(
+        children: [
+          Container(
+            height: 48,
             decoration: BoxDecoration(
               border: Border.all(color: BorderColor.secondary),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(8),
-                bottomLeft: Radius.circular(8),
-              ),
-              color: BorderColor.secondary,
+              borderRadius: BorderRadius.circular(8),
             ),
-            alignment: Alignment.center,
             child: Row(
               children: [
-                Obx(() {
-                  final selectedId = Get.find<BsSinglePickerController>().selectedOption.value;
-                  final selectedOption = Constants.countryCodes.firstWhere(
-                      (option) => option.id == selectedId,
-                      orElse: () => Constants.countryCodes[0]);
-                  final match = RegExp(r'\+(\d+)').firstMatch(selectedOption.title);
-                  final phoneCode = match != null ? match.group(0) : '+62'; // default value
-                  return Text(
-                    phoneCode ?? '+62',
-                    style: TextStyle(color: Colors.black),
-                  );
-                }),
-                SizedBox(width: 4),
-                if (!isDisabled)
-                  Icon(
-                    Iconsax.arrow_down_1,
-                    size: 12,
-                    color: IconColor.primary,
+                GestureDetector(
+                  onTap: () {
+                    if (!isDisabled) {
+                      Get.bottomSheet(
+                        BsSinglePicker(
+                          type: BsSinglePickerType.withSearch,
+                          options: Constants.countryCodes,
+                          title: 'country_code'.tr,
+                          selectedId: Get.find<BsSinglePickerController>().selectedOption.value,
+                          onSubmit: (PickerModel value) {
+                            Get.find<BsSinglePickerController>().setSelectedOption(value.id);
+                          },
+                        ),
+                        isScrollControlled: true,
+                      );
+                    }
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 8),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: BorderColor.secondary),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(8),
+                        bottomLeft: Radius.circular(8),
+                      ),
+                      color: BorderColor.secondary,
+                    ),
+                    alignment: Alignment.center,
+                    child: Row(
+                      children: [
+                        Obx(() {
+                          final selectedId = Get.find<BsSinglePickerController>().selectedOption.value;
+                          final selectedOption = Constants.countryCodes.firstWhere((option) => option.id == selectedId, orElse: () => Constants.countryCodes[0]);
+                          final match = RegExp(r'\+(\d+)').firstMatch(selectedOption.title);
+                          final phoneCode = match != null ? match.group(0) : '+62'; // default value
+                          return Text(
+                            phoneCode ?? '+62',
+                            style: TextStyle(color: Colors.black),
+                          );
+                        }),
+                        SizedBox(width: 4),
+                        if (!isDisabled)
+                          Icon(
+                            Iconsax.arrow_down_1,
+                            size: 12,
+                            color: IconColor.primary,
+                          ),
+                      ],
+                    ),
                   ),
+                ),
+                Expanded(
+                  child: TextFormField(
+                    focusNode: state.focusNode.value,
+                    controller: textEditingController,
+                    keyboardType: TextInputType.phone,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                    decoration: InputDecoration(
+                      floatingLabelBehavior: FloatingLabelBehavior.never,
+                      contentPadding: const EdgeInsets.symmetric(vertical: 18, horizontal: 12),
+                      hintText: placeholder,
+                      hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.placeholder),
+                      filled: true,
+                      fillColor: Colors.white,
+                      errorStyle: TextStyle(fontSize: 0),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(8),
+                          bottomRight: Radius.circular(8),
+                        ),
+                        borderSide: BorderSide.none,
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(8),
+                          bottomRight: Radius.circular(8),
+                        ),
+                        borderSide: BorderSide.none,
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(8),
+                          bottomRight: Radius.circular(8),
+                        ),
+                        borderSide: BorderSide(color: BorderColor.primary, width: 3),
+                      ),
+                    ),
+                    validator: (value) {
+                      final error = inputValidator(type, value, label ?? "", isRequired);
+                      state.setError(error);
+
+                      if (error != null)
+                        return "";
+                      else
+                        return null;
+                    },
+                    onChanged: (value) {
+                      if (state.isError.value) {
+                        state.setError(null);
+                      }
+                    },
+                  ),
+                ),
               ],
             ),
           ),
-        ),
-        Expanded(
-          child: TextFormField(
-            focusNode: state.focusNode.value,
-            controller: textEditingController,
-            keyboardType: TextInputType.phone,
-            style: Theme.of(context).textTheme.bodyMedium,
-            decoration: InputDecoration(
-              floatingLabelBehavior: FloatingLabelBehavior.never,
-              contentPadding: const EdgeInsets.symmetric(vertical: 18, horizontal: 12),
-              hintText: placeholder,
-              hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.placeholder),
-              filled: true,
-              fillColor: Colors.white,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(8),
-                  bottomRight: Radius.circular(8),
-                ),
-                borderSide: BorderSide.none,
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(8),
-                  bottomRight: Radius.circular(8),
-                ),
-                borderSide: BorderSide.none,
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(8),
-                  bottomRight: Radius.circular(8),
-                ),
-                borderSide: BorderSide(color: BorderColor.primary, width: 3),
-              ),
-            ),
-            validator: (value) {
-              final error = inputValidator(type, value, label ?? "", isRequired);
-              state.setError(error);
-
-              if (error != null)
-                return "";
-              else
-                return null;
-            },
-            onChanged: (value) {
-              if (state.isError.value) {
-                state.setError(null);
-              }
-            },
-          ),
-        ),
-      ],
-    ),
-  );
-}
-
+          (state.isError.value)
+              ? Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        state.errorText.value ?? "",
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.error),
+                      ),
+                    ),
+                  ],
+                )
+              : const SizedBox(),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -510,28 +509,14 @@ Widget _renderPhoneNumberField(BuildContext context) {
               children: [
                 TextSpan(
                   text: label,
-                  style: Theme.of(context)
-                      .textTheme
-                      .labelLarge
-                      ?.copyWith(color: TextColor.secondary),
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(color: TextColor.secondary),
                 ),
-                (isRequired)
-                    ? TextSpan(
-                        text: "*",
-                        style: Theme.of(context)
-                            .textTheme
-                            .labelLarge
-                            ?.copyWith(color: Colors.red))
-                    : const TextSpan(),
+                (isRequired) ? TextSpan(text: "*", style: Theme.of(context).textTheme.labelLarge?.copyWith(color: Colors.red)) : const TextSpan(),
               ],
             ),
           ),
           const SizedBox(height: 4),
         ],
-        //   (type == AppTextFieldType.search)
-        //       ? _renderSearchTextField(context)
-        //       : _renderTextField(context),
-        // ],
         (type == AppTextFieldType.search)
             ? _renderSearchTextField(context)
             : (type == AppTextFieldType.phoneNumber)

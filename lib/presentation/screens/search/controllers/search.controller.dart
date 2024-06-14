@@ -9,19 +9,17 @@ import 'package:hino_driver_app/presentation/screens/maps/controllers/maps.contr
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 
 class SearchPageController extends GetxController {
-
   SearchPageController({required this.useCase});
 
-  var searchResults = <SearchResult>[].obs;
+  final RecentSearchUseCase useCase;
+
+  final searchResults = <SearchResult>[].obs;
   final filteredResults = <SearchResult>[].obs;
-  var currentInput = ''.obs;
-  var isTextFieldEdited = false.obs;
-  final Rx<TextEditingController> searchbarController =
-      TextEditingController().obs;
+  final currentInput = ''.obs;
+  final isTextFieldEdited = false.obs;
+  final Rx<TextEditingController> searchbarController = TextEditingController().obs;
 
   final isBusySearch = false.obs;
-
-  final RecentSearchUseCase useCase;
 
   //map controller
   MapsController mapsController = Get.find<MapsController>();
@@ -33,9 +31,7 @@ class SearchPageController extends GetxController {
   Future<void> onInit() async {
     super.onInit();
     searchBarState.focusNode.value.addListener(searchBarState.onFocusChange);
-    await useCase.getRecentSearch().then((value) {
-      searchResults.value = value.reversed.toList();
-    });
+    _getRecentSearch();
   }
 
   @override
@@ -50,12 +46,32 @@ class SearchPageController extends GetxController {
     searchBarState.focusNode.value.removeListener(searchBarState.onFocusChange);
   }
 
+  void _getRecentSearch() async {
+    await useCase.getRecentSearch().then((value) {
+      searchResults.value = value.reversed.toList();
+    });
+  }
+
+  void _getInitialSearchedPlaces() async {
+    if (searchbarController.value.text.isNotEmpty) {
+      search(searchbarController.value.text);
+    }
+  }
+
+  void onClearInput() {
+    filteredResults.value = [];
+    mapsController.searchbarController.value.clear();
+
+    _getRecentSearch();
+  }
+
   void _getScreenArguments() {
     final arguments = Get.arguments ?? {};
     query = arguments['query'];
 
     if (query != null) {
       searchbarController.value.text = query!;
+      _getInitialSearchedPlaces();
     }
   }
 
@@ -92,9 +108,9 @@ class SearchPageController extends GetxController {
 
   Future<void> search(String input) async {
     currentInput.value = input;
-    useCase.searchPlaces(input, mapsController.currentLocation.latitude, mapsController.currentLocation.longitude).then((value) {
-      filteredResults.value = value;
-    });
+
+    final value = await useCase.searchPlaces(input, mapsController.currentLocation.latitude, mapsController.currentLocation.longitude);
+    filteredResults.value = value;
   }
 
   Future<PlaceModel> getPlaceDetails(SearchResult result) async {

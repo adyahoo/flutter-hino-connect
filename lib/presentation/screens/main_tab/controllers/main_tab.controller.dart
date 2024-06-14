@@ -46,6 +46,6 @@ class MainTabController extends GetxController {
   }
 
   void navigateScanQR() {
-    Get.toNamed(Routes.FACE_RECOGNITION);
+    Get.toNamed(Routes.FACE_SCAN_INFORMATION);
   }
 }
