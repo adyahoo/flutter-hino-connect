@@ -18,19 +18,19 @@ class FaceRecognitionUseCase implements IFaceRecognitionUseCase {
   final UserDataSource dataSource;
 
   @override
-  Future<UserModel> verifyDriverFace(File image) async {
+  Future<void> verifyDriverFace(File image) async {
     try {
-      final response = await dataSource.verifyDriverFace(image);
-      final data = UserModel(
-        id: response.id,
-        name: response.name,
-        email: response.email,
-        profilePic: response.profilePic,
-        phoneCode: response.phoneCode,
-        phone: response.phone,
-      );
-
-      return data;
+      await dataSource.verifyDriverFace(image);
+      // final data = UserModel(
+      //   id: response.id,
+      //   name: response.name,
+      //   email: response.email,
+      //   profilePic: response.profilePic,
+      //   phoneCode: response.phoneCode,
+      //   phone: response.phone,
+      // );
+      //
+      // return data;
     } on ApiException catch (e) {
       rethrow;
     }
