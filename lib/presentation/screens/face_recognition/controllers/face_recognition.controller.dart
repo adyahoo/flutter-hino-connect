@@ -88,7 +88,6 @@ class FaceRecognitionController extends GetxController {
     if (faces.isNotEmpty) {
       for (Face face in faces) {
         //check if face alreaady cover the overlay or not
-        //bottom = 330-340, top = 100-120, left = 120-140, right = 350-380
         final width = face.boundingBox.size.width >= 150;
         final top = face.boundingBox.top >= 100;
         final right = face.boundingBox.right >= 340;
