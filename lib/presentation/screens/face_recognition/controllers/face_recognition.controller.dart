@@ -136,6 +136,7 @@ class FaceRecognitionController extends GetxController {
 
         // Get.back();
       } on ApiException catch (e) {
+        print("sapi err 1 $e");
         _isBusy = false;
         loadingValue.value = 0.0;
         isScanning.value = false;
@@ -148,6 +149,7 @@ class FaceRecognitionController extends GetxController {
         );
       }
     } catch (e) {
+      print("sapi err 2 $e");
       _isBusy = false;
       isScanning.value = false;
       loadingValue.value = 0.0;

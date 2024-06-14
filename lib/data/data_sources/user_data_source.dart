@@ -53,11 +53,10 @@ class UserDataSource {
     }
   }
 
-  Future<UserDto> verifyDriverFace(File image) async {
+  Future<void> verifyDriverFace(File image) async {
     try {
       final res = await services.verifyDriverFace(image);
 
-      return res.data;
     } catch (e) {
       rethrow;
     }

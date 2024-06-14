@@ -45,7 +45,7 @@ class UserServices {
     });
   }
 
-  Future<SingleApiResponse<UserDto>> verifyDriverFace(File image) async {
+  Future<void> verifyDriverFace(File image) async {
     return clientExecutor(execute: () async {
       final filename = image.path.split('/').last;
       final formData = FormData.fromMap(
@@ -64,8 +64,8 @@ class UserServices {
         ),
       );
 
-      return SingleApiResponse.fromJson(
-          res.data, (json) => UserDto.fromJson(json));
+      // return SingleApiResponse.fromJson(
+      //     res.data, (json) => UserDto.fromJson(json));
     });
   }
 
