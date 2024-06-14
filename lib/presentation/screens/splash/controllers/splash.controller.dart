@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'dart:ui';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:get/get.dart';
 import 'package:hino_driver_app/data/locals/StorageService.dart';
 import 'package:hino_driver_app/domain/core/usecases/splash_use_case.dart';
@@ -32,7 +34,15 @@ class SplashController extends GetxController {
   }
 
   Future<void> _checkPermission() async {
-    final permissions = [Permission.location, Permission.camera, Permission.storage];
+    final permissions = [Permission.location, Permission.camera, Permission.storage, Permission.notification];
+    if (Platform.isAndroid) {
+      final androidInfor = await DeviceInfoPlugin().androidInfo;
+      final sdkVersion = androidInfor.version.sdkInt;
+
+      if (sdkVersion >= 34) {
+        permissions.add(Permission.scheduleExactAlarm);
+      }
+    }
 
     final result = await permissions.request();
 
@@ -86,7 +96,7 @@ class SplashController extends GetxController {
       }
     });
   }
-    
+
   void _checkLocalJson() async {
     final jsonData = await inject<StorageService>().getJsonData(StorageService.USERS_JSON);
 
@@ -97,4 +107,3 @@ class SplashController extends GetxController {
     useCase.writeLocalJson();
   }
 }
-

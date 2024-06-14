@@ -29,16 +29,16 @@ Future<void> setupNotification() async {
 
   flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
-  if (Platform.isAndroid) {
-    final androidInfor = await DeviceInfoPlugin().androidInfo;
-    final sdkVersion = androidInfor.version.sdkInt;
+  // if (Platform.isAndroid) {
+  //   final androidInfor = await DeviceInfoPlugin().androidInfo;
+  //   final sdkVersion = androidInfor.version.sdkInt;
+  //
+  //   if (sdkVersion >= 34) {
+  //     await flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.requestExactAlarmsPermission();
+  //   }
+  // }
 
-    if (sdkVersion >= 34) {
-      await flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.requestExactAlarmsPermission();
-    }
-  }
-
-  await flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.requestNotificationsPermission();
+  // await flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.requestNotificationsPermission();
   await flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.createNotificationChannel(channel);
 }
 
