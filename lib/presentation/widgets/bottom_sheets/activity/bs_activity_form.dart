@@ -24,7 +24,10 @@ class BsActivityForm extends GetView<BsActivityFormController> {
         (initialData == null)
             ? Text(
                 "fill_activity_form".tr,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.tertiary),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(color: TextColor.tertiary),
               )
             : const SizedBox(),
       ],
@@ -123,10 +126,31 @@ class BsActivityForm extends GetView<BsActivityFormController> {
         showDatePicker(
           context: context,
           firstDate: DateTime(1900),
-          lastDate: DateTime(2200),
+          lastDate: DateTime.now(),
           initialDate: controller.date,
+          builder: (BuildContext context, Widget? child) {
+            return Theme(
+              data: ThemeData.light().copyWith(
+                colorScheme: ColorScheme.light(
+                  primary: Colors.white, // Header background color
+                  onPrimary: Colors.black, // Header text color
+                  onSurface: TextColor.primary, // Default text color
+                ),
+                dialogBackgroundColor:
+                    BackgroundColor.primary, // Background color
+                textButtonTheme: TextButtonThemeData(
+                  style: TextButton.styleFrom(
+                    foregroundColor: PrimaryColor.main, // Button text color
+                  ),
+                ),
+              ),
+              child: child!,
+            );
+          },
         ).then((pickedDate) {
-          controller.setDate(pickedDate);
+          if (pickedDate != null && pickedDate != controller.date) {
+            controller.setDate(pickedDate);
+          }
         });
         break;
       case AppTextFieldType.time_picker:
@@ -163,7 +187,8 @@ class BsActivityForm extends GetView<BsActivityFormController> {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)),
+        borderRadius: BorderRadius.only(
+            topRight: Radius.circular(20), topLeft: Radius.circular(20)),
       ),
       child: SingleChildScrollView(
         child: Column(

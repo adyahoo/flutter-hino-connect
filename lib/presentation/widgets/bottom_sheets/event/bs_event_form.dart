@@ -24,7 +24,10 @@ class BsEventForm extends GetView<BsEventFormController> {
         (initialData == null)
             ? Text(
                 "fill_event_form".tr,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.tertiary),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(color: TextColor.tertiary),
               )
             : const SizedBox(),
       ],
@@ -133,17 +136,101 @@ class BsEventForm extends GetView<BsEventFormController> {
           firstDate: DateTime(1900),
           lastDate: DateTime.now(),
           initialDate: controller.date,
+          builder: (BuildContext context, Widget? child) {
+            return Theme(
+              data: ThemeData.light().copyWith(
+                colorScheme: ColorScheme.light(
+                  primary: Colors.white, // Header background color
+                  onPrimary: Colors.black, // Header text color
+                  onSurface: TextColor.primary, // Default text color
+                ),
+                dialogBackgroundColor:
+                    BackgroundColor.primary, // Background color
+                textButtonTheme: TextButtonThemeData(
+                  style: TextButton.styleFrom(
+                    foregroundColor: PrimaryColor.main, // Button text color
+                  ),
+                ),
+              ),
+              child: child!,
+            );
+          },
         ).then((pickedDate) {
-          controller.setDate(pickedDate);
+          if (pickedDate != null && pickedDate != controller.date) {
+            controller.setDate(pickedDate);
+          }
         });
         break;
       case AppTextFieldType.time_picker:
-        showTimePicker(
-          context: context,
-          initialTime: controller.time,
-        ).then((pickedTime) {
-          controller.setTime(pickedTime);
-        });
+  // showTimePicker(
+  //   context: context,
+  //   initialTime: controller.time,
+  //   builder: (BuildContext context, Widget? child) {
+  //     return Theme(
+  //                 data: ThemeData.light().copyWith(
+  //                   dialogBackgroundColor: Colors.white,
+  //                   colorScheme: ColorScheme.light(
+  //                     // change the border color
+  //                     primary: Colors.red,
+  //                     // change the text color
+  //                     onSurface: TextColor.primary,
+  //                   ),
+  //                   // button colors 
+  //                   buttonTheme: ButtonThemeData(
+  //                     colorScheme: ColorScheme.light(
+  //                       primary: Colors.red,
+  //                     ),
+  //                   ),
+  //                 ),
+  //                 child: child!,
+  //               );
+  //             },
+  //           ).then((pickedTime) {
+  //             if (pickedTime != null && pickedTime != controller.time) {
+  //               controller.setTime(pickedTime);
+  //             }
+  //           });
+
+  // showTimePicker(
+  //   context: context,
+  //   initialTime: controller.time,
+  //   builder: (BuildContext context, Widget? child) {
+  //     return Theme(
+  //       data: ThemeData.light().copyWith(
+  //         colorScheme: ColorScheme.light(
+  //           // Colors for text
+  //           onSurface: Colors.black,
+  //           // Use another color for primary to not affect the background
+  //           primary: Colors.white,
+  //         ),
+  //         // Dialog background color
+  //         dialogBackgroundColor: Colors.white,
+  //         // Button colors
+  //         textButtonTheme: TextButtonThemeData(
+  //           style: TextButton.styleFrom(
+  //             foregroundColor: Colors.red, // Button text color
+  //           ),
+  //         ),
+  //         // Time picker theme to ensure clock and text are black
+  //         timePickerTheme: TimePickerThemeData(
+  //           dialHandColor: PrimaryColor.main,
+  //           dialTextColor: MaterialStateColor.resolveWith((states) =>
+  //               states.contains(MaterialState.selected) ? Colors.black : Colors.black), // Color of the dial text
+  //           hourMinuteTextColor: MaterialStateColor.resolveWith((states) =>
+  //               states.contains(MaterialState.selected) ? Colors.black : Colors.black), // Color of the hour/minute text
+  //           entryModeIconColor: Colors.black, // Color of the entry mode icon
+  //         ),
+  //       ),
+  //       child: child!,
+  //     );
+  //   },
+  // ).then((pickedTime) {
+  //   if (pickedTime != null && pickedTime != controller.time) {
+  //     controller.setTime(pickedTime);
+  //   }
+  // });
+            
+
         break;
       default:
         break;
@@ -171,7 +258,8 @@ class BsEventForm extends GetView<BsEventFormController> {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)),
+        borderRadius: BorderRadius.only(
+            topRight: Radius.circular(20), topLeft: Radius.circular(20)),
       ),
       // single child scroll used to prevent overflow when soft keyboard appear
       child: SingleChildScrollView(

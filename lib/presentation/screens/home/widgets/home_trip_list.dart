@@ -92,7 +92,6 @@ class HomeTripList extends GetView<HomeController> {
             }
           },
         ),
-        const SizedBox(height: 16),
       ],
     );
   }
