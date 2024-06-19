@@ -162,75 +162,54 @@ class BsEventForm extends GetView<BsEventFormController> {
         });
         break;
       case AppTextFieldType.time_picker:
-  // showTimePicker(
-  //   context: context,
-  //   initialTime: controller.time,
-  //   builder: (BuildContext context, Widget? child) {
-  //     return Theme(
-  //                 data: ThemeData.light().copyWith(
-  //                   dialogBackgroundColor: Colors.white,
-  //                   colorScheme: ColorScheme.light(
-  //                     // change the border color
-  //                     primary: Colors.red,
-  //                     // change the text color
-  //                     onSurface: TextColor.primary,
-  //                   ),
-  //                   // button colors 
-  //                   buttonTheme: ButtonThemeData(
-  //                     colorScheme: ColorScheme.light(
-  //                       primary: Colors.red,
-  //                     ),
-  //                   ),
-  //                 ),
-  //                 child: child!,
-  //               );
-  //             },
-  //           ).then((pickedTime) {
-  //             if (pickedTime != null && pickedTime != controller.time) {
-  //               controller.setTime(pickedTime);
-  //             }
-  //           });
-
-  // showTimePicker(
-  //   context: context,
-  //   initialTime: controller.time,
-  //   builder: (BuildContext context, Widget? child) {
-  //     return Theme(
-  //       data: ThemeData.light().copyWith(
-  //         colorScheme: ColorScheme.light(
-  //           // Colors for text
-  //           onSurface: Colors.black,
-  //           // Use another color for primary to not affect the background
-  //           primary: Colors.white,
-  //         ),
-  //         // Dialog background color
-  //         dialogBackgroundColor: Colors.white,
-  //         // Button colors
-  //         textButtonTheme: TextButtonThemeData(
-  //           style: TextButton.styleFrom(
-  //             foregroundColor: Colors.red, // Button text color
-  //           ),
-  //         ),
-  //         // Time picker theme to ensure clock and text are black
-  //         timePickerTheme: TimePickerThemeData(
-  //           dialHandColor: PrimaryColor.main,
-  //           dialTextColor: MaterialStateColor.resolveWith((states) =>
-  //               states.contains(MaterialState.selected) ? Colors.black : Colors.black), // Color of the dial text
-  //           hourMinuteTextColor: MaterialStateColor.resolveWith((states) =>
-  //               states.contains(MaterialState.selected) ? Colors.black : Colors.black), // Color of the hour/minute text
-  //           entryModeIconColor: Colors.black, // Color of the entry mode icon
-  //         ),
-  //       ),
-  //       child: child!,
-  //     );
-  //   },
-  // ).then((pickedTime) {
-  //   if (pickedTime != null && pickedTime != controller.time) {
-  //     controller.setTime(pickedTime);
-  //   }
-  // });
-            
-
+        showTimePicker(
+          context: context,
+          initialTime: controller.time,
+          builder: (BuildContext context, Widget? child) {
+            return Theme(
+              data: ThemeData(
+                colorScheme: const ColorScheme.light(
+                  primary: PrimaryColor.surface,
+                  onBackground: Colors.white,
+                  surfaceTint: Colors.transparent,
+                ),
+                timePickerTheme: TimePickerThemeData(
+                  backgroundColor: Colors.white, // Background color
+                  hourMinuteTextColor:
+                      TextColor.primary, // Color of the hour and minute numbers
+                  dayPeriodTextColor: TextColor.primary, // Color of AM/PM
+                  dayPeriodBorderSide: BorderSide(
+                      color: PrimaryColor.main), // Border color for AM/PM
+                  dialHandColor: PrimaryColor.main, // Color of the hour hand
+                  dialTextColor:
+                      TextColor.primary, // Text color on the clock dial
+                  dialBackgroundColor: PrimaryColor
+                      .surface, // Background color of the clock dial
+                  entryModeIconColor:
+                      TextColor.primary, // Color of the entry mode icon
+                  helpTextStyle: const TextStyle(
+                    color: TextColor
+                        .primary, // Set the text color for "Enter time"
+                  ),
+                  cancelButtonStyle: ButtonStyle(
+                    foregroundColor:
+                        MaterialStateProperty.all<Color?>(PrimaryColor.main),
+                  ),
+                  confirmButtonStyle: ButtonStyle(
+                    foregroundColor:
+                        MaterialStateProperty.all<Color?>(PrimaryColor.main),
+                  ),
+                  hourMinuteTextStyle: const TextStyle(fontSize: 30),
+                ),
+              ),
+              child: child!,
+            );
+          },
+        ).then((pickedTime) {
+          if (pickedTime != null && pickedTime != controller.time) {
+            controller.setTime(pickedTime);
+          }
+        });
         break;
       default:
         break;
