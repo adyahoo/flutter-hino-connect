@@ -207,7 +207,8 @@ void _showDatePicker(BuildContext context) {
                         margin: const EdgeInsets.symmetric(vertical: 12),
                         child: Text(
                           entry.key,
-                        ),
+                          style: Theme.of(context).textTheme.titleSmall,
+                        )
                       ),
                       ListView.separated(
                         physics: const NeverScrollableScrollPhysics(),

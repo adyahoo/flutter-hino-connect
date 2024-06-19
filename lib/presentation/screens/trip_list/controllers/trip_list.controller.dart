@@ -16,6 +16,7 @@
 //   final filterEditingController = TextEditingController().obs;
 //   final trips = Rx<Map<String, List<TripModel>>>({});
 //   final isFetching = false.obs;
+//   final filterApplied = false.obs; 
 
 //   DateTime date = DateTime.now();
 //   Map<TripFilter, dynamic>? _filter = null;
@@ -66,19 +67,24 @@
 
 //   void setDate(DateTime? value) {
 //     if (value != null) {
-//       isFetching.value = true;
-
 //       date = value;
 //       filterEditingController.value.text = value.getActivityDate();
 //       _filter = {
 //         ...?_filter,
 //         TripFilter.date: date,
 //       };
+//       filterApplied.value = true; // Set filter applied to true
 
 //       getTripList();
-
-//       isFetching.value = false;
 //     }
+//   }
+
+//   void clearFilter() {
+//     _filter = null;
+//     filterEditingController.value.clear();
+//     filterApplied.value = false; // Reset filter applied flag
+
+//     getTripList();
 //   }
 // }
 
@@ -100,7 +106,7 @@ class TripListController extends GetxController {
   final filterEditingController = TextEditingController().obs;
   final trips = Rx<Map<String, List<TripModel>>>({});
   final isFetching = false.obs;
-  final filterApplied = false.obs; 
+  final filterApplied = false.obs;
 
   DateTime date = DateTime.now();
   Map<TripFilter, dynamic>? _filter = null;
@@ -134,10 +140,11 @@ class TripListController extends GetxController {
 
   Map<String, List<TripModel>> _groupByDate(List<TripModel> data) {
     Map<String, List<TripModel>> groupedItems = {};
+    final locale = Get.locale.toString(); 
 
     data.forEach((e) {
       final itemDate = DateFormat(Constants.DATE_FORMAT_TZ).parse(e.createdAt);
-      String formattedDate = DateFormat(Constants.DATE_FORMAT_TRIP).format(itemDate);
+      String formattedDate = DateFormat(Constants.DATE_FORMAT_TRIP, locale).format(itemDate);
 
       if (groupedItems.containsKey(formattedDate)) {
         groupedItems[formattedDate]!.add(e);
@@ -152,12 +159,13 @@ class TripListController extends GetxController {
   void setDate(DateTime? value) {
     if (value != null) {
       date = value;
-      filterEditingController.value.text = value.getActivityDate();
+      final locale = Get.locale.toString();
+      filterEditingController.value.text = DateFormat(Constants.DATE_FORMAT_TRIP, locale).format(value);
       _filter = {
         ...?_filter,
         TripFilter.date: date,
       };
-      filterApplied.value = true; // Set filter applied to true
+      filterApplied.value = true; 
 
       getTripList();
     }
