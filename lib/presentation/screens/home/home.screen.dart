@@ -39,14 +39,27 @@ class HomeScreen extends GetView<HomeController> {
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 12),
-            (controller.isVehicleVerified.value) ? HomeVehicleCard() : HomeContentCard(type: HomeContentType.vehicle),
+            (controller.isVehicleVerified.value)
+                ? HomeVehicleCard()
+                : HomeContentCard(type: HomeContentType.vehicle),
             const SizedBox(height: 24),
             Text(
               "today_trip".tr,
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 12),
-            (controller.isVehicleVerified.value) ? HomeTripList() : HomeContentCard(type: HomeContentType.trip),
+            (controller.isVehicleVerified.value)
+                ? HomeTripList()
+                : HomeContentCard(type: HomeContentType.trip),
+            const SizedBox(height: 16),
+            AppButton(
+              label: "see_all_trip".tr,
+              onPress: () {
+                Get.toNamed(Routes.TRIP_LIST);
+              },
+              type: AppButtonType.alternate,
+            ),
+            const SizedBox(height: 40),
           ],
         ),
       ),

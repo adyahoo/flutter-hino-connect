@@ -5,7 +5,7 @@ class TripDto extends Equatable {
   final TripLocationDto origin;
   final TripLocationDto destination;
   final int totalPoint;
-  final int totalDistance;
+  final double totalDistance;
   final String duration;
   final String createdAt;
 
@@ -24,7 +24,7 @@ class TripDto extends Equatable {
         origin: TripLocationDto.fromJson(json["origin"]),
         destination: TripLocationDto.fromJson(json["destination"]),
         totalPoint: json["total_point"],
-        totalDistance: json["total_distance"],
+        totalDistance: (json["total_distance"] is int) ? (json["total_distance"] as int).toDouble() : json["total_distance"],
         duration: json["duration"],
         createdAt: json["created_at"],
       );
@@ -166,6 +166,7 @@ class Penalty extends Equatable {
   final TripCoordinate coordinate;
   final String type;
   final String? note;
+  final int? point;
   final String dateTime;
 
   Penalty({
@@ -173,6 +174,7 @@ class Penalty extends Equatable {
     required this.coordinate,
     required this.type,
     required this.note,
+    required this.point,
     required this.dateTime,
   });
 
@@ -181,6 +183,7 @@ class Penalty extends Equatable {
         coordinate: TripCoordinate.fromJson(json["coordinate"]),
         type: json["type"],
         note: json["note"],
+        point: json["point"],
         dateTime: json["date_time"],
       );
 
@@ -189,9 +192,10 @@ class Penalty extends Equatable {
         "coordinate": coordinate.toJson(),
         "type": type,
         "note": note,
+        "point": point,
         "date_time": dateTime,
       };
 
   @override
-  List<Object?> get props => [id, coordinate, type, note, dateTime];
+  List<Object?> get props => [id, coordinate, type, note, point, dateTime];
 }

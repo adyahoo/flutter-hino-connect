@@ -85,7 +85,8 @@ void showGetBottomSheet(Widget content, {bool canExpand = false}) {
     content,
     backgroundColor: Colors.white,
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)),
+      borderRadius: BorderRadius.only(
+          topRight: Radius.circular(20), topLeft: Radius.circular(20)),
     ),
     isScrollControlled: canExpand,
   );
@@ -99,7 +100,8 @@ void showScanQrBottomSheet(Widget content) {
     enableDrag: false,
     isDismissible: false,
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)),
+      borderRadius: BorderRadius.only(
+          topRight: Radius.circular(20), topLeft: Radius.circular(20)),
     ),
   );
 }
@@ -121,16 +123,28 @@ BaseAppColorProps getVariantColor(WidgetVariant variant) {
   }
 }
 
-String formatDate(String date, String destFormat, {String sourceFormat = Constants.DATE_FORMAT_TZ}) {
+String formatDate(String date, String destFormat,
+    {String sourceFormat = Constants.DATE_FORMAT_TZ}) {
   DateTime sourceDate = DateFormat(sourceFormat).parse(date);
 
   return DateFormat(destFormat).format(sourceDate);
 }
 
 double calculateDistance(double lat1, double lng1, double lat2, double lng2) {
-  const p = 0.017453292519943295; // PI / 180
-  final a = 0.5 - cos((lat2 - lat1) * p) / 2 + cos(lat1 * p) * cos(lat2 * p) * (1 - cos((lng2 - lng1) * p)) / 2;
-  return 12742 * asin(sqrt(a)); // 2 * R * asin...
+  const double earthRadius = 6371000; // meters
+  final double dLat = _degreesToRadians(lat2 - lat1);
+  final double dLng = _degreesToRadians(lng2 - lng1);
+  final double a = sin(dLat / 2) * sin(dLat / 2) +
+      cos(_degreesToRadians(lat1)) *
+          cos(_degreesToRadians(lat2)) *
+          sin(dLng / 2) *
+          sin(dLng / 2);
+  final double c = 2 * atan2(sqrt(a), sqrt(1 - a));
+  return earthRadius * c;
+}
+
+double _degreesToRadians(double degrees) {
+  return degrees * pi / 180;
 }
 
 Future<void> showScheduledNewTripNotif() async {
@@ -144,13 +158,14 @@ Future<void> showScheduledNewTripNotif() async {
         channel.id,
         channel.name,
         channelDescription: channel.description,
-        icon: "@mipmap/ic_launcher",
+        icon: "@drawable/ic_notif_icon",
         importance: Importance.high,
         priority: Priority.high,
       ),
     ),
     androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-    uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+    uiLocalNotificationDateInterpretation:
+        UILocalNotificationDateInterpretation.absoluteTime,
   );
 }
 
@@ -164,7 +179,7 @@ Future<void> showNewTripNotif() async {
         channel.id,
         channel.name,
         channelDescription: channel.description,
-        icon: "@mipmap/ic_launcher",
+        icon: "@drawable/ic_notif_icon",
         importance: Importance.high,
         priority: Priority.high,
       ),

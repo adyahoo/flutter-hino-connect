@@ -1,6 +1,9 @@
+import 'dart:math';
 import 'dart:ui' as ui;
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hino_driver_app/domain/core/entities/trips_model.dart';
@@ -96,6 +99,7 @@ class TripDetailController extends GetxController {
       datetime: selectedPenalty.value!.datetime,
       address: selectedPenalty.value!.address,
       note: note,
+      point: selectedPenalty.value!.point,
     );
 
     this.selectedPenalty.value = updatedPenalty;
@@ -106,8 +110,14 @@ class TripDetailController extends GetxController {
   void initRouteMarker() async {
     await _getData();
 
+    _moveCamera();
     _setRoute();
     _markers.value = _createAllMarker();
+  }
+
+  void _moveCamera() {
+    final update = CameraUpdate.newLatLng(data.value!.origin);
+    controller.animateCamera(update);
   }
 
   void setPanel(TripPanel panel) {
@@ -118,7 +128,7 @@ class TripDetailController extends GetxController {
         panelMaxHeight.value = 225;
         break;
       case TripPanel.penalty:
-        panelMaxHeight.value = 410;
+        panelMaxHeight.value = 350;
         break;
     }
 
@@ -139,7 +149,7 @@ class TripDetailController extends GetxController {
     _polyline.value.clear();
 
     final mapUtils = MapUtils(origin: data.value!.origin, destination: data.value!.destination);
-    final coordinates = await mapUtils.getPolyLineRoute();
+    final coordinates = await mapUtils.getPolyLineRoute(data.value!.penaltiesCoordinates);
 
     final newPolyline = Polyline(
       polylineId: const PolylineId("route"),
@@ -226,6 +236,7 @@ class TripDetailController extends GetxController {
       datetime: penalty.datetime,
       address: placemarks[0].street,
       note: penalty.note,
+      point: penalty.point,
     );
 
     Future.delayed(const Duration(milliseconds: 500), () {
@@ -270,37 +281,59 @@ class TripDetailController extends GetxController {
   }
 
   Future<void> _createCustomMarker() async {
-    final originBytes = await _getBytesFromAsset("ic_origin_marker.png", 100);
-    originPin = BitmapDescriptor.fromBytes(originBytes);
+    final originBytes = await _bitmapDescriptorFromSvgAsset("ic_origin_marker.svg");
+    originPin = originBytes;
 
-    final destinationBytes = await _getBytesFromAsset("ic_destination_marker.png", 100);
-    destinationPin = BitmapDescriptor.fromBytes(destinationBytes);
+    final destinationBytes = await _bitmapDescriptorFromSvgAsset("ic_destination_marker.svg");
+    destinationPin = destinationBytes;
 
-    final brakeBytes = await _getBytesFromAsset("ic_brake_marker.png", 100);
-    final brakeSelectedBytes = await _getBytesFromAsset("ic_brake_marker_selected.png", 100);
-    brakePin = BitmapDescriptor.fromBytes(brakeBytes);
-    brakeSelectedPin = BitmapDescriptor.fromBytes(brakeSelectedBytes);
+    final brakeBytes = await _bitmapDescriptorFromSvgAsset("ic_brake_marker.svg");
+    final brakeSelectedBytes = await _bitmapDescriptorFromSvgAsset("ic_brake_marker_selected.svg");
+    brakePin = brakeBytes;
+    brakeSelectedPin = brakeSelectedBytes;
 
-    final overSpeedBytes = await _getBytesFromAsset("ic_over_speed_marker.png", 100);
-    final overSpeedSelectedBytes = await _getBytesFromAsset("ic_over_speed_marker_selected.png", 100);
-    overSpeedPin = BitmapDescriptor.fromBytes(overSpeedBytes);
-    overSpeedSelectedPin = BitmapDescriptor.fromBytes(overSpeedSelectedBytes);
+    final overSpeedBytes = await _bitmapDescriptorFromSvgAsset("ic_over_speed_marker.svg");
+    final overSpeedSelectedBytes = await _bitmapDescriptorFromSvgAsset("ic_over_speed_marker_selected.svg");
+    overSpeedPin = overSpeedBytes;
+    overSpeedSelectedPin = overSpeedSelectedBytes;
 
-    final accelerateBytes = await _getBytesFromAsset("ic_accelerate_marker.png", 100);
-    final accelerateSelectedBytes = await _getBytesFromAsset("ic_accelerate_marker_selected.png", 100);
-    acceleratePin = BitmapDescriptor.fromBytes(accelerateBytes);
-    accelerateSelectedPin = BitmapDescriptor.fromBytes(accelerateSelectedBytes);
+    final accelerateBytes = await _bitmapDescriptorFromSvgAsset("ic_accelerate_marker.svg");
+    final accelerateSelectedBytes = await _bitmapDescriptorFromSvgAsset("ic_accelerate_marker_selected.svg");
+    acceleratePin = accelerateBytes;
+    accelerateSelectedPin = accelerateSelectedBytes;
 
-    final lateralAccelBytes = await _getBytesFromAsset("ic_lateral_accel_marker.png", 100);
-    final lateralAccelSelectedBytes = await _getBytesFromAsset("ic_lateral_accel_marker_selected.png", 100);
-    lateralAccelPin = BitmapDescriptor.fromBytes(lateralAccelBytes);
-    lateralAccelSelectedPin = BitmapDescriptor.fromBytes(lateralAccelSelectedBytes);
+    final lateralBytes = await _bitmapDescriptorFromSvgAsset("ic_lateral_accel_marker.svg");
+    final lateralAccelSelectedBytes = await _bitmapDescriptorFromSvgAsset("ic_lateral_accel_marker_selected.svg");
+    lateralAccelPin = lateralBytes;
+    lateralAccelSelectedPin = lateralAccelSelectedBytes;
   }
 
-  Future<Uint8List> _getBytesFromAsset(String assetName, int width) async {
-    ByteData data = await rootBundle.load("assets/icons/${assetName}");
-    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
-    ui.FrameInfo fi = await codec.getNextFrame();
-    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!.buffer.asUint8List();
+  Future<BitmapDescriptor> _bitmapDescriptorFromSvgAsset(
+    String assetName, [
+    Size size = const Size(32, 32),
+  ]) async {
+    final pictureInfo = await vg.loadPicture(SvgAssetLoader("assets/icons/$assetName"), null);
+
+    double devicePixelRatio = ui.PlatformDispatcher.instance.views.first.devicePixelRatio;
+    int width = (size.width * devicePixelRatio).toInt();
+    int height = (size.height * devicePixelRatio).toInt();
+
+    final scaleFactor = min(
+      width / pictureInfo.size.width,
+      height / pictureInfo.size.height,
+    );
+
+    final recorder = ui.PictureRecorder();
+
+    ui.Canvas(recorder)
+      ..scale(scaleFactor)
+      ..drawPicture(pictureInfo.picture);
+
+    final rasterPicture = recorder.endRecording();
+
+    final image = rasterPicture.toImageSync(width, height);
+    final bytes = (await image.toByteData(format: ui.ImageByteFormat.png))!;
+
+    return BitmapDescriptor.fromBytes(bytes.buffer.asUint8List());
   }
 }

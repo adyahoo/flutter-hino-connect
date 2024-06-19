@@ -6,7 +6,7 @@ class TripDataSource {
   int _getCounterState() {
     int counter = inject<StorageService>().getLoginAttempt() ?? 0;
 
-    if (counter % 2 == 0) {
+    if (counter % 3 == 2) {
       counter = 2;
     } else if (counter % 3 == 0) {
       counter = 3;
@@ -17,27 +17,38 @@ class TripDataSource {
     return counter;
   }
 
+  String detailKey = StorageService.TRIP_DETAILS_FOUR_JSON;
+  String tripKey = StorageService.TRIPS_FOUR_JSON;
+
+  void _setJsonKey() {
+    switch (_getCounterState()) {
+      case 1:
+        tripKey = StorageService.TRIPS_ONE_JSON;
+        detailKey = StorageService.TRIP_DETAILS_ONE_JSON;
+        break;
+      case 2:
+        tripKey = StorageService.TRIPS_TWO_JSON;
+        detailKey = StorageService.TRIP_DETAILS_TWO_JSON;
+        break;
+      case 3:
+        tripKey = StorageService.TRIPS_THREE_JSON;
+        detailKey = StorageService.TRIP_DETAILS_THREE_JSON;
+        break;
+      default:
+        tripKey = StorageService.TRIPS_ONE_JSON;
+        detailKey = StorageService.TRIP_DETAILS_ONE_JSON;
+        break;
+    }
+
+    print("sapi key $tripKey");
+  }
+
   Future<ListPaginationApiResponse<TripDto>> getTripList(Map<TripFilter, dynamic>? filter) async {
     try {
+      // _setJsonKey();
       await Future.delayed(const Duration(seconds: 3));
-      String key = StorageService.TRIPS_ONE_JSON;
 
-      switch (_getCounterState()) {
-        case 1:
-          key = StorageService.TRIPS_ONE_JSON;
-          break;
-        case 2:
-          key = StorageService.TRIPS_TWO_JSON;
-          break;
-        case 3:
-          key = StorageService.TRIPS_THREE_JSON;
-          break;
-        default:
-          key = StorageService.TRIPS_ONE_JSON;
-          break;
-      }
-
-      final data = await inject<StorageService>().getJsonData(key);
+      final data = await inject<StorageService>().getJsonData(tripKey);
 
       final trips = ListPaginationApiResponse<TripDto>.fromJson(
         data!,
@@ -65,8 +76,10 @@ class TripDataSource {
 
   Future<ListPaginationApiResponse<TripDto>> getTodayTripList() async {
     try {
+      // _setJsonKey();
       await Future.delayed(const Duration(seconds: 3));
-      final data = await inject<StorageService>().getJsonData(StorageService.TRIPS_ONE_JSON);
+
+      final data = await inject<StorageService>().getJsonData(tripKey);
 
       final trips = ListPaginationApiResponse<TripDto>.fromJson(
         data!,
@@ -100,8 +113,10 @@ class TripDataSource {
 
   Future<TripDetailDto> getTripDetail(int id) async {
     try {
+      // _setJsonKey();
       await Future.delayed(const Duration(seconds: 3));
-      final data = await inject<StorageService>().getJsonData(StorageService.TRIP_DETAILS_ONE_JSON);
+
+      final data = await inject<StorageService>().getJsonData(detailKey);
 
       final detailJson = (data!['data'] as Iterable).firstWhere((element) => element['id'] == id);
       final tripDetail = TripDetailDto.fromJson(detailJson);
@@ -114,25 +129,10 @@ class TripDataSource {
 
   Future<void> updateTripDetail(int id, Penalty penalty) async {
     try {
+      // _setJsonKey();
       await Future.delayed(const Duration(seconds: 3));
-      String key = StorageService.TRIP_DETAILS_ONE_JSON;
 
-      switch (_getCounterState()) {
-        case 1:
-          key = StorageService.TRIP_DETAILS_ONE_JSON;
-          break;
-        case 2:
-          key = StorageService.TRIP_DETAILS_TWO_JSON;
-          break;
-        case 3:
-          key = StorageService.TRIP_DETAILS_THREE_JSON;
-          break;
-        default:
-          key = StorageService.TRIP_DETAILS_ONE_JSON;
-          break;
-      }
-
-      final data = await inject<StorageService>().getJsonData(key);
+      final data = await inject<StorageService>().getJsonData(detailKey);
       final details = (data!['data'] as Iterable).map((e) => TripDetailDto.fromJson(e)).toList();
 
       final editedDetailIndex = details.indexWhere((element) => element.id == id);
@@ -144,7 +144,7 @@ class TripDataSource {
         "data": details.map((e) => e.toJson()).toList(),
       };
 
-      inject<StorageService>().setJsonData(StorageService.TRIP_DETAILS_ONE_JSON, updatedJson);
+      inject<StorageService>().setJsonData(detailKey, updatedJson);
     } catch (e) {
       rethrow;
     }

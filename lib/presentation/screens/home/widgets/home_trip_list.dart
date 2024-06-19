@@ -37,28 +37,62 @@ class HomeTripList extends GetView<HomeController> {
 
             final trips = controller.todayTrips.value;
 
-            return ListView.separated(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: trips.length,
-              itemBuilder: (context, index) => TripCard(
-                trip: trips[index],
-                onTap: (trip) {},
-              ),
-              separatorBuilder: (context, index) => const SizedBox(height: 16),
-              padding: const EdgeInsets.symmetric(vertical: 0),
-            );
+            if (trips.isEmpty) {
+              return Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(width: 1, color: BorderColor.primary),
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SvgPicture.asset(
+                      "assets/icons/ic_route.svg",
+                      width: 48,
+                      height: 48,
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'no_today_trip_title'.tr,
+                            style: Theme.of(context).textTheme.titleSmall,
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'no_today_trip_subtitle'.tr,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(color: TextColor.secondary),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            } else {
+              return ListView.separated(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: trips.length,
+                itemBuilder: (context, index) => TripCard(
+                  trip: trips[index],
+                  onTap: (trip) {},
+                ),
+                separatorBuilder: (context, index) =>
+                    const SizedBox(height: 16),
+                padding: const EdgeInsets.symmetric(vertical: 0),
+              );
+            }
           },
         ),
         const SizedBox(height: 16),
-        AppButton(
-          label: "see_all_trip".tr,
-          onPress: () {
-            Get.toNamed(Routes.TRIP_LIST);
-          },
-          type: AppButtonType.alternate,
-        ),
-        const SizedBox(height: 40),
       ],
     );
   }

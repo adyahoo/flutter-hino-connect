@@ -1,11 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:hino_driver_app/domain/core/entities/place_model.dart';
 import 'package:hino_driver_app/infrastructure/constants.dart';
-import 'package:http/http.dart' as http;
 
 class MapUtils {
   const MapUtils({
@@ -16,18 +12,19 @@ class MapUtils {
   final LatLng origin;
   final LatLng destination;
 
-  Future<List<LatLng>> getPolyLineRoute() async {
+  Future<List<LatLng>> getPolyLineRoute(List<String> penalties) async {
     final polylinePoints = PolylinePoints();
     final coordinates = <LatLng>[];
 
     final origin = PointLatLng(this.origin.latitude, this.origin.longitude);
-    final dest =
-        PointLatLng(this.destination.latitude, this.destination.longitude);
+    final dest = PointLatLng(this.destination.latitude, this.destination.longitude);
 
+    final waypoints = penalties.map((e) => PolylineWayPoint(location: e)).toList();
     final res = await polylinePoints.getRouteBetweenCoordinates(
       Constants.MAP_API_KEY,
       origin,
       dest,
+      wayPoints: waypoints,
     );
 
     if (res.points.isNotEmpty) {
@@ -41,8 +38,7 @@ class MapUtils {
     return coordinates;
   }
 
-  Future<List<Placemark>> getAddressFromCoordinate(
-      {LatLng? coordinate = null}) async {
+  Future<List<Placemark>> getAddressFromCoordinate({LatLng? coordinate = null}) async {
     LatLng latLng = origin;
 
     if (coordinate != null) {
@@ -51,5 +47,4 @@ class MapUtils {
 
     return await placemarkFromCoordinates(latLng.latitude, latLng.longitude);
   }
-
 }

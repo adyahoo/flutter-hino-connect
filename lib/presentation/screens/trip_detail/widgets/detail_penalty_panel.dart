@@ -118,16 +118,11 @@ class DetailPenaltyPanel extends StatelessWidget {
             const SizedBox(width: 16),
             AppTag(
               label: "point".trParams(
-                {'poin': "4"},
+                {'poin': (penalty.point ?? 0).toString()},
               ),
               variant: WidgetVariant.success,
             ),
           ],
-        ),
-        const SizedBox(height: 16),
-        AppTips(
-          content: "tap_penalty_icon".tr,
-          variant: WidgetVariant.info,
         ),
         const SizedBox(height: 16),
         _renderPenaltyCard(context),

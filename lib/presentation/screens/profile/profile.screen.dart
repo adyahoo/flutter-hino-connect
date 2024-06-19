@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hino_driver_app/infrastructure/constants.dart';
 import 'package:hino_driver_app/infrastructure/utils.dart';
-import 'package:hino_driver_app/presentation/screens.dart';
 import 'package:hino_driver_app/presentation/widgets/app_toggle.dart';
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 

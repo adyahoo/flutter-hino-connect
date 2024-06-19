@@ -17,6 +17,96 @@ class PlaceModel extends Equatable {
     this.phone,
   });
 
+  //copy with
+  PlaceModel copyWith({
+    String? name,
+    String? type,
+    String? address,
+    String? latitude,
+    String? longitude,
+    String? phone,
+  }) {
+    return PlaceModel(
+      name: name ?? this.name,
+      type: type ?? this.type,
+      address: address ?? this.address,
+      latitude: latitude ?? this.latitude,
+      longitude: longitude ?? this.longitude,
+      phone: phone ?? this.phone,
+    );
+  }
+
+  factory PlaceModel.fromJson(Map<String, dynamic> json) {
+    return PlaceModel(
+      name: json['name'],
+      type: json['type'],
+      address: json['address'],
+      latitude: json['latitude'],
+      longitude: json['longitude'],
+      phone: json['phone'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'type': type,
+      'address': address,
+      'latitude': latitude,
+      'longitude': longitude,
+      'phone': phone,
+    };
+  }
+
   @override
   List<Object?> get props => [name, type, address, latitude, longitude, phone];
+
+
 }
+
+// import 'package:equatable/equatable.dart';
+
+// class PlaceModel extends Equatable {
+//   final String name;
+//   String type;
+//   final String? address;
+//   final String latitude;
+//   final String longitude;
+//   final String? phone;
+
+//   PlaceModel({
+//     required this.name,
+//     this.type = 'place',
+//     this.address,
+//     required this.latitude,
+//     required this.longitude,
+//     this.phone,
+//   });
+
+//   factory PlaceModel.fromJson(Map<String, dynamic> json) {
+//     return PlaceModel(
+//       name: json['name'],
+//       type: json['type'],
+//       address: json['address'],
+//       latitude: json['latitude'],
+//       longitude: json['longitude'],
+//       phone: json['phone'],
+//     );
+//   }
+
+//   Map<String, dynamic> toJson() {
+//     return {
+//       'name': name,
+//       'type': type,
+//       'address': address,
+//       'latitude': latitude,
+//       'longitude': longitude,
+//       'phone': phone,
+//     };
+//   }
+
+//   @override
+//   List<Object?> get props => [name, type, address, latitude, longitude, phone];
+
+
+// }

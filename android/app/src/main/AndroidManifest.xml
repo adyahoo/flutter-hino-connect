@@ -71,5 +71,24 @@
          https://developer.android.com/reference/android/content/Intent#ACTION_PROCESS_TEXT.
 
          In particular, this is used by the Flutter engine in io.flutter.plugin.text.ProcessTextPlugin. -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.PROCESS_TEXT"/>
+            <data android:mimeType="text/plain"/>
+        </intent>
+            <intent>
+      <action android:name="android.intent.action.VIEW" />
+      <data android:scheme="https" android:host="www.google.com" android:pathPrefix="/maps" />
+    </intent>
+    <!-- If your app checks for Apple Maps support -->
+    <intent>
+      <action android:name="android.intent.action.VIEW" />
+      <data android:scheme="https" android:host="maps.apple.com" />
+    </intent>
+    <!-- If your app checks for inAppBrowserView launch mode support -->
+    <intent>
+      <action android:name="android.support.customtabs.action.CustomTabsService" />
+    </intent>
+    </queries>
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
 </manifest>

@@ -1,83 +1,102 @@
+import 'dart:io';
 import 'dart:ui' as ui;
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:hino_driver_app/domain/core/entities/map_filter_model.dart';
 import 'package:hino_driver_app/domain/core/entities/place_model.dart';
 import 'package:hino_driver_app/domain/core/usecases/place_use_case.dart';
 import 'package:hino_driver_app/infrastructure/constants.dart';
 import 'package:hino_driver_app/infrastructure/navigation/routes.dart';
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 final _panelController = PanelController();
+
+class PlaceDetails {
+  final String name;
+  final String type;
+  final String address;
+  final String phoneNumber;
+  final String position;
+
+  PlaceDetails({
+    required this.name,
+    required this.type,
+    required this.address,
+    required this.phoneNumber,
+    required this.position,
+  });
+}
 
 class MapsController extends GetxController {
   MapsController({required this.useCase});
 
   final PlaceUseCase useCase;
 
-  static final zoom = 20.0;
+  static const double _zoom = 20.0;
   late GoogleMapController _controller;
 
-  //initial custom marker
+  // Custom markers
   late BitmapDescriptor gasStation;
   late BitmapDescriptor restaurant;
   late BitmapDescriptor carDealer;
+  late BitmapDescriptor serviceCenter;
 
-  //selected custom marker
+  // Selected custom markers
   late BitmapDescriptor selectedGasStation;
   late BitmapDescriptor selectedRestaurant;
   late BitmapDescriptor selectedCarDealer;
+  late BitmapDescriptor selectedServiceCenter;
 
   final panelController = _panelController;
 
-  List<PlaceModel> _places = <PlaceModel>[].obs;
+  final List<PlaceModel> _places = <PlaceModel>[].obs;
+  final Rx<Set<Marker>> _markers = Rx<Set<Marker>>({});
+  final Rx<Set<Marker>> currentMarker = Rx<Set<Marker>>({});
 
   List<PlaceModel> get places => _places;
 
-  Rx<Set<Marker>> _markers = Rx<Set<Marker>>({});
-  Rx<Set<Marker>> currentMarker = Rx<Set<Marker>>({});
-
   Set<Marker> get markers => _markers.value;
 
-  Marker? selectedMarker; //store last selected marker
-  RxString selectedChip = RxString('');
+  Marker? selectedMarker;
+  final RxString selectedChip = RxString('');
 
-  final Rx<TextEditingController> searchbarController = TextEditingController().obs;
+  final Rx<TextEditingController> searchbarController =
+      TextEditingController().obs;
   final searchBarState = AppTextFieldState();
 
-  LatLng currentLocation = LatLng(-8.681547132266411, 115.24069589508952);
-  CameraPosition currentCameraPosition = CameraPosition(
-    target: LatLng(-8.681547132266411, 115.24069589508952),
-    zoom: zoom,
+  LatLng currentLocation = const LatLng(-8.681547132266411, 115.24069589508952);
+  CameraPosition currentCameraPosition = const CameraPosition(
+    target: LatLng(-6.3003589142707925, 106.63645869332062),
+    zoom: _zoom,
   );
 
-  //place model default rx value
-  var placeName = 'Name'.obs;
-  var placeType = 'Type'.obs;
-  var address = 'Address'.obs;
-  var phoneNumber = 'Phone'.obs;
-  var position = 'Position'.obs;
+  //rx place details
+  var placeDetails = PlaceDetails(
+    name: 'Name',
+    type: 'Type',
+    address: 'Address',
+    phoneNumber: 'Phone',
+    position: 'Position',
+  ).obs;
 
   @override
   void onInit() {
-    _createCustomMarker();
     super.onInit();
+    _createCustomMarker();
   }
 
   @override
   void onReady() {
     super.onReady();
-    getCurrentLocation();
-    _addCurrentLocationMarker();
+    loadVenueAsCurrentLocation();
   }
 
   @override
   void onClose() {
+    _controller.dispose();
     super.onClose();
   }
 
@@ -85,44 +104,50 @@ class MapsController extends GetxController {
     _controller = controller;
   }
 
-  Future<void> getCurrentLocation() async {
-    try {
-      Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.low,
-      );
-
-      if (currentLocation.latitude.isEqual(position.latitude)) {
-        currentLocation = LatLng(position.latitude, position.longitude);
-        _addCurrentLocationMarker();
-      }
-
-      moveCamera(currentLocation);
-    } catch (e) {
-      print('Error getting location: $e');
-    }
+  Future<void> loadVenueAsCurrentLocation() async {
+    currentLocation = Constants.venueLocation;
+    initMarker(currentLocation);
+    _addCurrentLocationMarker();
+    _moveCamera(currentLocation);
   }
 
-  void moveCamera(LatLng coordinate) {
-    _controller.animateCamera(CameraUpdate.newLatLngZoom(coordinate, zoom));
-    // Then init marker
+  void onMapTap(LatLng coordinate) {
+    if (selectedMarker != null) {
+      _revertMarkerIcon(selectedMarker!.markerId.value);
+    }
+    panelController.close();
+  }
+
+  void _moveCamera(LatLng coordinate) {
+    _controller.animateCamera(CameraUpdate.newLatLngZoom(coordinate, _zoom));
     initMarker(coordinate);
   }
 
+  void _addCurrentLocationMarker() {
+    currentMarker.value = {
+      Marker(
+        markerId: MarkerId('current_location'),
+        position: currentLocation,
+        icon: BitmapDescriptor.defaultMarker,
+      )
+    };
+  }
+
   void initMarker(LatLng coordinate) {
-    fetchAllPlaces(
-      coordinate.latitude,
-      coordinate.longitude,
-      isFetchingCurrentLocation: true,
-    );
+    fetchAllPlaces(coordinate.latitude, coordinate.longitude,
+        isFetchingCurrentLocation: true);
   }
 
   Future<void> initSpecificMarker(PlaceModel place) async {
     // Wait for fetchAllPlaces to complete
-    moveCamera(LatLng(double.parse(place.latitude), double.parse(place.longitude)));
-    await fetchAllPlaces(double.parse(place.latitude), double.parse(place.longitude));
+    _moveCamera(
+        LatLng(double.parse(place.latitude), double.parse(place.longitude)));
+    await fetchAllPlaces(
+        double.parse(place.latitude), double.parse(place.longitude));
 
     // Check if the fetched places contain the specific marker we want to initialize
-    String markerId = generateMarkerId(double.parse(place.latitude), double.parse(place.longitude));
+    String markerId = _generateMarkerId(
+        double.parse(place.latitude), double.parse(place.longitude));
 
     // Search for marker in _markers
     Marker? marker;
@@ -136,302 +161,325 @@ class MapsController extends GetxController {
     if (marker != null) {
       print('Marker found');
       onMarkerTapped(marker);
+      print('abis ngetap marker di initSpecificMarker, marker if');
     } else {
       print('Marker not found');
 
       // Add new marker
-      Marker newMarker = Marker(
-        markerId: MarkerId(markerId),
-        position: LatLng(double.parse(place.latitude), double.parse(place.longitude)),
-        icon: getIconForType(place.type),
-        onTap: () {
-          print('Marker tapped blabla');
-          onMarkerTapped(Marker(
-            markerId: MarkerId(markerId),
-            position: LatLng(double.parse(place.latitude), double.parse(place.longitude)),
-          ));
-        },
-      );
+      Marker newMarker = _createMarker(place) as Marker;
       _markers.value = Set<Marker>.from(_markers.value)..add(newMarker);
-      // Call onMarkerTapped with the new marker
-      PlaceModel newPlace = PlaceModel(
-        name: place.name,
-        type: place.type,
-        address: place.address,
-        latitude: place.latitude,
-        longitude: place.longitude,
-        phone: place.phone,
-      );
 
-      final newPlaceList = [newPlace, ..._places];
-      _places = newPlaceList;
+      final newPlaceList = [place, ..._places];
+      _places.addAll(newPlaceList);
+
       onMarkerTapped(newMarker);
+      print('abis ngetap marker di initSpecificMarker, marker else');
     }
   }
 
-  Future<void> fetchAllPlaces(double lat, double long, {bool isFetchingCurrentLocation = false}) async {
-    await fetchPlaces(lat, long, 'gas_station');
-    await fetchPlaces(lat, long, 'restaurant');
-    await fetchPlaces(lat, long, 'car_dealer');
+  Future<void> fetchAllPlaces(double lat, double long,
+      {bool isFetchingCurrentLocation = false}) async {
+    try {
+      await Future.wait([
+        fetchPlaces(lat, long, Constants.TYPE_GAS_STATION),
+        fetchPlaces(lat, long, Constants.TYPE_RESTAURANT),
+        fetchPlaces(lat, long, Constants.TYPE_CAR_DEALER),
+        fetchPlaces(lat, long, Constants.TYPE_SERVICE_CENTER),
+      ]);
+    } catch (e) {
+      print('Error fetching all places: $e');
+    }
   }
 
-  void _addCurrentLocationMarker() {
-    currentMarker.value = {
-      Marker(
-        markerId: MarkerId('Initial Position'),
-        position: currentLocation,
-        icon: BitmapDescriptor.defaultMarker,
-      ),
-    };
+  bool isValidPlace(PlaceModel place, String type) {
+    return place.type == type &&
+        place.latitude != null &&
+        place.longitude != null &&
+        place.latitude!.isNotEmpty &&
+        place.longitude!.isNotEmpty &&
+        double.tryParse(place.latitude!) != null &&
+        double.tryParse(place.longitude!) != null;
   }
 
   Future<void> fetchPlaces(double lat, double long, String type) async {
-    final res = await useCase.getPlaceList(lat, long, type);
-    _places.addAll(res.where((place) => place.type == type));
+    try {
+      final res = await useCase.getPlaceList(lat, long, type);
 
-    _markers.value = _places
-        .map(
-          (e) => _createMarker(e),
-        )
-        .toSet();
-  }
+      final validPlaces =
+          res.where((place) => isValidPlace(place, type)).toList();
 
-  void filterMarkers(String id) {
-    if (id != '') {
-      final item = Constants.mapScreenFilterItems.firstWhere((element) => element.id == id);
-      String type = convertLabelToType(item.label);
-
-      selectedChip.value = item.id;
-      _markers.value = _places
-          .where((e) => e.type == type)
-          .map(
-            (e) => Marker(
-              markerId: MarkerId(generateMarkerId(double.parse(e.latitude), double.parse(e.longitude))),
-              position: LatLng(double.parse(e.latitude), double.parse(e.longitude)),
-              infoWindow: InfoWindow(
-                title: e.name,
-                snippet: e.address,
-              ),
-              icon: getIconForType(e.type),
-              onTap: () {
-                onMarkerTapped(
-                  Marker(
-                    markerId: MarkerId(generateMarkerId(double.parse(e.latitude), double.parse(e.longitude))),
-                    position: LatLng(double.parse(e.latitude), double.parse(e.longitude)),
-                  ),
-                );
-              },
-            ),
-          )
-          .toSet();
-    } else {
-      selectedChip.value = '';
-      fetchAllPlaces(currentLocation.latitude, currentLocation.longitude);
+      _places.addAll(validPlaces);
+      final newMarkers =
+          _places.map((e) => _createMarker(e)).whereType<Marker>().toSet();
+      _markers.value.addAll(newMarkers);
+      _markers.refresh();
+    } catch (e) {
+      print('Error fetching places: $e');
     }
   }
 
-  Marker _createMarker(PlaceModel place) {
-    String markerId = generateMarkerId(
+  Future<void> _handleOpenMaps() async {
+    String url = '';
+    String urlAppleMaps = '';
+
+    if (Platform.isAndroid) {
+      url = 'https://www.google.com/maps/@?api=1';
+      if (await canLaunchUrl(Uri.parse(url))) {
+        await launchUrl(Uri.parse(url));
+      } else {
+        throw 'Could not launch $url';
+      }
+    } else {
+      urlAppleMaps = 'https://maps.apple.com/';
+      url = 'comgooglemaps://';
+      if (await canLaunchUrl(Uri.parse(url))) {
+        await launchUrl(Uri.parse(url));
+      } else if (await canLaunchUrl(Uri.parse(urlAppleMaps))) {
+        await launchUrl(Uri.parse(urlAppleMaps));
+      } else {
+        throw 'Could not launch $url';
+      }
+    }
+  }
+
+  Future<void> filterMarkers(String id) async {
+    if (id.isNotEmpty) {
+      if (id == 'filter_drive_to') {
+        await _handleOpenMaps();
+        return;
+      }
+      print('Filtering markers: $id');
+      final item = Constants.mapScreenFilterItems
+          .firstWhere((element) => element.id == id);
+
+      print('item: $item.label');
+      final type = convertLabelToType(item.label);
+      print('type: $type');
+
+      selectedChip.value = item.id;
+      _markers.value = _createMarkers(_places.where((e) => e.type == type));
+      print('place: ${_places.where((e) => e.type == type)}');
+    } else {
+      selectedChip.value = '';
+      _markers.value = _createMarkers(_places);
+    }
+  }
+
+  Set<Marker> _createMarkers(Iterable<PlaceModel> places) {
+    return places
+        .map((e) => Marker(
+              markerId: MarkerId(_generateMarkerId(
+                  double.parse(e.latitude), double.parse(e.longitude))),
+              position:
+                  LatLng(double.parse(e.latitude), double.parse(e.longitude)),
+              infoWindow: InfoWindow(title: e.name, snippet: e.address),
+              icon: _getIconForType(e.type),
+              onTap: () => onMarkerTapped(Marker(
+                markerId: MarkerId(_generateMarkerId(
+                    double.parse(e.latitude), double.parse(e.longitude))),
+                position:
+                    LatLng(double.parse(e.latitude), double.parse(e.longitude)),
+              )),
+            ))
+        .toSet();
+  }
+
+  Marker? _createMarker(PlaceModel place) {
+    final markerId = _generateMarkerId(
         double.parse(place.latitude), double.parse(place.longitude));
-    
 
     return Marker(
       markerId: MarkerId(markerId),
-      position: LatLng(
-        double.parse(place.latitude),
-        double.parse(place.longitude),
-      ),
-      infoWindow: InfoWindow(
-        title: place.name,
-        snippet: place.address,
-      ),
-      icon: getIconForType(place.type),
-      onTap: () {
-        onMarkerTapped(
-          Marker(
-            markerId: MarkerId(markerId),
-            position: LatLng(
-              double.parse(place.latitude),
-              double.parse(place.longitude),
-            ),
-          ),
-        );
-      },
+      position:
+          LatLng(double.parse(place.latitude), double.parse(place.longitude)),
+      infoWindow: InfoWindow(title: place.name, snippet: place.address),
+      icon: _getIconForType(place.type),
+      onTap: () => onMarkerTapped(Marker(
+        markerId: MarkerId(markerId),
+        position:
+            LatLng(double.parse(place.latitude), double.parse(place.longitude)),
+      )),
     );
   }
 
+  PlaceDetails convertToPlaceDetails(PlaceModel place, Marker marker) {
+    return PlaceDetails(
+      name: place.name,
+      type: convertTypeName(place.type),
+      phoneNumber: place.phone ?? 'N/A',
+      position: '${marker.position.latitude}, ${marker.position.longitude}',
+      address: place.address ?? '',
+    );
+  }
+
+  void updatePlaceDetailPanel(PlaceDetails details) {
+    placeDetails.value = details;
+  }
+
   void onMarkerTapped(Marker marker) {
-    // Update panel data
-    final selectedPlace = _places.firstWhere((e) => generateMarkerId(double.parse(e.latitude), double.parse(e.longitude)) == marker.markerId.value);
+    print('Marker tapped: ${marker.markerId.value}');
 
-    print('MARKER INFO: ${marker.markerId.value}');
+    // Find the selected place based on the marker ID
+    final selectedPlace = _places.firstWhere((e) =>
+        _generateMarkerId(
+            double.parse(e.latitude), double.parse(e.longitude)) ==
+        marker.markerId.value);
 
-    placeName.value = selectedPlace.name;
-    placeType.value = convertTypeName(selectedPlace.type);
-    phoneNumber.value = selectedPlace.phone!;
-    position.value = '${marker.position.latitude}, ${marker.position.longitude}';
-    address.value = selectedPlace.address ?? '';
+    // Update the selected place details
+    final placeDetails = convertToPlaceDetails(selectedPlace, marker);
+    updatePlaceDetailPanel(placeDetails);
 
-    // Update marker icon
-    updateMarkerIcon(marker.markerId.value);
+    // Update marker icons
+    if (selectedMarker != null) {
+      print('Reverting selected marker icon');
+      _revertMarkerIcon(selectedMarker!.markerId.value);
+    }
+    _updateMarkerIcon(marker.markerId.value);
 
-    // Check if marker is already selected
+    // Check if the tapped marker is already the selected marker
     if (selectedMarker != null && selectedMarker!.markerId == marker.markerId) {
-      // Toggle panel
+      // Toggle panel state if the same marker is tapped
       if (panelController.isPanelOpen) {
         panelController.close();
-        // Close info window
         _controller.hideMarkerInfoWindow(marker.markerId);
-        // Revert marker icon
-        revertMarkerIcon(marker.markerId.value);
+        _revertMarkerIcon(marker.markerId.value);
+        selectedMarker = null;
       } else {
         panelController.open();
       }
     } else {
-      // Revert last selected marker icon
-      if (selectedMarker != null) {
-        revertMarkerIcon(selectedMarker!.markerId.value);
-      }
-      // Store selected marker
+      // Open panel and set the new selected marker
       selectedMarker = marker;
-      // Open panel
       panelController.open();
     }
+
+    print('Updated selected marker: ${selectedMarker?.markerId.value}');
   }
 
   Future<void> _createCustomMarker() async {
-    final gasStationBytes = await _getBytesFromAsset("ic_maps_gas_station.png", 120);
-    final restaurantBytes = await _getBytesFromAsset("ic_maps_restaurant.png", 120);
-    final hinoDealerBytes = await _getBytesFromAsset("ic_maps_dealer.png", 120);
+    gasStation = await _getMarkerIcon("ic_maps_gas_station.png");
+    restaurant = await _getMarkerIcon("ic_maps_restaurant.png");
+    carDealer = await _getMarkerIcon("ic_maps_dealer.png");
+    serviceCenter = await _getMarkerIcon("ic_maps_service_center.png");
 
-    final selectedGasStationBytes = await _getBytesFromAsset("ic_maps_gas_station_selected.png", 120);
-    final selectedRestaurantBytes = await _getBytesFromAsset("ic_maps_restaurant_selected.png", 120);
-    final selectedHinoDealerBytes = await _getBytesFromAsset("ic_maps_dealer_selected.png", 120);
-
-    gasStation = BitmapDescriptor.fromBytes(gasStationBytes);
-    restaurant = BitmapDescriptor.fromBytes(restaurantBytes);
-    carDealer = BitmapDescriptor.fromBytes(hinoDealerBytes);
-
-    selectedGasStation = BitmapDescriptor.fromBytes(selectedGasStationBytes);
-    selectedRestaurant = BitmapDescriptor.fromBytes(selectedRestaurantBytes);
-    selectedCarDealer = BitmapDescriptor.fromBytes(selectedHinoDealerBytes);
+    selectedGasStation =
+        await _getMarkerIcon("ic_maps_gas_station_selected.png");
+    selectedRestaurant =
+        await _getMarkerIcon("ic_maps_restaurant_selected.png");
+    selectedCarDealer = await _getMarkerIcon("ic_maps_dealer_selected.png");
+    selectedServiceCenter =
+        await _getMarkerIcon("ic_maps_service_center_selected.png");
   }
 
-  Future<Uint8List> _getBytesFromAsset(String assetName, int width) async {
-    ByteData data = await rootBundle.load("assets/icons/${assetName}");
-    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
-    ui.FrameInfo fi = await codec.getNextFrame();
-    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!.buffer.asUint8List();
+  Future<BitmapDescriptor> _getMarkerIcon(String assetName) async {
+    final data = await rootBundle.load("assets/icons/$assetName");
+    final codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
+        targetWidth: 120);
+    final fi = await codec.getNextFrame();
+    return BitmapDescriptor.fromBytes(
+        (await fi.image.toByteData(format: ui.ImageByteFormat.png))!
+            .buffer
+            .asUint8List());
   }
 
-  BitmapDescriptor getIconForType(String type) {
+  BitmapDescriptor _getIconForType(String type) {
     switch (type) {
-      case 'gas_station':
+      case Constants.TYPE_GAS_STATION:
         return gasStation;
-      case 'restaurant':
+      case Constants.TYPE_RESTAURANT:
         return restaurant;
-      case 'car_dealer':
+      case Constants.TYPE_CAR_DEALER:
         return carDealer;
+      case Constants.TYPE_SERVICE_CENTER:
+        return serviceCenter;
       default:
         return BitmapDescriptor.defaultMarker;
     }
   }
 
-  void updateMarkerIcon(String markerId) {
-    final marker = _markers.value.firstWhere((element) => element.markerId.value == markerId);
-    final type = _places.firstWhere((e) => generateMarkerId(double.parse(e.latitude), double.parse(e.longitude)) == markerId).type;
+  void _updateMarkerIcon(String markerId) {
+    final marker = _markers.value
+        .firstWhere((element) => element.markerId.value == markerId);
+    final type = _places
+        .firstWhere((e) =>
+            _generateMarkerId(
+                double.parse(e.latitude), double.parse(e.longitude)) ==
+            markerId)
+        .type;
 
-    BitmapDescriptor selectedIcon;
+    final selectedIcon = _getSelectedIconForType(type);
+    final updatedMarker = marker.copyWith(iconParam: selectedIcon);
+
+    _markers.value = Set<Marker>.from(_markers.value)
+      ..remove(marker)
+      ..add(updatedMarker);
+  }
+
+  void _revertMarkerIcon(String markerId) {
+    final marker = _markers.value
+        .firstWhere((element) => element.markerId.value == markerId);
+    final type = _places
+        .firstWhere((e) =>
+            _generateMarkerId(
+                double.parse(e.latitude), double.parse(e.longitude)) ==
+            markerId)
+        .type;
+
+    final icon = _getIconForType(type);
+    final revertedMarker = marker.copyWith(iconParam: icon);
+
+    _markers.value = Set<Marker>.from(_markers.value)
+      ..remove(marker)
+      ..add(revertedMarker);
+  }
+
+  BitmapDescriptor _getSelectedIconForType(String type) {
     switch (type) {
-      case 'gas_station':
-        selectedIcon = selectedGasStation;
-        break;
-      case 'restaurant':
-        selectedIcon = selectedRestaurant;
-        break;
-      case 'car_dealer':
-        selectedIcon = selectedCarDealer;
-        break;
+      case Constants.TYPE_GAS_STATION:
+        return selectedGasStation;
+      case Constants.TYPE_RESTAURANT:
+        return selectedRestaurant;
+      case Constants.TYPE_CAR_DEALER:
+        return selectedCarDealer;
+      case Constants.TYPE_SERVICE_CENTER:
+        return selectedServiceCenter;
       default:
-        selectedIcon = BitmapDescriptor.defaultMarker;
+        return BitmapDescriptor.defaultMarker;
     }
-
-    final updatedMarker = Marker(
-      markerId: marker.markerId,
-      position: marker.position,
-      infoWindow: marker.infoWindow,
-      icon: selectedIcon,
-      onTap: marker.onTap,
-    );
-
-    _markers.value = Set<Marker>.from(_markers.value.where((m) => m.markerId != marker.markerId))..add(updatedMarker);
-  }
-
-  void revertMarkerIcon(String markerId) {
-    final marker = _markers.value.firstWhere((element) => element.markerId.value == markerId);
-    final type = _places.firstWhere((e) => generateMarkerId(double.parse(e.latitude), double.parse(e.longitude)) == markerId).type;
-
-    BitmapDescriptor icon;
-    switch (type) {
-      case 'gas_station':
-        icon = gasStation;
-        break;
-      case 'restaurant':
-        icon = restaurant;
-        break;
-      case 'car_dealer':
-        icon = carDealer;
-        break;
-      default:
-        icon = BitmapDescriptor.defaultMarker;
-    }
-
-    final updatedMarker = Marker(
-      markerId: marker.markerId,
-      position: marker.position,
-      infoWindow: marker.infoWindow,
-      icon: icon,
-      onTap: marker.onTap,
-    );
-
-    _markers.value = Set<Marker>.from(_markers.value.where((m) => m.markerId != marker.markerId))..add(updatedMarker);
-  }
-
-  void onMapTap(LatLng coordinate) {
-    if (selectedMarker != null) {
-      revertMarkerIcon(selectedMarker!.markerId.value);
-    }
-    panelController.close();
-  }
-
-  String generateMarkerId(double latitude, double longitude) {
-    return '$latitude,$longitude';
   }
 
   String convertLabelToType(String label) {
     switch (label) {
-      case 'Gas Station':
-        return 'gas_station';
-      case 'Dealers':
-        return 'car_dealer';
-      case 'Restaurant':
-        return 'restaurant';
+      case Constants.LABEL_GAS_STATION:
+        return Constants.TYPE_GAS_STATION;
+      case Constants.LABEL_CAR_DEALER:
+        return Constants.TYPE_CAR_DEALER;
+      case Constants.LABEL_RESTAURANT:
+        return Constants.TYPE_RESTAURANT;
+      case Constants.LABEL_SERVICE_CENTER:
+        return Constants.TYPE_SERVICE_CENTER;
       default:
-        return '';
+        return 'unknown';
     }
   }
 
   String convertTypeName(String type) {
     switch (type) {
-      case 'gas_station':
-        return 'Gas Station';
-      case 'restaurant':
-        return 'Restaurant';
-      case 'car_dealer':
-        return 'Car Dealer';
+      case Constants.TYPE_GAS_STATION:
+        return Constants.LABEL_GAS_STATION;
+      case Constants.TYPE_RESTAURANT:
+        return Constants.LABEL_RESTAURANT;
+      case Constants.TYPE_CAR_DEALER:
+        return Constants.LABEL_CAR_DEALER;
+      case Constants.TYPE_SERVICE_CENTER:
+        return Constants.LABEL_SERVICE_CENTER;
       default:
         return 'Unknown';
     }
+  }
+
+  String _generateMarkerId(double latitude, double longitude) {
+    return '${latitude.toStringAsFixed(6)}_${longitude.toStringAsFixed(6)}';
   }
 
   void navigateSearch(String? query) async {

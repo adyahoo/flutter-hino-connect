@@ -38,9 +38,6 @@ class UserUseCase implements IUserUseCase {
     try {
       final bodyData = LoginBodyDto(email: body.email, password: body.password);
       await dataSource.login(bodyData);
-
-      int counter = inject<StorageService>().getLoginAttempt() ?? 0;
-      inject<StorageService>().setLoginAttempt(counter++);
     } on ApiException catch (e) {
       errorHandler(e);
       rethrow;

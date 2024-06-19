@@ -9,6 +9,10 @@ class UserDataSource {
     try {
       final res = await services.login(body);
 
+      int counter = inject<StorageService>().getLoginAttempt() ?? 0;
+      counter = counter + 1;
+      print("sapi trip counter $counter");
+      inject<StorageService>().setLoginAttempt(counter);
       inject<StorageService>().setToken(res.data.token);
     } catch (e) {
       rethrow;
@@ -33,7 +37,6 @@ class UserDataSource {
     }
   }
 
-
   Future<void> logout() async {
     try {
       await services.logout();
@@ -56,7 +59,6 @@ class UserDataSource {
   Future<void> verifyDriverFace(File image) async {
     try {
       final res = await services.verifyDriverFace(image);
-
     } catch (e) {
       rethrow;
     }

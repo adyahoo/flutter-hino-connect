@@ -64,4 +64,5 @@ Future setupInjection() async {
 
   //hino dealer
   inject.registerLazySingleton<HinoDealerDataSource>(() => HinoDealerDataSource());
+  
 }

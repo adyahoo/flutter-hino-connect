@@ -20,6 +20,7 @@
             },
             "type": "brake",
             "note": "traffic accident",
+            "point": 20,
             "date_time": "2024-02-10T01:10:20.000000Z"
           },
           {
@@ -30,6 +31,7 @@
             },
             "type": "over_speed",
             "note": null,
+            "point": 30,
             "date_time": "024-02-10T01:10:40.000000Z"
           }
         ],
@@ -55,6 +57,7 @@
             },
             "type": "acceleration",
             "note": "accelerate above 60km",
+            "point": 20,
             "date_time": "2024-02-10T01:14:12.000000Z"
           }
         ],

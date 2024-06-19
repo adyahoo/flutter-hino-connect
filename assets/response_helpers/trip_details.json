@@ -34,6 +34,7 @@
           },
           "type": "acceleration",
           "note": "accelerate above 60km",
+          "point": 25,
           "date_time": "2023-07-20T01:09:49.000000Z"
         }
       ],
@@ -59,6 +60,7 @@
           },
           "type": "lateral_accel",
           "note": null,
+          "point": 45,
           "date_time": "2023-07-20T01:09:49.000000Z"
         }
       ],
@@ -83,6 +85,7 @@
             "lng": 115.24217508151388
           },
           "type": "brake",
+          "point": 25,
           "note": "traffic accident",
           "date_time": "2023-07-20T01:09:49.000000Z"
         },
@@ -94,6 +97,7 @@
           },
           "type": "over_speed",
           "note": null,
+          "point": 75,
           "date_time": "2023-07-20T01:09:49.000000Z"
         }
       ],

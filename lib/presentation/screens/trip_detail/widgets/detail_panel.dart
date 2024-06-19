@@ -1,9 +1,10 @@
 part of '../trip_detail.screen.dart';
 
 class DetailPanel extends StatelessWidget {
-  const DetailPanel({super.key, required this.onBack});
+  const DetailPanel({super.key, required this.onBack, required this.point});
 
   final VoidCallback onBack;
+  final int point;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class DetailPanel extends StatelessWidget {
             const SizedBox(width: 16),
             AppTag(
               label: "point".trParams(
-                {'poin': "4"},
+                {'poin': point.toString()},
               ),
               variant: WidgetVariant.success,
             ),

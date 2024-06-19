@@ -48,11 +48,11 @@ class MapsSlidePanel extends GetView<MapsController> {
                   children: [
                     Obx(() => Text(
                           overflow: TextOverflow.ellipsis,
-                          controller.placeName.value,
+                          controller.placeDetails.value.name,
                           style: Theme.of(context).textTheme.titleMedium,
                         )),
                     Obx(() => Text(
-                          controller.placeType.value,
+                          controller.placeDetails.value.type,
                           style: Theme.of(context).textTheme.bodySmall,
                         )),
                   ],
@@ -83,11 +83,11 @@ class MapsSlidePanel extends GetView<MapsController> {
               children: [
                 Text('Detail Tempat', style: Theme.of(context).textTheme.labelLarge),
                 SizedBox(height: 16),
-                Obx(() => _renderLocationInfo(context, 'Posisi', controller.position.value.toString(), Iconsax.location5)),
+                Obx(() => _renderLocationInfo(context, 'Posisi', controller.placeDetails.value.position, Iconsax.location5)),
                 SizedBox(height: 16),
-                Obx(() => _renderLocationInfo(context, 'Alamat', controller.address.value, Iconsax.gps5)),
+                Obx(() => _renderLocationInfo(context, 'Alamat', controller.placeDetails.value.address, Iconsax.gps5)),
                 SizedBox(height: 16),
-                Obx(() => _renderLocationInfo(context, 'Nomor Telepon', controller.phoneNumber.value, Iconsax.call5)),
+                Obx(() => _renderLocationInfo(context, 'Nomor Telepon', controller.placeDetails.value.phoneNumber, Iconsax.call5)),
               ],
             ),
           )),

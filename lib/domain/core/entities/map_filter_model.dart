@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class MapFilterItem {
   final String label;
-  final IconData icon;
+  final Widget icon;
   final String id;
 
   MapFilterItem({

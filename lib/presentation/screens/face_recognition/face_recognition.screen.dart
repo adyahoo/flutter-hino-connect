@@ -73,7 +73,7 @@ class FaceRecognitionScreen extends GetView<FaceRecognitionController> {
                         height: Get.width,
                       ),
                       Text(
-                        "make_sure_face".tr,
+                        "face_recognition_subtitle".tr,
                         style: Theme.of(context).textTheme.labelLarge?.copyWith(color: Colors.white),
                       ),
                       const Expanded(child: SizedBox()),
