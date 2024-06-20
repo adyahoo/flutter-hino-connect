@@ -3,12 +3,52 @@ part of 'data_source.dart';
 class TripDataSource {
   // you should use real http client here later (ex: dio)
 
-  Future<ListPaginationApiResponse<TripDto>> getTripList(
-      Map<TripFilter, dynamic>? filter) async {
+  int _getCounterState() {
+    int counter = inject<StorageService>().getLoginAttempt() ?? 0;
+
+    if (counter % 3 == 2) {
+      counter = 2;
+    } else if (counter % 3 == 0) {
+      counter = 3;
+    } else {
+      counter = 1;
+    }
+
+    return counter;
+  }
+
+  String detailKey = StorageService.TRIP_DETAILS_FOUR_JSON;
+  String tripKey = StorageService.TRIPS_FOUR_JSON;
+
+  void _setJsonKey() {
+    switch (_getCounterState()) {
+      case 1:
+        tripKey = StorageService.TRIPS_ONE_JSON;
+        detailKey = StorageService.TRIP_DETAILS_ONE_JSON;
+        break;
+      case 2:
+        tripKey = StorageService.TRIPS_TWO_JSON;
+        detailKey = StorageService.TRIP_DETAILS_TWO_JSON;
+        break;
+      case 3:
+        tripKey = StorageService.TRIPS_THREE_JSON;
+        detailKey = StorageService.TRIP_DETAILS_THREE_JSON;
+        break;
+      default:
+        tripKey = StorageService.TRIPS_ONE_JSON;
+        detailKey = StorageService.TRIP_DETAILS_ONE_JSON;
+        break;
+    }
+
+    print("sapi key $tripKey");
+  }
+
+  Future<ListPaginationApiResponse<TripDto>> getTripList(Map<TripFilter, dynamic>? filter) async {
     try {
+      // _setJsonKey();
       await Future.delayed(const Duration(seconds: 3));
-      final data =
-          await inject<StorageService>().getJsonData(StorageService.TRIPS_JSON);
+
+      final data = await inject<StorageService>().getJsonData(tripKey);
 
       final trips = ListPaginationApiResponse<TripDto>.fromJson(
         data!,
@@ -36,9 +76,10 @@ class TripDataSource {
 
   Future<ListPaginationApiResponse<TripDto>> getTodayTripList() async {
     try {
+      // _setJsonKey();
       await Future.delayed(const Duration(seconds: 3));
-      final data =
-          await inject<StorageService>().getJsonData(StorageService.TRIPS_JSON);
+
+      final data = await inject<StorageService>().getJsonData(tripKey);
 
       final trips = ListPaginationApiResponse<TripDto>.fromJson(
         data!,
@@ -53,18 +94,13 @@ class TripDataSource {
       final formattedToday = DateFormat("yyyy-MM-dd").format(today);
 
       final todayTrips = trips.data.where((element) {
-        final tripDateOrigin =
-            DateFormat("yyy-MM-dd").parse(element.origin.date);
-        final formattedDateOrigin =
-            DateFormat("yyy-MM-dd").format(tripDateOrigin);
+        final tripDateOrigin = DateFormat("yyy-MM-dd").parse(element.origin.date);
+        final formattedDateOrigin = DateFormat("yyy-MM-dd").format(tripDateOrigin);
 
-        final tripDateDestination =
-            DateFormat("yyy-MM-dd").parse(element.destination.date);
-        final formattedDateDestination =
-            DateFormat("yyy-MM-dd").format(tripDateDestination);
+        final tripDateDestination = DateFormat("yyy-MM-dd").parse(element.destination.date);
+        final formattedDateDestination = DateFormat("yyy-MM-dd").format(tripDateDestination);
 
-        return formattedDateOrigin == formattedToday ||
-            formattedDateDestination == formattedToday;
+        return formattedDateOrigin == formattedToday || formattedDateDestination == formattedToday;
       }).toList();
 
       return trips.copyWith(
@@ -77,12 +113,12 @@ class TripDataSource {
 
   Future<TripDetailDto> getTripDetail(int id) async {
     try {
+      // _setJsonKey();
       await Future.delayed(const Duration(seconds: 3));
-      final data = await inject<StorageService>()
-          .getJsonData(StorageService.TRIP_DETAILS_JSON);
 
-      final detailJson = (data!['data'] as Iterable)
-          .firstWhere((element) => element['id'] == id);
+      final data = await inject<StorageService>().getJsonData(detailKey);
+
+      final detailJson = (data!['data'] as Iterable).firstWhere((element) => element['id'] == id);
       final tripDetail = TripDetailDto.fromJson(detailJson);
 
       return tripDetail;
@@ -93,18 +129,14 @@ class TripDataSource {
 
   Future<void> updateTripDetail(int id, Penalty penalty) async {
     try {
+      // _setJsonKey();
       await Future.delayed(const Duration(seconds: 3));
-      final data = await inject<StorageService>()
-          .getJsonData(StorageService.TRIP_DETAILS_JSON);
-      final details = (data!['data'] as Iterable)
-          .map((e) => TripDetailDto.fromJson(e))
-          .toList();
 
-      final editedDetailIndex =
-          details.indexWhere((element) => element.id == id);
-      final editedPenaltyIndex = details[editedDetailIndex]
-          .penalties
-          .indexWhere((element) => element.id == penalty.id);
+      final data = await inject<StorageService>().getJsonData(detailKey);
+      final details = (data!['data'] as Iterable).map((e) => TripDetailDto.fromJson(e)).toList();
+
+      final editedDetailIndex = details.indexWhere((element) => element.id == id);
+      final editedPenaltyIndex = details[editedDetailIndex].penalties.indexWhere((element) => element.id == penalty.id);
 
       details[editedDetailIndex].penalties[editedPenaltyIndex] = penalty;
 
@@ -112,8 +144,7 @@ class TripDataSource {
         "data": details.map((e) => e.toJson()).toList(),
       };
 
-      inject<StorageService>()
-          .setJsonData(StorageService.TRIP_DETAILS_JSON, updatedJson);
+      inject<StorageService>().setJsonData(detailKey, updatedJson);
     } catch (e) {
       rethrow;
     }
@@ -123,8 +154,7 @@ class TripDataSource {
     List<TripDto> newTrips = trips;
 
     if (filter.containsKey(TripFilter.date)) {
-      final date =
-          DateFormat("yyyy-MM-dd").format(filter[TripFilter.date] as DateTime);
+      final date = DateFormat("yyyy-MM-dd").format(filter[TripFilter.date] as DateTime);
 
       newTrips = trips.where((element) {
         final tripDate = DateFormat("yyy-MM-dd").parse(element.createdAt);

@@ -77,7 +77,7 @@ void _showDatePicker(BuildContext context) {
   });
 }
 
-  Widget _noTripState(BuildContext context) {
+  Widget _renderEmptyTrip(BuildContext context) {
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -187,7 +187,7 @@ void _showDatePicker(BuildContext context) {
             if (controller.filterApplied.value) {
               return _renderFilterNotFound(context);
             } else {
-              return _noTripState(context);
+              return _renderEmptyTrip(context);
             }
           } else {
             return ListView.builder(

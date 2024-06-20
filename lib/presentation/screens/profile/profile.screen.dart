@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:hino_driver_app/infrastructure/constants.dart';
+import 'package:hino_driver_app/infrastructure/utils.dart';
 import 'package:hino_driver_app/presentation/widgets/app_toggle.dart';
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 
 import 'controllers/profile.controller.dart';
 import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
+
+part 'widgets/score_card.dart';
 
 class ProfileScreen extends GetView<ProfileController> {
   ProfileScreen({Key? key}) : super(key: key);
@@ -31,18 +34,9 @@ class ProfileScreen extends GetView<ProfileController> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(user.name,
-                        style: Theme.of(context).textTheme.titleMedium),
-                    Text(user.email,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium
-                            ?.copyWith(color: TextColor.tertiary)),
-                    Text('Driver',
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium
-                            ?.copyWith(color: TextColor.tertiary)),
+                    Text(user.name, style: Theme.of(context).textTheme.titleMedium),
+                    Text(user.email, style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.tertiary)),
+                    Text('Driver', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.tertiary)),
                   ],
                 ),
               ],
@@ -54,82 +48,11 @@ class ProfileScreen extends GetView<ProfileController> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('score_title'.tr,
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleSmall
-                          ?.copyWith(color: TextColor.secondary)),
+                  Text('score_title'.tr, style: Theme.of(context).textTheme.titleSmall?.copyWith(color: TextColor.secondary)),
                   const SizedBox(height: 8),
-                  // scoreCard("user.score", context),
-                  scoreCard("100", context)
+                  ScoreCard(point: 100),
                 ],
               )),
-        ],
-      ),
-    );
-  }
-
-  Widget scoreCard(String point, BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: BorderColor.primary, width: 1),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('periode_placeholder'.tr,
-              style: Theme.of(context)
-                  .textTheme
-                  .labelMedium
-                  ?.copyWith(color: TextColor.secondary)),
-          const SizedBox(height: 12),
-          Container(
-            padding: const EdgeInsets.fromLTRB(12, 8, 8, 8),
-            decoration: BoxDecoration(
-              color: SuccessNewColor().surface,
-              borderRadius: BorderRadius.circular(100), 
-              border: Border.all(
-                color: SuccessNewColor().border,
-                width: 1,
-              ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('driver_score_title'.tr,
-                    style: Theme.of(context).textTheme.bodyMedium),
-                Container(
-                  child: Row(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: SuccessNewColor()
-                              .main, // Replace with your actual color
-                          borderRadius: BorderRadius.all(Radius.circular(24)),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 4, horizontal: 8),
-                          child: Text(
-                            'point'.trParams({
-                              'poin': point,
-                            }),
-                            style: Theme.of(context)
-                                .textTheme
-                                .labelMedium
-                                ?.copyWith(color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
         ],
       ),
     );
@@ -169,9 +92,7 @@ class ProfileScreen extends GetView<ProfileController> {
                           () => Column(
                             children: [
                               AppToggle(
-                                status: controller.isBiometricLogin.value
-                                    ? AppToggleStatus.active
-                                    : AppToggleStatus.inactive,
+                                status: controller.isBiometricLogin.value ? AppToggleStatus.active : AppToggleStatus.inactive,
                                 onChanged: (isActive) {
                                   controller.toggleSwitch(isActive);
                                 },
@@ -182,8 +103,7 @@ class ProfileScreen extends GetView<ProfileController> {
                       ],
                     ),
                   )
-                : Icon(Icons.arrow_forward_ios,
-                    size: 16, color: IconColor.primary),
+                : Icon(Icons.arrow_forward_ios, size: 16, color: IconColor.primary),
           ],
         ),
       ),
@@ -216,8 +136,7 @@ class ProfileScreen extends GetView<ProfileController> {
             },
           ),
           const SizedBox(height: 20),
-          Text('other_setting'.tr,
-              style: Theme.of(context).textTheme.labelMedium),
+          Text('other_setting'.tr, style: Theme.of(context).textTheme.labelMedium),
           ListView.builder(
             itemCount: settingMenuItems.length,
             shrinkWrap: true,
@@ -349,9 +268,7 @@ class ProfileScreen extends GetView<ProfileController> {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  Obx(() => controller.isFetching.value
-                      ? _renderLoading()
-                      : profileHeader(context)),
+                  Obx(() => controller.isFetching.value ? _renderLoading() : profileHeader(context)),
                   content(context),
                 ],
               ),

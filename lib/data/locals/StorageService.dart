@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:hino_driver_app/domain/core/entities/search_result_model.dart';
+import 'package:hino_driver_app/infrastructure/navigation/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StorageService {
@@ -11,14 +12,21 @@ class StorageService {
   final String TOKEN = "token";
   final String IS_BIOMETRIC_LOGIN = "is_biometric_login";
   final String SELECTED_LANGUAGE = "selected_language";
+  final String LOGIN_ATTEMPT = "login_attempt";
 
   static final String ACTIVITIES_JSON = "activities_json";
   static final String CONTACTS_JSON = "contacts_json";
   static final String PERSONAL_CONTACTS_JSON = "personal_contacts_json";
   static final String EVENTS_JSON = "events_json";
   static final String FEEDBACKS_JSON = "feedbacks_json";
-  static final String TRIP_DETAILS_JSON = "trip_details_json";
-  static final String TRIPS_JSON = "trip_json";
+  static final String TRIP_DETAILS_ONE_JSON = "trip_details_one_json";
+  static final String TRIPS_ONE_JSON = "trip_one_json";
+  static final String TRIP_DETAILS_TWO_JSON = "trip_details_two_json";
+  static final String TRIPS_TWO_JSON = "trip_two_json";
+  static final String TRIP_DETAILS_THREE_JSON = "trip_details_three_json";
+  static final String TRIPS_THREE_JSON = "trip_three_json";
+  static final String TRIP_DETAILS_FOUR_JSON = "trip_details_four_json";
+  static final String TRIPS_FOUR_JSON = "trip_four_json";
   static final String USERS_JSON = "users_json";
   static final String RECENT_SEARCHES_JSON = "recent_searches_json";
   static final String HINO_DEALERS_JSON = "hino_dealers_json";
@@ -46,6 +54,12 @@ class StorageService {
 
   void setToken(String token) async {
     await _preferences!.setString(TOKEN, token);
+  }
+
+  int? getLoginAttempt() => _preferences!.getInt(LOGIN_ATTEMPT);
+
+  void setLoginAttempt(int counter) async {
+    await _preferences!.setInt(LOGIN_ATTEMPT, counter);
   }
 
   bool? getIsBiometricLogin() => _preferences!.getBool(IS_BIOMETRIC_LOGIN);

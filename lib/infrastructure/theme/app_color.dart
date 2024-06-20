@@ -150,7 +150,7 @@ class YellowBaseColor implements BaseAppColorProps {
   const YellowBaseColor();
 
   @override
-  Color get border => YellowColor.color100;
+  Color get border => YellowColor.color200;
 
   @override
   Color get content => YellowColor.color100;
@@ -168,7 +168,7 @@ class YellowBaseColor implements BaseAppColorProps {
   Color get pressed => YellowColor.color100;
 
   @override
-  Color get surface => YellowColor.color100;
+  Color get surface => YellowColor.color50;
 
 }
 

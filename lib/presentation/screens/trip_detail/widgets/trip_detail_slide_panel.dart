@@ -10,7 +10,10 @@ class TripDetailSlidePanel extends GetView<TripDetailController> {
   Widget get content {
     switch (controller.currentPanel.value) {
       case TripPanel.detail:
-        return DetailPanel(onBack: onBack);
+        return DetailPanel(
+          onBack: onBack,
+          point: controller.data.value?.totalPoint ?? 0,
+        );
       case TripPanel.penalty:
         return DetailPenaltyPanel(
           penalty: controller.selectedPenalty.value!,

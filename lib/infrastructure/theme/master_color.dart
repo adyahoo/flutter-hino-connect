@@ -83,7 +83,9 @@ class GreenColor {
 class YellowColor {
   YellowColor._();
 
+  static const color50 = Color(0xFFFEFAEC);
   static const color100 = Color(0xFFF8CF61);
+  static const color200 = Color(0xFFFDF0C8);
 }
 
 class GrayColor {

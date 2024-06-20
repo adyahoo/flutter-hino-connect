@@ -1,0 +1,95 @@
+{
+    "data": [
+      {
+        "id": 1,
+        "origin": {
+          "lat": -6.921829420243262,
+          "lng": 107.60709138861435,
+          "address": "Jl. Asia Pasifik, Bandung",
+          "date": "2024-03-10T01:10:30.000000Z"
+        },
+        "destination": {
+          "lat": -6.9286347587003485,
+          "lng": 107.6127884229171,
+          "address": "Jl. Lengkong Besar No.68",
+          "date": "2024-03-10T01:11:00.000000Z"
+        },
+        "total_point": 0,
+        "total_distance": 12,
+        "duration": "00:30:40",
+        "created_at": "2024-03-10T01:11:00.000000Z"
+      },
+      {
+        "id": 2,
+        "origin": {
+          "lat": -6.936720316946977,
+          "lng": 107.59336481878432,
+          "address": "Jalan Peta, No.147",
+          "date": "2024-03-10T01:13:00.000000Z"
+        },
+        "destination": {
+          "lat": -6.916313896039367,
+          "lng": 107.60890017239933,
+          "address": "Jalan Braga, No.99",
+          "date": "2024-03-10T01:14:30.000000Z"
+        },
+        "total_point": 20,
+        "total_distance": 5.4,
+        "duration": "01:30:40",
+        "created_at": "2024-03-10T01:14:30.000000Z"
+      },
+      {
+        "id": 3,
+        "origin": {
+          "lat": -6.936129242825121,
+          "lng": 107.62409037013927,
+          "address": "Jl. Pelajar Pejuang 45",
+          "date": "2024-03-12T01:09:30.000000Z"
+        },
+        "destination": {
+          "lat": -6.93401111474063,
+          "lng": 107.60488861307793,
+          "address": "Jl. Moh Toha",
+          "date": "2024-03-12T01:10:30.000000Z"
+        },
+        "total_point": 30,
+        "total_distance": 25,
+        "duration": "01:00:40",
+        "created_at": "2024-03-12T01:10:30.000000Z"
+      },
+      {
+        "id": 4,
+        "origin": {
+          "lat": -6.941859219829607,
+          "lng": 107.59159768051016,
+          "address": "Jalan Raya Kopo, No.311",
+          "date": "2024-03-15T01:10:30.000000Z"
+        },
+        "destination": {
+          "lat": -6.928279946508039,
+          "lng": 107.58200555451555,
+          "address": "Jalan Terusan Pasir Koja",
+          "date": "2024-03-15T01:11:00.000000Z"
+        },
+        "total_point": 40,
+        "total_distance": 10,
+        "duration": "00:30:40",
+        "created_at": "2024-03-15T01:11:00.000000Z"
+      }
+    ],
+    "links": {
+      "first": "http:\/\/mahaputra.local\/client\/v1\/technician-review?page=1",
+      "last": "http:\/\/mahaputra.local\/client\/v1\/technician-review?page=2",
+      "prev": null,
+      "next": "http:\/\/mahaputra.local\/client\/v1\/technician-review?page=2"
+    },
+    "meta": {
+      "current_page": 1,
+      "from": 1,
+      "last_page": 2,
+      "path": "http:\/\/mahaputra.local\/client\/v1\/technician-review",
+      "per_page": 10,
+      "to": 10,
+      "total": 18
+    }
+  }

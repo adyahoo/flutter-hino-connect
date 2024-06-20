@@ -46,7 +46,6 @@ class TripUseCase implements ITripUseCase {
   Future<ListPaginationApiResponse<TripModel>> getTodayTripList() async {
     try {
       final response = await dataSource.getTodayTripList();
-      print('hiks banget ${response.data.length}');
       final data = response.data
           .map(
             (e) => TripModel(
@@ -81,6 +80,7 @@ class TripUseCase implements ITripUseCase {
         id: data.id,
         origin: LatLng(data.origin.lat, data.origin.lng),
         destination: LatLng(data.destination.lat, data.destination.lng),
+        totalPoint: data.totalPoint,
         penalties: data.penalties
             .map(
               (e) => PenaltyModel(
@@ -91,6 +91,7 @@ class TripUseCase implements ITripUseCase {
                 }),
                 datetime: e.dateTime,
                 note: e.note,
+                point: e.point
               ),
             )
             .toList(),
@@ -109,6 +110,7 @@ class TripUseCase implements ITripUseCase {
         type: penalty.type.name,
         note: penalty.note,
         dateTime: penalty.datetime,
+        point: penalty.point,
       );
 
       await dataSource.updateTripDetail(id, dto);
