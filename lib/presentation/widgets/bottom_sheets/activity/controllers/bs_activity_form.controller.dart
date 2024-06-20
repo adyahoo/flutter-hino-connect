@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:hino_driver_app/domain/core/entities/model.dart';
 import 'package:hino_driver_app/infrastructure/constants.dart';
 import 'package:hino_driver_app/infrastructure/extension.dart';
+import 'package:hino_driver_app/infrastructure/utils.dart';
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 
 class BsActivityFormController extends GetxController {
@@ -42,7 +43,7 @@ class BsActivityFormController extends GetxController {
 
   ActivityModel submit() {
     final mergedDate = date.copyWith(hour: time.hour, minute: time.minute);
-    final formattedDate = DateFormat(Constants.DATE_FORMAT_TZ).format(mergedDate);
+    final formattedDate = mergedDate.formatDate(Constants.DATE_FORMAT_TZ);
 
     // if submit update use selected item's id else use static id for v1
     final data = ActivityModel(

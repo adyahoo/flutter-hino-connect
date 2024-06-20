@@ -37,8 +37,7 @@ class Constants {
   static const DATE_FORMAT_TZ = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
   static final DATE_FORMAT_PENALTY = "dd MMM yyyy, HH:mm";
   static final DATE_FORMAT_TRIP = "EEEE, dd MMMM yyyy";
-  static final BASE_URL =
-      "https://dev-weeo.timedoor-host.web.id/api/mobile/v1/";
+  static final BASE_URL = "https://dev-weeo.timedoor-host.web.id/api/mobile/v1/";
 
   static final venueLocation = LatLng(-6.3003589142707925, 106.63645869332062);
 
@@ -111,8 +110,7 @@ class Constants {
             onTap: () {
               Get.toNamed(Routes.EDIT_PROFILE);
             }),
-        MenuItem(
-            title: 'biometric_login'.tr, icon: Iconsax.scan4, onTap: () {}),
+        MenuItem(title: 'biometric_login'.tr, icon: Iconsax.scan4, onTap: () {}),
       ];
 
   static List<MenuItem> get settingMenuItems => [
@@ -135,10 +133,7 @@ class Constants {
           },
         ),
         MenuItem(title: 'about_us'.tr, icon: Iconsax.note_21, onTap: () {}),
-        MenuItem(
-            title: 'privacy_policy'.tr,
-            icon: Iconsax.shield_tick4,
-            onTap: () {}),
+        MenuItem(title: 'privacy_policy'.tr, icon: Iconsax.shield_tick4, onTap: () {}),
         MenuItem(
             title: 'emergency_contact'.tr,
             icon: Iconsax.call_calling,

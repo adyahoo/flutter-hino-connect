@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:get/get.dart';
-import 'package:hino_driver_app/infrastructure/navigation/routes.dart';
 import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
@@ -21,8 +20,10 @@ class VehicleScanScreen extends GetView<VehicleScanController> {
         icon = "ic_success_circle";
         title = "scan_code_success".tr;
         description = "scan_code_success_desc".trParams({
-          "vehicle": controller.result.value?.code ?? "",
-          "plate": controller.result.value?.code ?? "",
+          "vehicle": "Hino Bus GB150 - Euro4",
+          "plate": "B 9988 XYZ",
+          // "vehicle": controller.result.value?.code ?? "",
+          // "plate": controller.result.value?.code ?? "",
         });
       }
 

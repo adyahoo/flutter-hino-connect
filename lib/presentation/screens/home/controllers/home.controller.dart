@@ -24,9 +24,9 @@ class HomeController extends GetxController {
   void onInit() {
     super.onInit();
 
-    print('isVehicleVerified: $isVehicleVerified');
     // Get the argument passed from the previous screen
     if (Get.arguments != null && Get.arguments['isVehicleVerified'] != null) {
+      print('sapi isVehicleVerified: $isVehicleVerified');
       isVehicleVerified.value = Get.arguments['isVehicleVerified'];
     }
   }
@@ -35,7 +35,8 @@ class HomeController extends GetxController {
   void onReady() {
     super.onReady();
     _getUser();
-    if(isVehicleVerified.value) {
+
+    if (isVehicleVerified.value) {
       getTodayTrip();
     }
   }

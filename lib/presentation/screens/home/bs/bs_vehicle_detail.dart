@@ -58,7 +58,7 @@ class BsVehicleDetail extends StatelessWidget {
                         ),
                       ),
                       TextSpan(
-                        text: " " + "Hino 500 FG 250 TH",
+                        text: " " + "Hino Bus GB150 - Euro4",
                         style: Theme.of(context).textTheme.titleSmall?.copyWith(color: TextColor.secondary),
                       )
                     ],
@@ -80,9 +80,9 @@ class BsVehicleDetail extends StatelessWidget {
                   ),
                 ),
                 const AppDivider(),
-                _renderItem(context, "Body", "Trailer"),
+                _renderItem(context, "Body", "Bus"),
                 const AppDivider(),
-                _renderItem(context, "plat_number".tr, "DK 10293 FN"),
+                _renderItem(context, "plat_number".tr, "B 9988 XYZ"),
               ],
             ),
           ),

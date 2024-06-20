@@ -18,8 +18,8 @@ class LoginController extends GetxController {
   final emailState = AppTextFieldState();
   final passwordState = AppTextFieldState();
 
-  final emailController = TextEditingController(text: "test@gmail.com").obs;
-  final passwordController = TextEditingController(text: "password").obs;
+  final emailController = TextEditingController().obs;
+  final passwordController = TextEditingController().obs;
   final isLoading = false.obs;
   final LocalAuthentication localAuth = LocalAuthentication();
   var isBiometricActive = false.obs;

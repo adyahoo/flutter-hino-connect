@@ -13,12 +13,7 @@ class EventModel extends Equatable {
     required this.note,
   });
 
-  String get formatedDate {
-    DateTime date = DateFormat(Constants.DATE_FORMAT_TZ).parse(this.createdAt);
-    final outputFormat = DateFormat("dd MMMM yyyy, HH:mm");
-
-    return outputFormat.format(date);
-  }
+  String get formatedDate => this.createdAt.formatDateFromString("dd MMMM yyyy, HH:mm");
 
   @override
   List<Object?> get props => [id, type, createdAt, note];

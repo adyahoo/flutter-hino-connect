@@ -45,7 +45,7 @@ class BsEventFormController extends GetxController {
 
   EventModel submit() {
     final mergedDate = date.copyWith(hour: time.hour, minute: time.minute);
-    final formattedDate = DateFormat(Constants.DATE_FORMAT_TZ).format(mergedDate);
+    final formattedDate = mergedDate.formatDate(Constants.DATE_FORMAT_TZ);
 
     // if submit update use selected item's id else use static id for v1
     final data = EventModel(
