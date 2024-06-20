@@ -32,9 +32,14 @@ class AppFilter extends GetView<AppFilterController> {
             icon: chip.icon,
             selectedId: controller.selectedId.value,
             onSelected: (selectedId) {
+              print(selectedId);
               controller.setSelectedId(selectedId);
 
               onClick(controller.selectedId.value);
+
+              if(selectedId == 'filter_drive_to'){
+                controller.clearSelectedId();
+              }
             },
           );
         }).toList(),

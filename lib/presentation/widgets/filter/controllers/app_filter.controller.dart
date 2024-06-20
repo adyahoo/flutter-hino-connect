@@ -26,4 +26,8 @@ class AppFilterController extends GetxController {
 
     this.selectedId.value = id;
   }
+
+  void clearSelectedId(){
+    this.selectedId.value = '';
+  }
 }
