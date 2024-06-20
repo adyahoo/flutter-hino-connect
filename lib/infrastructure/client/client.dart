@@ -12,7 +12,6 @@ class ApiClient {
     final headers = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'x-app-locale': getx.Get.locale?.languageCode ?? "",
     };
 
     client.options = BaseOptions(
@@ -43,6 +42,12 @@ class ApiInterceptors extends InterceptorsWrapper {
         'Authorization': 'Bearer $token',
       });
     }
+
+    final locale = getx.Get.locale.toString();
+    options.headers.addAll({
+      'x-app-locale': locale,
+    });
+    print("sapi request options: ${options.headers}");
 
     super.onRequest(options, handler);
   }

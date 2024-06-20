@@ -24,7 +24,10 @@ class BsEventForm extends GetView<BsEventFormController> {
         (initialData == null)
             ? Text(
                 "fill_event_form".tr,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.tertiary),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(color: TextColor.tertiary),
               )
             : const SizedBox(),
       ],
@@ -133,16 +136,79 @@ class BsEventForm extends GetView<BsEventFormController> {
           firstDate: DateTime(1900),
           lastDate: DateTime.now(),
           initialDate: controller.date,
+          builder: (BuildContext context, Widget? child) {
+            return Theme(
+              data: ThemeData.light().copyWith(
+                colorScheme: ColorScheme.light(
+                  primary: Colors.white, // Header background color
+                  onPrimary: Colors.black, // Header text color
+                  onSurface: TextColor.primary, // Default text color
+                ),
+                dialogBackgroundColor:
+                    BackgroundColor.primary, // Background color
+                textButtonTheme: TextButtonThemeData(
+                  style: TextButton.styleFrom(
+                    foregroundColor: PrimaryColor.main, // Button text color
+                  ),
+                ),
+              ),
+              child: child!,
+            );
+          },
         ).then((pickedDate) {
-          controller.setDate(pickedDate);
+          if (pickedDate != null && pickedDate != controller.date) {
+            controller.setDate(pickedDate);
+          }
         });
         break;
       case AppTextFieldType.time_picker:
         showTimePicker(
           context: context,
           initialTime: controller.time,
+          builder: (BuildContext context, Widget? child) {
+            return Theme(
+              data: ThemeData(
+                colorScheme: const ColorScheme.light(
+                  primary: PrimaryColor.surface,
+                  onBackground: Colors.white,
+                  surfaceTint: Colors.transparent,
+                ),
+                timePickerTheme: TimePickerThemeData(
+                  backgroundColor: Colors.white, // Background color
+                  hourMinuteTextColor:
+                      TextColor.primary, // Color of the hour and minute numbers
+                  dayPeriodTextColor: TextColor.primary, // Color of AM/PM
+                  dayPeriodBorderSide: BorderSide(
+                      color: PrimaryColor.main), // Border color for AM/PM
+                  dialHandColor: PrimaryColor.main, // Color of the hour hand
+                  dialTextColor:
+                      TextColor.primary, // Text color on the clock dial
+                  dialBackgroundColor: PrimaryColor
+                      .surface, // Background color of the clock dial
+                  entryModeIconColor:
+                      TextColor.primary, // Color of the entry mode icon
+                  helpTextStyle: const TextStyle(
+                    color: TextColor
+                        .primary, // Set the text color for "Enter time"
+                  ),
+                  cancelButtonStyle: ButtonStyle(
+                    foregroundColor:
+                        MaterialStateProperty.all<Color?>(PrimaryColor.main),
+                  ),
+                  confirmButtonStyle: ButtonStyle(
+                    foregroundColor:
+                        MaterialStateProperty.all<Color?>(PrimaryColor.main),
+                  ),
+                  hourMinuteTextStyle: const TextStyle(fontSize: 30),
+                ),
+              ),
+              child: child!,
+            );
+          },
         ).then((pickedTime) {
-          controller.setTime(pickedTime);
+          if (pickedTime != null && pickedTime != controller.time) {
+            controller.setTime(pickedTime);
+          }
         });
         break;
       default:
@@ -171,7 +237,8 @@ class BsEventForm extends GetView<BsEventFormController> {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)),
+        borderRadius: BorderRadius.only(
+            topRight: Radius.circular(20), topLeft: Radius.circular(20)),
       ),
       // single child scroll used to prevent overflow when soft keyboard appear
       child: SingleChildScrollView(

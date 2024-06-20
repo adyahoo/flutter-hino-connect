@@ -89,7 +89,8 @@ class FaceScanInformationScreen extends GetView<FaceScanInformationController> {
                   AppButton.icon(
                     label: 'verification'.tr,
                     onPress: () {
-                      Get.toNamed(Routes.FACE_RECOGNITION);
+                      // Get.toNamed(Routes.FACE_RECOGNITION);
+                      Get.toNamed(Routes.VEHICLE_SCAN);
                     },
                     type: AppButtonType.filled,
                     icon: Iconsax.scan,

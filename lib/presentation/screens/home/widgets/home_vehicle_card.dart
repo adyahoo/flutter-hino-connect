@@ -24,7 +24,7 @@ class HomeVehicleCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Hino 500 FG 250 TH",
+                      "Hino Bus GB150 - Euro4",
                       style: Theme.of(context).textTheme.titleSmall,
                     ),
                     const SizedBox(height: 4),
@@ -42,7 +42,7 @@ class HomeVehicleCard extends StatelessWidget {
                                 ),
                           ),
                           TextSpan(
-                            text: "  " + "DK 10293 FN",
+                            text: "  " + "B 9988 XYZ",
                             style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.secondary),
                           ),
                         ],

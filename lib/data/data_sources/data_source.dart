@@ -22,6 +22,7 @@ import 'package:hino_driver_app/infrastructure/constants.dart';
 import 'package:hino_driver_app/data/locals/StorageService.dart';
 import 'package:hino_driver_app/domain/core/entities/model.dart';
 import 'package:hino_driver_app/infrastructure/di.dart';
+import 'package:hino_driver_app/infrastructure/extension.dart';
 import 'package:hino_driver_app/main.dart';
 import 'package:hino_driver_app/infrastructure/utils.dart';
 import 'package:hino_driver_app/presentation/screens/trip_list/controllers/trip_list.controller.dart';

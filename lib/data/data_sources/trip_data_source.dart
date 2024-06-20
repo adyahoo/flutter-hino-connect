@@ -91,14 +91,14 @@ class TripDataSource {
       );
 
       final today = DateTime.now();
-      final formattedToday = DateFormat("yyyy-MM-dd").format(today);
+      final todayFormat = "yyyy-MM-dd";
+      final tripFormat = "yyy-MM-dd";
+
+      final formattedToday = today.formatDate(todayFormat);
 
       final todayTrips = trips.data.where((element) {
-        final tripDateOrigin = DateFormat("yyy-MM-dd").parse(element.origin.date);
-        final formattedDateOrigin = DateFormat("yyy-MM-dd").format(tripDateOrigin);
-
-        final tripDateDestination = DateFormat("yyy-MM-dd").parse(element.destination.date);
-        final formattedDateDestination = DateFormat("yyy-MM-dd").format(tripDateDestination);
+        final formattedDateOrigin = element.origin.date.formatDateFromString(tripFormat, sourceFormat: tripFormat);
+        final formattedDateDestination = element.destination.date.formatDateFromString(tripFormat, sourceFormat: tripFormat);
 
         return formattedDateOrigin == formattedToday || formattedDateDestination == formattedToday;
       }).toList();
@@ -154,11 +154,10 @@ class TripDataSource {
     List<TripDto> newTrips = trips;
 
     if (filter.containsKey(TripFilter.date)) {
-      final date = DateFormat("yyyy-MM-dd").format(filter[TripFilter.date] as DateTime);
+      final date = (filter[TripFilter.date] as DateTime).formatDate("yyyy-MM-dd");
 
       newTrips = trips.where((element) {
-        final tripDate = DateFormat("yyy-MM-dd").parse(element.createdAt);
-        final formattedDate = DateFormat("yyy-MM-dd").format(tripDate);
+        final formattedDate = element.createdAt.formatDateFromString("yyy-MM-dd",sourceFormat: "yyy-MM-dd");
 
         return formattedDate == date;
       }).toList();

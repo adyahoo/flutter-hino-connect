@@ -1,6 +1,6 @@
-# Hino Driver App
+# HINO-CONNECT DRIVER App
 
-Hino Driver App is an application to track trucks from driver's reports.
+HINO-CONNECT DRIVER App is an application to track trucks from driver's reports.
 
 ## Setup
 

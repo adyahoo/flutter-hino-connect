@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hino_driver_app/infrastructure/constants.dart';
 import 'package:equatable/equatable.dart';
+import 'package:hino_driver_app/infrastructure/extension.dart';
 
 class TripModel extends Equatable {
   final int id;
@@ -64,12 +65,7 @@ class TripLocationModel extends Equatable {
         date: json["date"],
       );
 
-  String get formattedDate {
-    final date = DateFormat(Constants.DATE_FORMAT_TZ).parse(this.date);
-    final outputFormat = DateFormat(Constants.DATE_FORMAT_PENALTY);
-
-    return outputFormat.format(date);
-  }
+  String get formattedDate => this.date.formatDateFromString(Constants.DATE_FORMAT_PENALTY);
 
   @override
   List<Object> get props => [lat, lng, address, date];
@@ -145,12 +141,7 @@ class PenaltyModel {
     }
   }
 
-  String get formattedDate {
-    final dateFormat = DateFormat(Constants.DATE_FORMAT_TZ).parse(this.datetime);
-    final date = DateFormat(Constants.DATE_FORMAT_PENALTY).format(dateFormat);
-
-    return date;
-  }
+  String get formattedDate => this.datetime.formatDateFromString(Constants.DATE_FORMAT_PENALTY);
 
   @override
   List<Object?> get props => [

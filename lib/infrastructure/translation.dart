@@ -157,7 +157,12 @@ class AppTranslations extends Translations {
           "empty_event_desc": "You dont have any events to show. You can add event or the Admin will add the event for you",
           "scanning_face": "Scanning face...",
           "scan_face_completed": "Scanning face complete...",
-          "face_detected_successfully": "Face ID detected successfully"
+          "face_detected_successfully": "Face ID detected successfully",
+          "filter_gas_station": "Gas Station",
+          "filter_service_center": "Service Center",
+          "filter_restaurant": "Restaurant",
+          "filter_car_dealer": "Dealers",
+          "filter_drive_to": "Drive To",
         },
         'id_ID': {
           'home': 'Home',
@@ -293,8 +298,8 @@ class AppTranslations extends Translations {
           "scan_code_success": "Kode berhasil dibaca",
           "scan_code_success_desc": "Scan berhasil untuk mobil @vehicle dengan @plate",
           "redirect_home": "Mengarahkan ke beranda dalam...@counter",
-          "welcome": "Selamat datang",
-          "welcome_subtitle": "Scan mobil anda untuk mendapatkan tugas dan rute perjalanan Anda",
+          "welcome": "Selamat Datang",
+          "welcome_subtitle": "Scan kendaraan untuk mendapatkan tugas dan rute perjalanan Anda",
           "face_scan_success": "ID wajah sukses dikenali",
           "biometric_warning_title": "Fitur biometrik belum aktif",
           "biometric_warning_description": "Anda belum mengaktifkan biometrik di aplikasi Hino Driver di perangkat Anda. Silakan login terlebih dahulu, kemudian aktifkan fitur \"Login Biometrik\" pada menu profil.",
@@ -312,7 +317,12 @@ class AppTranslations extends Translations {
           "empty_event_desc": "Anda belum punya event untuk ditampilkan. Anda dapat menambahkan event atau Admin akan menambahkan event untuk Anda.",
           "scanning_face": "Sedang memindai wajah...",
           "scan_face_completed": "Berhasil memindai wajah...",
-          "face_detected_successfully": "ID wajah sukses dikenali"
+          "face_detected_successfully": "ID wajah sukses dikenali",
+          "filter_gas_station": "Pom Bensin",
+          "filter_service_center": "Service Center",
+          "filter_restaurant": "Restoran",
+          "filter_car_dealer": "Dealers",
+          "filter_drive_to": "Menuju ke",
         }
       };
 }

@@ -5,6 +5,7 @@ import 'package:hino_driver_app/domain/core/entities/trips_model.dart';
 import 'package:hino_driver_app/domain/core/usecases/trip_use_case.dart';
 import 'package:hino_driver_app/infrastructure/constants.dart';
 import 'package:hino_driver_app/infrastructure/extension.dart';
+import 'package:hino_driver_app/infrastructure/utils.dart';
 
 enum TripFilter { date }
 
@@ -16,7 +17,7 @@ class TripListController extends GetxController {
   final filterEditingController = TextEditingController().obs;
   final trips = Rx<Map<String, List<TripModel>>>({});
   final isFetching = false.obs;
-  final filterApplied = false.obs; 
+  final filterApplied = false.obs;
 
   DateTime date = DateTime.now();
   Map<TripFilter, dynamic>? _filter = null;
@@ -52,8 +53,7 @@ class TripListController extends GetxController {
     Map<String, List<TripModel>> groupedItems = {};
 
     data.forEach((e) {
-      final itemDate = DateFormat(Constants.DATE_FORMAT_TZ).parse(e.createdAt);
-      String formattedDate = DateFormat(Constants.DATE_FORMAT_TRIP).format(itemDate);
+      String formattedDate = e.createdAt.formatDateFromString(Constants.DATE_FORMAT_TRIP);
 
       if (groupedItems.containsKey(formattedDate)) {
         groupedItems[formattedDate]!.add(e);
@@ -68,12 +68,13 @@ class TripListController extends GetxController {
   void setDate(DateTime? value) {
     if (value != null) {
       date = value;
-      filterEditingController.value.text = value.getActivityDate();
+
+      filterEditingController.value.text = value.formatDate(Constants.DATE_FORMAT_TRIP);
       _filter = {
         ...?_filter,
         TripFilter.date: date,
       };
-      filterApplied.value = true; // Set filter applied to true
+      filterApplied.value = true;
 
       getTripList();
     }

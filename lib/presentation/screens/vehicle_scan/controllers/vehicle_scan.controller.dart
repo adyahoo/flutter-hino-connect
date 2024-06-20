@@ -114,7 +114,6 @@ class VehicleScanController extends GetxController {
 
   void setController(QRViewController controller) {
     qrController = controller;
-    print("sapi ahayy ${result.value}");
 
     if (Platform.isAndroid) {
       controller.pauseCamera();
