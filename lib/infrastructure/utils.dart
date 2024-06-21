@@ -7,9 +7,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:hino_driver_app/data/locals/StorageService.dart';
 import 'package:hino_driver_app/domain/core/entities/api_model.dart';
 import 'package:hino_driver_app/infrastructure/client/exceptions/ApiException.dart';
 import 'package:hino_driver_app/infrastructure/constants.dart';
+import 'package:hino_driver_app/infrastructure/di.dart';
+import 'package:hino_driver_app/infrastructure/navigation/routes.dart';
 import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 import 'dart:math';
@@ -21,7 +24,13 @@ void errorHandler(Exception e, {VoidCallback? onDismiss}) {
   ErrorResponseModel? error;
 
   if (e is ApiException) {
-    if (e.response?.error.code == 422) {
+    if(e.response?.error.code == 401) {
+      inject<StorageService>().clearToken();
+      Get.offAllNamed(Routes.LOGIN);
+      return;
+    }
+    
+    else if (e.response?.error.code == 422) {
       error = ErrorResponseModel(
         code: 422,
         title: e.response!.error.title,
@@ -43,12 +52,17 @@ void errorHandler(Exception e, {VoidCallback? onDismiss}) {
       );
     }
   } else if (e is PlatformException) {
+    print('masuk platform exception');
+    print('error code: ${e.code}');
+    print('error message: ${e.message}');
+
     error = ErrorResponseModel(
       code: 500,
-      title: 'error_biometric_title',
-      message: 'error_biometric_not_found',
+      title: 'Error Authenticating Biometric',
+      message: 'Biometric feature is not available on your device',
       errors: [],
     );
+    print('error: $error');
   }
 
   showGetBottomSheet(
@@ -85,7 +99,8 @@ void showGetBottomSheet(Widget content, {bool canExpand = false}) {
     content,
     backgroundColor: Colors.white,
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)),
+      borderRadius: BorderRadius.only(
+          topRight: Radius.circular(20), topLeft: Radius.circular(20)),
     ),
     isScrollControlled: canExpand,
   );
@@ -99,7 +114,8 @@ void showScanQrBottomSheet(Widget content) {
     enableDrag: false,
     isDismissible: false,
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)),
+      borderRadius: BorderRadius.only(
+          topRight: Radius.circular(20), topLeft: Radius.circular(20)),
     ),
   );
 }
@@ -125,7 +141,11 @@ double calculateDistance(double lat1, double lng1, double lat2, double lng2) {
   const double earthRadius = 6371000; // meters
   final double dLat = _degreesToRadians(lat2 - lat1);
   final double dLng = _degreesToRadians(lng2 - lng1);
-  final double a = sin(dLat / 2) * sin(dLat / 2) + cos(_degreesToRadians(lat1)) * cos(_degreesToRadians(lat2)) * sin(dLng / 2) * sin(dLng / 2);
+  final double a = sin(dLat / 2) * sin(dLat / 2) +
+      cos(_degreesToRadians(lat1)) *
+          cos(_degreesToRadians(lat2)) *
+          sin(dLng / 2) *
+          sin(dLng / 2);
   final double c = 2 * atan2(sqrt(a), sqrt(1 - a));
   return earthRadius * c;
 }
@@ -151,11 +171,13 @@ Future<void> showScheduledNewTripNotif() async {
       ),
     ),
     androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-    uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+    uiLocalNotificationDateInterpretation:
+        UILocalNotificationDateInterpretation.absoluteTime,
   );
 }
 
 Future<void> showNewTripNotif() async {
+
   await flutterLocalNotificationsPlugin.show(
     0,
     'Check your recent completed trip',
@@ -168,6 +190,7 @@ Future<void> showNewTripNotif() async {
         icon: "@drawable/ic_notif_icon",
         importance: Importance.high,
         priority: Priority.high,
+        color: Colors.red,
       ),
     ),
   );
@@ -182,9 +205,14 @@ double translateX(
 ) {
   switch (rotation) {
     case InputImageRotation.rotation90deg:
-      return x * canvasSize.width / (Platform.isIOS ? imageSize.width : imageSize.height);
+      return x *
+          canvasSize.width /
+          (Platform.isIOS ? imageSize.width : imageSize.height);
     case InputImageRotation.rotation270deg:
-      return canvasSize.width - x * canvasSize.width / (Platform.isIOS ? imageSize.width : imageSize.height);
+      return canvasSize.width -
+          x *
+              canvasSize.width /
+              (Platform.isIOS ? imageSize.width : imageSize.height);
     case InputImageRotation.rotation0deg:
     case InputImageRotation.rotation180deg:
       switch (cameraLensDirection) {
@@ -206,7 +234,9 @@ double translateY(
   switch (rotation) {
     case InputImageRotation.rotation90deg:
     case InputImageRotation.rotation270deg:
-      return y * canvasSize.height / (Platform.isIOS ? imageSize.height : imageSize.width);
+      return y *
+          canvasSize.height /
+          (Platform.isIOS ? imageSize.height : imageSize.width);
     case InputImageRotation.rotation0deg:
     case InputImageRotation.rotation180deg:
       return y * canvasSize.height / imageSize.height;

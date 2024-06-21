@@ -64,6 +64,10 @@ class ProfileController extends GetxController {
 
     final bool canAuthenticateWithBiometrics = await localAuth.canCheckBiometrics;
     final bool canAuthenticate = canAuthenticateWithBiometrics || await localAuth.isDeviceSupported();
+    // final bool isDeviceSupported = await localAuth.isDeviceSupported();
+
+
+    print('canAuthenticate: $canAuthenticateWithBiometrics');
 
     if (canAuthenticate) {
       try {

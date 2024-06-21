@@ -218,6 +218,17 @@ class MapsController extends GetxController {
     }
   }
 
+  void handleControlPanel(Marker? marker) {
+  if (panelController.isPanelOpen) {
+    _controller.hideMarkerInfoWindow(selectedMarker!.markerId);
+    selectedMarker = null;
+    panelController.close();
+  } else if (marker != null) {
+    selectedMarker = marker;
+    panelController.open();
+  }
+}
+
   Future<void> _handleOpenMaps() async {
     String url = '';
     String urlAppleMaps = '';
@@ -244,21 +255,24 @@ class MapsController extends GetxController {
 
   Future<void> filterMarkers(String id) async {
     if (id.isNotEmpty) {
+      //check if there's open panel
+      if (panelController.isPanelOpen) {
+        _controller.hideMarkerInfoWindow(selectedMarker!.markerId);
+        selectedMarker = null;
+        panelController.close();
+      }
+
       if (id == 'filter_drive_to') {
         await _handleOpenMaps();
         return;
       }
-      print('Filtering markers: $id');
+      
       final item = Constants.mapScreenFilterItems
           .firstWhere((element) => element.id == id);
-
-      print('item: $item.label');
       final type = convertLabelToType(item.label);
-      print('type: $type');
-
       selectedChip.value = item.id;
       _markers.value = _createMarkers(_places.where((e) => e.type == type));
-      print('place: ${_places.where((e) => e.type == type)}');
+
     } else {
       selectedChip.value = '';
       _markers.value = _createMarkers(_places);
@@ -355,6 +369,8 @@ class MapsController extends GetxController {
 
     print('Updated selected marker: ${selectedMarker?.markerId.value}');
   }
+
+  
 
   Future<void> _createCustomMarker() async {
     gasStation = await _getMarkerIcon("ic_maps_gas_station.png");

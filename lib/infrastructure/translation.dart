@@ -161,7 +161,7 @@ class AppTranslations extends Translations {
           "filter_gas_station": "Gas Station",
           "filter_service_center": "Service Center",
           "filter_restaurant": "Restaurant",
-          "filter_car_dealer": "Dealers",
+          "filter_car_dealer": "Dealer",
           "filter_drive_to": "Drive To",
         },
         'id_ID': {
@@ -319,10 +319,10 @@ class AppTranslations extends Translations {
           "scan_face_completed": "Berhasil memindai wajah...",
           "face_detected_successfully": "ID wajah sukses dikenali",
           "filter_gas_station": "Pom Bensin",
-          "filter_service_center": "Service Center",
+          "filter_service_center": "Pusat Servis",
           "filter_restaurant": "Restoran",
-          "filter_car_dealer": "Dealers",
-          "filter_drive_to": "Menuju ke",
+          "filter_car_dealer": "Dealer",
+          "filter_drive_to": "Tujuan Lainnya",
         }
       };
 }
