@@ -388,7 +388,6 @@ class AppTextField extends StatelessWidget {
                             Get.find<BsSinglePickerController>().setSelectedOption(value.id);
                           },
                         ),
-                        isScrollControlled: true,
                       );
                     }
                   },

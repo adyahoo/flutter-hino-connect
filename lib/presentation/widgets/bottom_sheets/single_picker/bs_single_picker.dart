@@ -33,10 +33,7 @@ class BsSinglePicker extends GetView<BsSinglePickerController> {
               contentPadding: const EdgeInsets.symmetric(horizontal: 0),
               title: Text(
                 value.title,
-                style: Theme.of(context)
-                    .textTheme
-                    .labelLarge
-                    ?.copyWith(color: TextColor.secondary),
+                style: Theme.of(context).textTheme.labelLarge?.copyWith(color: TextColor.secondary),
               ),
               trailing: AppRadioButton(
                 isSelected: controller.selectedOption.value == value.id,
@@ -54,20 +51,20 @@ class BsSinglePicker extends GetView<BsSinglePickerController> {
 
   @override
   Widget build(BuildContext context) {
+    final items = controller.filteredItems.value;
+
     return Obx(
       () => Container(
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+          borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
         ),
         child: SafeArea(
           bottom: true,
           child: Container(
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
             ),
             padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
             child: Column(
@@ -79,10 +76,7 @@ class BsSinglePicker extends GetView<BsSinglePickerController> {
                 const SizedBox(height: 8),
                 Text(
                   title,
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleMedium
-                      ?.copyWith(color: TextColor.secondary),
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(color: TextColor.secondary),
                 ),
                 const SizedBox(height: 10),
                 if (type == BsSinglePickerType.withSearch)
@@ -96,15 +90,20 @@ class BsSinglePicker extends GetView<BsSinglePickerController> {
                     },
                   ),
                 const SizedBox(height: 8),
-                ...controller.filteredItems.map((PickerModel value) {
-                  return _renderItem(context, value);
-                }).toList(),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: items.length,
+                    itemBuilder: (context, index) => _renderItem(context, items[index]),
+                  ),
+                ),
                 const SizedBox(height: 24),
                 AppButton(
                   label: "save_change".tr,
                   onPress: () {
-                    onSubmit(options.firstWhere((element) =>
-                        element.id == controller.selectedOption.value));
+                    final selected = options.firstWhere((element) => element.id == controller.selectedOption.value);
+                    controller.setSelectedOption(selected.id);
+                    onSubmit(selected);
+
                     Get.back();
                   },
                   type: AppButtonType.filled,

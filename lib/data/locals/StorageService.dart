@@ -32,6 +32,7 @@ class StorageService {
   static final String HINO_DEALERS_JSON = "hino_dealers_json";
   static final String PLACE_NEAR_VENUE_JSON = "place_near_venue_json";
   static final String TRUCKS_JSON = "trucks_json";
+  static final String COUNTRIES_JSON = "countries_json";
 
   static Future<StorageService?> instance() async {
     _instance ??= StorageService();

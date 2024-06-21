@@ -21,6 +21,7 @@ class FaceRecognitionController extends GetxController {
   final text = ''.obs;
   final loadingValue = 0.0.obs;
   final isScanning = false.obs;
+  final faces = Rx<List<Face>>([]);
 
   bool _canProcess = true;
   bool _isBusy = false;
@@ -82,6 +83,7 @@ class FaceRecognitionController extends GetxController {
     _isBusy = true;
 
     final faces = await _faceDetector.processImage(inputImage);
+    this.faces.value = faces;
 
     // if (inputImage.metadata?.size != null && inputImage.metadata?.rotation != null) {
     //check if any faces detected
@@ -90,9 +92,9 @@ class FaceRecognitionController extends GetxController {
         //check if face alreaady cover the overlay or not
         final width = face.boundingBox.size.width >= 150;
         final top = face.boundingBox.top >= 100;
-        final right = face.boundingBox.right >= 340;
-        final bottom = face.boundingBox.bottom >= 300;
-        final left = face.boundingBox.left >= 100;
+        final bottom = face.boundingBox.bottom <= 320;
+        final right = face.boundingBox.right >= 300;
+        final left = face.boundingBox.left <= 170;
 
         // text.value = "${face.boundingBox.top} ${face.boundingBox.bottom} ${face.boundingBox.right} ${face.boundingBox.left} ${face.boundingBox.size.width}";
         if (width && top && right && bottom & left) {
