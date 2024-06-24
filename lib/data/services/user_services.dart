@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:get/get.dart' as getx;
 import 'package:hino_driver_app/data/dtos/single_base_response_dto.dart';
 import 'package:hino_driver_app/data/dtos/user_dto.dart';
 import 'package:hino_driver_app/infrastructure/client/client.dart';
@@ -54,7 +55,7 @@ class UserServices {
         },
       );
 
-      final res = await client.post(
+      await client.post(
         "user/recognize",
         data: formData,
         options: Options(
@@ -63,9 +64,6 @@ class UserServices {
           },
         ),
       );
-
-      // return SingleApiResponse.fromJson(
-      //     res.data, (json) => UserDto.fromJson(json));
     });
   }
 

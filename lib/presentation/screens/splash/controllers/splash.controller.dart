@@ -34,7 +34,7 @@ class SplashController extends GetxController {
   }
 
   Future<void> _checkPermission() async {
-    final permissions = [Permission.location, Permission.camera, Permission.storage, Permission.notification];
+    final permissions = [Permission.location, Permission.camera, Permission.storage, Permission.notification, Permission.microphone];
     if (Platform.isAndroid) {
       final androidInfor = await DeviceInfoPlugin().androidInfo;
       final sdkVersion = androidInfor.version.sdkInt;
@@ -59,6 +59,7 @@ class SplashController extends GetxController {
           break;
         case PermissionStatus.permanentlyDenied:
           navigateLogin();
+          openAppSettings();
           break;
         default:
           navigateLogin();
@@ -66,8 +67,6 @@ class SplashController extends GetxController {
       }
     });
   }
-
-  void _openAppSetting() {}
 
   void navigateLogin() {
     Future.delayed(const Duration(seconds: 3), () {
@@ -80,18 +79,14 @@ class SplashController extends GetxController {
 
   void _changeLanguage() {
     Future.value(inject<StorageService>().getSelectedLanguage()).then((value) {
-      print("check language: $value");
       switch (value) {
         case 1:
-          print('masuk case 1');
           Get.updateLocale(Locale('id', 'ID'));
           break;
         case 2:
-          print('masuk case 2');
           Get.updateLocale(Locale('en', 'US'));
           break;
         default:
-          print('masuk default');
           break;
       }
     });
