@@ -54,6 +54,7 @@ class AppTextField extends StatelessWidget {
     required this.state,
     required this.type,
     this.label,
+    this.onTapPrefix,
     this.helperText,
     this.onChanged,
     this.prefixIcon,
@@ -65,7 +66,7 @@ class AppTextField extends StatelessWidget {
   })  : this.onClick = null,
         this.canFocus = true,
         this.onClear = null,
-        this.withIcon = false;
+        this.suffixIcon = false;
 
   AppTextField.icon({
     super.key,
@@ -74,6 +75,7 @@ class AppTextField extends StatelessWidget {
     required this.state,
     required this.type,
     this.label,
+    this.onTapPrefix,
     this.helperText,
     this.onChanged,
     this.prefixIcon,
@@ -82,7 +84,7 @@ class AppTextField extends StatelessWidget {
     this.isEditable = true,
     this.isDisabled = false,
     this.length = null,
-  })  : this.withIcon = true,
+  })  : this.suffixIcon = true,
         this.canFocus = true,
         this.onClear = null,
         this.onClick = null;
@@ -94,14 +96,15 @@ class AppTextField extends StatelessWidget {
     required this.state,
     required this.type,
     required this.onClick,
-    this.onChanged,
     this.label,
+    this.onChanged,
     this.helperText,
     this.prefixIcon,
+    this.onTapPrefix,
     this.shape = AppTextFieldShape.rect,
     this.isRequired = true,
     this.isDisabled = false,
-  })  : this.withIcon = true,
+  })  : this.suffixIcon = true,
         this.length = null,
         this.canFocus = true,
         this.onClear = null,
@@ -116,13 +119,14 @@ class AppTextField extends StatelessWidget {
     required this.onClear,
     this.label,
     this.helperText,
+    this.onTapPrefix = null,
     this.prefixIcon,
     this.isDisabled = false,
     this.isEditable = true,
     this.shape = AppTextFieldShape.rounded,
     this.placeholder = 'Search',
     this.canFocus = true,
-  })  : this.withIcon = true,
+  })  : this.suffixIcon = true,
         this.type = AppTextFieldType.search,
         this.isRequired = false,
         this.length = null;
@@ -131,18 +135,20 @@ class AppTextField extends StatelessWidget {
     super.key,
     required this.textEditingController,
     required this.state,
-    required this.onChanged,
+    required this.onTapPrefix,
+    required this.phoneCode,
+    this.onChanged,
     this.label,
     this.helperText,
     this.prefixIcon,
-    this.withIcon = false,
+    this.suffixIcon = false,
     this.isEditable = true,
     this.shape = AppTextFieldShape.rect,
     this.placeholder = 'Phone Number',
+    this.isRequired = false,
     this.canFocus = true,
   })  : this.isDisabled = false,
         this.type = AppTextFieldType.phoneNumber,
-        this.isRequired = false,
         this.onClick = null,
         this.onClear = null,
         this.length = null;
@@ -155,29 +161,74 @@ class AppTextField extends StatelessWidget {
   final bool isRequired;
   final bool isEditable;
   final bool isDisabled;
-  final bool withIcon;
   final bool canFocus;
   final String? label;
   final int? length;
+  final bool suffixIcon;
   final IconData? prefixIcon;
   final String? helperText;
   final VoidCallback? onClick;
   final VoidCallback? onClear;
   final ValueChanged<String>? onChanged;
+  final Function(dynamic data)? onTapPrefix;
 
-  OutlineInputBorder getBorder(double width, Color color) {
+  String phoneCode = "62";
+
+  OutlineInputBorder getBorder(double width) {
+    Color borderColor = BorderColor.secondary;
+    double radius = (shape == AppTextFieldShape.rect) ? 8 : 24;
+
+    if (type == AppTextFieldType.search) {
+      radius = 24;
+    }
+
+    if (state.isError.value) {
+      borderColor = BorderColor.error;
+    } else if (state.isFocus.value && !isDisabled) {
+      borderColor = PrimaryColor.focus;
+    }
+
     return OutlineInputBorder(
-      borderSide: BorderSide(width: width, color: color),
-      borderRadius: BorderRadius.circular(shape == AppTextFieldShape.rect ? 8 : 24),
+      borderSide: BorderSide(width: width, color: borderColor),
+      borderRadius: BorderRadius.circular(radius),
     );
   }
 
-  Widget _renderPrefixIcon() {
-    return Icon(
-      prefixIcon,
-      size: 24,
-      color: IconColor.secondary,
+  OutlineInputBorder getFocusedBorder() {
+    double width = 3;
+    double radius = (shape == AppTextFieldShape.rect) ? 8 : 24;
+    Color borderColor = BorderColor.secondary;
+
+    if (type == AppTextFieldType.search) {
+      radius = 24;
+      borderColor = PrimaryNewColor().focus;
+    }
+
+    return OutlineInputBorder(
+      borderSide: BorderSide(width: width, color: borderColor),
+      borderRadius: BorderRadius.circular(radius),
     );
+  }
+
+  Widget? _renderPrefixIcon() {
+    if (type == AppTextFieldType.phoneNumber) {
+      return AppPrefixPhoneField(
+        code: phoneCode,
+        onSubmit: (country) {
+          onTapPrefix?.call(country);
+        },
+      );
+    }
+
+    if (this.prefixIcon != null) {
+      return Icon(
+        prefixIcon,
+        size: 24,
+        color: IconColor.secondary,
+      );
+    }
+
+    return null;
   }
 
   Widget _renderSuffixIcon() {
@@ -205,7 +256,7 @@ class AppTextField extends StatelessWidget {
         icon = Iconsax.clock;
         break;
       case AppTextFieldType.search:
-        icon = Iconsax.close_circle5;
+        icon = (state.isFocus.value) ? Iconsax.close_circle5 : null;
         onTap = () {
           textEditingController.clear();
           state.focusNode.value.unfocus();
@@ -231,270 +282,91 @@ class AppTextField extends StatelessWidget {
     return Obx(
       () {
         Color bgColor = Colors.white;
-        Color helperColor = TextColor.helper;
-        Color borderColor = BorderColor.secondary;
-        double borderWidth = 1;
+        EdgeInsets padding = const EdgeInsets.symmetric(vertical: 10, horizontal: 12);
 
         final isObscure = state.isObscure.value;
-        final suffixIcon = withIcon ? _renderSuffixIcon() : null;
-        final prefixIcon = this.prefixIcon != null ? _renderPrefixIcon() : null;
-
-        if (state.isError.value) {
-          borderColor = BorderColor.error;
-          helperColor = TextColor.error;
-        } else if (state.isFocus.value && !isDisabled) {
-          borderColor = PrimaryColor.focus;
-        }
 
         if (isDisabled) {
           bgColor = BorderColor.secondary;
         }
 
-        if (type == AppTextFieldType.multiline) {
-          state.copyWith(
-            maxLines: 4,
-            inputType: TextInputType.multiline,
-          );
+        if (type == AppTextFieldType.search) {
+          padding = const EdgeInsets.symmetric(horizontal: 12);
         }
 
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextFormField(
-              focusNode: state.focusNode.value,
-              controller: textEditingController,
-              onTap: onClick,
-              readOnly: !isEditable,
-              enabled: !isDisabled,
-              keyboardType: state.inputType,
-              maxLength: length,
-              maxLines: state.maxLines,
-              obscureText: (type == AppTextFieldType.password) ? isObscure : false,
-              decoration: InputDecoration(
-                  floatingLabelBehavior: FloatingLabelBehavior.never,
-                  contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
-                  hintText: placeholder,
-                  hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.placeholder),
-                  counterStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.helper),
-                  filled: true,
-                  fillColor: bgColor,
-                  border: InputBorder.none,
-                  focusedBorder: getBorder(3, borderColor),
-                  enabledBorder: getBorder(borderWidth, borderColor),
-                  errorBorder: getBorder(borderWidth, borderColor),
-                  focusedErrorBorder: getBorder(3, borderColor),
-                  suffixIcon: suffixIcon,
-                  prefixIcon: prefixIcon,
-                  errorStyle: TextStyle(fontSize: 0)),
-              style: Theme.of(context).textTheme.bodyMedium,
-              validator: (value) {
-                final error = inputValidator(type, value, label ?? "", isRequired);
-                state.setError(error);
+        return TextFormField(
+          focusNode: state.focusNode.value,
+          canRequestFocus: canFocus,
+          controller: textEditingController,
+          onTap: onClick,
+          readOnly: !isEditable,
+          enabled: !isDisabled,
+          keyboardType: state.inputType,
+          maxLength: length,
+          maxLines: state.maxLines,
+          style: Theme.of(context).textTheme.bodyMedium,
+          obscureText: (type == AppTextFieldType.password) ? isObscure : false,
+          decoration: InputDecoration(
+              floatingLabelBehavior: FloatingLabelBehavior.never,
+              contentPadding: padding,
+              hintText: placeholder,
+              hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.placeholder),
+              counterStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.helper),
+              filled: true,
+              fillColor: bgColor,
+              border: InputBorder.none,
+              enabledBorder: getBorder(1),
+              errorBorder: getBorder(1),
+              focusedBorder: getFocusedBorder(),
+              focusedErrorBorder: getBorder(3),
+              suffixIcon: _renderSuffixIcon(),
+              prefixIcon: _renderPrefixIcon(),
+              errorStyle: TextStyle(fontSize: 0)),
+          validator: (value) {
+            if (type == AppTextFieldType.search) {
+              return null;
+            }
 
-                if (error != null)
-                  return "";
-                else
-                  return null;
-              },
-              onChanged: (value) {
-                if (state.isError.value) {
-                  state.setError(null);
-                }
-              },
-            ),
-            (state.isError.value || helperText != null)
-                ? Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          state.errorText.value ?? helperText ?? "",
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: helperColor),
-                        ),
-                      ),
-                    ],
-                  )
-                : const SizedBox(),
-          ],
+            final error = inputValidator(type, value, label ?? "", isRequired);
+            state.setError(error);
+
+            if (error != null)
+              return "";
+            else
+              return null;
+          },
+          onChanged: (value) {
+            if (state.isError.value) {
+              state.setError(null);
+            }
+            onChanged?.call(value);
+          },
         );
       },
     );
   }
 
-  Widget _renderSearchTextField(BuildContext context) {
-    final suffixIcon = withIcon ? _renderSuffixIcon() : null;
-    final prefixIcon = this.prefixIcon != null ? _renderPrefixIcon() : null;
-    Color bgColor = Colors.white;
-
+  Widget _renderErrorText(BuildContext context) {
     return Obx(() {
-      return Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          TextField(
-            focusNode: state.focusNode.value,
-            controller: textEditingController,
-            readOnly: !isEditable,
-            canRequestFocus: canFocus,
-            onTap: () {
-              if (onClick != null) onClick!();
-            },
-            onChanged: (text) {
-              onChanged?.call(text);
-            },
-            decoration: InputDecoration(
-              floatingLabelBehavior: FloatingLabelBehavior.never,
-              fillColor: bgColor,
-              filled: true,
-              focusedBorder: getBorder(3, PrimaryColor.focus),
-              hintText: placeholder,
-              hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: TextColor.placeholder,
-                  ),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(24),
-              ),
-              enabledBorder: getBorder(1, BorderColor.secondary),
-              contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
-              prefixIcon: prefixIcon,
-              suffixIcon: state.isFocus.value ? suffixIcon : null,
-            ),
-          ),
-        ],
-      );
-    });
-  }
+      Color helperColor = TextColor.helper;
 
-  Widget _renderPhoneNumberField(BuildContext context) {
-    return Obx(
-      () => Column(
-        children: [
-          Container(
-            height: 48,
-            decoration: BoxDecoration(
-              border: Border.all(color: BorderColor.secondary),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Row(
+      if (state.isError.value) {
+        helperColor = TextColor.error;
+      }
+
+      return (state.isError.value || helperText != null)
+          ? Row(
               children: [
-                GestureDetector(
-                  onTap: () {
-                    if (!isDisabled) {
-                      Get.bottomSheet(
-                        BsSinglePicker(
-                          type: BsSinglePickerType.withSearch,
-                          options: Constants.countryCodes,
-                          title: 'country_code'.tr,
-                          selectedId: Get.find<BsSinglePickerController>().selectedOption.value,
-                          onSubmit: (PickerModel value) {
-                            Get.find<BsSinglePickerController>().setSelectedOption(value.id);
-                          },
-                        ),
-                      );
-                    }
-                  },
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: BorderColor.secondary),
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(8),
-                        bottomLeft: Radius.circular(8),
-                      ),
-                      color: BorderColor.secondary,
-                    ),
-                    alignment: Alignment.center,
-                    child: Row(
-                      children: [
-                        Obx(() {
-                          final selectedId = Get.find<BsSinglePickerController>().selectedOption.value;
-                          final selectedOption = Constants.countryCodes.firstWhere((option) => option.id == selectedId, orElse: () => Constants.countryCodes[0]);
-                          final match = RegExp(r'\+(\d+)').firstMatch(selectedOption.title);
-                          final phoneCode = match != null ? match.group(0) : '+62'; // default value
-                          return Text(
-                            phoneCode ?? '+62',
-                            style: TextStyle(color: Colors.black),
-                          );
-                        }),
-                        SizedBox(width: 4),
-                        if (!isDisabled)
-                          Icon(
-                            Iconsax.arrow_down_1,
-                            size: 12,
-                            color: IconColor.primary,
-                          ),
-                      ],
-                    ),
-                  ),
-                ),
                 Expanded(
-                  child: TextFormField(
-                    focusNode: state.focusNode.value,
-                    controller: textEditingController,
-                    keyboardType: TextInputType.phone,
-                    style: Theme.of(context).textTheme.bodyMedium,
-                    decoration: InputDecoration(
-                      floatingLabelBehavior: FloatingLabelBehavior.never,
-                      contentPadding: const EdgeInsets.symmetric(vertical: 18, horizontal: 12),
-                      hintText: placeholder,
-                      hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.placeholder),
-                      filled: true,
-                      fillColor: Colors.white,
-                      errorStyle: TextStyle(fontSize: 0),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(8),
-                          bottomRight: Radius.circular(8),
-                        ),
-                        borderSide: BorderSide.none,
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(8),
-                          bottomRight: Radius.circular(8),
-                        ),
-                        borderSide: BorderSide.none,
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(8),
-                          bottomRight: Radius.circular(8),
-                        ),
-                        borderSide: BorderSide(color: BorderColor.primary, width: 3),
-                      ),
-                    ),
-                    validator: (value) {
-                      final error = inputValidator(type, value, label ?? "", isRequired);
-                      state.setError(error);
-
-                      if (error != null)
-                        return "";
-                      else
-                        return null;
-                    },
-                    onChanged: (value) {
-                      if (state.isError.value) {
-                        state.setError(null);
-                      }
-                    },
+                  child: Text(
+                    state.errorText.value ?? helperText ?? "",
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: helperColor),
                   ),
                 ),
               ],
-            ),
-          ),
-          (state.isError.value)
-              ? Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        state.errorText.value ?? "",
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.error),
-                      ),
-                    ),
-                  ],
-                )
-              : const SizedBox(),
-        ],
-      ),
-    );
+            )
+          : const SizedBox();
+    });
   }
 
   @override
@@ -516,11 +388,8 @@ class AppTextField extends StatelessWidget {
           ),
           const SizedBox(height: 4),
         ],
-        (type == AppTextFieldType.search)
-            ? _renderSearchTextField(context)
-            : (type == AppTextFieldType.phoneNumber)
-                ? _renderPhoneNumberField(context)
-                : _renderTextField(context),
+        _renderTextField(context),
+        _renderErrorText(context),
       ],
     );
   }

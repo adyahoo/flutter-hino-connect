@@ -23,8 +23,7 @@ class SearchScreen extends GetView<SearchPageController> {
               color: Color(0xffF5F5F5),
               shape: BoxShape.circle,
             ),
-            child: Icon(Iconsax.location_cross5,
-                size: 32, color: IconColor.secondary),
+            child: Icon(Iconsax.location_cross5, size: 32, color: IconColor.secondary),
           ),
           SizedBox(height: 20),
           Container(
@@ -49,8 +48,7 @@ class SearchScreen extends GetView<SearchPageController> {
     );
   }
 
-  Widget _renderLocationInfo(
-      BuildContext context, SearchResult location, IconData icon) {
+  Widget _renderLocationInfo(BuildContext context, SearchResult location, IconData icon) {
     return GestureDetector(
       onTap: () {
         print('Location info tapped');
@@ -75,8 +73,7 @@ class SearchScreen extends GetView<SearchPageController> {
                     overflow: TextOverflow.ellipsis,
                   ),
                   SizedBox(height: 4),
-                  Text(location.vicinity,
-                      style: Theme.of(context).textTheme.bodySmall),
+                  Text(location.vicinity, style: Theme.of(context).textTheme.bodySmall),
                 ],
               ),
             ),
@@ -101,8 +98,7 @@ class SearchScreen extends GetView<SearchPageController> {
             child: Obx(
               () {
                 return ListView.separated(
-                  separatorBuilder: (context, index) =>
-                      const SizedBox(height: 0),
+                  separatorBuilder: (context, index) => const SizedBox(height: 0),
                   itemCount: controller.searchResults.length,
                   itemBuilder: (context, index) {
                     final result = controller.searchResults[index];
@@ -165,8 +161,7 @@ class SearchScreen extends GetView<SearchPageController> {
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         itemBuilder: (context, index) {
           final result = controller.filteredResults[index];
-          return _renderLocationInfo(
-              context, result, Icons.location_on_outlined);
+          return _renderLocationInfo(context, result, Icons.location_on_outlined);
         },
       );
     });
@@ -210,13 +205,11 @@ class SearchScreen extends GetView<SearchPageController> {
               return onTypingState(context);
             }
 
-            if (controller.searchbarController.value.text.isEmpty &&
-                controller.searchResults.isEmpty) {
+            if (controller.searchbarController.value.text.isEmpty && controller.searchResults.isEmpty) {
               return Container();
             }
 
-            if (controller.searchbarController.value.text.isNotEmpty &&
-                controller.filteredResults.isEmpty) {
+            if (controller.searchbarController.value.text.isNotEmpty && controller.filteredResults.isEmpty) {
               return emptyState(context);
             }
 

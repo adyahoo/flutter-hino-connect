@@ -1,4 +1,4 @@
-import 'package:equatable/equatable.dart';
+part of 'model.dart';
 
 class CountryModel extends Equatable {
   final String name;
@@ -12,15 +12,6 @@ class CountryModel extends Equatable {
     required this.code,
     required this.flag,
   });
-
-  factory CountryModel.fromJson(Map<String, dynamic> json) {
-    return CountryModel(
-      name: json['name'],
-      phoneCode: json['phoneCode'],
-      code: json['code'],
-      flag: json['flag'],
-    );
-  }
 
   @override
   List<Object> get props => [name, phoneCode, code, flag];

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hino_driver_app/domain/core/entities/model.dart';
 import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 
@@ -73,7 +74,7 @@ class EditProfileScreen extends GetView<EditProfileController> {
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
+                        children: [
                           // Full Name
                           AppTextField(
                             label: 'full_name'.tr,
@@ -94,13 +95,18 @@ class EditProfileScreen extends GetView<EditProfileController> {
                             state: controller.emailState,
                           ),
                           const SizedBox(height: 16),
-                          AppTextField(
-                            label: 'phone'.tr,
-                            placeholder: controller.user.value.phone ?? "",
-                            textEditingController: controller.phoneController,
-                            state: controller.phoneState,
-                            type: AppTextFieldType.phoneNumber,
-                            isRequired: true,
+                          Obx(
+                            () => AppTextField.phoneNumber(
+                              label: 'phone'.tr,
+                              placeholder: controller.user.value.phone ?? "",
+                              textEditingController: controller.phoneController,
+                              state: controller.phoneState,
+                              isRequired: true,
+                              phoneCode: controller.selectedCode.value,
+                              onTapPrefix: (data) {
+                                controller.selectedCode.value = (data as CountryModel).phoneCode;
+                              },
+                            ),
                           ),
                         ],
                       ),
