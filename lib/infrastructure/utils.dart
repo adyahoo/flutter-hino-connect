@@ -21,104 +21,28 @@ import 'package:timezone/timezone.dart' as tz;
 
 import '../main.dart';
 
-// void errorHandler(Exception e, {VoidCallback? onDismiss}) {
-//   ErrorResponseModel? error;
-
-//   print('error: $e');
-
-//   if (e is ApiException) {
-//     print('masuk e is ApiException');
-//     if(e.response?.error.code == 401) {
-//       inject<StorageService>().clearToken();
-//       Get.offAllNamed(Routes.LOGIN);
-//       return;
-//     }
-    
-//     else if (e.response?.error.code == 422) {
-//       error = ErrorResponseModel(
-//         code: 422,
-//         title: e.response!.error.title,
-//         message: e.response!.error.message,
-//       );
-//     } else {
-//       if(e.exception!.type == DioExceptionType.connectionError) {
-//         print('masuk e.connectionError');
-//         error = ErrorResponseModel(
-//           code: 500,
-//           title: 'Connection Error',
-//           message: 'There was an error in your connection',
-//           errors: [],
-//         );
-//       } else {
-//         print('masuk else');
-//         error = ErrorResponseModel(
-//           code: e.response!.error.code,
-//           title: e.response!.error.title,
-//           message: e.response!.error.message,
-//           errors: e.response!.error.errors
-//               .map(
-//                 (element) => ErrorModel(
-//                   key: element.key,
-//                   message: element.message,
-//                 ),
-//               )
-//               .toList(),
-//         );
-//       }
-//     }
-//   } else if (e is PlatformException) {
-//     error = ErrorResponseModel(
-//       code: 500,
-//       title: 'Error Authenticating Biometric',
-//       message: e.message ?? 'There was an error in authenticating biometric',
-//       errors: [],
-//     );
-//     print('error: $error');
-//   }
-  
-//   showGetBottomSheet(
-//     BsConfirmation(
-//       type: BsConfirmationType.danger,
-//       title: error?.title ?? "",
-//       description: error?.message ?? "",
-//       isMultiAction: false,
-//       positiveButtonOnClick: () {
-//         Get.back();
-//         onDismiss?.call();
-//       },
-//     ),
-//   );
-// }
-
 void errorHandler(Exception e, {VoidCallback? onDismiss}) {
   ErrorResponseModel? error;
 
   print('error: $e');
 
   if (e is ApiException) {
-    print('e is ApiException');
+    print('masuk e is ApiException');
     if(e.response?.error.code == 401) {
-      print('masuk e.response?.error.code == 401');
       inject<StorageService>().clearToken();
       Get.offAllNamed(Routes.LOGIN);
       return;
     }
     
     else if (e.response?.error.code == 422) {
-      if (e.response?.error != null) {
-        print('masuk e.response?.error != null di 422');
-        error = ErrorResponseModel(
-          code: 422,
-          title: e.response!.error.title,
-          message: e.response!.error.message,
-        );
-      } else {
-        print('e.response?.error is null');
-      }
+      error = ErrorResponseModel(
+        code: 422,
+        title: e.response!.error.title,
+        message: e.response!.error.message,
+      );
     } else {
-      print('Entering else block for else');
-      if(e.exception?.type == DioExceptionType.connectionError) {
-        print('e.exception?.type == DioExceptionType.connectionError');
+      if(e.exception!.type == DioExceptionType.connectionError) {
+        print('masuk e.connectionError');
         error = ErrorResponseModel(
           code: 500,
           title: 'Connection Error',
@@ -126,24 +50,20 @@ void errorHandler(Exception e, {VoidCallback? onDismiss}) {
           errors: [],
         );
       } else {
-        print('Entering else block for ApiException');
-        if (e.response?.error != null) {
-          error = ErrorResponseModel(
-            code: e.response!.error.code,
-            title: e.response!.error.title,
-            message: e.response!.error.message,
-            errors: e.response!.error.errors
-                .map(
-                  (element) => ErrorModel(
-                    key: element.key,
-                    message: element.message,
-                  ),
-                )
-                .toList(),
-          );
-        } else {
-          print('e.response?.error is null');
-        }
+        print('masuk else');
+        error = ErrorResponseModel(
+          code: e.response!.error.code,
+          title: e.response!.error.title,
+          message: e.response!.error.message,
+          errors: e.response!.error.errors
+              .map(
+                (element) => ErrorModel(
+                  key: element.key,
+                  message: element.message,
+                ),
+              )
+              .toList(),
+        );
       }
     }
   } else if (e is PlatformException) {
@@ -154,15 +74,13 @@ void errorHandler(Exception e, {VoidCallback? onDismiss}) {
       errors: [],
     );
     print('error: $error');
-  } else {
-    print('Unhandled exception type: ${e.runtimeType}');
   }
-
+  
   showGetBottomSheet(
     BsConfirmation(
       type: BsConfirmationType.danger,
-      title: error?.title ?? "Unknown Error",
-      description: error?.message ?? "An unknown error occurred",
+      title: error?.title ?? "",
+      description: error?.message ?? "",
       isMultiAction: false,
       positiveButtonOnClick: () {
         Get.back();
@@ -171,8 +89,6 @@ void errorHandler(Exception e, {VoidCallback? onDismiss}) {
     ),
   );
 }
-
-
 
 void showLoadingOverlay() {
   Get.dialog(
