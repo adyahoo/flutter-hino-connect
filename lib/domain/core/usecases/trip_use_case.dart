@@ -97,6 +97,7 @@ class TripUseCase implements ITripUseCase {
             .toList(),
       );
     } catch (e) {
+      print('error di trip usecase getTripDetail: $e');
       rethrow;
     }
   }

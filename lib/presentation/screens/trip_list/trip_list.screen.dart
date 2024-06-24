@@ -41,9 +41,13 @@ class TripListScreen extends GetView<TripListController> {
   }
 
   void _navigateDetail(TripModel trip) {
-    Get.toNamed(
-      "/trip-detail/" + trip.id.toString(),
-    );
+    try {
+      Get.toNamed(
+        "/trip-detail/" + trip.id.toString(),
+      );
+    } catch (e) {
+      print('error in navigate to trip detail $e');
+    }
   }
 
 void _showDatePicker(BuildContext context) {

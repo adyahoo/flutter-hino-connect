@@ -15,6 +15,7 @@ class UserUseCase implements IUserUseCase {
   final UserDataSource dataSource;
 
   Future<UserModel> getUser() async {
+    print('masuk ke user usecase getuser');
     try {
       final response = await dataSource.getUser();
       final data = UserModel(
@@ -28,6 +29,9 @@ class UserUseCase implements IUserUseCase {
 
       return data;
     } on ApiException catch (e) {
+      print('error di user usecase getuser: $e');
+      print(e.exception);
+      print(e.response);
       errorHandler(e);
       rethrow;
     }
@@ -39,9 +43,10 @@ class UserUseCase implements IUserUseCase {
       final bodyData = LoginBodyDto(email: body.email, password: body.password);
       await dataSource.login(bodyData);
     } on ApiException catch (e) {
+      print('error di user usecase login: $e');
       errorHandler(e);
       rethrow;
-    }
+    } 
   }
 
   @override
