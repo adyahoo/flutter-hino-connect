@@ -41,7 +41,6 @@ class AppToggle extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        profileController.toggleSwitch(status != AppToggleStatus.active);
         if (onChanged != null) {
           onChanged!(status != AppToggleStatus.active);
         }

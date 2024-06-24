@@ -9,6 +9,7 @@ import 'package:hino_driver_app/domain/core/usecases/user_use_case.dart';
 import 'package:hino_driver_app/infrastructure/client/exceptions/ApiException.dart';
 import 'package:hino_driver_app/infrastructure/navigation/routes.dart';
 import 'package:hino_driver_app/infrastructure/utils.dart';
+import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 import 'package:local_auth/local_auth.dart';
 
 import '../../../../infrastructure/di.dart';
@@ -64,16 +65,17 @@ class ProfileController extends GetxController {
 
     final bool canAuthenticateWithBiometrics = await localAuth.canCheckBiometrics;
     final bool canAuthenticate = canAuthenticateWithBiometrics || await localAuth.isDeviceSupported();
-    // final bool isDeviceSupported = await localAuth.isDeviceSupported();
-
+    final availableBiometrics = await localAuth.getAvailableBiometrics();
 
     print('canAuthenticate: $canAuthenticateWithBiometrics');
+    print('biometric enrolled : $availableBiometrics');
 
     if (canAuthenticate) {
       try {
         final isAuthenticated = await localAuth.authenticate(
           localizedReason: 'Please authenticate to change biometric login setting',
           options: const AuthenticationOptions(
+            useErrorDialogs: true,
             stickyAuth: true,
             biometricOnly: true,
           ),
@@ -98,6 +100,20 @@ class ProfileController extends GetxController {
       } finally {
         isLoadingBio.value = false;
       }
+    }
+    else {
+      isLoadingBio.value = false;
+      Get.bottomSheet(
+        BsConfirmation(
+          type: BsConfirmationType.danger,
+          title: 'Error',
+          description: 'error_biometric_not_found'.tr,
+          isMultiAction: false,
+          positiveButtonOnClick: () {
+            Get.back();
+          },
+        ),
+      );
     }
   }
 
