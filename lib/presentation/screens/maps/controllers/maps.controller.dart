@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hino_driver_app/domain/core/entities/place_model.dart';
@@ -111,6 +112,20 @@ class MapsController extends GetxController {
     _moveCamera(currentLocation);
   }
 
+  Future<void> getCurrentLocation() async {
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.low,
+      );
+
+      currentLocation = LatLng(position.latitude, position.longitude);
+
+      _moveCamera(currentLocation);
+    } catch (e) {
+      print('Error getting location: $e');
+    }
+  }
+
   void onMapTap(LatLng coordinate) {
     if (selectedMarker != null) {
       _revertMarkerIcon(selectedMarker!.markerId.value);
@@ -203,10 +218,28 @@ class MapsController extends GetxController {
 
   Future<void> fetchPlaces(double lat, double long, String type) async {
     try {
+      print('Fetching places for type: $type');
       final res = await useCase.getPlaceList(lat, long, type);
+
+      if(type == Constants.TYPE_CAR_DEALER) {
+        print('-' * 50);
+        print('Test res car dealer: ${res.length}');
+      } else if(type == Constants.TYPE_SERVICE_CENTER) {
+        print('Test res service center: ${res.length}');
+      }
 
       final validPlaces =
           res.where((place) => isValidPlace(place, type)).toList();
+
+      if(type == Constants.TYPE_CAR_DEALER) {
+        print('-' * 50);
+        print('Car dealer: ${validPlaces.length}');
+        for (var place in validPlaces) {
+          print('Car dealer: ${place.name}');
+        }
+      } else if(type == Constants.TYPE_SERVICE_CENTER) {
+        print('Service center: ${validPlaces.length}');
+      }
 
       _places.addAll(validPlaces);
       final newMarkers =
@@ -229,7 +262,7 @@ class MapsController extends GetxController {
   }
 }
 
-  Future<void> _handleOpenMaps() async {
+  Future<void> handleOpenMaps() async {
     String url = '';
     String urlAppleMaps = '';
 
@@ -262,10 +295,10 @@ class MapsController extends GetxController {
         panelController.close();
       }
 
-      if (id == 'filter_drive_to') {
-        await _handleOpenMaps();
-        return;
-      }
+      // if (id == 'filter_drive_to') {
+      //   await _handleOpenMaps();
+      //   return;
+      // }
       
       final item = Constants.mapScreenFilterItems
           .firstWhere((element) => element.id == id);
@@ -372,7 +405,8 @@ class MapsController extends GetxController {
 
   
 
-  Future<void> _createCustomMarker() async {
+Future<void> _createCustomMarker() async {
+  try {
     gasStation = await _getMarkerIcon("ic_maps_gas_station.png");
     restaurant = await _getMarkerIcon("ic_maps_restaurant.png");
     carDealer = await _getMarkerIcon("ic_maps_dealer.png");
@@ -385,7 +419,13 @@ class MapsController extends GetxController {
     selectedCarDealer = await _getMarkerIcon("ic_maps_dealer_selected.png");
     selectedServiceCenter =
         await _getMarkerIcon("ic_maps_service_center_selected.png");
+
+    print('Custom markers created successfully');
+  } catch (e) {
+    print('Error creating custom markers: $e');
   }
+}
+
 
   Future<BitmapDescriptor> _getMarkerIcon(String assetName) async {
     final data = await rootBundle.load("assets/icons/$assetName");
