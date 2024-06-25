@@ -26,6 +26,7 @@ class PlaceDataSource {
     // Fetch data from the API
     final apiKey = Constants.MAP_API_KEY;
     final apiUrl = '$baseUrl?location=$lat,$long&radius=400&type=$type&key=$apiKey';
+        // final apiUrl = '$baseUrl?location=$lat,$long&radius=400&type=$type&key=$apiKey&fields=address_component,geometry,formatted_address,name,types';
     final response = await http.get(Uri.parse(apiUrl));
 
     if (response.statusCode == 200) {

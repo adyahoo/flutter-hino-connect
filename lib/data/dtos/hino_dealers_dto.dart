@@ -9,6 +9,7 @@ class HinoDealerDto extends Equatable {
   final String? address;
   final double? latitude;
   final double? longitude;
+  final String? grade;
   final String? facility;
 
   const HinoDealerDto({
@@ -20,19 +21,25 @@ class HinoDealerDto extends Equatable {
     required this.address,
     required this.latitude,
     required this.longitude,
+    required this.grade,
     required this.facility,
   });
+
+    @override
+  String toString() {
+    return 'HinoDealerDto{id: $id, name: $name, status: $status, province: $province, city: $city, address: $address, latitude: $latitude, longitude: $longitude, facility: $facility}';
+  }
 
   factory HinoDealerDto.fromJson(Map<String, dynamic> json) {
     double? latitude;
     double? longitude;
-    
+
     if (json["latlng"] != null) {
       var latlng = json["latlng"].split(',');
       if (latlng.length == 2) {
         latitude = double.tryParse(latlng[0].trim());
         longitude = double.tryParse(latlng[1].trim());
-        
+
         if (latitude == null || longitude == null) {
           print('Error parsing latlng: ${json["latlng"]}');
         }
@@ -42,9 +49,9 @@ class HinoDealerDto extends Equatable {
     } else {
       print('latlng is null in JSON');
     }
-    
+
     return HinoDealerDto(
-      id: json["id"],
+      id: json["no"],
       name: json["dealer_name"],
       status: json["status"],
       province: json["province"],
@@ -52,10 +59,22 @@ class HinoDealerDto extends Equatable {
       address: json["address"],
       latitude: latitude,
       longitude: longitude,
+      grade: json["grade"],
       facility: json["facility"],
     );
   }
 
   @override
-  List<Object?> get props => [id, name, status, province, city, address, latitude, longitude, facility];
+  List<Object?> get props => [
+        id,
+        name,
+        status,
+        province,
+        city,
+        address,
+        latitude,
+        longitude,
+        grade,
+        facility
+      ];
 }

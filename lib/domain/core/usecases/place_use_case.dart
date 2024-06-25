@@ -18,12 +18,24 @@ class PlaceUseCase {
     String type,
   ) async {
     try {
+      print('--> getPlaceList: $type');
       final hinoResponse = await hinoDataSource.getHinoDealers();
+      print('after hinoResponse: ${hinoResponse.data.length}');
+      print(
+        '------------------------------------->');
+        print('hinoResponse: ${hinoResponse.data[0].toString()}');
       if (type == Constants.TYPE_CAR_DEALER) {
+        print('masuk if type car dealer');
+        //print all data
+        for (var item in hinoResponse.data) {
+          print('data: ${item.name}');
+        }
+        print('facility 1s: ${Constants.FACILITY_1S}');
         final data = hinoResponse.data
             .where((e) => e.facility == Constants.FACILITY_1S)
             .map(
-              (e) => PlaceModel(
+              (e) => 
+              PlaceModel(
                 name: e.name!,
                 type: Constants.TYPE_CAR_DEALER,
                 address: e.address,
@@ -33,8 +45,11 @@ class PlaceUseCase {
               ),
             )
             .toList();
+
+        print('data ajajajajja: $data');
         return data;
       } else if (type == Constants.TYPE_SERVICE_CENTER) {
+        print('masuk if type service center');
         final data = hinoResponse.data
             .where((e) =>
                 e.facility == Constants.FACILITY_2S ||
@@ -52,6 +67,8 @@ class PlaceUseCase {
               ),
             )
             .toList();
+
+        print('data ajajajajja service: $data');
         return data;
       } else {
         final response = await dataSource.getPlaceList(lat, long, type);
