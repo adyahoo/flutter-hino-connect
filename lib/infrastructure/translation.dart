@@ -168,7 +168,9 @@ class AppTranslations extends Translations {
           "permission_denied_desc": "Please give permission to access this feature.",
           "permission_permanent_denied_title": "Permission Denied",
           "permission_permanent_denied_desc": "Please give permission through the device's setting to access this feature.",
-          "go_to_setting":"Open Setting"
+          "go_to_setting": "Open Setting",
+          "schedule_notif_title": "Check your recent completed trip",
+          "schedule_notif_desc": "Trip data for @address now available to be seen.",
         },
         'id_ID': {
           'home': 'Home',
@@ -334,7 +336,9 @@ class AppTranslations extends Translations {
           "permission_denied_desc": "Silahkan berikan akses untuk menggunakan fitur ini.",
           "permission_permanent_denied_title": "Izin Akses Ditolak",
           "permission_permanent_denied_desc": "Silahkan menuju pengaturan perangkat untuk memberikan akses fitur ini.",
-          "go_to_setting":"Buka Pengaturan"
+          "go_to_setting": "Buka Pengaturan",
+          "schedule_notif_title": "Silahkan cek trip anda yang baru saja selesai",
+          "schedule_notif_desc": "Data Trip anda untuk @address Sudah dapat dilihat",
         }
       };
 }

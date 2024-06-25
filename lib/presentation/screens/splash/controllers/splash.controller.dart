@@ -7,6 +7,8 @@ import 'package:hino_driver_app/data/locals/StorageService.dart';
 import 'package:hino_driver_app/domain/core/usecases/splash_use_case.dart';
 import 'package:hino_driver_app/infrastructure/di.dart';
 import 'package:hino_driver_app/infrastructure/navigation/routes.dart';
+import 'package:hino_driver_app/infrastructure/utils.dart';
+import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class SplashController extends GetxController {
@@ -58,8 +60,25 @@ class SplashController extends GetxController {
           navigateLogin();
           break;
         case PermissionStatus.permanentlyDenied:
+          // showGetBottomSheet(
+          //   BsConfirmation(
+          //     type: BsConfirmationType.danger,
+          //     title: "permission_permanent_denied_title".tr,
+          //     description: "permission_permanent_denied_desc".tr,
+          //     positiveTitle: "go_to_setting".tr,
+          //     negativeTitle: "back".tr,
+          //     positiveButtonOnClick: () {
+          //       Get.back();
+          //
+          //       navigateLogin();
+          //       openAppSettings();
+          //     },
+          //     negativeButtonOnClick: () {
+          //       Get.back();
+          //     },
+          //   ),
+          // );
           navigateLogin();
-          openAppSettings();
           break;
         default:
           navigateLogin();
@@ -70,6 +89,7 @@ class SplashController extends GetxController {
 
   void navigateLogin() {
     Future.delayed(const Duration(seconds: 3), () {
+
       if (inject<StorageService>().getToken() != null)
         Get.offNamed(Routes.MAIN_TAB);
       else

@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -9,7 +8,6 @@ import 'package:get/get.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:hino_driver_app/domain/core/entities/api_model.dart';
 import 'package:hino_driver_app/infrastructure/client/exceptions/ApiException.dart';
-import 'package:hino_driver_app/infrastructure/constants.dart';
 import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 import 'dart:math';
@@ -137,15 +135,15 @@ double _degreesToRadians(double degrees) {
 Future<void> showScheduledNewTripNotif() async {
   await flutterLocalNotificationsPlugin.zonedSchedule(
     0,
-    'Check your recent completed trip',
-    'there is new trip available according to your recent trip.',
-    tz.TZDateTime.now(tz.local).add(const Duration(minutes: 5)),
+    'schedule_notif_title'.tr,
+    'schedule_notif_desc'.trParams({"address": "Hino Denpasar"}),
+    tz.TZDateTime.now(tz.local).add(const Duration(minutes: 2)),
     NotificationDetails(
       android: AndroidNotificationDetails(
         channel.id,
         channel.name,
         channelDescription: channel.description,
-        icon: "@drawable/ic_notif_icon",
+        icon: "@drawable/ic_notif_icon_2",
         importance: Importance.high,
         priority: Priority.high,
       ),
@@ -158,14 +156,14 @@ Future<void> showScheduledNewTripNotif() async {
 Future<void> showNewTripNotif() async {
   await flutterLocalNotificationsPlugin.show(
     0,
-    'Check your recent completed trip',
-    'there is new trip available according to your recent trip.',
+    'schedule_notif_title'.tr,
+    'schedule_notif_desc'.trParams({"address": "Hino Denpasar"}),
     NotificationDetails(
       android: AndroidNotificationDetails(
         channel.id,
         channel.name,
         channelDescription: channel.description,
-        icon: "@drawable/ic_notif_icon",
+        icon: "@drawable/ic_notif_icon_2",
         importance: Importance.high,
         priority: Priority.high,
       ),

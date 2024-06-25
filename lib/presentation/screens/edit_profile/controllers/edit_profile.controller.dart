@@ -83,7 +83,7 @@ class EditProfileController extends GetxController {
   void getUser() {
     UserModel userData = profileController.data.value;
     this.user.value = userData;
-    selectedCode.value = userData.phoneCode!;
+    selectedCode.value = userData.phoneCode ?? '62';
   }
 
   @override

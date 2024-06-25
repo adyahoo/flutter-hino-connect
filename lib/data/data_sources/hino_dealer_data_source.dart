@@ -3,7 +3,7 @@ part of 'data_source.dart';
 class HinoDealerDataSource {
   Future<ListApiResponse<HinoDealerDto>> getHinoDealers() async {
     try {
-      await Future.delayed(const Duration(seconds: 3));
+      await Future.delayed(const Duration(seconds: 1));
       final data = await inject<StorageService>()
           .getJsonData(StorageService.HINO_DEALERS_JSON);
 

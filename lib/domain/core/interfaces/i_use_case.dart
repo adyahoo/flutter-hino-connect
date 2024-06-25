@@ -20,3 +20,4 @@ part 'i_place_use_case.dart';
 part 'i_splash_use_case.dart';
 part 'i_user_use_case.dart';
 part 'i_face_recognition_use_case.dart';
+part 'i_permission_use_case.dart';

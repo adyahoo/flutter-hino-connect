@@ -3,7 +3,7 @@ part of 'data_source.dart';
 class ContactDataSource {
   Future<ListApiResponse<ContactDto>> getSosContacts() async {
     try {
-      await Future.delayed(const Duration(seconds: 3));
+      await Future.delayed(const Duration(milliseconds: 500));
       final data = await inject<StorageService>().getJsonData(StorageService.CONTACTS_JSON);
 
       return ListApiResponse.fromJson(
@@ -21,7 +21,7 @@ class ContactDataSource {
 
   Future<ContactDto?> getPersonalSosContacts() async {
     try {
-      await Future.delayed(const Duration(seconds: 3));
+      await Future.delayed(const Duration(milliseconds: 500));
       final data = await inject<StorageService>().getJsonData(StorageService.PERSONAL_CONTACTS_JSON);
 
       if (data != null) {
@@ -36,7 +36,7 @@ class ContactDataSource {
 
   Future<void> addPersonalSosContact(ContactDto newData) async {
     try {
-      await Future.delayed(const Duration(seconds: 3));
+      await Future.delayed(const Duration(milliseconds: 500));
 
       inject<StorageService>().setJsonData(StorageService.PERSONAL_CONTACTS_JSON, {"data": newData.toJson()});
     } catch (e) {
@@ -47,7 +47,7 @@ class ContactDataSource {
   //it look simple because the contact only hold 1 data, so we can override using key only
   Future<void> updatePersonalSosContact(ContactDto newData) async {
     try {
-      await Future.delayed(const Duration(seconds: 3));
+      await Future.delayed(const Duration(milliseconds: 500));
 
       inject<StorageService>().setJsonData(StorageService.PERSONAL_CONTACTS_JSON, {"data": newData.toJson()});
     } catch (e) {

@@ -34,7 +34,7 @@ class FaceRecognitionScreen extends GetView<FaceRecognitionController> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: controller.checkPermission(),
+      future: controller.initCamera(),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         if (snapshot.connectionState == ConnectionState.done && snapshot.error == null) {
           return Stack(

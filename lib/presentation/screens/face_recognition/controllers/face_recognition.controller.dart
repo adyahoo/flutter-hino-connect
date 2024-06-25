@@ -9,8 +9,6 @@ import 'package:hino_driver_app/infrastructure/navigation/routes.dart';
 import 'package:hino_driver_app/infrastructure/utils.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:hino_driver_app/presentation/screens.dart';
-import 'package:hino_driver_app/presentation/widgets/widgets.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class FaceRecognitionController extends GetxController {
   FaceRecognitionController({required this.useCase});
@@ -48,54 +46,6 @@ class FaceRecognitionController extends GetxController {
     _initFaceDetector();
     await cameraController.initialize();
     _startImageStream();
-  }
-
-  Future<void> checkPermission() async {
-    final result = await useCase.checkPermission();
-
-    switch (result) {
-      case PermissionStatus.denied:
-        showGetBottomSheet(
-          BsConfirmation(
-            type: BsConfirmationType.danger,
-            title: "permission_denied_title".tr,
-            description: "permission_denied_desc".tr,
-            isMultiAction: false,
-            positiveButtonOnClick: () {
-              Get
-                ..back()
-                ..back();
-            },
-          ),
-        );
-        return Future.error(PermissionStatus.denied);
-      case PermissionStatus.permanentlyDenied:
-        showGetBottomSheet(
-          BsConfirmation(
-            type: BsConfirmationType.danger,
-            title: "permission_permanent_denied_title".tr,
-            description: "permission_permanent_denied_desc".tr,
-            positiveTitle: "go_to_setting".tr,
-            negativeTitle: "back".tr,
-            positiveButtonOnClick: () {
-              Get
-                ..back()
-                ..back();
-
-              openAppSettings();
-            },
-            negativeButtonOnClick: () {
-              Get.back();
-            },
-          ),
-        );
-        return Future.error(PermissionStatus.permanentlyDenied);
-      case PermissionStatus.granted:
-        initCamera();
-        break;
-      default:
-        break;
-    }
   }
 
   void _initFaceDetector() {

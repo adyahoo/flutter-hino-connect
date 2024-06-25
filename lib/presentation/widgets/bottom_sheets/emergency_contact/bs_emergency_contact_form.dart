@@ -30,13 +30,17 @@ class BsEmergencyContactForm extends GetView<BsEmergencyContactFormController> {
             type: AppTextFieldType.text,
           ),
           const SizedBox(height: 20),
-          AppTextField(
-            label: 'phone'.tr,
-            placeholder: 'phone_placeholder'.tr,
-            textEditingController: controller.phoneController.value,
-            state: controller.phoneState,
-            type: AppTextFieldType.phoneNumber,
-            isDisabled: true,
+          Obx(
+            () => AppTextField.phoneNumber(
+              label: 'phone'.tr,
+              placeholder: 'phone_placeholder'.tr,
+              textEditingController: controller.phoneController.value,
+              state: controller.phoneState,
+              phoneCode: controller.phoneCode.value,
+              onTapPrefix: (data) {
+                controller.phoneCode.value = (data as CountryModel).phoneCode;
+              },
+            ),
           ),
           const SizedBox(height: 16),
           _renderAction(context),
@@ -87,24 +91,21 @@ class BsEmergencyContactForm extends GetView<BsEmergencyContactFormController> {
         borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)),
       ),
       child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
           const BsNotch(),
-      const SizedBox(height: 4),
-      Obx(
-            () =>
-        Text(
-            (controller.editedId.value != null)
-                ? "edit_emergency_contact".tr.capitalizeFirst ?? ""
-                : "add_emergency_contact".tr.capitalizeFirst ?? "",
-            style: Theme.of(context).textTheme.titleMedium,
+          const SizedBox(height: 4),
+          Obx(
+            () => Text(
+              (controller.editedId.value != null) ? "edit_emergency_contact".tr.capitalizeFirst ?? "" : "add_emergency_contact".tr.capitalizeFirst ?? "",
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+          ),
+          const SizedBox(height: 24),
+          _renderForm(context),
+        ],
       ),
-    ),
-    const SizedBox(height: 24),
-    _renderForm(context),
-    ],
-    ),
     );
-    }
+  }
 }

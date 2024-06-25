@@ -7,6 +7,7 @@ import 'package:hino_driver_app/domain/core/usecases/activity_use_case.dart';
 import 'package:hino_driver_app/domain/core/usecases/country_use_case.dart';
 import 'package:hino_driver_app/domain/core/usecases/face_recognition_use_case.dart';
 import 'package:hino_driver_app/domain/core/usecases/feedback_use_case.dart';
+import 'package:hino_driver_app/domain/core/usecases/permission_use_case.dart';
 import 'package:hino_driver_app/domain/core/usecases/place_use_case.dart';
 import 'package:hino_driver_app/domain/core/usecases/recent_search_use_case.dart';
 import 'package:hino_driver_app/domain/core/usecases/splash_use_case.dart';
@@ -70,4 +71,6 @@ Future setupInjection() async {
   //hino dealer
   inject.registerLazySingleton<HinoDealerDataSource>(() => HinoDealerDataSource());
 
+  //permission
+  inject.registerLazySingleton<PermissionUseCase>(() => PermissionUseCase());
 }

@@ -5,7 +5,7 @@ class ActivityDataSource {
 
   Future<ListPaginationApiResponse<ActivityDto>> getActivityList() async {
     try {
-      await Future.delayed(const Duration(seconds: 3));
+      await Future.delayed(const Duration(milliseconds: 500));
       final data = await inject<StorageService>().getJsonData(StorageService.ACTIVITIES_JSON);
 
       return ListPaginationApiResponse.fromJson(
