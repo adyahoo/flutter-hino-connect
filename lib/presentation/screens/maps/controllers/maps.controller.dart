@@ -221,23 +221,23 @@ class MapsController extends GetxController {
       print('Fetching places for type: $type');
       final res = await useCase.getPlaceList(lat, long, type);
 
-      if(type == Constants.TYPE_CAR_DEALER) {
+      if (type == Constants.TYPE_CAR_DEALER) {
         print('-' * 50);
         print('Test res car dealer: ${res.length}');
-      } else if(type == Constants.TYPE_SERVICE_CENTER) {
+      } else if (type == Constants.TYPE_SERVICE_CENTER) {
         print('Test res service center: ${res.length}');
       }
 
       final validPlaces =
           res.where((place) => isValidPlace(place, type)).toList();
 
-      if(type == Constants.TYPE_CAR_DEALER) {
+      if (type == Constants.TYPE_CAR_DEALER) {
         print('-' * 50);
         print('Car dealer: ${validPlaces.length}');
         for (var place in validPlaces) {
           print('Car dealer: ${place.name}');
         }
-      } else if(type == Constants.TYPE_SERVICE_CENTER) {
+      } else if (type == Constants.TYPE_SERVICE_CENTER) {
         print('Service center: ${validPlaces.length}');
       }
 
@@ -252,30 +252,46 @@ class MapsController extends GetxController {
   }
 
   void handleControlPanel(Marker? marker) {
-  if (panelController.isPanelOpen) {
-    _controller.hideMarkerInfoWindow(selectedMarker!.markerId);
-    selectedMarker = null;
-    panelController.close();
-  } else if (marker != null) {
-    selectedMarker = marker;
-    panelController.open();
+    if (panelController.isPanelOpen) {
+      _controller.hideMarkerInfoWindow(selectedMarker!.markerId);
+      selectedMarker = null;
+      panelController.close();
+    } else if (marker != null) {
+      selectedMarker = marker;
+      panelController.open();
+    }
   }
-}
 
   Future<void> handleOpenMaps() async {
+    Position position = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.low,
+    );
+
+    currentLocation = LatLng(position.latitude, position.longitude);
+
     String url = '';
     String urlAppleMaps = '';
 
+    // Define origin and destination strings
+    String origin = '${currentLocation.latitude},${currentLocation.longitude}';
+    String destination =
+        '${selectedMarker!.position.latitude},${selectedMarker!.position.longitude}';
+
     if (Platform.isAndroid) {
-      url = 'https://www.google.com/maps/@?api=1';
+      // Updated URL for Google Maps with directions
+      url =
+          'https://www.google.com/maps/dir/?api=1&origin=$origin&destination=$destination&travelmode=driving';
       if (await canLaunchUrl(Uri.parse(url))) {
         await launchUrl(Uri.parse(url));
       } else {
         throw 'Could not launch $url';
       }
     } else {
-      urlAppleMaps = 'https://maps.apple.com/';
-      url = 'comgooglemaps://';
+      // Updated URL for Apple Maps with directions
+      urlAppleMaps =
+          'https://maps.apple.com/?saddr=$origin&daddr=$destination&dirflg=d';
+      url =
+          'comgooglemaps://?saddr=$origin&daddr=$destination&directionsmode=driving';
       if (await canLaunchUrl(Uri.parse(url))) {
         await launchUrl(Uri.parse(url));
       } else if (await canLaunchUrl(Uri.parse(urlAppleMaps))) {
@@ -299,13 +315,12 @@ class MapsController extends GetxController {
       //   await _handleOpenMaps();
       //   return;
       // }
-      
+
       final item = Constants.mapScreenFilterItems
           .firstWhere((element) => element.id == id);
       final type = convertLabelToType(item.label);
       selectedChip.value = item.id;
       _markers.value = _createMarkers(_places.where((e) => e.type == type));
-
     } else {
       selectedChip.value = '';
       _markers.value = _createMarkers(_places);
@@ -403,29 +418,26 @@ class MapsController extends GetxController {
     print('Updated selected marker: ${selectedMarker?.markerId.value}');
   }
 
-  
+  Future<void> _createCustomMarker() async {
+    try {
+      gasStation = await _getMarkerIcon("ic_maps_gas_station.png");
+      restaurant = await _getMarkerIcon("ic_maps_restaurant.png");
+      carDealer = await _getMarkerIcon("ic_maps_dealer.png");
+      serviceCenter = await _getMarkerIcon("ic_maps_service_center.png");
 
-Future<void> _createCustomMarker() async {
-  try {
-    gasStation = await _getMarkerIcon("ic_maps_gas_station.png");
-    restaurant = await _getMarkerIcon("ic_maps_restaurant.png");
-    carDealer = await _getMarkerIcon("ic_maps_dealer.png");
-    serviceCenter = await _getMarkerIcon("ic_maps_service_center.png");
+      selectedGasStation =
+          await _getMarkerIcon("ic_maps_gas_station_selected.png");
+      selectedRestaurant =
+          await _getMarkerIcon("ic_maps_restaurant_selected.png");
+      selectedCarDealer = await _getMarkerIcon("ic_maps_dealer_selected.png");
+      selectedServiceCenter =
+          await _getMarkerIcon("ic_maps_service_center_selected.png");
 
-    selectedGasStation =
-        await _getMarkerIcon("ic_maps_gas_station_selected.png");
-    selectedRestaurant =
-        await _getMarkerIcon("ic_maps_restaurant_selected.png");
-    selectedCarDealer = await _getMarkerIcon("ic_maps_dealer_selected.png");
-    selectedServiceCenter =
-        await _getMarkerIcon("ic_maps_service_center_selected.png");
-
-    print('Custom markers created successfully');
-  } catch (e) {
-    print('Error creating custom markers: $e');
+      print('Custom markers created successfully');
+    } catch (e) {
+      print('Error creating custom markers: $e');
+    }
   }
-}
-
 
   Future<BitmapDescriptor> _getMarkerIcon(String assetName) async {
     final data = await rootBundle.load("assets/icons/$assetName");

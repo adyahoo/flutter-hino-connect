@@ -163,6 +163,7 @@ class AppTranslations extends Translations {
           "filter_restaurant": "Restaurant",
           "filter_car_dealer": "Dealer",
           "filter_drive_to": "Drive To",
+          "see_route": "See Route",
         },
         'id_ID': {
           'home': 'Home',
@@ -322,7 +323,7 @@ class AppTranslations extends Translations {
           "filter_service_center": "Pusat Servis",
           "filter_restaurant": "Restoran",
           "filter_car_dealer": "Dealer",
-          "filter_drive_to": "Tujuan Lainnya",
+          "see_route": "Lihat Rute",
         }
       };
 }

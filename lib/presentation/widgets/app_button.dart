@@ -16,7 +16,8 @@ class AppButton extends StatelessWidget {
     this.shape = AppButtonShape.rounded,
     this.isFullWidth = true,
     this.size = AppButtonSize.defaultSize,
-  }) : this.icon = null;
+  }) : this.icon = null,
+        this.svgIcon = null;
 
   AppButton.icon({
     super.key,
@@ -28,7 +29,19 @@ class AppButton extends StatelessWidget {
     this.isFullWidth = true,
     this.isLoading = false,
     this.size = AppButtonSize.defaultSize,
-  });
+  }) : this.svgIcon = null;
+
+  AppButton.svgIcon({
+    super.key,
+    required this.svgIcon,
+    required this.label,
+    required this.onPress,
+    required this.type,
+    this.shape = AppButtonShape.rounded,
+    this.isFullWidth = true,
+    this.isLoading = false,
+    this.size = AppButtonSize.defaultSize,
+  }) : this.icon = null;
 
   final String label;
   final AppButtonType type;
@@ -40,6 +53,7 @@ class AppButton extends StatelessWidget {
 
   final Function()? onPress;
   final IconData? icon;
+  final SvgPicture? svgIcon;
 
   /// Button size
   final AppButtonSize size;
@@ -58,6 +72,20 @@ class AppButton extends StatelessWidget {
       ],
     );
   }
+
+  Widget _renderWithSvgIcon(BuildContext context) {
+  return Row(
+    mainAxisSize: MainAxisSize.min,
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      svgIcon!, 
+      const SizedBox(width: 8),
+      Text(label),
+    ],
+  );
+}
+
+
 
   Widget _renderText(BuildContext context) {
     return Text(label);
@@ -170,12 +198,14 @@ class AppButton extends StatelessWidget {
             textStyle: textStyle,
             tapTargetSize: MaterialTapTargetSize.shrinkWrap),
         child: Container(
-          child: isLoading
-              ? _renderLoading()
-              : icon != null
-                  ? _renderWithIcon(context)
-                  : _renderText(context),
-        ),
+        child: isLoading
+            ? _renderLoading()
+            : svgIcon != null
+                ? _renderWithSvgIcon(context)
+                : icon != null
+                    ? _renderWithIcon(context)
+                    : _renderText(context),
+      ),
       ),
     );
   }

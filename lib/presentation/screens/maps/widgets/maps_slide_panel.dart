@@ -29,7 +29,7 @@ class MapsSlidePanel extends GetView<MapsController> {
   Widget build(BuildContext context) {
     return SlidingUpPanel(
       controller: controller.panelController,
-      maxHeight: MediaQuery.of(context).size.height * 0.4,
+      maxHeight: MediaQuery.of(context).size.height * 0.5,
       minHeight: 0,
       borderRadius: BorderRadius.only(
         topLeft: Radius.circular(24),
@@ -88,6 +88,15 @@ class MapsSlidePanel extends GetView<MapsController> {
                 Obx(() => _renderLocationInfo(context, 'Alamat', controller.placeDetails.value.address, Iconsax.gps5)),
                 SizedBox(height: 16),
                 Obx(() => _renderLocationInfo(context, 'Nomor Telepon', controller.placeDetails.value.phoneNumber, Iconsax.call5)),
+                SizedBox(height: 30),
+                AppButton.svgIcon(
+                  label: 'see_route'.tr,
+                  svgIcon: SvgPicture.asset('assets/icons/ic_navigate_to_route.svg'),
+                  onPress: () {
+                    controller.handleOpenMaps();
+                  },
+                  type: AppButtonType.filled,
+                ),
               ],
             ),
           )),
