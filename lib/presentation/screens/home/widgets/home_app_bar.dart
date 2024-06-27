@@ -41,12 +41,12 @@ class HomeAppBar extends GetView<HomeController> {
                 children: [
                   SvgPicture.asset(
                     "assets/images/logo_white.svg",
-                    height: 18,
+                    height: 23,
                   ),
                   const HomeAccountChip(),
                 ],
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 16),
               Obx(
                 () => controller.isFetchingUser.value
                     ? _renderLoadinName()

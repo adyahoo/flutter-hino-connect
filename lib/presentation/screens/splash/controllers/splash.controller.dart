@@ -7,6 +7,8 @@ import 'package:hino_driver_app/data/locals/StorageService.dart';
 import 'package:hino_driver_app/domain/core/usecases/splash_use_case.dart';
 import 'package:hino_driver_app/infrastructure/di.dart';
 import 'package:hino_driver_app/infrastructure/navigation/routes.dart';
+import 'package:hino_driver_app/infrastructure/utils.dart';
+import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class SplashController extends GetxController {
@@ -34,7 +36,7 @@ class SplashController extends GetxController {
   }
 
   Future<void> _checkPermission() async {
-    final permissions = [Permission.location, Permission.camera, Permission.storage, Permission.notification];
+    final permissions = [Permission.location, Permission.camera, Permission.storage, Permission.notification, Permission.microphone];
     if (Platform.isAndroid) {
       final androidInfor = await DeviceInfoPlugin().androidInfo;
       final sdkVersion = androidInfor.version.sdkInt;
@@ -58,6 +60,24 @@ class SplashController extends GetxController {
           navigateLogin();
           break;
         case PermissionStatus.permanentlyDenied:
+          // showGetBottomSheet(
+          //   BsConfirmation(
+          //     type: BsConfirmationType.danger,
+          //     title: "permission_permanent_denied_title".tr,
+          //     description: "permission_permanent_denied_desc".tr,
+          //     positiveTitle: "go_to_setting".tr,
+          //     negativeTitle: "back".tr,
+          //     positiveButtonOnClick: () {
+          //       Get.back();
+          //
+          //       navigateLogin();
+          //       openAppSettings();
+          //     },
+          //     negativeButtonOnClick: () {
+          //       Get.back();
+          //     },
+          //   ),
+          // );
           navigateLogin();
           break;
         default:
@@ -67,10 +87,9 @@ class SplashController extends GetxController {
     });
   }
 
-  void _openAppSetting() {}
-
   void navigateLogin() {
     Future.delayed(const Duration(seconds: 3), () {
+
       if (inject<StorageService>().getToken() != null)
         Get.offNamed(Routes.MAIN_TAB);
       else
@@ -80,18 +99,14 @@ class SplashController extends GetxController {
 
   void _changeLanguage() {
     Future.value(inject<StorageService>().getSelectedLanguage()).then((value) {
-      print("check language: $value");
       switch (value) {
         case 1:
-          print('masuk case 1');
           Get.updateLocale(Locale('id', 'ID'));
           break;
         case 2:
-          print('masuk case 2');
           Get.updateLocale(Locale('en', 'US'));
           break;
         default:
-          print('masuk default');
           break;
       }
     });

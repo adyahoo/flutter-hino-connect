@@ -110,12 +110,18 @@ class Main extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Locale? locale = Get.deviceLocale;
+
+    if ((locale != Locale("en", 'US') && locale != Locale("id", "ID")) || locale == null) {
+      locale = Locale("en", "US");
+    }
+
     return GetMaterialApp(
       scaffoldMessengerKey: rootScaffoldMessengerKey,
       themeMode: ThemeMode.light,
       theme: AppTheme.getLightTheme(),
       translations: AppTranslations(),
-      locale: Get.deviceLocale,
+      locale: locale,
       supportedLocales: [
         Locale('en', 'US'),
         Locale('id', 'ID'),

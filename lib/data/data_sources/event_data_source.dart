@@ -5,7 +5,7 @@ class EventDataSource {
 
   Future<ListPaginationApiResponse<EventDto>> getEventList() async {
     try {
-      await Future.delayed(const Duration(seconds: 3));
+      await Future.delayed(const Duration(milliseconds: 500));
       final data = await inject<StorageService>().getJsonData(StorageService.EVENTS_JSON);
 
       return ListPaginationApiResponse.fromJson(

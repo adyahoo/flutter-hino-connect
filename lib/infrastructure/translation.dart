@@ -142,7 +142,8 @@ class AppTranslations extends Translations {
           "welcome_subtitle": "Scan your vehicle to get your task and trip route",
           "face_scan_success": "Face ID recognized successfully",
           "biometric_warning_title": "The biometric feature is not yet active",
-          "biometric_warning_description": "You have not enabled biometrics in the Hino Driver application on your device. Please login first, then activate the \"Biometric Login\" feature in the profile menu.",
+          "biometric_warning_description":
+              "You have not enabled biometrics in the Hino Driver application on your device. Please login first, then activate the \"Biometric Login\" feature in the profile menu.",
           "no_today_trip_title": "No Trip list for today yet",
           "no_today_trip_subtitle": "You dont have list of today trips to view yet.",
           "face_recognition_subtitle": "Make sure your face is within the oval frame",
@@ -164,6 +165,13 @@ class AppTranslations extends Translations {
           "filter_car_dealer": "Dealer",
           "filter_drive_to": "Drive To",
           "see_route": "See Route",
+          "permission_denied_title": "Permission Denied",
+          "permission_denied_desc": "Please give permission to access this feature.",
+          "permission_permanent_denied_title": "Permission Denied",
+          "permission_permanent_denied_desc": "Please give permission through the device's setting to access this feature.",
+          "go_to_setting": "Open Setting",
+          "schedule_notif_title": "Check your recent completed trip",
+          "schedule_notif_desc": "Trip data for @address now available to be seen.",
         },
         'id_ID': {
           'home': 'Home',
@@ -303,7 +311,8 @@ class AppTranslations extends Translations {
           "welcome_subtitle": "Scan kendaraan untuk mendapatkan tugas dan rute perjalanan Anda",
           "face_scan_success": "ID wajah sukses dikenali",
           "biometric_warning_title": "Fitur biometrik belum aktif",
-          "biometric_warning_description": "Anda belum mengaktifkan biometrik di aplikasi Hino Driver di perangkat Anda. Silakan login terlebih dahulu, kemudian aktifkan fitur \"Login Biometrik\" pada menu profil.",
+          "biometric_warning_description":
+              "Anda belum mengaktifkan biometrik di aplikasi Hino Driver di perangkat Anda. Silakan login terlebih dahulu, kemudian aktifkan fitur \"Login Biometrik\" pada menu profil.",
           "no_today_trip_title": "Daftar perjalanan hari ini belum ada",
           "no_today_trip_subtitle": "Anda belum mempunyai daftar perjalanan hari ini untuk dilihat.",
           "face_recognition_subtitle": "Pastikan wajah anda berada di frame oval",
@@ -324,6 +333,14 @@ class AppTranslations extends Translations {
           "filter_restaurant": "Restoran",
           "filter_car_dealer": "Dealer",
           "see_route": "Lihat Rute",
+          "filter_drive_to": "Menuju ke",
+          "permission_denied_title": "Izin Akses Ditolak",
+          "permission_denied_desc": "Silahkan berikan akses untuk menggunakan fitur ini.",
+          "permission_permanent_denied_title": "Izin Akses Ditolak",
+          "permission_permanent_denied_desc": "Silahkan menuju pengaturan perangkat untuk memberikan akses fitur ini.",
+          "go_to_setting": "Buka Pengaturan",
+          "schedule_notif_title": "Silahkan cek trip anda yang baru saja selesai",
+          "schedule_notif_desc": "Data Trip anda untuk @address Sudah dapat dilihat",
         }
       };
 }

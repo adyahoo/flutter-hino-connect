@@ -12,6 +12,7 @@ class BsEmergencyContactFormController extends GetxController {
   final nameController = TextEditingController().obs;
   final phoneController = TextEditingController().obs;
   final editedId = Rx<int?>(null);
+  final phoneCode = "62".obs;
 
   @override
   void onInit() {
@@ -23,7 +24,7 @@ class BsEmergencyContactFormController extends GetxController {
     final data = ContactModel(
       id: editedId.value ?? 100,
       name: nameController.value.text,
-      code: "+62",
+      code: phoneCode.value,
       phone: phoneController.value.text,
     );
 

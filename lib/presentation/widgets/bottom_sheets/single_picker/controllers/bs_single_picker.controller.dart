@@ -42,7 +42,7 @@ class BsSinglePickerController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    print('items: $items');
+
     searchController = TextEditingController();
     searchController.addListener(() {
       search(searchController.text);

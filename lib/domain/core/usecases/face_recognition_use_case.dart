@@ -1,16 +1,13 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
-import 'package:camera/src/camera_image.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:google_mlkit_commons/src/input_image.dart';
 import 'package:hino_driver_app/data/data_sources/data_source.dart';
-import 'package:hino_driver_app/domain/core/entities/user_model.dart';
 import 'package:hino_driver_app/domain/core/interfaces/i_use_case.dart';
 import 'package:hino_driver_app/infrastructure/client/exceptions/ApiException.dart';
-import 'package:hino_driver_app/infrastructure/navigation/routes.dart';
-import 'package:hino_driver_app/infrastructure/utils.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class FaceRecognitionUseCase implements IFaceRecognitionUseCase {
   const FaceRecognitionUseCase({required this.dataSource});
@@ -21,16 +18,6 @@ class FaceRecognitionUseCase implements IFaceRecognitionUseCase {
   Future<void> verifyDriverFace(File image) async {
     try {
       await dataSource.verifyDriverFace(image);
-      // final data = UserModel(
-      //   id: response.id,
-      //   name: response.name,
-      //   email: response.email,
-      //   profilePic: response.profilePic,
-      //   phoneCode: response.phoneCode,
-      //   phone: response.phone,
-      // );
-      //
-      // return data;
     } on ApiException catch (e) {
       rethrow;
     }

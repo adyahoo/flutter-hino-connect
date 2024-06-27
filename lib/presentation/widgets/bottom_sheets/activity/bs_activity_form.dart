@@ -237,7 +237,7 @@ class BsActivityForm extends GetView<BsActivityFormController> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            BsNotch(),
+            const BsNotch(),
             const SizedBox(height: 8),
             _renderHeader(context),
             const SizedBox(height: 16),

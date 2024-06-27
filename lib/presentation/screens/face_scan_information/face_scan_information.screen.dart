@@ -3,7 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:get/get.dart';
 import 'package:hino_driver_app/infrastructure/constants.dart';
-import 'package:hino_driver_app/infrastructure/navigation/routes.dart';
 import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
 import 'package:hino_driver_app/presentation/screens/face_scan_information/widgets/information_item.dart';
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';
@@ -88,10 +87,7 @@ class FaceScanInformationScreen extends GetView<FaceScanInformationController> {
                 children: [
                   AppButton.icon(
                     label: 'verification'.tr,
-                    onPress: () {
-                      Get.toNamed(Routes.FACE_RECOGNITION);
-                      // Get.toNamed(Routes.VEHICLE_SCAN);
-                    },
+                    onPress: controller.navigateFaceRecog,
                     type: AppButtonType.filled,
                     icon: Iconsax.scan,
                   ),

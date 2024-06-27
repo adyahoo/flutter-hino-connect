@@ -32,31 +32,22 @@ class EditProfileController extends GetxController {
   // Text field states and controllers
   final picState = AppTextFieldState();
   final emailState = AppTextFieldState();
-  final phoneState = AppTextFieldState();
+  final phoneState = AppTextFieldState(inputType: TextInputType.phone);
   final fullNameState = AppTextFieldState();
   final picController = TextEditingController();
   final emailController = TextEditingController();
   final phoneController = TextEditingController();
   final fullNameController = TextEditingController();
 
+  final selectedCode = "62".obs;
   final isLoading = false.obs;
   File? selectedProfilePic;
-  var isProfilePicLocal =
-      false.obs; // Flag to check if the profile pic is local
+  var isProfilePicLocal = false.obs; // Flag to check if the profile pic is local
 
   static const int maxFileSizeInBytes = 2048 * 1024; // 2048 kilobytes
 
   Future<void> onEditSave() async {
     isLoading.value = true;
-
-    // Get selected phone code from bs single picker
-    final selectedId =
-        Get.find<BsSinglePickerController>().selectedOption.value;
-    final phoneCode =
-        Get.find<BsSinglePickerController>().items[selectedId].value;
-
-    print('selected id: $selectedId');
-    print('phone code: $phoneCode');
 
     try {
       // Update user details
@@ -64,35 +55,25 @@ class EditProfileController extends GetxController {
         name: fullNameController.text,
         email: emailController.text,
         phone: phoneController.text,
-        phoneCode: phoneCode,
+        phoneCode: selectedCode.value,
       );
 
       await useCase.updateUser(userTest);
 
-      // // Update profile picture if a new one was selected
-      // if (selectedProfilePic != null) {
-      //   await useCase.updateProfilePicture(selectedProfilePic!);
-      //   // After successful upload, update the profile picture URL
-      //   user.update((val) {
-      //     val!.profilePic = selectedProfilePic!.path; // Assuming API returns the path
-      //   });
-      //   isProfilePicLocal.value = false;
-      // }
-
       profileController.getUser();
       Get.back();
     } catch (e) {
-        Get.bottomSheet(
-          BsConfirmation(
-            type: BsConfirmationType.danger,
-            title: 'Error',
-            description: e.toString(),
-            isMultiAction: false,
-            positiveButtonOnClick: () {
-              Get.back();
-            },
-          ),
-        );
+      Get.bottomSheet(
+        BsConfirmation(
+          type: BsConfirmationType.danger,
+          title: 'Error',
+          description: e.toString(),
+          isMultiAction: false,
+          positiveButtonOnClick: () {
+            Get.back();
+          },
+        ),
+      );
     } finally {
       isLoading.value = false;
     }
@@ -102,52 +83,14 @@ class EditProfileController extends GetxController {
   void getUser() {
     UserModel userData = profileController.data.value;
     this.user.value = userData;
+    selectedCode.value = userData.phoneCode ?? '62';
   }
-
-  int getSelectedIdx() {
-    final phoneCode = user.value.phoneCode;
-    final idx = Constants.countryCodes
-        .indexWhere((element) => element.value == phoneCode);
-    return idx;
-  }
-
-  // void onEditProfilePic() async {
-  //   final pickedFile = await Get.bottomSheet(
-  //     BsImagePicker(),
-  //   );
-
-  //   if (pickedFile != null) {
-  //     final file = File(pickedFile.path);
-
-  //     // Check if file size is within the limit
-  //     final fileSize = await file.length();
-  //     if (fileSize > maxFileSizeInBytes) {
-  //       Get.snackbar(
-  //         'Error',
-  //         'The profile picture must not be greater than 2048 kilobytes.',
-  //         snackPosition: SnackPosition.BOTTOM,
-  //         backgroundColor: Colors.red,
-  //         colorText: Colors.white,
-  //       );
-  //       return;
-  //     }
-
-  //     selectedProfilePic = file;
-  //     isProfilePicLocal.value = true;
-
-  //     // Update the profile pic preview in the UI
-  //     user.update((val) {
-  //       val!.profilePic = pickedFile.path;
-  //     });
-  //   }
-  // }
 
   @override
   void onInit() {
     super.onInit();
     getUser();
-    Get.put(BsSinglePickerController(Constants.countryCodes.obs));
-    Get.find<BsSinglePickerController>().setSelectedOption(getSelectedIdx());
+
     fullNameController.text = user.value.name;
     emailController.text = user.value.email;
     phoneController.text = user.value.phone ?? "";

@@ -46,7 +46,7 @@ class TripDataSource {
   Future<ListPaginationApiResponse<TripDto>> getTripList(Map<TripFilter, dynamic>? filter) async {
     try {
       // _setJsonKey();
-      await Future.delayed(const Duration(seconds: 3));
+      await Future.delayed(const Duration(milliseconds: 500));
 
       final data = await inject<StorageService>().getJsonData(tripKey);
 
@@ -77,7 +77,7 @@ class TripDataSource {
   Future<ListPaginationApiResponse<TripDto>> getTodayTripList() async {
     try {
       // _setJsonKey();
-      await Future.delayed(const Duration(seconds: 3));
+      await Future.delayed(const Duration(milliseconds: 500));
 
       final data = await inject<StorageService>().getJsonData(tripKey);
 
@@ -114,7 +114,7 @@ class TripDataSource {
   Future<TripDetailDto> getTripDetail(int id) async {
     try {
       // _setJsonKey();
-      await Future.delayed(const Duration(seconds: 3));
+      await Future.delayed(const Duration(milliseconds: 500));
 
       final data = await inject<StorageService>().getJsonData(detailKey);
 
@@ -130,7 +130,7 @@ class TripDataSource {
   Future<void> updateTripDetail(int id, Penalty penalty) async {
     try {
       // _setJsonKey();
-      await Future.delayed(const Duration(seconds: 3));
+      await Future.delayed(const Duration(milliseconds: 500));
 
       final data = await inject<StorageService>().getJsonData(detailKey);
       final details = (data!['data'] as Iterable).map((e) => TripDetailDto.fromJson(e)).toList();

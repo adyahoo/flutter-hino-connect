@@ -2,7 +2,9 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
+import 'package:hino_driver_app/presentation/screens/face_recognition/widgets/face_detection_painter.dart';
 
 import 'controllers/face_recognition.controller.dart';
 
@@ -34,7 +36,7 @@ class FaceRecognitionScreen extends GetView<FaceRecognitionController> {
     return FutureBuilder(
       future: controller.initCamera(),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
+        if (snapshot.connectionState == ConnectionState.done && snapshot.error == null) {
           return Stack(
             alignment: FractionalOffset.center,
             children: [
@@ -100,7 +102,7 @@ class FaceRecognitionScreen extends GetView<FaceRecognitionController> {
                           duration: const Duration(milliseconds: 3000),
                           tween: Tween<double>(
                             begin: 0.0,
-                            end: 0.9,
+                            end: 0.99,
                           ),
                           builder: (context, value, child) {
                             controller.loadingValue.value = value;

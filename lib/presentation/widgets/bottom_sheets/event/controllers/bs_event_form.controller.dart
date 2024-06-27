@@ -10,7 +10,10 @@ class BsEventFormController extends GetxController {
   final typeState = AppTextFieldState();
   final dateState = AppTextFieldState();
   final timeState = AppTextFieldState();
-  final noteState = AppTextFieldState();
+  final noteState = AppTextFieldState(
+    maxLines: 4,
+    inputType: TextInputType.multiline,
+  );
 
   final typeController = TextEditingController().obs;
   final dateController = TextEditingController().obs;

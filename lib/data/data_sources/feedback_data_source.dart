@@ -5,7 +5,7 @@ class FeedbackDataSource {
 
   Future<ListPaginationApiResponse<FeedbackDto>> getFeedbackList() async {
     try {
-      await Future.delayed(const Duration(seconds: 3));
+      await Future.delayed(const Duration(milliseconds: 500));
       final response = await DefaultAssetBundle.of(rootScaffoldMessengerKey.currentContext!).loadString('assets/response_helpers/feedbacks.json');
       final data = await json.decode(response);
 

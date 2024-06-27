@@ -43,9 +43,9 @@ class ApiInterceptors extends InterceptorsWrapper {
       });
     }
 
-    final locale = getx.Get.locale.toString();
+    final locales = getx.Get.locale.toString().split("_");
     options.headers.addAll({
-      'x-app-locale': locale,
+      'x-app-locale': locales[0],
     });
     print("sapi request options: ${options.headers}");
 

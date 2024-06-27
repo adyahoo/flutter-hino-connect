@@ -143,6 +143,8 @@ class PenaltyModel {
 
   String get formattedDate => this.datetime.formatDateFromString(Constants.DATE_FORMAT_PENALTY);
 
+  int get penaltyPoint => this.point ?? 0;
+
   @override
   List<Object?> get props => [
         id,

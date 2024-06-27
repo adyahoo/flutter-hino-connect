@@ -124,11 +124,10 @@ class Constants {
                 title: 'language'.tr,
                 selectedId: inject<StorageService>().getSelectedLanguage(),
                 onSubmit: (value) {
-                  print('Selected language: ${value.title}');
-                  print('id: ${value.id}');
                   Get.find<ProfileController>().changeLanguage(value.id);
                 },
               ),
+              isScrollControlled: false,
             );
           },
         ),

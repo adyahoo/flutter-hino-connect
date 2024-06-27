@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -164,30 +163,28 @@ class EmergencyContactListScreen extends GetView<EmergencyContactListController>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Expanded(
-              child: Obx(() {
-                if (controller.isFetching.value) {
-                  return _renderLoading();
-                }
+            Obx(() {
+              if (controller.isFetching.value) {
+                return _renderLoading();
+              }
 
-                final contact = controller.data.value;
+              final contact = controller.data.value;
 
-                if (contact == null) {
-                  return _renderEmpty(context);
-                }
+              if (contact == null) {
+                return _renderEmpty(context);
+              }
 
-                return Column(
-                  children: [
-                    AppTips(
-                      content: "emergency_tips_content".tr,
-                      variant: WidgetVariant.info,
-                    ),
-                    const SizedBox(height: 16),
-                    _renderContent(context, contact),
-                  ],
-                );
-              }),
-            ),
+              return Column(
+                children: [
+                  AppTips(
+                    content: "emergency_tips_content".tr,
+                    variant: WidgetVariant.info,
+                  ),
+                  const SizedBox(height: 16),
+                  _renderContent(context, contact),
+                ],
+              );
+            }),
             Obx(
               () => AppButton(
                 label: "add_emergency_contact".tr,

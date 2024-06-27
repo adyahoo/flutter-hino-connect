@@ -74,7 +74,7 @@ class TripDetailContent extends StatelessWidget {
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(color: TextColor.tertiary),
                       ),
                       TextSpan(
-                        text: trip.origin.formattedDate,
+                        text: trip.destination.formattedDate,
                         style: Theme.of(context).textTheme.labelMedium?.copyWith(color: TextColor.secondary),
                       ),
                     ],
