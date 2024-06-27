@@ -172,6 +172,8 @@ class AppTranslations extends Translations {
           "go_to_setting": "Open Setting",
           "schedule_notif_title": "Check your recent completed trip",
           "schedule_notif_desc": "Trip data for @address now available to be seen.",
+          "error_connection": "Connection Error",
+          "error_connection_desc": "Cannot connect to server. Please check your internet connection.",
         },
         'id_ID': {
           'home': 'Home',
@@ -341,6 +343,8 @@ class AppTranslations extends Translations {
           "go_to_setting": "Buka Pengaturan",
           "schedule_notif_title": "Silahkan cek trip anda yang baru saja selesai",
           "schedule_notif_desc": "Data Trip anda untuk @address Sudah dapat dilihat",
+          "error_connection": "Error pada Koneksi",
+          "error_connection_desc": "Tidak dapat terhubung ke server. Periksa koneksi internet Anda.",
         }
       };
 }

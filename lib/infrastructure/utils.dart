@@ -43,8 +43,8 @@ void errorHandler(Exception e, {VoidCallback? onDismiss}) {
         print('masuk e.connectionError');
         error = ErrorResponseModel(
           code: 500,
-          title: 'Connection Error',
-          message: 'There was an error in your connection',
+          title: 'error_connection'.tr,
+          message: 'error_connection_desc'.tr,
           errors: [],
         );
       } else {

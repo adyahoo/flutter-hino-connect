@@ -311,11 +311,6 @@ class MapsController extends GetxController {
         panelController.close();
       }
 
-      // if (id == 'filter_drive_to') {
-      //   await _handleOpenMaps();
-      //   return;
-      // }
-
       final item = Constants.mapScreenFilterItems
           .firstWhere((element) => element.id == id);
       final type = convertLabelToType(item.label);
@@ -415,7 +410,25 @@ class MapsController extends GetxController {
       panelController.open();
     }
 
+    // Move camera to position marker a bit higher on the screen
+    _moveCameraToPosition(marker.position);
+
     print('Updated selected marker: ${selectedMarker?.markerId.value}');
+  }
+
+  void _moveCameraToPosition(LatLng position) {
+    final screenHeight = Get.height;
+    final panelHeight = 150;
+    final latOffset = (panelHeight / screenHeight) * 0.005;
+
+    final targetPosition = LatLng(
+      position.latitude - latOffset,
+      position.longitude,
+    );
+
+    _controller.animateCamera(
+      CameraUpdate.newLatLng(targetPosition),
+    );
   }
 
   Future<void> _createCustomMarker() async {
