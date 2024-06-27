@@ -19,6 +19,7 @@
             "lat": -6.335310728,
             "lng": 107.1822852
           },
+          "point": 33,
           "type": "over_speed",
           "note": "kecepatan_melebihi_80_km/jam",
           "date_time": "2024-07-01T10:00:00.000000Z"
