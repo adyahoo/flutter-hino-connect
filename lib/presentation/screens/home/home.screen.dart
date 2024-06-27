@@ -13,15 +13,10 @@ import 'package:iconsax/iconsax.dart';
 import 'controllers/home.controller.dart';
 
 part 'widgets/home_app_bar.dart';
-
 part 'widgets/home_account_chip.dart';
-
 part 'widgets/home_content_card.dart';
-
 part 'widgets/home_vehicle_card.dart';
-
 part 'widgets/home_trip_list.dart';
-
 part 'bs/bs_vehicle_detail.dart';
 
 class HomeScreen extends GetView<HomeController> {
@@ -73,18 +68,20 @@ class HomeScreen extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Color(0xffD9565B),
-      statusBarIconBrightness: Brightness.dark,
-    ));
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const HomeAppBar(),
-            _renderContent(context),
-          ],
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle(
+        statusBarColor: Color(0xffD9565B), 
+        statusBarIconBrightness: Brightness.dark,
+      ),
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const HomeAppBar(),
+              _renderContent(context),
+            ],
+          ),
         ),
       ),
     );
