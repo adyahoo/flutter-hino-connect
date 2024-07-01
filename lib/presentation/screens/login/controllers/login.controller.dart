@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
-import 'package:hino_driver_app/data/locals/StorageService.dart';
+import 'package:hino_driver_app/data/locals/storage_service.dart';
 import 'package:hino_driver_app/domain/core/entities/user_model.dart';
 import 'package:hino_driver_app/domain/core/usecases/user_use_case.dart';
 import 'package:hino_driver_app/infrastructure/di.dart';
@@ -113,7 +113,7 @@ class LoginController extends GetxController {
             await useCase.login(body);
             Get.offNamed(Routes.MAIN_TAB);
 
-            //start 5 minutes scheduled local trip notification
+            //start 2 minutes scheduled local trip notification
             showScheduledNewTripNotif();
           } else {
             print('Stored credentials not found.');

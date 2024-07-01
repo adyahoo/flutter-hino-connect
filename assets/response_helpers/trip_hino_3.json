@@ -1,0 +1,133 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "origin": {
+        "lat": -6.283292054,
+        "lng": 106.8437156,
+        "address": "Terminal Pasar Minggu",
+        "date": "2024-06-25T09:00:00.000000Z"
+      },
+      "destination": {
+        "lat": -6.243489323,
+        "lng": 106.8001981,
+        "address": "Terminal Blok M",
+        "date": "2024-06-25T09:30:00.000000Z"
+      },
+      "total_point": 100,
+      "total_distance": 10,
+      "duration": "0:30:00",
+      "created_at": "2024-06-25T09:00:00.000000Z"
+    },
+    {
+      "id": 2,
+      "origin": {
+        "lat": -6.283292054,
+        "lng": 106.8437156,
+        "address": "Terminal Pasar Minggu",
+        "date": "2024-06-26T09:00:00.000000Z"
+      },
+      "destination": {
+        "lat": -6.109902868,
+        "lng": 106.8819788,
+        "address": "Terminal Bus Tanjung Priok",
+        "date": "2024-06-26T10:20:00.000000Z"
+      },
+      "total_point": 0,
+      "total_distance": 31,
+      "duration": "1:20:00",
+      "created_at": "2024-06-26T09:00:00.000000Z"
+    },
+    {
+      "id": 3,
+      "origin": {
+        "lat": -6.283292054,
+        "lng": 106.8437156,
+        "address": "Terminal Pasar Minggu",
+        "date": "2024-06-27T09:00:00.000000Z"
+      },
+      "destination": {
+        "lat": -6.224854203,
+        "lng": 106.8668512,
+        "address": "Terminal Kampung Melayu",
+        "date": "2024-06-27T09:30:00.000000Z"
+      },
+      "total_point": 50,
+      "total_distance": 10,
+      "duration": "0:30:00",
+      "created_at": "2024-06-27T09:00:00.000000Z"
+    },
+    {
+      "id": 4,
+      "origin": {
+        "lat": -6.391571008,
+        "lng": 106.8247662,
+        "address": "Terminal Depok",
+        "date": "2024-06-28T09:00:00.000000Z"
+      },
+      "destination": {
+        "lat": -6.209103817,
+        "lng": 106.8475952,
+        "address": "Terminal Manggarai",
+        "date": "2024-06-28T10:15:00.000000Z"
+      },
+      "total_point": 70,
+      "total_distance": 33,
+      "duration": "1:15:00",
+      "created_at": "2024-06-28T09:00:00.000000Z"
+    },
+    {
+      "id": 5,
+      "origin": {
+        "lat": -6.391571008,
+        "lng": 106.8247662,
+        "address": "Terminal Depok",
+        "date": "2024-06-29T09:00:00.000000Z"
+      },
+      "destination": {
+        "lat": -6.283292054,
+        "lng": 106.8437156,
+        "address": "Terminal Pasar Minggu",
+        "date": "2024-06-29T09:40:00.000000Z"
+      },
+      "total_point": 85,
+      "total_distance": 13,
+      "duration": "0:40:00",
+      "created_at": "2024-06-29T09:00:00.000000Z"
+    },
+    {
+      "id": 6,
+      "origin": {
+        "lat": -6.391571008,
+        "lng": 106.8247662,
+        "address": "Terminal Depok",
+        "date": "2024-06-30T09:00:00.000000Z"
+      },
+      "destination": {
+        "lat": -6.173527683,
+        "lng": 106.8421919,
+        "address": "Terminal Senen",
+        "date": "2024-06-30T10:25:00.000000Z"
+      },
+      "total_point": 100,
+      "total_distance": 41,
+      "duration": "1:25:00",
+      "created_at": "2024-06-30T09:00:00.000000Z"
+    }
+  ],
+  "links": {
+    "first": "http:\/\/mahaputra.local\/client\/v1\/technician-review?page=1",
+    "last": "http:\/\/mahaputra.local\/client\/v1\/technician-review?page=2",
+    "prev": null,
+    "next": "http:\/\/mahaputra.local\/client\/v1\/technician-review?page=2"
+  },
+  "meta": {
+    "current_page": 1,
+    "from": 1,
+    "last_page": 2,
+    "path": "http:\/\/mahaputra.local\/client\/v1\/technician-review",
+    "per_page": 10,
+    "to": 10,
+    "total": 18
+  }
+}

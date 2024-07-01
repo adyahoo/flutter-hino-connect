@@ -15,7 +15,7 @@ import 'package:hino_driver_app/data/dtos/trips_dto.dart';
 import 'package:hino_driver_app/data/dtos/user_dto.dart';
 import 'package:hino_driver_app/data/services/user_services.dart';
 import 'package:hino_driver_app/infrastructure/constants.dart';
-import 'package:hino_driver_app/data/locals/StorageService.dart';
+import 'package:hino_driver_app/data/locals/storage_service.dart';
 import 'package:hino_driver_app/infrastructure/di.dart';
 import 'package:hino_driver_app/infrastructure/extension.dart';
 import 'package:hino_driver_app/main.dart';

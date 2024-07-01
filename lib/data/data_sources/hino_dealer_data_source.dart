@@ -4,8 +4,7 @@ class HinoDealerDataSource {
   Future<ListApiResponse<HinoDealerDto>> getHinoDealers() async {
     try {
       await Future.delayed(const Duration(seconds: 1));
-      final data = await inject<StorageService>()
-          .getJsonData(StorageService.HINO_DEALERS_JSON);
+      final data = await inject<StorageService>().getJsonData(StorageService.HINO_DEALERS_JSON);
 
       print('Fetched JSON: $data');
 
