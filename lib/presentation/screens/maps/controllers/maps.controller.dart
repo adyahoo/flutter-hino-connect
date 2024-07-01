@@ -15,22 +15,6 @@ import 'package:url_launcher/url_launcher.dart';
 
 final _panelController = PanelController();
 
-class PlaceDetails {
-  final String name;
-  final String type;
-  final String address;
-  final String phoneNumber;
-  final String position;
-
-  PlaceDetails({
-    required this.name,
-    required this.type,
-    required this.address,
-    required this.phoneNumber,
-    required this.position,
-  });
-}
-
 class MapsController extends GetxController {
   MapsController({required this.useCase});
 
@@ -64,8 +48,7 @@ class MapsController extends GetxController {
   Marker? selectedMarker;
   final RxString selectedChip = RxString('');
 
-  final Rx<TextEditingController> searchbarController =
-      TextEditingController().obs;
+  final Rx<TextEditingController> searchbarController = TextEditingController().obs;
   final searchBarState = AppTextFieldState();
 
   LatLng currentLocation = const LatLng(-8.681547132266411, 115.24069589508952);
@@ -149,20 +132,16 @@ class MapsController extends GetxController {
   }
 
   void initMarker(LatLng coordinate) {
-    fetchAllPlaces(coordinate.latitude, coordinate.longitude,
-        isFetchingCurrentLocation: true);
+    fetchAllPlaces(coordinate.latitude, coordinate.longitude, isFetchingCurrentLocation: true);
   }
 
   Future<void> initSpecificMarker(PlaceModel place) async {
     // Wait for fetchAllPlaces to complete
-    _moveCamera(
-        LatLng(double.parse(place.latitude), double.parse(place.longitude)));
-    await fetchAllPlaces(
-        double.parse(place.latitude), double.parse(place.longitude));
+    _moveCamera(LatLng(double.parse(place.latitude), double.parse(place.longitude)));
+    await fetchAllPlaces(double.parse(place.latitude), double.parse(place.longitude));
 
     // Check if the fetched places contain the specific marker we want to initialize
-    String markerId = _generateMarkerId(
-        double.parse(place.latitude), double.parse(place.longitude));
+    String markerId = _generateMarkerId(double.parse(place.latitude), double.parse(place.longitude));
 
     // Search for marker in _markers
     Marker? marker;
@@ -192,8 +171,7 @@ class MapsController extends GetxController {
     }
   }
 
-  Future<void> fetchAllPlaces(double lat, double long,
-      {bool isFetchingCurrentLocation = false}) async {
+  Future<void> fetchAllPlaces(double lat, double long, {bool isFetchingCurrentLocation = false}) async {
     try {
       await Future.wait([
         fetchPlaces(lat, long, Constants.TYPE_GAS_STATION),
@@ -228,8 +206,7 @@ class MapsController extends GetxController {
         print('Test res service center: ${res.length}');
       }
 
-      final validPlaces =
-          res.where((place) => isValidPlace(place, type)).toList();
+      final validPlaces = res.where((place) => isValidPlace(place, type)).toList();
 
       if (type == Constants.TYPE_CAR_DEALER) {
         print('-' * 50);
@@ -242,8 +219,7 @@ class MapsController extends GetxController {
       }
 
       _places.addAll(validPlaces);
-      final newMarkers =
-          _places.map((e) => _createMarker(e)).whereType<Marker>().toSet();
+      final newMarkers = _places.map((e) => _createMarker(e)).whereType<Marker>().toSet();
       _markers.value.addAll(newMarkers);
       _markers.refresh();
     } catch (e) {
@@ -274,13 +250,11 @@ class MapsController extends GetxController {
 
     // Define origin and destination strings
     String origin = '${currentLocation.latitude},${currentLocation.longitude}';
-    String destination =
-        '${selectedMarker!.position.latitude},${selectedMarker!.position.longitude}';
+    String destination = '${selectedMarker!.position.latitude},${selectedMarker!.position.longitude}';
 
     if (Platform.isAndroid) {
       // Updated URL for Google Maps with directions
-      url =
-          'https://www.google.com/maps/dir/?api=1&origin=$origin&destination=$destination&travelmode=driving';
+      url = 'https://www.google.com/maps/dir/?api=1&origin=$origin&destination=$destination&travelmode=driving';
       if (await canLaunchUrl(Uri.parse(url))) {
         await launchUrl(Uri.parse(url));
       } else {
@@ -288,10 +262,8 @@ class MapsController extends GetxController {
       }
     } else {
       // Updated URL for Apple Maps with directions
-      urlAppleMaps =
-          'https://maps.apple.com/?saddr=$origin&daddr=$destination&dirflg=d';
-      url =
-          'comgooglemaps://?saddr=$origin&daddr=$destination&directionsmode=driving';
+      urlAppleMaps = 'https://maps.apple.com/?saddr=$origin&daddr=$destination&dirflg=d';
+      url = 'comgooglemaps://?saddr=$origin&daddr=$destination&directionsmode=driving';
       if (await canLaunchUrl(Uri.parse(url))) {
         await launchUrl(Uri.parse(url));
       } else if (await canLaunchUrl(Uri.parse(urlAppleMaps))) {
@@ -333,36 +305,29 @@ class MapsController extends GetxController {
   Set<Marker> _createMarkers(Iterable<PlaceModel> places) {
     return places
         .map((e) => Marker(
-              markerId: MarkerId(_generateMarkerId(
-                  double.parse(e.latitude), double.parse(e.longitude))),
-              position:
-                  LatLng(double.parse(e.latitude), double.parse(e.longitude)),
+              markerId: MarkerId(_generateMarkerId(double.parse(e.latitude), double.parse(e.longitude))),
+              position: LatLng(double.parse(e.latitude), double.parse(e.longitude)),
               infoWindow: InfoWindow(title: e.name, snippet: e.address),
               icon: _getIconForType(e.type),
               onTap: () => onMarkerTapped(Marker(
-                markerId: MarkerId(_generateMarkerId(
-                    double.parse(e.latitude), double.parse(e.longitude))),
-                position:
-                    LatLng(double.parse(e.latitude), double.parse(e.longitude)),
+                markerId: MarkerId(_generateMarkerId(double.parse(e.latitude), double.parse(e.longitude))),
+                position: LatLng(double.parse(e.latitude), double.parse(e.longitude)),
               )),
             ))
         .toSet();
   }
 
   Marker? _createMarker(PlaceModel place) {
-    final markerId = _generateMarkerId(
-        double.parse(place.latitude), double.parse(place.longitude));
+    final markerId = _generateMarkerId(double.parse(place.latitude), double.parse(place.longitude));
 
     return Marker(
       markerId: MarkerId(markerId),
-      position:
-          LatLng(double.parse(place.latitude), double.parse(place.longitude)),
+      position: LatLng(double.parse(place.latitude), double.parse(place.longitude)),
       infoWindow: InfoWindow(title: place.name, snippet: place.address),
       icon: _getIconForType(place.type),
       onTap: () => onMarkerTapped(Marker(
         markerId: MarkerId(markerId),
-        position:
-            LatLng(double.parse(place.latitude), double.parse(place.longitude)),
+        position: LatLng(double.parse(place.latitude), double.parse(place.longitude)),
       )),
     );
   }
@@ -385,10 +350,7 @@ class MapsController extends GetxController {
     print('Marker tapped: ${marker.markerId.value}');
 
     // Find the selected place based on the marker ID
-    final selectedPlace = _places.firstWhere((e) =>
-        _generateMarkerId(
-            double.parse(e.latitude), double.parse(e.longitude)) ==
-        marker.markerId.value);
+    final selectedPlace = _places.firstWhere((e) => _generateMarkerId(double.parse(e.latitude), double.parse(e.longitude)) == marker.markerId.value);
 
     // Update the selected place details
     final placeDetails = convertToPlaceDetails(selectedPlace, marker);
@@ -446,13 +408,10 @@ class MapsController extends GetxController {
       carDealer = await _getMarkerIcon("ic_maps_dealer.png");
       serviceCenter = await _getMarkerIcon("ic_maps_service_center.png");
 
-      selectedGasStation =
-          await _getMarkerIcon("ic_maps_gas_station_selected.png");
-      selectedRestaurant =
-          await _getMarkerIcon("ic_maps_restaurant_selected.png");
+      selectedGasStation = await _getMarkerIcon("ic_maps_gas_station_selected.png");
+      selectedRestaurant = await _getMarkerIcon("ic_maps_restaurant_selected.png");
       selectedCarDealer = await _getMarkerIcon("ic_maps_dealer_selected.png");
-      selectedServiceCenter =
-          await _getMarkerIcon("ic_maps_service_center_selected.png");
+      selectedServiceCenter = await _getMarkerIcon("ic_maps_service_center_selected.png");
 
       print('Custom markers created successfully');
     } catch (e) {
@@ -462,13 +421,9 @@ class MapsController extends GetxController {
 
   Future<BitmapDescriptor> _getMarkerIcon(String assetName) async {
     final data = await rootBundle.load("assets/icons/$assetName");
-    final codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
-        targetWidth: 120);
+    final codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: 120);
     final fi = await codec.getNextFrame();
-    return BitmapDescriptor.fromBytes(
-        (await fi.image.toByteData(format: ui.ImageByteFormat.png))!
-            .buffer
-            .asUint8List());
+    return BitmapDescriptor.fromBytes((await fi.image.toByteData(format: ui.ImageByteFormat.png))!.buffer.asUint8List());
   }
 
   BitmapDescriptor _getIconForType(String type) {
@@ -487,14 +442,8 @@ class MapsController extends GetxController {
   }
 
   void _updateMarkerIcon(String markerId) {
-    final marker = _markers.value
-        .firstWhere((element) => element.markerId.value == markerId);
-    final type = _places
-        .firstWhere((e) =>
-            _generateMarkerId(
-                double.parse(e.latitude), double.parse(e.longitude)) ==
-            markerId)
-        .type;
+    final marker = _markers.value.firstWhere((element) => element.markerId.value == markerId);
+    final type = _places.firstWhere((e) => _generateMarkerId(double.parse(e.latitude), double.parse(e.longitude)) == markerId).type;
 
     final selectedIcon = _getSelectedIconForType(type);
     final updatedMarker = marker.copyWith(iconParam: selectedIcon);
@@ -505,14 +454,8 @@ class MapsController extends GetxController {
   }
 
   void _revertMarkerIcon(String markerId) {
-    final marker = _markers.value
-        .firstWhere((element) => element.markerId.value == markerId);
-    final type = _places
-        .firstWhere((e) =>
-            _generateMarkerId(
-                double.parse(e.latitude), double.parse(e.longitude)) ==
-            markerId)
-        .type;
+    final marker = _markers.value.firstWhere((element) => element.markerId.value == markerId);
+    final type = _places.firstWhere((e) => _generateMarkerId(double.parse(e.latitude), double.parse(e.longitude)) == markerId).type;
 
     final icon = _getIconForType(type);
     final revertedMarker = marker.copyWith(iconParam: icon);

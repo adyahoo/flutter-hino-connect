@@ -60,53 +60,20 @@ class PlaceModel extends Equatable {
 
   @override
   List<Object?> get props => [name, type, address, latitude, longitude, phone];
-
-
 }
 
-// import 'package:equatable/equatable.dart';
+class PlaceDetails {
+  final String name;
+  final String type;
+  final String address;
+  final String phoneNumber;
+  final String position;
 
-// class PlaceModel extends Equatable {
-//   final String name;
-//   String type;
-//   final String? address;
-//   final String latitude;
-//   final String longitude;
-//   final String? phone;
-
-//   PlaceModel({
-//     required this.name,
-//     this.type = 'place',
-//     this.address,
-//     required this.latitude,
-//     required this.longitude,
-//     this.phone,
-//   });
-
-//   factory PlaceModel.fromJson(Map<String, dynamic> json) {
-//     return PlaceModel(
-//       name: json['name'],
-//       type: json['type'],
-//       address: json['address'],
-//       latitude: json['latitude'],
-//       longitude: json['longitude'],
-//       phone: json['phone'],
-//     );
-//   }
-
-//   Map<String, dynamic> toJson() {
-//     return {
-//       'name': name,
-//       'type': type,
-//       'address': address,
-//       'latitude': latitude,
-//       'longitude': longitude,
-//       'phone': phone,
-//     };
-//   }
-
-//   @override
-//   List<Object?> get props => [name, type, address, latitude, longitude, phone];
-
-
-// }
+  PlaceDetails({
+    required this.name,
+    required this.type,
+    required this.address,
+    required this.phoneNumber,
+    required this.position,
+  });
+}

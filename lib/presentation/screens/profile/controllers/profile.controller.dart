@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:hino_driver_app/data/dtos/api_dto.dart';
-import 'package:hino_driver_app/data/locals/StorageService.dart';
+import 'package:hino_driver_app/data/locals/storage_service.dart';
 import 'package:hino_driver_app/domain/core/entities/user_model.dart';
 import 'package:hino_driver_app/domain/core/usecases/user_use_case.dart';
 import 'package:hino_driver_app/infrastructure/client/exceptions/ApiException.dart';

@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hino_driver_app/data/data_sources/data_source.dart';
-import 'package:hino_driver_app/data/locals/StorageService.dart';
+import 'package:hino_driver_app/data/locals/storage_service.dart';
 import 'package:hino_driver_app/data/services/user_services.dart';
 import 'package:hino_driver_app/domain/core/usecases/activity_use_case.dart';
 import 'package:hino_driver_app/domain/core/usecases/country_use_case.dart';

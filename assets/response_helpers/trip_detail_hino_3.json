@@ -1,0 +1,358 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "origin": {
+        "lat": -6.283292054,
+        "origin_lng": 106.8437156
+      },
+      "destination": {
+        "lat": -6.243489323,
+        "destination_lng": 106.8001981
+      },
+      "total_point": 100,
+      "created_at": "2024-06-25t09:00:00.000000z",
+      "penalties": [
+        {
+          "id": 1,
+          "coordinate": {
+            "lat": -6.273301082,
+            "lng": 106.8464097
+          },
+          "type": "over_speed",
+          "note": "kecepatan_melebihi_80_km/jam",
+          "point": 25,
+          "date_time": "2024-06-25t09:07:00.000000z"
+        },
+        {
+          "id": 2,
+          "coordinate": {
+            "lat": -6.264012777,
+            "lng": 106.8431763
+          },
+          "type": "brake",
+          "note": "harsh_braking_untuk_menghindari_kendaraan_di_depan",
+          "point": 25,
+          "date_time": "2024-06-25t09:14:00.000000z"
+        },
+        {
+          "id": 3,
+          "coordinate": {
+            "lat": -6.241473456,
+            "lng": 106.8362396
+          },
+          "type": "acceleration",
+          "note": "harsh_acceleration_terdeteksi",
+          "point": 25,
+          "date_time": "2024-06-25t09:21:00.000000z"
+        },
+        {
+          "id": 4,
+          "coordinate": {
+            "lat": -6.23997286,
+            "lng": 106.8008441
+          },
+          "type": "lateral_accel",
+          "note": "lateral_acceleration_terdeteksi",
+          "point": 25,
+          "date_time": "2024-06-25t09:28:00.000000z"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "origin": {
+        "lat": -6.283292054,
+        "origin_lng": 106.8437156
+      },
+      "destination": {
+        "lat": -6.109902868,
+        "destination_lng": 106.8819788
+      },
+      "total_point": 0,
+      "created_at": "2024-06-26t09:00:00.000000z",
+      "penalties": [
+        {
+          "id": 1,
+          "coordinate": {
+            "lat": -6.303659341,
+            "lng": 106.8449278
+          },
+          "type": "over_speed",
+          "note": "kecepatan_melebihi_80_km/jam",
+          "point": 0,
+          "date_time": "2024-06-26t09:12:00.000000z"
+        },
+        {
+          "id": 2,
+          "coordinate": {
+            "lat": -6.307250273,
+            "lng": 106.8760308
+          },
+          "type": "brake",
+          "note": "harsh_braking_untuk_menghindari_kendaraan_di_depan",
+          "point": 0,
+          "date_time": "2024-06-26t09:28:00.000000z"
+        },
+        {
+          "id": 3,
+          "coordinate": {
+            "lat": -6.17763941,
+            "lng": 106.8760208
+          },
+          "type": "acceleration",
+          "note": "harsh_acceleration_terdeteksi",
+          "point": 0,
+          "date_time": "2024-06-26t09:55:00.000000z"
+        },
+        {
+          "id": 4,
+          "coordinate": {
+            "lat": -6.110300547,
+            "lng": 106.8930581
+          },
+          "type": "lateral_accel",
+          "note": "lateral_acceleration_terdeteksi",
+          "point": 0,
+          "date_time": "2024-06-26t10:10:00.000000z"
+        },
+        {
+          "id": 3,
+          "origin": {
+            "lat": -6.283292054,
+            "origin_lng": 106.8437156
+          },
+          "destination": {
+            "lat": -6.224854203,
+            "destination_lng": 106.8668512
+          },
+          "total_point": 50,
+          "created_at": "2024-06-27t09:00:00.000000z",
+          "penalties": [
+            {
+              "id": 1,
+              "coordinate": {
+                "lat": -6.27549706,
+                "lng": 106.8461682
+              },
+              "type": "over_speed",
+              "note": "kecepatan_melebihi_80_km/jam",
+              "point": 10,
+              "date_time": "2024-06-27t09:05:00.000000z"
+            },
+            {
+              "id": 2,
+              "coordinate": {
+                "lat": -6.257694586,
+                "lng": 106.8433187
+              },
+              "type": "brake",
+              "note": "harsh_braking_untuk_menghindari_kendaraan_di_depan",
+              "point": 10,
+              "date_time": "2024-06-27t09:10:00.000000z"
+            },
+            {
+              "id": 3,
+              "coordinate": {
+                "lat": -6.256500115,
+                "lng": 106.8561503
+              },
+              "type": "acceleration",
+              "note": "harsh_acceleration_terdeteksi",
+              "point": 15,
+              "date_time": "2024-06-27t09:15:00.000000z"
+            },
+            {
+              "id": 4,
+              "coordinate": {
+                "lat": -6.258034577,
+                "lng": 106.863669
+              },
+              "type": "lateral_accel",
+              "note": "lateral_acceleration_terdeteksi",
+              "point": 15,
+              "date_time": "2024-06-27t09:18:00.000000z"
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "origin": {
+            "lat": -6.391571008,
+            "origin_lng": 106.8247662
+          },
+          "destination": {
+            "lat": -6.209103817,
+            "destination_lng": 106.8475952
+          },
+          "total_point": 70,
+          "created_at": "2024-06-28t09:00:00.000000z",
+          "penalties": [
+            {
+              "id": 1,
+              "coordinate": {
+                "lat": -6.378807145,
+                "lng": 106.8494173
+              },
+              "type": "over_speed",
+              "note": "kecepatan_melebihi_80_km/jam",
+              "point": 20,
+              "date_time": "2024-06-28t09:15:00.000000z"
+            },
+            {
+              "id": 2,
+              "coordinate": {
+                "lat": -6.347496083,
+                "lng": 106.8906858
+              },
+              "type": "brake",
+              "note": "harsh_braking_untuk_menghindari_kendaraan_di_depan",
+              "point": 20,
+              "date_time": "2024-06-28t09:30:00.000000z"
+            },
+            {
+              "id": 3,
+              "coordinate": {
+                "lat": -6.271629233,
+                "lng": 106.8725855
+              },
+              "type": "acceleration",
+              "note": "harsh_acceleration_terdeteksi",
+              "point": 20,
+              "date_time": "2024-06-28t09:50:00.000000z"
+            },
+            {
+              "id": 4,
+              "coordinate": {
+                "lat": -6.192210156,
+                "lng": 106.8733512
+              },
+              "type": "lateral_accel",
+              "note": "lateral_acceleration_terdeteksi",
+              "point": 10,
+              "date_time": "2024-06-28t10:05:00.000000z"
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "origin": {
+            "lat": -6.391571008,
+            "lng": 106.8247662
+          },
+          "destination": {
+            "lat": -6.283292054,
+            "destination_lng": 106.8437156
+          },
+          "total_point": 85,
+          "created_at": "2024-06-29t09:00:00.000000z",
+          "penalties": [
+            {
+              "id": 1,
+              "coordinate": {
+                "lat": -6.385686076,
+                "lng": 106.8285688
+              },
+              "type": "over_speed",
+              "note": "kecepatan_melebihi_80_km/jam",
+              "point": 20,
+              "_timedate": "2024-06-29t09:08:00.000000z"
+            },
+            {
+              "id": 2,
+              "coordinate": {
+                "lat": -6.349572509,
+                "lng": 106.8325158
+              },
+              "type": "brake",
+              "note": "harsh_braking_untuk_menghindari_kendaraan_di_depan",
+              "point": 20,
+              "date_time": "2024-06-29t09:18:00.000000z"
+            },
+            {
+              "id": 3,
+              "coordinate": {
+                "lat": -6.301083892,
+                "lng": 106.8399377
+              },
+              "type": "acceleration",
+              "note": "harsh_acceleration_terdeteksi",
+              "point": 20,
+              "date_time": "2024-06-29t09:25:00.000000z"
+            },
+            {
+              "id": 4,
+              "coordinate": {
+                "lat": -6.283266548,
+                "lng": 106.8444158
+              },
+              "type": "lateral_accel",
+              "note": "lateral_acceleration_terdeteksi",
+              "point": 25,
+              "date_time": "2024-06-29t09:37:00.000000z"
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "origin": {
+            "lat": -6.391571008,
+            "origin_lng": 106.8247662
+          },
+          "destination": {
+            "lat": -6.173527683,
+            "lng": 106.8421919
+          },
+          "total_point": 100,
+          "created_at": "2024-06-30t09:00:00.000000z",
+          "penalties": [
+            {
+              "id": 1,
+              "coordinate": {
+                "lat": -6.378589819,
+                "lng": 106.8464768
+              },
+              "type": "over_speed",
+              "note": "kecepatan_melebihi_80_km/jam",
+              "point": 25,
+              "date_time": "2024-06-30t09:18:00.000000z"
+            },
+            {
+              "id": 2,
+              "coordinate": {
+                "lat": -6.346485015,
+                "lng": 106.8901599
+              },
+              "type": "brake",
+              "note": "harsh_braking_untuk_menghindari_kendaraan_di_depan",
+              "point": 25,
+              "date_time": "2024-06-30t09:36:00.000000z"
+            },
+            {
+              "id": 3,
+              "coordinate": {
+                "lat": -6.217442,
+                "lng": 106.8737796
+              },
+              "type": "acceleration",
+              "note": "harsh_acceleration_terdeteksi",
+              "point": 25,
+              "date_time": "2024-06-30t09:54:00.000000z"
+            },
+            {
+              "id": 4,
+              "coordinate": {
+                "lat": -6.171107386,
+                "lng": 106.8370377
+              },
+              "type": "lateral_accel",
+              "note": "lateral_acceleration_terdeteksi",
+              "point": 25,
+              "date_time": "2024-06-30t10:15:00.000000z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

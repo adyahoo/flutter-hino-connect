@@ -21,9 +21,8 @@ class PlaceUseCase {
       print('--> getPlaceList: $type');
       final hinoResponse = await hinoDataSource.getHinoDealers();
       print('after hinoResponse: ${hinoResponse.data.length}');
-      print(
-        '------------------------------------->');
-        print('hinoResponse: ${hinoResponse.data[0].toString()}');
+      print('------------------------------------->');
+      print('hinoResponse: ${hinoResponse.data[0].toString()}');
       if (type == Constants.TYPE_CAR_DEALER) {
         print('masuk if type car dealer');
         //print all data
@@ -34,8 +33,7 @@ class PlaceUseCase {
         final data = hinoResponse.data
             .where((e) => e.facility == Constants.FACILITY_1S)
             .map(
-              (e) => 
-              PlaceModel(
+              (e) => PlaceModel(
                 name: e.name!,
                 type: Constants.TYPE_CAR_DEALER,
                 address: e.address,
@@ -51,11 +49,7 @@ class PlaceUseCase {
       } else if (type == Constants.TYPE_SERVICE_CENTER) {
         print('masuk if type service center');
         final data = hinoResponse.data
-            .where((e) =>
-                e.facility == Constants.FACILITY_2S ||
-                e.facility == Constants.FACILITY_SERPO ||
-                e.facility == Constants.FACILITY_HMSI_2S ||
-                e.facility == Constants.FACILITY_3S)
+            .where((e) => e.facility == Constants.FACILITY_2S || e.facility == Constants.FACILITY_SERPO || e.facility == Constants.FACILITY_HMSI_2S || e.facility == Constants.FACILITY_3S)
             .map(
               (e) => PlaceModel(
                 name: e.name!,
@@ -73,8 +67,7 @@ class PlaceUseCase {
       } else {
         final response = await dataSource.getPlaceList(lat, long, type);
         final data = response.results
-            .where((e) =>
-                e.name != null && e.longitude != null && e.latitude != null)
+            .where((e) => e.name != null && e.longitude != null && e.latitude != null)
             .map(
               (e) => PlaceModel(
                 name: e.name!,
@@ -102,7 +95,7 @@ class PlaceUseCase {
             requestOptions: RequestOptions(),
           ),
         );
-        
+
         errorHandler(apiException);
       }
       rethrow;

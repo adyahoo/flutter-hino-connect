@@ -3,7 +3,7 @@ import 'dart:ui';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:get/get.dart';
-import 'package:hino_driver_app/data/locals/StorageService.dart';
+import 'package:hino_driver_app/data/locals/storage_service.dart';
 import 'package:hino_driver_app/domain/core/usecases/splash_use_case.dart';
 import 'package:hino_driver_app/infrastructure/di.dart';
 import 'package:hino_driver_app/infrastructure/navigation/routes.dart';
