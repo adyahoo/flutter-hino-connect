@@ -303,7 +303,9 @@ class MapsController extends GetxController {
   }
 
   Future<void> filterMarkers(String id) async {
+    print('Filtering markers: $id');
     if (id.isNotEmpty) {
+      print('jalan di id not empty');
       //check if there's open panel
       if (panelController.isPanelOpen) {
         _controller.hideMarkerInfoWindow(selectedMarker!.markerId);
@@ -311,12 +313,18 @@ class MapsController extends GetxController {
         panelController.close();
       }
 
+      print('setelah if panelController.isPanelOpen');
+
       final item = Constants.mapScreenFilterItems
           .firstWhere((element) => element.id == id);
+      print('item: $item');
       final type = convertLabelToType(item.label);
+      print('type: $type');
+      print('item label: ${item.label}');
       selectedChip.value = item.id;
       _markers.value = _createMarkers(_places.where((e) => e.type == type));
     } else {
+      print('Resetting markers');
       selectedChip.value = '';
       _markers.value = _createMarkers(_places);
     }
@@ -529,20 +537,19 @@ class MapsController extends GetxController {
     }
   }
 
-  String convertLabelToType(String label) {
-    switch (label) {
-      case Constants.LABEL_GAS_STATION:
-        return Constants.TYPE_GAS_STATION;
-      case Constants.LABEL_CAR_DEALER:
-        return Constants.TYPE_CAR_DEALER;
-      case Constants.LABEL_RESTAURANT:
-        return Constants.TYPE_RESTAURANT;
-      case Constants.LABEL_SERVICE_CENTER:
-        return Constants.TYPE_SERVICE_CENTER;
-      default:
-        return 'unknown';
-    }
+String convertLabelToType(String label) {
+  if (label == Constants.LABEL_GAS_STATION) {
+    return Constants.TYPE_GAS_STATION;
+  } else if (label == Constants.LABEL_CAR_DEALER) {
+    return Constants.TYPE_CAR_DEALER;
+  } else if (label == Constants.LABEL_RESTAURANT) {
+    return Constants.TYPE_RESTAURANT;
+  } else if (label == Constants.LABEL_SERVICE_CENTER) {
+    return Constants.TYPE_SERVICE_CENTER;
+  } else {
+    return 'unknown';
   }
+}
 
   String convertTypeName(String type) {
     switch (type) {

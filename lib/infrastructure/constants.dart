@@ -55,10 +55,11 @@ class Constants {
   static const String TYPE_RESTAURANT = 'restaurant';
 
   //label type of marker
-  static const String LABEL_CAR_DEALER = 'Dealers';
-  static const String LABEL_SERVICE_CENTER = 'Service Center';
-  static const String LABEL_GAS_STATION = 'Gas Station';
-  static const String LABEL_RESTAURANT = 'Restaurant';
+  static String get LABEL_CAR_DEALER => 'filter_car_dealer'.tr;
+  static String get LABEL_SERVICE_CENTER => 'filter_service_center'.tr;
+  static String get LABEL_GAS_STATION => 'filter_gas_station'.tr;
+  static String get LABEL_RESTAURANT => 'filter_restaurant'.tr;
+  
 
   static final bottomMainMenu = [
     BottomNavigationBarItem(
@@ -248,11 +249,6 @@ class Constants {
         width: 16,
         height: 16,
       ),
-    ),
-    MapFilterItem(
-      id: 'filter_drive_to',
-      label: "filter_drive_to".tr,
-      icon: Icon(Iconsax.direct_up5),
     ),
   ];
 }
