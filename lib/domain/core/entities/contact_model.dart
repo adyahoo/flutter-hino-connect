@@ -3,20 +3,22 @@ part of 'model.dart';
 class ContactModel extends Equatable {
   final int id;
   final String name;
-  final String code;
   final String phone;
+  final String? code;
   final String? address;
+  final bool isPersonal;
 
   const ContactModel({
     required this.id,
     required this.name,
-    required this.code,
     required this.phone,
+    this.isPersonal = false,
+    this.code,
     this.address,
   });
 
   @override
-  List<Object?> get props => [id, name, code, phone, address];
+  List<Object?> get props => [id, name, code, phone, address, isPersonal];
 
   Map<String, dynamic> toJson() {
     return {

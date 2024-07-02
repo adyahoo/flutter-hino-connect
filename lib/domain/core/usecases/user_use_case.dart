@@ -43,16 +43,16 @@ class UserUseCase implements IUserUseCase {
       final bodyData = LoginBodyDto(email: body.email, password: body.password);
       await dataSource.login(bodyData);
     } on ApiException catch (e) {
-      print('error di user usecase login: $e');
       errorHandler(e);
       rethrow;
-    } 
+    }
   }
 
   @override
   Future<void> logout() async {
     try {
       await dataSource.logout();
+      inject<StorageService>().setScheduleNotifFired(status: false);
     } on ApiException catch (e) {
       errorHandler(e);
       rethrow;

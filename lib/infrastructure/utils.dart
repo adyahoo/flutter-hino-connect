@@ -175,7 +175,6 @@ Future<void> showScheduledNewTripNotif() async {
     uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
   );
   Future.delayed(const Duration(minutes: 2), () {
-    print("sapi trip dorr");
     inject<StorageService>().setScheduleNotifFired();
   });
 }

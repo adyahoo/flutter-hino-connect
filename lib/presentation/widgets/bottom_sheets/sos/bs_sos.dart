@@ -9,18 +9,12 @@ class BsSos extends GetView<BsSosController> {
       children: [
         Text(
           "need_help".tr,
-          style: Theme.of(context)
-              .textTheme
-              .titleMedium
-              ?.copyWith(color: TextColor.secondary),
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(color: TextColor.secondary),
         ),
         const SizedBox(height: 4),
         Text(
           "contact_us".tr,
-          style: Theme.of(context)
-              .textTheme
-              .bodyMedium
-              ?.copyWith(color: TextColor.secondary),
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.secondary),
         ),
       ],
     );
@@ -61,8 +55,7 @@ class BsSos extends GetView<BsSosController> {
   }
 
   Widget _renderCard(BuildContext context, ContactModel item) {
-
-    bool isPersonalContact = item.address == null;
+    bool isPersonalContact = item.isPersonal;
 
     return Card(
       elevation: 0,
@@ -82,44 +75,47 @@ class BsSos extends GetView<BsSosController> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                !isPersonalContact ? SvgPicture.asset(
-                  "assets/icons/ic_house.svg",
-                  width: 20,
-                  height: 20,
-                ) : SizedBox.shrink(),
+                !isPersonalContact
+                    ? SvgPicture.asset(
+                        "assets/icons/ic_house.svg",
+                        width: 20,
+                        height: 20,
+                      )
+                    : SizedBox.shrink(),
                 SizedBox(width: isPersonalContact ? 0 : 4),
                 Text(
                   item.name,
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleSmall
-                      ?.copyWith(color: TextColor.secondary),
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(color: TextColor.secondary),
                 )
               ],
             ),
             const SizedBox(height: 4),
-            Text(
-              "(${item.code}) ${item.phone}",
-              style: Theme.of(context)
-                  .textTheme
-                  .labelLarge
-                  ?.copyWith(color: TextColor.secondary),
-              maxLines: 1,
-            ),
+            (item.code != null)
+                ? Text(
+                    "(${item.code}) ${item.phone}",
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(color: TextColor.secondary),
+                    maxLines: 1,
+                  )
+                : Text(
+                    item.phone,
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(color: TextColor.secondary),
+                    maxLines: 1,
+                  ),
             const SizedBox(height: 4),
-            !isPersonalContact ? Text(
-              item.address ?? "",
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyMedium
-                  ?.copyWith(color: TextColor.secondary),
-              maxLines: 1,
-            ) : SizedBox.shrink(),
-            !isPersonalContact ? AppDivider(): AppStrippedDivider(verticalSpace: 12),
+            // !isPersonalContact
+            //     ? Text(
+            //         item.address ?? "",
+            //         style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.secondary),
+            //         maxLines: 1,
+            //       )
+            //     : SizedBox.shrink(),
+            !isPersonalContact ? AppDivider() : AppStrippedDivider(verticalSpace: 12),
             AppButton.icon(
               icon: Icons.call,
               label: "call_us".tr,
-              onPress: navigateWA,
+              onPress: () {
+                navigateWA(item.phone);
+              },
               type: AppButtonType.outline,
             ),
           ],
@@ -128,7 +124,9 @@ class BsSos extends GetView<BsSosController> {
     );
   }
 
-  void navigateWA() {}
+  void navigateWA(String phone) async {
+    // await launchUrlString("https://api.whatsapp.com/send?phone=$phone");
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -75,8 +75,8 @@ class StorageService {
 
   bool? getScheduleNotifFired() => _preferences!.getBool(SCHEDULE_NOTIF_FIRED);
 
-  void setScheduleNotifFired() async {
-    await _preferences!.setBool(SCHEDULE_NOTIF_FIRED, true);
+  void setScheduleNotifFired({bool status = true}) async {
+    await _preferences!.setBool(SCHEDULE_NOTIF_FIRED, status);
   }
 
   bool? getIsBiometricLogin() => _preferences!.getBool(IS_BIOMETRIC_LOGIN);
