@@ -72,7 +72,7 @@ class DetailPenaltyPanel extends StatelessWidget {
               ),
               const SizedBox(width: 4),
               Text(
-                penalty.note ?? "no_note".tr,
+                penalty.formattedNote ?? "no_note".tr,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(color: TextColor.secondary),
               ),
             ],

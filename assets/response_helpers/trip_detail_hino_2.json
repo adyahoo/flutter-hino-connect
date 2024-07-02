@@ -11,7 +11,7 @@
         "lng": 106.8475952
       },
       "total_point": 0,
-      "created_at": "2024-06-19t09:00:00.000000z",
+      "created_at": "2024-06-19T09:00:00.000000Z",
       "penalties": [
         {
           "id": 1,
@@ -22,7 +22,7 @@
           "type": "over_speed",
           "note": "kecepatan_melebihi_80_km/jam",
           "point": 0,
-          "date_time": "2024-06-19t09:05:00.000000z"
+          "date_time": "2024-06-19T09:05:00.000000Z"
         },
         {
           "id": 2,
@@ -33,7 +33,7 @@
           "type": "brake",
           "note": "harsh_braking_untuk_menghindari_kendaraan_di_depan",
           "point": 0,
-          "date_time": "2024-06-19t09:25:00.000000z"
+          "date_time": "2024-06-19T09:25:00.000000Z"
         },
         {
           "id": 3,
@@ -44,7 +44,7 @@
           "type": "acceleration",
           "note": "harsh_acceleration_terdeteksi",
           "point": 0,
-          "date_time": "2024-06-19t09:35:00.000000z"
+          "date_time": "2024-06-19T09:35:00.000000Z"
         },
         {
           "id": 4,
@@ -55,7 +55,7 @@
           "type": "lateral_accel",
           "note": "lateral_acceleration_terdeteksi",
           "point": 0,
-          "date_time": "2024-06-19t09:43:00.000000z"
+          "date_time": "2024-06-19T09:43:00.000000Z"
         }
       ]
     },
@@ -70,7 +70,7 @@
         "lng": 106.8437156
       },
       "total_point": 10,
-      "created_at": "2024-06-20t09:00:00.000000z",
+      "created_at": "2024-06-20T09:00:00.000000Z",
       "penalties": [
         {
           "id": 1,
@@ -81,7 +81,7 @@
           "type": "over_speed",
           "note": "kecepatan_melebihi_80_km/jam",
           "point": 2,
-          "date_time": "2024-06-20t09:07:00.000000z"
+          "date_time": "2024-06-20T09:07:00.000000Z"
         },
         {
           "id": 2,
@@ -92,7 +92,7 @@
           "type": "brake",
           "note": "harsh_braking_untuk_menghindari_kendaraan_di_depan",
           "point": 2,
-          "date_time": "2024-06-20t09:20:00.000000z"
+          "date_time": "2024-06-20T09:20:00.000000Z"
         },
         {
           "id": 3,
@@ -103,7 +103,7 @@
           "type": "acceleration",
           "note": "harsh_acceleration_terdeteksi",
           "point": 3,
-          "date_time": "2024-06-20t09:40:00.000000z"
+          "date_time": "2024-06-20T09:40:00.000000Z"
         },
         {
           "id": 4,
@@ -114,7 +114,7 @@
           "type": "lateral_accel",
           "note": "lateral_acceleration_terdeteksi",
           "point": 3,
-          "date_time": "2024-06-20t09:52:00.000000z"
+          "date_time": "2024-06-20T09:52:00.000000Z"
         }
       ]
     },
@@ -129,7 +129,7 @@
         "lng": 106.8421919
       },
       "total_point": 30,
-      "created_at": "2024-06-21t09:00:00.000000z",
+      "created_at": "2024-06-21T09:00:00.000000Z",
       "penalties": [
         {
           "id": 1,
@@ -140,7 +140,7 @@
           "type": "over_speed",
           "note": "kecepatan_melebihi_80_km/jam",
           "point": 10,
-          "date_time": "2024-06-21t09:06:00.000000z"
+          "date_time": "2024-06-21T09:06:00.000000Z"
         },
         {
           "id": 2,
@@ -151,7 +151,7 @@
           "type": "brake",
           "note": "harsh_braking_untuk_menghindari_kendaraan_di_depan",
           "point": 10,
-          "date_time": "2024-06-21t09:15:00.000000z"
+          "date_time": "2024-06-21T09:15:00.000000Z"
         },
         {
           "id": 3,
@@ -162,7 +162,7 @@
           "type": "acceleration",
           "note": "harsh_acceleration_terdeteksi",
           "point": 5,
-          "date_time": "2024-06-21t09:30:00.000000z"
+          "date_time": "2024-06-21T09:30:00.000000Z"
         },
         {
           "id": 4,
@@ -173,7 +173,7 @@
           "type": "lateral_accel",
           "note": "lateral_acceleration_terdeteksi",
           "point": 5,
-          "date_time": "2024-06-21t09:40:00.000000z"
+          "date_time": "2024-06-21T09:40:00.000000Z"
         }
       ]
     },
@@ -188,7 +188,7 @@
         "lng": 106.8001981
       },
       "total_point": 50,
-      "created_at": "2024-06-22t09:00:00.000000z",
+      "created_at": "2024-06-22T09:00:00.000000Z",
       "penalties": [
         {
           "id": 1,
@@ -199,7 +199,7 @@
           "type": "over_speed",
           "note": "kecepatan_melebihi_80_km/jam",
           "point": 10,
-          "date_time": "2024-06-22t09:10:00.000000z"
+          "date_time": "2024-06-22T09:10:00.000000Z"
         },
         {
           "id": 2,
@@ -210,7 +210,7 @@
           "type": "brake",
           "note": "harsh_braking_untuk_menghindari_kendaraan_di_depan",
           "point": 10,
-          "date_time": "2024-06-22t09:20:00.000000z"
+          "date_time": "2024-06-22T09:20:00.000000Z"
         },
         {
           "id": 3,
@@ -221,7 +221,7 @@
           "type": "acceleration",
           "note": "harsh_acceleration_terdeteksi",
           "point": 15,
-          "date_time": "2024-06-22t09:30:00.000000z"
+          "date_time": "2024-06-22T09:30:00.000000Z"
         },
         {
           "id": 4,
@@ -232,7 +232,7 @@
           "type": "lateral_accel",
           "note": "lateral_acceleration_terdeteksi",
           "point": 15,
-          "date_time": "2024-06-22t09:35:00.000000z"
+          "date_time": "2024-06-22T09:35:00.000000Z"
         }
       ]
     },
@@ -247,7 +247,7 @@
         "lng": 106.8437156
       },
       "total_point": 70,
-      "created_at": "2024-06-23t09:00:00.000000z",
+      "created_at": "2024-06-23T09:00:00.000000Z",
       "penalties": [
         {
           "id": 1,
@@ -258,7 +258,7 @@
           "type": "over_speed",
           "note": "kecepatan_melebihi_80_km/jam",
           "point": 20,
-          "date_time": "2024-06-23t09:07:00.000000z"
+          "date_time": "2024-06-23T09:07:00.000000Z"
         },
         {
           "id": 2,
@@ -269,7 +269,7 @@
           "type": "brake",
           "note": "harsh_braking_untuk_menghindari_kendaraan_di_depan",
           "point": 20,
-          "date_time": "2024-06-23t09:14:00.000000z"
+          "date_time": "2024-06-23T09:14:00.000000Z"
         },
         {
           "id": 3,
@@ -280,7 +280,7 @@
           "type": "acceleration",
           "note": "harsh_acceleration_terdeteksi",
           "point": 20,
-          "date_time": "2024-06-23t09:21:00.000000z"
+          "date_time": "2024-06-23T09:21:00.000000Z"
         },
         {
           "id": 4,
@@ -291,7 +291,7 @@
           "type": "lateral_accel",
           "note": "lateral_acceleration_terdeteksi",
           "point": 10,
-          "date_time": "2024-06-23t09:25:00.000000z"
+          "date_time": "2024-06-23T09:25:00.000000Z"
         }
       ]
     },
@@ -306,7 +306,7 @@
         "lng": 106.8421919
       },
       "total_point": 85,
-      "created_at": "2024-06-24t09:00:00.000000z",
+      "created_at": "2024-06-24T09:00:00.000000Z",
       "penalties": [
         {
           "id": 1,
@@ -317,7 +317,7 @@
           "type": "over_speed",
           "note": "kecepatan_melebihi_80_km/jam",
           "point": 20,
-          "date_time": "2024-06-24t09:08:00.000000z"
+          "date_time": "2024-06-24T09:08:00.000000Z"
         },
         {
           "id": 2,
@@ -328,7 +328,7 @@
           "type": "brake",
           "note": "harsh_braking_untuk_menghindari_kendaraan_di_depan",
           "point": 20,
-          "date_time": "2024-06-24t09:25:00.000000z"
+          "date_time": "2024-06-24T09:25:00.000000Z"
         },
         {
           "id": 3,
@@ -339,7 +339,7 @@
           "type": "acceleration",
           "note": "harsh_acceleration_terdeteksi",
           "point": 20,
-          "date_time": "2024-06-24t09:50:00.000000z"
+          "date_time": "2024-06-24T09:50:00.000000Z"
         },
         {
           "id": 4,
@@ -350,7 +350,7 @@
           "type": "lateral_accel",
           "note": "lateral_acceleration_terdeteksi",
           "point": 25,
-          "date_time": "2024-06-24t10:15:00.000000z"
+          "date_time": "2024-06-24T10:15:00.000000Z"
         }
       ]
     }
