@@ -258,7 +258,7 @@
           "type": "over_speed",
           "note": "kecepatan_melebihi_80_km/jam",
           "point": 20,
-          "_timedate": "2024-06-29t09:08:00.000000z"
+          "date_time": "2024-06-29t09:08:00.000000z"
         },
         {
           "id": 2,
