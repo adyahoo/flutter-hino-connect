@@ -8,10 +8,10 @@ class TripDataSource {
 
     if (counter % 3 == 2) {
       counter = 2;
-    } else if (counter % 3 == 3) {
-      counter = 3;
-    } else {
+    } else if (counter % 3 == 1) {
       counter = 1;
+    } else {
+      counter = 3;
     }
 
     return counter;
