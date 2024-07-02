@@ -143,6 +143,8 @@ class PenaltyModel {
 
   String get formattedDate => this.datetime.formatDateFromString(Constants.DATE_FORMAT_PENALTY);
 
+  String? get formattedNote => this.note?.replaceAll("_", " ");
+
   int get penaltyPoint => this.point ?? 0;
 
   @override
