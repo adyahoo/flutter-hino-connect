@@ -3,16 +3,16 @@ import 'package:equatable/equatable.dart';
 class ContactDto extends Equatable {
   final int id;
   final String name;
-  final String code;
   final String phone;
+  final String? code;
   final String? address;
 
   const ContactDto({
     required this.id,
     required this.name,
-    required this.code,
     required this.phone,
     this.address,
+    this.code,
   });
 
   factory ContactDto.fromJson(Map<String, dynamic> json) {

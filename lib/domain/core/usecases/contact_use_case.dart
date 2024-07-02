@@ -42,6 +42,7 @@ class ContactUseCase implements IContactUseCase {
           code: response.code,
           phone: response.phone,
           address: response.address,
+          isPersonal: true,
         );
 
         return data;
