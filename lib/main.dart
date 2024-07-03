@@ -110,11 +110,11 @@ class Main extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Locale? locale = Get.deviceLocale;
+    Locale locale = Locale("en", "US");
 
-    if ((locale != Locale("en", 'US') && locale != Locale("id", "ID")) || locale == null) {
-      locale = Locale("en", "US");
-    }
+    // if ((locale != Locale("en", 'US') && locale != Locale("id", "ID")) || locale == null) {
+    //   locale = Locale("en", "US");
+    // }
 
     return GetMaterialApp(
       scaffoldMessengerKey: rootScaffoldMessengerKey,
