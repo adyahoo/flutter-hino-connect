@@ -90,11 +90,11 @@ class BsSinglePicker extends GetView<BsSinglePickerController> {
                     },
                   ),
                 const SizedBox(height: 8),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: items.length,
-                    itemBuilder: (context, index) => _renderItem(context, items[index]),
-                  ),
+                ListView.builder(
+                  itemCount: items.length,
+                  itemBuilder: (context, index) => _renderItem(context, items[index]),
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
                 ),
                 const SizedBox(height: 24),
                 AppButton(

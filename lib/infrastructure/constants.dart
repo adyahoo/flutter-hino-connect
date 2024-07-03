@@ -119,7 +119,7 @@ class Constants {
           title: 'language'.tr,
           icon: Iconsax.language_circle4,
           onTap: () {
-            Get.bottomSheet(
+            showGetBottomSheet(
               BsSinglePicker(
                 options: languageOptions,
                 title: 'language'.tr,
@@ -128,7 +128,6 @@ class Constants {
                   Get.find<ProfileController>().changeLanguage(value.id);
                 },
               ),
-              isScrollControlled: false,
             );
           },
         ),
@@ -178,7 +177,7 @@ class Constants {
   ];
 
   static final languageOptions = [
-    PickerModel(id: 0, title: 'device_setting'.tr, value: 'default'),
+    // PickerModel(id: 0, title: 'device_setting'.tr, value: 'default'),
     PickerModel(id: 1, title: 'Indonesia', value: 'id'),
     PickerModel(id: 2, title: 'english'.tr, value: 'en'),
   ];

@@ -85,7 +85,7 @@ class StorageService {
     await _preferences!.setBool(IS_BIOMETRIC_LOGIN, value);
   }
 
-  int getSelectedLanguage() => _preferences!.getInt(SELECTED_LANGUAGE) ?? 0;
+  int getSelectedLanguage() => _preferences!.getInt(SELECTED_LANGUAGE) ?? 2;
 
   void setSelectedLanguage(int value) async {
     await _preferences!.setInt(SELECTED_LANGUAGE, value);
