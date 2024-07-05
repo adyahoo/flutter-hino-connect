@@ -62,7 +62,7 @@ class LoginController extends GetxController {
       await storage.write(key: 'email', value: emailController.value.text);
       await storage.write(key: 'password', value: passwordController.value.text);
 
-      //start 2 minutes scheduled local trip notification
+      //start 1 minutes scheduled local trip notification
       showScheduledNewTripNotif();
 
       Get.offNamed(Routes.MAIN_TAB);
@@ -113,7 +113,7 @@ class LoginController extends GetxController {
             await useCase.login(body);
             Get.offNamed(Routes.MAIN_TAB);
 
-            //start 2 minutes scheduled local trip notification
+            //start 1 minutes scheduled local trip notification
             showScheduledNewTripNotif();
           } else {
             print('Stored credentials not found.');

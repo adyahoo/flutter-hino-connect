@@ -160,7 +160,7 @@ Future<void> showScheduledNewTripNotif() async {
     0,
     'schedule_notif_title'.tr,
     'schedule_notif_desc'.trParams({"address": "Hino Denpasar"}),
-    tz.TZDateTime.now(tz.local).add(const Duration(minutes: 2)),
+    tz.TZDateTime.now(tz.local).add(const Duration(minutes: 1)),
     NotificationDetails(
       android: AndroidNotificationDetails(
         channel.id,
@@ -174,7 +174,7 @@ Future<void> showScheduledNewTripNotif() async {
     androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
     uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
   );
-  Future.delayed(const Duration(minutes: 2), () {
+  Future.delayed(const Duration(minutes: 1), () {
     inject<StorageService>().setScheduleNotifFired();
   });
 }
