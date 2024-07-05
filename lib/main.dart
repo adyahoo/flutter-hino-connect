@@ -1,6 +1,3 @@
-import 'dart:io';
-
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localization/flutter_localization.dart';
@@ -18,8 +15,7 @@ import 'package:timezone/data/latest_all.dart' as tz;
 
 late AndroidNotificationChannel channel;
 late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
-final GlobalKey<ScaffoldMessengerState> rootScaffoldMessengerKey =
-    GlobalKey<ScaffoldMessengerState>();
+final GlobalKey<ScaffoldMessengerState> rootScaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
 
 Future<void> setupNotification() async {
   channel = const AndroidNotificationChannel(
@@ -42,10 +38,7 @@ Future<void> setupNotification() async {
   // }
 
   // await flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.requestNotificationsPermission();
-  await flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>()
-      ?.createNotificationChannel(channel);
+  await flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.createNotificationChannel(channel);
 }
 
 void registerNotification() async {
@@ -60,8 +53,7 @@ Future<void> clearSecureStorageOnReinstall() async {
   debugPrint('Has run before: $hasRunBefore');
 
   if (!hasRunBefore) {
-    debugPrint(
-        'First run detected, clearing secure storage and shared preferences...');
+    debugPrint('First run detected, clearing secure storage and shared preferences...');
     final FlutterSecureStorage storage = const FlutterSecureStorage();
 
     try {
@@ -73,8 +65,7 @@ Future<void> clearSecureStorageOnReinstall() async {
       // Handling specific error by reinitializing storage
       if (e.toString().contains('Failed to unwrap key')) {
         await storage.deleteAll(); // Re-attempt to clear storage
-        debugPrint(
-            'Re-attempted to clear secure storage after key unwrap failure.');
+        debugPrint('Re-attempted to clear secure storage after key unwrap failure.');
       }
     }
 
@@ -86,8 +77,7 @@ Future<void> clearSecureStorageOnReinstall() async {
     await prefs.setBool(key, true);
     debugPrint('Flag set.');
   } else {
-    debugPrint(
-        'App has run before, not clearing secure storage or shared preferences.');
+    debugPrint('App has run before, not clearing secure storage or shared preferences.');
   }
 }
 
@@ -126,8 +116,7 @@ class Main extends StatelessWidget {
         Locale('en', 'US'),
         Locale('id', 'ID'),
       ],
-      localizationsDelegates:
-          FlutterLocalization.instance.localizationsDelegates,
+      localizationsDelegates: FlutterLocalization.instance.localizationsDelegates,
       initialRoute: initialRoute,
       getPages: Nav.routes,
     );

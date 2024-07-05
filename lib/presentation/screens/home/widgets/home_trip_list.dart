@@ -22,6 +22,12 @@ class HomeTripList extends GetView<HomeController> {
     );
   }
 
+  void _navigateDetail(TripModel trip) {
+    Get.toNamed(
+      "/trip-detail/" + trip.id.toString(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     Get.find<HomeController>();
@@ -65,10 +71,7 @@ class HomeTripList extends GetView<HomeController> {
                           const SizedBox(height: 4),
                           Text(
                             'no_today_trip_subtitle'.tr,
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(color: TextColor.secondary),
+                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.secondary),
                           ),
                         ],
                       ),
@@ -83,10 +86,9 @@ class HomeTripList extends GetView<HomeController> {
                 itemCount: trips.length,
                 itemBuilder: (context, index) => TripCard(
                   trip: trips[index],
-                  onTap: (trip) {},
+                  onTap: _navigateDetail,
                 ),
-                separatorBuilder: (context, index) =>
-                    const SizedBox(height: 16),
+                separatorBuilder: (context, index) => const SizedBox(height: 16),
                 padding: const EdgeInsets.symmetric(vertical: 0),
               );
             }

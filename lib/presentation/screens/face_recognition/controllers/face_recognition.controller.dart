@@ -1,6 +1,8 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:camera/camera.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:hino_driver_app/domain/core/usecases/face_recognition_use_case.dart';
@@ -9,6 +11,7 @@ import 'package:hino_driver_app/infrastructure/navigation/routes.dart';
 import 'package:hino_driver_app/infrastructure/utils.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:hino_driver_app/presentation/screens.dart';
+import 'package:path_provider/path_provider.dart';
 
 class FaceRecognitionController extends GetxController {
   FaceRecognitionController({required this.useCase});
@@ -22,6 +25,8 @@ class FaceRecognitionController extends GetxController {
   final loadingValue = 0.0.obs;
   final isScanning = false.obs;
   final faces = Rx<List<Face>>([]);
+  final capturedImage = Rx<File?>(null);
+  final capturedImageBytes = Rx<Uint8List?>(null);
 
   bool _canProcess = true;
   bool _isBusy = false;
@@ -124,9 +129,20 @@ class FaceRecognitionController extends GetxController {
       await Future.delayed(const Duration(seconds: 1));
       imageFile = await cameraController.takePicture();
       final file = File(imageFile?.path ?? "");
+      capturedImage.value = file;
 
+      await Future.delayed(const Duration(seconds: 1));
+      RenderRepaintBoundary boundary = clipKey.currentContext?.findRenderObject() as RenderRepaintBoundary;
+      final img = await boundary.toImage();
+      final byteData = await img.toByteData(format: ImageByteFormat.png);
+      final pngByte = byteData?.buffer.asUint8List();
+      capturedImageBytes.value = pngByte;
+
+      final tempDir = await getTemporaryDirectory();
+      final capturedFile = await File('${tempDir.path}/image.png').create();
+      capturedFile.writeAsBytesSync(pngByte!);
       try {
-        await useCase.verifyDriverFace(file);
+        await useCase.verifyDriverFace(capturedFile);
         loadingValue.value = 1.0;
 
         await Future.delayed(const Duration(milliseconds: 500));
