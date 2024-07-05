@@ -1,5 +1,8 @@
 import 'package:camera/camera.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 
 import 'package:get/get.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
@@ -9,6 +12,8 @@ import 'package:hino_driver_app/presentation/screens/face_recognition/widgets/fa
 import 'controllers/face_recognition.controller.dart';
 
 part 'widgets/face_detected_dialog.dart';
+
+final clipKey = GlobalKey();
 
 class FaceRecognitionScreen extends GetView<FaceRecognitionController> {
   const FaceRecognitionScreen({Key? key}) : super(key: key);
@@ -21,13 +26,33 @@ class FaceRecognitionScreen extends GetView<FaceRecognitionController> {
 
     var zoom = 1.0;
 
-    return Transform.scale(
-      scale: scale * zoom,
-      child: Center(
-        child: CameraPreview(
-          controller.cameraController,
-        ),
-      ),
+    return Obx(
+      () => Transform.scale(
+          scale: scale * zoom,
+          child: Stack(
+            children: [
+              RepaintBoundary(
+                key: clipKey,
+                child: ClipPath(
+                  clipper: _FaceCircleMask(),
+                  child: controller.capturedImage.value != null
+                      ? Image.file(
+                          controller.capturedImage.value!,
+                          fit: BoxFit.cover,
+                        )
+                      : Image.asset('assets/images/home_header_illust.png'),
+                ),
+              ),
+              Center(
+                child: CameraPreview(
+                  controller.cameraController,
+                ),
+              ),
+              _SelfieMask(
+                color: Colors.black.withOpacity(0.5),
+              ),
+            ],
+          )),
     );
   }
 
@@ -43,15 +68,15 @@ class FaceRecognitionScreen extends GetView<FaceRecognitionController> {
               Positioned.fill(
                 child: cameraWidget(context),
               ),
-              Positioned.fill(
-                child: Opacity(
-                  opacity: 0.3,
-                  child: Image.asset(
-                    'assets/images/camera_overlay.png',
-                    fit: BoxFit.fill,
-                  ),
-                ),
-              ),
+              // Positioned.fill(
+              //   child: Opacity(
+              //     opacity: 0.3,
+              //     child: Image.asset(
+              //       'assets/images/camera_overlay.png',
+              //       fit: BoxFit.fill,
+              //     ),
+              //   ),
+              // ),
               Positioned(
                 top: MediaQuery.of(context).viewPadding.top + 16,
                 left: 8,
@@ -130,5 +155,78 @@ class FaceRecognitionScreen extends GetView<FaceRecognitionController> {
         }
       },
     );
+  }
+}
+
+class _SelfieMask extends StatelessWidget {
+  final Color? color;
+
+  const _SelfieMask({Key? key, this.color}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return IgnorePointer(
+      child: ClipPath(
+        clipper: _SelfieModePhoto(),
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          color: color,
+        ),
+      ),
+    );
+  }
+}
+
+class _SelfieModePhoto extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    final path = Path();
+    final circlePath = Path();
+
+    circlePath.addOval(
+      Rect.fromCircle(
+        center: Offset(size.width / 2, size.height * 2 / 5),
+        radius: (size.width / 4),
+      ),
+    );
+
+    path.addPath(circlePath, const Offset(0, 0));
+    path.addRect(Rect.fromLTWH(0, 0, size.width, size.height));
+    path.fillType = PathFillType.evenOdd;
+
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) {
+    return true;
+  }
+}
+
+class _FaceCircleMask extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    Path path = Path();
+    final circlePath = Path();
+
+    circlePath.addOval(
+      Rect.fromCircle(
+        center: Offset(size.width / 2, size.height * 2 / 5),
+        radius: (size.width / 4),
+      ),
+    );
+
+    path.moveTo(0, 0);
+    path.addPath(circlePath, const Offset(0, 0));
+    path.close();
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
+    return true;
   }
 }
