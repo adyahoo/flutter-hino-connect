@@ -32,7 +32,7 @@ class HomeVehicleCard extends StatelessWidget {
                       text: TextSpan(
                         children: [
                           TextSpan(
-                            text: "Trailer" + "  ",
+                            text: "Bus" + "  ",
                             style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.secondary),
                           ),
                           TextSpan(

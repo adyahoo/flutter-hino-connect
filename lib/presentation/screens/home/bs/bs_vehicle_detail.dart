@@ -1,5 +1,4 @@
 part of '../home.screen.dart';
-
 class BsVehicleDetail extends StatelessWidget {
   const BsVehicleDetail({super.key});
 
@@ -22,6 +21,23 @@ class BsVehicleDetail extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Future<String> _getScannedDate() async {
+    final scannedDate = await inject<StorageService>().getScannedDate();
+    if (scannedDate != null) {
+      return "${scannedDate.day} ${_getMonthName(scannedDate.month)} ${scannedDate.year}, ${scannedDate.hour}:${scannedDate.minute}";
+    } else {
+      return "Date not available";
+    }
+  }
+
+  String _getMonthName(int month) {
+    const monthNames = [
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ];
+    return monthNames[month - 1];
   }
 
   @override
@@ -65,19 +81,36 @@ class BsVehicleDetail extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: "scanned".tr + " ",
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(color: TextColor.secondary),
-                      ),
-                      TextSpan(
-                        text: "27 Agustus 2024, 20:30",
+                FutureBuilder<String>(
+                  future: _getScannedDate(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Text(
+                        "Loading...",
                         style: Theme.of(context).textTheme.labelMedium?.copyWith(color: TextColor.secondary),
-                      ),
-                    ],
-                  ),
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text(
+                        "Error loading date",
+                        style: Theme.of(context).textTheme.labelMedium?.copyWith(color: TextColor.secondary),
+                      );
+                    } else {
+                      return RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: "scanned".tr + " ",
+                              style: Theme.of(context).textTheme.bodySmall?.copyWith(color: TextColor.secondary),
+                            ),
+                            TextSpan(
+                              text: snapshot.data ?? "Date not available",
+                              style: Theme.of(context).textTheme.labelMedium?.copyWith(color: TextColor.secondary),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                  },
                 ),
                 const AppDivider(),
                 _renderItem(context, "Body", "Bus"),
