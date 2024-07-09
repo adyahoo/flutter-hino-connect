@@ -150,7 +150,7 @@ class FaceRecognitionController extends GetxController {
         showSuccessDialog();
 
         // Close the dialog after 3 seconds and navigate to the Scan QR page
-        // navigateScanVehicle();
+        navigateScanVehicle();
 
         // Get.back();
       } on ApiException catch (e) {
