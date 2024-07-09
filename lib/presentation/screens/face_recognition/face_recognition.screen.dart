@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-
 import 'package:get/get.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
@@ -80,16 +79,16 @@ class FaceRecognitionScreen extends GetView<FaceRecognitionController> {
               Positioned(
                 top: MediaQuery.of(context).viewPadding.top + 16,
                 left: 8,
-                child: IconButton(
+                child: Obx(() => IconButton(
                   icon: Icon(
                     Icons.arrow_back,
                     size: 24,
                     color: Colors.white,
                   ),
-                  onPressed: () {
+                  onPressed: controller.isScanning.value ? null : () {
                     Get.back();
                   },
-                ),
+                )),
               ),
               Positioned(
                 child: Container(
