@@ -58,102 +58,104 @@ class FaceRecognitionScreen extends GetView<FaceRecognitionController> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: controller.initCamera(),
-      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-        if (snapshot.connectionState == ConnectionState.done && snapshot.error == null) {
-          return Stack(
-            alignment: FractionalOffset.center,
-            children: [
-              Positioned.fill(
-                child: cameraWidget(context),
-              ),
-              // Positioned.fill(
-              //   child: Opacity(
-              //     opacity: 0.3,
-              //     child: Image.asset(
-              //       'assets/images/camera_overlay.png',
-              //       fit: BoxFit.fill,
-              //     ),
-              //   ),
-              // ),
-              Positioned(
-                top: MediaQuery.of(context).viewPadding.top + 16,
-                left: 8,
-                child: IconButton(
-                  icon: Icon(
-                    Icons.arrow_back,
-                    size: 24,
-                    color: Colors.white,
-                  ),
-                  onPressed: () {
-                    Get.back();
-                  },
+    return WillPopScope(
+      onWillPop: () async {
+        if (controller.isScanning.value) {
+          return false;
+        }
+
+        return true;
+      },
+      child: FutureBuilder(
+        future: controller.initCamera(),
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          if (snapshot.connectionState == ConnectionState.done && snapshot.error == null) {
+            return Stack(
+              alignment: FractionalOffset.center,
+              children: [
+                Positioned.fill(
+                  child: cameraWidget(context),
                 ),
-              ),
-              Positioned(
-                child: Container(
-                  margin: EdgeInsets.only(top: MediaQuery.of(context).viewPadding.top + kToolbarHeight),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: Get.width,
-                      ),
-                      Text(
-                        "face_recognition_subtitle".tr,
-                        style: Theme.of(context).textTheme.labelLarge?.copyWith(color: Colors.white),
-                      ),
-                      const Expanded(child: SizedBox()),
-                    ],
+                Positioned(
+                  top: MediaQuery.of(context).viewPadding.top + 16,
+                  left: 8,
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.arrow_back,
+                      size: 24,
+                      color: Colors.white,
+                    ),
+                    onPressed: () {
+                      if (!controller.isScanning.value) {
+                        Get.back();
+                      }
+                    },
                   ),
                 ),
-              ),
-              Obx(
-                () => Visibility(
-                  visible: controller.isScanning.value,
-                  child: Positioned(
-                    left: 16,
-                    right: 16,
-                    bottom: 16,
+                Positioned(
+                  child: Container(
+                    margin: EdgeInsets.only(top: MediaQuery.of(context).viewPadding.top + kToolbarHeight),
                     child: Column(
-                      mainAxisSize: MainAxisSize.min,
                       children: [
+                        SizedBox(
+                          height: Get.width,
+                        ),
                         Text(
-                          "scanning_face".tr,
+                          "face_recognition_subtitle".tr,
                           style: Theme.of(context).textTheme.labelLarge?.copyWith(color: Colors.white),
                         ),
-                        const SizedBox(height: 16),
-                        TweenAnimationBuilder(
-                          duration: const Duration(milliseconds: 3000),
-                          tween: Tween<double>(
-                            begin: 0.0,
-                            end: 0.99,
-                          ),
-                          builder: (context, value, child) {
-                            controller.loadingValue.value = value;
-
-                            return Obx(
-                              () => LinearProgressIndicator(
-                                backgroundColor: SuccesColor.surface,
-                                color: PrimaryNewColor().main,
-                                borderRadius: BorderRadius.circular(20),
-                                minHeight: 6,
-                                value: controller.loadingValue.value,
-                              ),
-                            );
-                          },
-                        ),
+                        const Expanded(child: SizedBox()),
                       ],
                     ),
                   ),
                 ),
-              ),
-            ],
-          );
-        } else {
-          return const SizedBox();
-        }
-      },
+                Obx(
+                  () => Visibility(
+                    visible: controller.isScanning.value,
+                    child: Positioned(
+                      left: 16,
+                      right: 16,
+                      bottom: 16,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            "scanning_face".tr,
+                            style: Theme.of(context).textTheme.labelLarge?.copyWith(color: Colors.white),
+                          ),
+                          const SizedBox(height: 16),
+                          TweenAnimationBuilder(
+                            duration: const Duration(milliseconds: 3000),
+                            tween: Tween<double>(
+                              begin: 0.0,
+                              end: 0.99,
+                            ),
+                            builder: (context, value, child) {
+                              controller.loadingValue.value = value;
+
+                              return Obx(
+                                () => LinearProgressIndicator(
+                                  backgroundColor: SuccesColor.surface,
+                                  color: PrimaryNewColor().main,
+                                  borderRadius: BorderRadius.circular(20),
+                                  minHeight: 6,
+                                  value: controller.loadingValue.value,
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          } else {
+            return const SizedBox();
+          }
+        },
+      ),
     );
   }
 }
