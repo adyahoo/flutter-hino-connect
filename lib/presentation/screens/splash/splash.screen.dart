@@ -24,7 +24,7 @@ class SplashScreen extends GetView<SplashController> {
               ),
             ),
             Text(
-              'V.1.1',
+              'Beta-4.1',
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: TextColor.secondary),
             ),
           ],
