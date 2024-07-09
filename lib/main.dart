@@ -2,16 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
 import 'package:get/get.dart';
 import 'package:hino_driver_app/infrastructure/di.dart';
 import 'package:hino_driver_app/infrastructure/theme/app_theme.dart';
 import 'package:hino_driver_app/infrastructure/translation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'infrastructure/navigation/navigation.dart';
 import 'infrastructure/navigation/routes.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 late AndroidNotificationChannel channel;
 late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
@@ -90,7 +89,13 @@ void main() async {
   registerNotification();
   await setupInjection();
 
-  runApp(Main(initialRoute));
+  await SentryFlutter.init(
+    (options) {
+     options.dsn = 'https://95b7aed32dd1d05152ff9c9a85398724@o4507569308303360.ingest.de.sentry.io/4507569310400592';
+      // Configure other options if necessary
+    },
+    appRunner: () => runApp(Main(initialRoute)),
+  );
 }
 
 class Main extends StatelessWidget {
@@ -105,6 +110,8 @@ class Main extends StatelessWidget {
     // if ((locale != Locale("en", 'US') && locale != Locale("id", "ID")) || locale == null) {
     //   locale = Locale("en", "US");
     // }
+
+    // Sentry.captureException(Exception('Test exception'));
 
     return GetMaterialApp(
       scaffoldMessengerKey: rootScaffoldMessengerKey,
