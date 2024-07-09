@@ -33,7 +33,7 @@ void errorHandler(Exception e, {VoidCallback? onDismiss}) {
     } else if (e.response?.error.code == 422) {
       error = ErrorResponseModel(
         code: 422,
-        title: e.response!.error.title,
+        title: 'error_validation'.tr,
         message: e.response!.error.message,
       );
     } else {

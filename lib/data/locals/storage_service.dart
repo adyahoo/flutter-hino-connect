@@ -14,6 +14,7 @@ class StorageService {
   final String SELECTED_LANGUAGE = "selected_language";
   final String LOGIN_ATTEMPT = "login_attempt";
   final String SCHEDULE_NOTIF_FIRED = "schedule_notif_fired"; //flag untuk hide 1 data trip sebelum notif ke trigger (keperluan demo)
+  final String SCANNED_VEHICLE_DATE = "scanned_vehicle_date";
 
   static final String ACTIVITIES_JSON = "activities_json";
   static final String CONTACTS_JSON = "contacts_json";
@@ -122,4 +123,14 @@ class StorageService {
   void clearToken() async {
     await _preferences!.remove(TOKEN);
   }
+
+    Future<void> setScannedDate(DateTime date) async {
+    await _preferences!.setString(SCANNED_VEHICLE_DATE, date.toIso8601String());
+  }
+
+  DateTime? getScannedDate() {
+    final dateString = _preferences!.getString(SCANNED_VEHICLE_DATE);
+    return dateString != null ? DateTime.parse(dateString) : null;
+  }
+
 }
