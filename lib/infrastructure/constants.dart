@@ -239,15 +239,15 @@ class Constants {
       label: "filter_restaurant".tr,
       icon: Icon(Icons.coffee),
     ),
-    MapFilterItem(
-      id: 'filter_service_center',
-      label: "filter_service_center".tr,
-      // icon: Icon(Iconsax.setting_25),
-      icon: SvgPicture.asset(
-        "assets/icons/ic_filter_service_center.svg",
-        width: 16,
-        height: 16,
-      ),
-    ),
+    // MapFilterItem(
+    //   id: 'filter_service_center',
+    //   label: "filter_service_center".tr,
+    //   // icon: Icon(Iconsax.setting_25),
+    //   icon: SvgPicture.asset(
+    //     "assets/icons/ic_filter_service_center.svg",
+    //     width: 16,
+    //     height: 16,
+    //   ),
+    // ),
   ];
 }
