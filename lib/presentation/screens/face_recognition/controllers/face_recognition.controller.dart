@@ -141,6 +141,7 @@ class FaceRecognitionController extends GetxController {
       final tempDir = await getTemporaryDirectory();
       final capturedFile = await File('${tempDir.path}/image.png').create();
       capturedFile.writeAsBytesSync(pngByte!);
+
       try {
         await useCase.verifyDriverFace(capturedFile);
         loadingValue.value = 1.0;

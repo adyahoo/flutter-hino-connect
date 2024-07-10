@@ -36,10 +36,14 @@ Future setupInjection() async {
   inject.registerLazySingleton<FeedbackDataSource>(() => FeedbackDataSource());
   inject.registerLazySingleton<FeedbackUseCase>(() => FeedbackUseCase(dataSource: inject()));
 
+  //trip
+  inject.registerLazySingleton<TripDataSource>(() => TripDataSource());
+  inject.registerLazySingleton<TripUseCase>(() => TripUseCase(dataSource: inject()));
+
   //user
   inject.registerLazySingleton<UserServices>(() => UserServices(inject()));
   inject.registerLazySingleton<UserDataSource>(() => UserDataSource(services: inject()));
-  inject.registerLazySingleton<UserUseCase>(() => UserUseCase(dataSource: inject()));
+  inject.registerLazySingleton<UserUseCase>(() => UserUseCase(dataSource: inject(), tripDataSource: inject()));
 
   //event
   inject.registerLazySingleton<EventDataSource>(() => EventDataSource());
@@ -48,10 +52,6 @@ Future setupInjection() async {
   //maps
   inject.registerLazySingleton<PlaceDataSource>(() => PlaceDataSource());
   inject.registerLazySingleton<PlaceUseCase>(() => PlaceUseCase(dataSource: inject(), hinoDataSource: inject()));
-
-  //trip
-  inject.registerLazySingleton<TripDataSource>(() => TripDataSource());
-  inject.registerLazySingleton<TripUseCase>(() => TripUseCase(dataSource: inject()));
 
   //face recognition
   inject.registerLazySingleton<FaceRecognitionUseCase>(() => FaceRecognitionUseCase(dataSource: inject()));

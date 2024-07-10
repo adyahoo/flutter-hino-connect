@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:hino_driver_app/data/dtos/trips_dto.dart';
 import 'package:hino_driver_app/data/locals/storage_service.dart';
 import 'package:hino_driver_app/domain/core/entities/api_model.dart';
 import 'package:hino_driver_app/infrastructure/client/exceptions/ApiException.dart';
@@ -155,11 +156,11 @@ double _degreesToRadians(double degrees) {
   return degrees * pi / 180;
 }
 
-Future<void> showScheduledNewTripNotif() async {
+Future<void> showScheduledNewTripNotif(TripDto trip) async {
   await flutterLocalNotificationsPlugin.zonedSchedule(
     0,
     'schedule_notif_title'.tr,
-    'schedule_notif_desc'.trParams({"address": "Hino Denpasar"}),
+    'schedule_notif_desc'.trParams({"origin": trip.origin.address, "destination": trip.destination.address}),
     tz.TZDateTime.now(tz.local).add(const Duration(minutes: 1)),
     NotificationDetails(
       android: AndroidNotificationDetails(

@@ -35,7 +35,6 @@ class TripUseCase implements ITripUseCase {
           )
           .toList();
 
-      print("sapi ${data.length} $notifFired");
       if (!notifFired) {
         data.removeAt(data.length - 1);
       }
