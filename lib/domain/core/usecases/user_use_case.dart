@@ -10,12 +10,12 @@ import 'package:hino_driver_app/infrastructure/di.dart';
 import 'package:hino_driver_app/infrastructure/utils.dart';
 
 class UserUseCase implements IUserUseCase {
-  const UserUseCase({required this.dataSource});
+  const UserUseCase({required this.dataSource, required this.tripDataSource});
 
+  final TripDataSource tripDataSource;
   final UserDataSource dataSource;
 
   Future<UserModel> getUser() async {
-    print('masuk ke user usecase getuser');
     try {
       final response = await dataSource.getUser();
       final data = UserModel(
@@ -42,6 +42,11 @@ class UserUseCase implements IUserUseCase {
     try {
       final bodyData = LoginBodyDto(email: body.email, password: body.password);
       await dataSource.login(bodyData);
+
+      final trips = await tripDataSource.getTripList({});
+
+      //start 1 minutes scheduled local trip notification
+      showScheduledNewTripNotif(trips.data.last);
     } on ApiException catch (e) {
       errorHandler(e);
       rethrow;
