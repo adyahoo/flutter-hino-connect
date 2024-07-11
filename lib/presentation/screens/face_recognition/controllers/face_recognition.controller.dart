@@ -148,38 +148,50 @@ class FaceRecognitionController extends GetxController {
 
         await Future.delayed(const Duration(milliseconds: 500));
         // Show the success dialog
-        showSuccessDialog();
+        _showSuccessDialog();
 
         // Close the dialog after 3 seconds and navigate to the Scan QR page
         navigateScanVehicle();
 
         // Get.back();
       } on ApiException catch (e) {
-        print("sapi err 1 $e");
         _isBusy = false;
         loadingValue.value = 0.0;
         isScanning.value = false;
 
-        errorHandler(
-          e,
-          onDismiss: () {
-            _startImageStream();
-          },
-        );
+        _showErrorDialog();
+        // errorHandler(
+        //   e,
+        //   onDismiss: () {
+        //     _startImageStream();
+        //   },
+        // );
       }
     } catch (e) {
-      print("sapi err 2 $e");
       _isBusy = false;
       isScanning.value = false;
       loadingValue.value = 0.0;
     }
   }
 
-  void showSuccessDialog() {
+  void _showSuccessDialog() {
     Get.dialog(
-      FaceDetectedDialog(),
+      FaceDetectedDialog(name: "face_id_success.json"),
       barrierDismissible: false, // Prevent closing the dialog by tapping outside
     );
+  }
+
+  void _showErrorDialog() async {
+    await Get.dialog(
+      FaceDetectedDialog(
+        name: "face_id_error.json",
+        isSuccess: false,
+      ),
+      barrierDismissible: false, // Prevent closing the dialog by tapping outside
+    );
+
+    //wait dialog ketutup baru jalanin kamera lagi
+    _startImageStream();
   }
 
   void navigateScanVehicle() async {
