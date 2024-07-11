@@ -23,6 +23,7 @@ class ActivityListScreen extends GetView<ActivityListController> {
           controller.updateActivity(data);
         },
       ),
+      isScrollControlled: true,
     );
   }
 

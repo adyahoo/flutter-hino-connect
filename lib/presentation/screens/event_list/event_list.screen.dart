@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hino_driver_app/domain/core/entities/model.dart';
 import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
-import 'package:hino_driver_app/infrastructure/utils.dart';
 import 'package:hino_driver_app/presentation/screens/event_list/widgets/event_card_header.dart';
 import 'package:hino_driver_app/presentation/screens/event_list/widgets/event_card_note.dart';
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';

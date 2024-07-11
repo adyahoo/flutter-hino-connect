@@ -24,10 +24,7 @@ class BsEventForm extends GetView<BsEventFormController> {
         (initialData == null)
             ? Text(
                 "fill_event_form".tr,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyMedium
-                    ?.copyWith(color: TextColor.tertiary),
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.tertiary),
               )
             : const SizedBox(),
       ],
@@ -44,8 +41,8 @@ class BsEventForm extends GetView<BsEventFormController> {
               onClick: () {
                 _openPicker(context, AppTextFieldType.single_picker);
               },
-              label: 'activity_type'.tr,
-              placeholder: 'choose_activity'.tr,
+              label: 'event_type'.tr,
+              placeholder: 'choose_event'.tr,
               textEditingController: controller.typeController.value,
               state: controller.typeState,
               type: AppTextFieldType.single_picker,
@@ -121,8 +118,8 @@ class BsEventForm extends GetView<BsEventFormController> {
       case AppTextFieldType.single_picker:
         Get.bottomSheet(
           BsSinglePicker(
-            title: 'activity_type'.tr,
-            options: Constants.eventTypeItems,
+            title: 'event_type'.tr,
+            options: Constants.eventTypeItems.getRange(0, 3).toList(),
             selectedId: controller.type?.id ?? 0,
             onSubmit: (value) {
               controller.setType(value);
@@ -144,8 +141,7 @@ class BsEventForm extends GetView<BsEventFormController> {
                   onPrimary: Colors.black, // Header text color
                   onSurface: TextColor.primary, // Default text color
                 ),
-                dialogBackgroundColor:
-                    BackgroundColor.primary, // Background color
+                dialogBackgroundColor: BackgroundColor.primary, // Background color
                 textButtonTheme: TextButtonThemeData(
                   style: TextButton.styleFrom(
                     foregroundColor: PrimaryColor.main, // Button text color
@@ -174,30 +170,30 @@ class BsEventForm extends GetView<BsEventFormController> {
                   surfaceTint: Colors.transparent,
                 ),
                 timePickerTheme: TimePickerThemeData(
-                  backgroundColor: Colors.white, // Background color
-                  hourMinuteTextColor:
-                      TextColor.primary, // Color of the hour and minute numbers
-                  dayPeriodTextColor: TextColor.primary, // Color of AM/PM
-                  dayPeriodBorderSide: BorderSide(
-                      color: PrimaryColor.main), // Border color for AM/PM
-                  dialHandColor: PrimaryColor.main, // Color of the hour hand
-                  dialTextColor:
-                      TextColor.primary, // Text color on the clock dial
-                  dialBackgroundColor: PrimaryColor
-                      .surface, // Background color of the clock dial
-                  entryModeIconColor:
-                      TextColor.primary, // Color of the entry mode icon
+                  backgroundColor: Colors.white,
+                  // Background color
+                  hourMinuteTextColor: TextColor.primary,
+                  // Color of the hour and minute numbers
+                  dayPeriodTextColor: TextColor.primary,
+                  // Color of AM/PM
+                  dayPeriodBorderSide: BorderSide(color: PrimaryColor.main),
+                  // Border color for AM/PM
+                  dialHandColor: PrimaryColor.main,
+                  // Color of the hour hand
+                  dialTextColor: TextColor.primary,
+                  // Text color on the clock dial
+                  dialBackgroundColor: PrimaryColor.surface,
+                  // Background color of the clock dial
+                  entryModeIconColor: TextColor.primary,
+                  // Color of the entry mode icon
                   helpTextStyle: const TextStyle(
-                    color: TextColor
-                        .primary, // Set the text color for "Enter time"
+                    color: TextColor.primary, // Set the text color for "Enter time"
                   ),
                   cancelButtonStyle: ButtonStyle(
-                    foregroundColor:
-                        MaterialStateProperty.all<Color?>(PrimaryColor.main),
+                    foregroundColor: MaterialStateProperty.all<Color?>(PrimaryColor.main),
                   ),
                   confirmButtonStyle: ButtonStyle(
-                    foregroundColor:
-                        MaterialStateProperty.all<Color?>(PrimaryColor.main),
+                    foregroundColor: MaterialStateProperty.all<Color?>(PrimaryColor.main),
                   ),
                   hourMinuteTextStyle: const TextStyle(fontSize: 30),
                 ),
@@ -237,8 +233,7 @@ class BsEventForm extends GetView<BsEventFormController> {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.only(
-            topRight: Radius.circular(20), topLeft: Radius.circular(20)),
+        borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)),
       ),
       // single child scroll used to prevent overflow when soft keyboard appear
       child: SingleChildScrollView(

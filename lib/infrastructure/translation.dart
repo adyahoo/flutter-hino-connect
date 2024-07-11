@@ -92,8 +92,8 @@ class AppTranslations extends Translations {
           "quit": 'Quit',
           "vehicle_information": "Vehicle Information",
           "trip_list": "Trip List",
-          "do_verification_title": "Do Driver Verification",
-          "do_verification_subtitle": "Face verification is needed before doing vehicle scan.",
+          "do_verification_title": "Do vehicle assignment",
+          "do_verification_subtitle": "Driver identification is needed before vehicle scan.",
           "no_trip_title": "No trip list yet",
           "no_trip_subtitle": "Trip list will be shown after vehicle verification.",
           "see_all_trip": "See All Trip",
@@ -175,6 +175,9 @@ class AppTranslations extends Translations {
           "schedule_notif_desc": "Trip data for @origin to @destination now available to be seen.",
           "error_connection": "Connection Error",
           "error_connection_desc": "Cannot connect to server. Please check your internet connection.",
+          "assign": "Assign",
+          "event_type": "Event type",
+          "choose_event": "Choose event"
         },
         'id_ID': {
           'home': 'Home',
@@ -264,8 +267,8 @@ class AppTranslations extends Translations {
           "quit": 'Keluar',
           "vehicle_information": "Informasi kendaraan",
           "trip_list": "Daftar Perjalanan",
-          "do_verification_title": "Lakukan verifikasi pengemudi",
-          "do_verification_subtitle": "Lakukan verifikasi wajah terlebih dahulu untuk melakukan scan kendaraan.",
+          "do_verification_title": "Lakukan penugasan kendaraan",
+          "do_verification_subtitle": "Identifikasi supir diperlukan sebelum melakukan pemindaian kendaraan.",
           "no_trip_title": "Belum ada daftar perjalanan",
           "no_trip_subtitle": "Daftar perjalanan akan ditampilkan setelah kendaraan berhasil discan.",
           "see_all_trip": "Lihat Semua Perjalanan",
@@ -347,6 +350,9 @@ class AppTranslations extends Translations {
           "schedule_notif_desc": "Data Trip anda untuk @origin menuju @destination sekarang sudah dapat dilihat.",
           "error_connection": "Error pada Koneksi",
           "error_connection_desc": "Tidak dapat terhubung ke server. Periksa koneksi internet Anda.",
+          "assign": "Penugasan",
+          "event_type": "Tipe event",
+          "choose_event": "Pilih event"
         }
       };
 }

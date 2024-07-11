@@ -67,7 +67,7 @@ class HomeContentCard extends StatelessWidget {
         ),
         AppButton.icon(
           icon: Iconsax.scan,
-          label: "verification".tr,
+          label: "assign".tr,
           onPress: doVerifyVehicle,
           type: AppButtonType.filled,
         ),
