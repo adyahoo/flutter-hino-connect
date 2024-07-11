@@ -278,96 +278,96 @@ class AppTextField extends StatelessWidget {
     );
   }
 
-  Widget _renderTextField(BuildContext context) {
-    return Obx(
-      () {
-        Color bgColor = Colors.white;
-        EdgeInsets padding = const EdgeInsets.symmetric(vertical: 10, horizontal: 12);
+Widget _renderTextField(BuildContext context) {
+  return Obx(
+    () {
+      Color bgColor = Colors.white;
+      EdgeInsets padding = const EdgeInsets.symmetric(vertical: 10, horizontal: 12);
 
-        final isObscure = state.isObscure.value;
+      final isObscure = state.isObscure.value;
 
-        if (isDisabled) {
-          bgColor = BorderColor.secondary;
-        }
-
-        if (type == AppTextFieldType.search) {
-          padding = const EdgeInsets.symmetric(horizontal: 12);
-        }
-
-        return TextFormField(
-          focusNode: state.focusNode.value,
-          canRequestFocus: canFocus,
-          controller: textEditingController,
-          onTap: onClick,
-          readOnly: !isEditable,
-          enabled: !isDisabled,
-          keyboardType: state.inputType,
-          maxLength: length,
-          maxLines: state.maxLines,
-          style: Theme.of(context).textTheme.bodyMedium,
-          obscureText: (type == AppTextFieldType.password) ? isObscure : false,
-          decoration: InputDecoration(
-              floatingLabelBehavior: FloatingLabelBehavior.never,
-              contentPadding: padding,
-              hintText: placeholder,
-              hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.placeholder),
-              counterStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.helper),
-              filled: true,
-              fillColor: bgColor,
-              border: InputBorder.none,
-              enabledBorder: getBorder(1),
-              errorBorder: getBorder(1),
-              focusedBorder: getFocusedBorder(),
-              focusedErrorBorder: getBorder(3),
-              suffixIcon: _renderSuffixIcon(),
-              prefixIcon: _renderPrefixIcon(),
-              errorStyle: TextStyle(fontSize: 0)),
-          validator: (value) {
-            if (type == AppTextFieldType.search) {
-              return null;
-            }
-
-            final error = inputValidator(type, value, label ?? "", isRequired);
-            state.setError(error);
-
-            if (error != null)
-              return "";
-            else
-              return null;
-          },
-          onChanged: (value) {
-            if (state.isError.value) {
-              state.setError(null);
-            }
-            onChanged?.call(value);
-          },
-        );
-      },
-    );
-  }
-
-  Widget _renderErrorText(BuildContext context) {
-    return Obx(() {
-      Color helperColor = TextColor.helper;
-
-      if (state.isError.value) {
-        helperColor = TextColor.error;
+      if (isDisabled) {
+        bgColor = BorderColor.secondary;
       }
 
-      return (state.isError.value || helperText != null)
-          ? Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    state.errorText.value ?? helperText ?? "",
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: helperColor),
-                  ),
+      if (type == AppTextFieldType.search) {
+        padding = const EdgeInsets.symmetric(horizontal: 12);
+      }
+
+      return TextFormField(
+        focusNode: state.focusNode.value,
+        canRequestFocus: canFocus,
+        controller: textEditingController,
+        onTap: onClick,
+        readOnly: !isEditable,
+        enabled: !isDisabled,
+        keyboardType: state.inputType,
+        maxLength: length,
+        maxLines: state.maxLines,
+        style: Theme.of(context).textTheme.bodyMedium,
+        obscureText: (type == AppTextFieldType.password) ? isObscure : false,
+        decoration: InputDecoration(
+          floatingLabelBehavior: FloatingLabelBehavior.never,
+          contentPadding: padding,
+          hintText: placeholder,
+          hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.placeholder),
+          counterStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.helper),
+          filled: true,
+          fillColor: bgColor,
+          border: InputBorder.none,
+          enabledBorder: getBorder(1),
+          errorBorder: getBorder(1),
+          focusedBorder: getFocusedBorder(),
+          focusedErrorBorder: getBorder(3),
+          suffixIcon: _renderSuffixIcon(),
+          prefixIcon: _renderPrefixIcon(),
+          errorStyle: TextStyle(fontSize: 0),
+        ),
+        validator: (value) {
+          if (type == AppTextFieldType.search) {
+            return null;
+          }
+
+          final error = inputValidator(type, value, label ?? "", isRequired);
+          state.setError(error);
+
+          if (error != null) return "";
+          return null;
+        },
+        onChanged: (value) {
+          if (state.isError.value) {
+            state.setError(null);
+          }
+          onChanged?.call(value);
+        },
+      );
+    },
+  );
+}
+
+Widget _renderErrorText(BuildContext context) {
+  return Obx(() {
+    Color helperColor = TextColor.helper;
+
+    if (state.isError.value) {
+      helperColor = TextColor.error;
+    }
+
+    return (state.isError.value || helperText != null)
+        ? Row(
+            children: [
+              Expanded(
+                child: Text(
+                  state.errorText.value ?? helperText ?? "",
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: helperColor),
                 ),
-              ],
-            )
-          : const SizedBox();
-    });
-  }
+              ),
+            ],
+          )
+        : const SizedBox();
+  });
+}
+
 
   @override
   Widget build(BuildContext context) {

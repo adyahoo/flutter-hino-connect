@@ -10,6 +10,7 @@ import 'package:hino_driver_app/domain/core/entities/model.dart';
 import 'package:hino_driver_app/infrastructure/constants.dart';
 
 import 'package:hino_driver_app/infrastructure/di.dart';
+import 'package:hino_driver_app/infrastructure/extension.dart';
 
 import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
 import 'package:hino_driver_app/infrastructure/validation/app_validator.dart';

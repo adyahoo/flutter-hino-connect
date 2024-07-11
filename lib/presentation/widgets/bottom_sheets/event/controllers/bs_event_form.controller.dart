@@ -21,6 +21,7 @@ class BsEventFormController extends GetxController {
   final noteController = TextEditingController().obs;
 
   final isLoading = false.obs;
+  final isSaveEnabled = true.obs;
 
   PickerModel? type;
   DateTime date = DateTime.now();
@@ -41,8 +42,24 @@ class BsEventFormController extends GetxController {
 
   void setTime(TimeOfDay? value) {
     if (value != null) {
-      time = value;
-      timeController.value.text = value.getActivityTime();
+      final selectedDateTime = DateTime(
+        date.year,
+        date.month,
+        date.day,
+        value.hour,
+        value.minute,
+      );
+
+      if (selectedDateTime.isAfter(DateTime.now())) {
+        timeController.value.text = value.getActivityTime();
+        timeState.setError(Trans("error_time_picker").tr);
+        isSaveEnabled.value = false;
+      } else {
+        timeState.setError("");
+        time = value;
+        timeController.value.text = value.getActivityTime();
+        isSaveEnabled.value = true;
+      }
     }
   }
 
