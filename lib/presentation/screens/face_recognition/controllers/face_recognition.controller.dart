@@ -159,13 +159,13 @@ class FaceRecognitionController extends GetxController {
         loadingValue.value = 0.0;
         isScanning.value = false;
 
-        _showErrorDialog();
-        // errorHandler(
-        //   e,
-        //   onDismiss: () {
-        //     _startImageStream();
-        //   },
-        // );
+        // _showErrorDialog();
+        errorHandler(
+          e,
+          onDismiss: () {
+            _startImageStream();
+          },
+        );
       }
     } catch (e) {
       _isBusy = false;
