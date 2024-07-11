@@ -24,10 +24,7 @@ class BsActivityForm extends GetView<BsActivityFormController> {
         (initialData == null)
             ? Text(
                 "fill_activity_form".tr,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyMedium
-                    ?.copyWith(color: TextColor.tertiary),
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: TextColor.tertiary),
               )
             : const SizedBox(),
       ],
@@ -71,6 +68,15 @@ class BsActivityForm extends GetView<BsActivityFormController> {
               textEditingController: controller.timeController.value,
               state: controller.timeState,
               type: AppTextFieldType.time_picker,
+            ),
+            const SizedBox(height: 16),
+            AppTextField(
+              label: 'note'.tr,
+              placeholder: 'note_placeholder'.tr,
+              textEditingController: controller.noteController.value,
+              state: controller.noteState,
+              type: AppTextFieldType.multiline,
+              isRequired: false,
             ),
             const SizedBox(height: 16),
             _renderAction(),
@@ -136,8 +142,7 @@ class BsActivityForm extends GetView<BsActivityFormController> {
                   onPrimary: Colors.black, // Header text color
                   onSurface: TextColor.primary, // Default text color
                 ),
-                dialogBackgroundColor:
-                    BackgroundColor.primary, // Background color
+                dialogBackgroundColor: BackgroundColor.primary, // Background color
                 textButtonTheme: TextButtonThemeData(
                   style: TextButton.styleFrom(
                     foregroundColor: PrimaryColor.main, // Button text color
@@ -166,30 +171,30 @@ class BsActivityForm extends GetView<BsActivityFormController> {
                   surfaceTint: Colors.transparent,
                 ),
                 timePickerTheme: TimePickerThemeData(
-                  backgroundColor: Colors.white, // Background color
-                  hourMinuteTextColor:
-                      TextColor.primary, // Color of the hour and minute numbers
-                  dayPeriodTextColor: TextColor.primary, // Color of AM/PM
-                  dayPeriodBorderSide: BorderSide(
-                      color: PrimaryColor.main), // Border color for AM/PM
-                  dialHandColor: PrimaryColor.main, // Color of the hour hand
-                  dialTextColor:
-                      TextColor.primary, // Text color on the clock dial
-                  dialBackgroundColor: PrimaryColor
-                      .surface, // Background color of the clock dial
-                  entryModeIconColor:
-                      TextColor.primary, // Color of the entry mode icon
+                  backgroundColor: Colors.white,
+                  // Background color
+                  hourMinuteTextColor: TextColor.primary,
+                  // Color of the hour and minute numbers
+                  dayPeriodTextColor: TextColor.primary,
+                  // Color of AM/PM
+                  dayPeriodBorderSide: BorderSide(color: PrimaryColor.main),
+                  // Border color for AM/PM
+                  dialHandColor: PrimaryColor.main,
+                  // Color of the hour hand
+                  dialTextColor: TextColor.primary,
+                  // Text color on the clock dial
+                  dialBackgroundColor: PrimaryColor.surface,
+                  // Background color of the clock dial
+                  entryModeIconColor: TextColor.primary,
+                  // Color of the entry mode icon
                   helpTextStyle: const TextStyle(
-                    color: TextColor
-                        .primary, // Set the text color for "Enter time"
+                    color: TextColor.primary, // Set the text color for "Enter time"
                   ),
                   cancelButtonStyle: ButtonStyle(
-                    foregroundColor:
-                        MaterialStateProperty.all<Color?>(PrimaryColor.main),
+                    foregroundColor: MaterialStateProperty.all<Color?>(PrimaryColor.main),
                   ),
                   confirmButtonStyle: ButtonStyle(
-                    foregroundColor:
-                        MaterialStateProperty.all<Color?>(PrimaryColor.main),
+                    foregroundColor: MaterialStateProperty.all<Color?>(PrimaryColor.main),
                   ),
                   hourMinuteTextStyle: const TextStyle(fontSize: 30),
                 ),
@@ -229,8 +234,7 @@ class BsActivityForm extends GetView<BsActivityFormController> {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.only(
-            topRight: Radius.circular(20), topLeft: Radius.circular(20)),
+        borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)),
       ),
       child: SingleChildScrollView(
         child: Column(

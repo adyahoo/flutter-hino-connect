@@ -173,7 +173,8 @@ class Constants {
   static final eventTypeItems = [
     PickerModel(id: 1, title: 'Malfunction', value: 'malfunction'),
     PickerModel(id: 2, title: 'Accident', value: 'accident'),
-    PickerModel(id: 3, title: 'External Event', value: 'external_event'),
+    PickerModel(id: 3, title: 'Traffic', value: 'traffic'),
+    PickerModel(id: 4, title: 'External', value: 'external'),
   ];
 
   static final languageOptions = [

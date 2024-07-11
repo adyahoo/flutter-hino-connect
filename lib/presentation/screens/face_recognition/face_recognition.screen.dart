@@ -8,6 +8,8 @@ import 'package:get/get.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
 import 'package:hino_driver_app/presentation/screens/face_recognition/widgets/face_detection_painter.dart';
+import 'package:hino_driver_app/presentation/widgets/widgets.dart';
+import 'package:lottie/lottie.dart';
 
 import 'controllers/face_recognition.controller.dart';
 

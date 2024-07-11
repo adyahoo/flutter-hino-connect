@@ -1,6 +1,6 @@
 part of 'widgets.dart';
 
-enum AppButtonType { filled, outline, text, alternate }
+enum AppButtonType { filled, outline, text, alternate, transparent }
 
 enum AppButtonShape { rounded, rect }
 
@@ -16,7 +16,7 @@ class AppButton extends StatelessWidget {
     this.shape = AppButtonShape.rounded,
     this.isFullWidth = true,
     this.size = AppButtonSize.defaultSize,
-  }) : this.icon = null,
+  })  : this.icon = null,
         this.svgIcon = null;
 
   AppButton.icon({
@@ -74,18 +74,16 @@ class AppButton extends StatelessWidget {
   }
 
   Widget _renderWithSvgIcon(BuildContext context) {
-  return Row(
-    mainAxisSize: MainAxisSize.min,
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      svgIcon!, 
-      const SizedBox(width: 8),
-      Text(label),
-    ],
-  );
-}
-
-
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        svgIcon!,
+        const SizedBox(width: 8),
+        Text(label),
+      ],
+    );
+  }
 
   Widget _renderText(BuildContext context) {
     return Text(label);
@@ -137,6 +135,10 @@ class AppButton extends StatelessWidget {
           bgColor = BackgroundColor.secondary;
           labelColor = TextColor.disabled;
           break;
+        case AppButtonType.transparent:
+          bgColor = Colors.transparent;
+          labelColor = Colors.white;
+          borderColor = Colors.white;
       }
     } else {
       switch (type) {
@@ -161,6 +163,10 @@ class AppButton extends StatelessWidget {
           labelColor = PrimaryNewColor().main;
           pressedColor = PrimaryNewColor().border;
           break;
+        case AppButtonType.transparent:
+          bgColor = Colors.transparent;
+          labelColor = Colors.white;
+          borderColor = Colors.white;
       }
     }
   }
@@ -189,23 +195,24 @@ class AppButton extends StatelessWidget {
       child: TextButton(
         onPressed: onPress,
         style: TextButton.styleFrom(
-            padding: EdgeInsets.symmetric(vertical: verticalPadding, horizontal: horizontalPadding),
-            minimumSize: Size.zero,
-            shape: shapeStyle,
-            backgroundColor: bgColor,
-            foregroundColor: labelColor,
-            disabledForegroundColor: labelColor,
-            textStyle: textStyle,
-            tapTargetSize: MaterialTapTargetSize.shrinkWrap),
+          padding: EdgeInsets.symmetric(vertical: verticalPadding, horizontal: horizontalPadding),
+          minimumSize: Size.zero,
+          shape: shapeStyle,
+          backgroundColor: bgColor,
+          foregroundColor: labelColor,
+          disabledForegroundColor: labelColor,
+          textStyle: textStyle,
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        ),
         child: Container(
-        child: isLoading
-            ? _renderLoading()
-            : svgIcon != null
-                ? _renderWithSvgIcon(context)
-                : icon != null
-                    ? _renderWithIcon(context)
-                    : _renderText(context),
-      ),
+          child: isLoading
+              ? _renderLoading()
+              : svgIcon != null
+                  ? _renderWithSvgIcon(context)
+                  : icon != null
+                      ? _renderWithIcon(context)
+                      : _renderText(context),
+        ),
       ),
     );
   }

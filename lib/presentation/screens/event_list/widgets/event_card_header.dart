@@ -19,7 +19,7 @@ class EventCardHeader extends StatelessWidget {
       case "accident":
         icon = "ic_shield_cross.svg";
         break;
-      case "external_event":
+      case "external":
         icon = "ic_security_time.svg";
         break;
     }

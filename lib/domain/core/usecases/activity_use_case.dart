@@ -17,7 +17,7 @@ class ActivityUseCase implements IActivityUseCase {
       final data = response.data.map((e) {
         final type = Constants.activityTypeItems.firstWhere((element) => element.value == e.type);
 
-        return ActivityModel(id: e.id, type: type, createdAt: e.createdAt);
+        return ActivityModel(id: e.id, type: type, createdAt: e.createdAt, note: e.note);
       }).toList();
 
       return ListPaginationApiResponse(
@@ -38,6 +38,7 @@ class ActivityUseCase implements IActivityUseCase {
         id: newData.id,
         type: newData.type.value,
         createdAt: newData.createdAt,
+        note: newData.note,
       );
 
       await dataSource.addActivity(dto);
@@ -63,6 +64,7 @@ class ActivityUseCase implements IActivityUseCase {
         id: newData.id,
         type: newData.type.value,
         createdAt: newData.createdAt,
+        note: newData.note,
       );
 
       await dataSource.updateActivity(dto);

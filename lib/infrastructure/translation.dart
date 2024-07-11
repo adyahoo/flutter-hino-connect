@@ -92,8 +92,8 @@ class AppTranslations extends Translations {
           "quit": 'Quit',
           "vehicle_information": "Vehicle Information",
           "trip_list": "Trip List",
-          "do_verification_title": "Do Driver Verification",
-          "do_verification_subtitle": "Face verification is needed before doing vehicle scan.",
+          "do_verification_title": "Do vehicle assignment",
+          "do_verification_subtitle": "Driver identification is needed before vehicle scan.",
           "no_trip_title": "No trip list yet",
           "no_trip_subtitle": "Trip list will be shown after vehicle verification.",
           "see_all_trip": "See all trips",
@@ -159,7 +159,7 @@ class AppTranslations extends Translations {
           "empty_event_desc": "You dont have any events to show. You can add event or the Admin will add the event for you",
           "scanning_face": "Scanning face...",
           "scan_face_completed": "Scanning face complete...",
-          "face_detected_successfully": "Face ID detected successfully",
+          "face_detected_successfully": "Driver successfully identified",
           "filter_gas_station": "Gas Station",
           "filter_service_center": "Service Center",
           "filter_restaurant": "Restaurant",
@@ -176,6 +176,11 @@ class AppTranslations extends Translations {
           "error_connection": "Connection Error",
           "error_connection_desc": "Cannot connect to server. Please check your internet connection.",
           "error_time_picker": "Time cannot be in the future",
+          "assign": "Assign",
+          "event_type": "Event type",
+          "choose_event": "Choose event",
+          "face_detected_failed":"Driver's face identification failed",
+          "try_again":"Try Again"
         },
         'id_ID': {
           'home': 'Home',
@@ -265,8 +270,8 @@ class AppTranslations extends Translations {
           "quit": 'Keluar',
           "vehicle_information": "Informasi kendaraan",
           "trip_list": "Daftar Perjalanan",
-          "do_verification_title": "Lakukan verifikasi pengemudi",
-          "do_verification_subtitle": "Lakukan verifikasi wajah terlebih dahulu untuk melakukan scan kendaraan.",
+          "do_verification_title": "Lakukan penugasan kendaraan",
+          "do_verification_subtitle": "Identifikasi supir diperlukan sebelum melakukan pemindaian kendaraan.",
           "no_trip_title": "Belum ada daftar perjalanan",
           "no_trip_subtitle": "Daftar perjalanan akan ditampilkan setelah kendaraan berhasil discan.",
           "see_all_trip": "Lihat semua perjalanan",
@@ -332,7 +337,7 @@ class AppTranslations extends Translations {
           "empty_event_desc": "Anda belum punya event untuk ditampilkan. Anda dapat menambahkan event atau Admin akan menambahkan event untuk Anda.",
           "scanning_face": "Sedang memindai wajah...",
           "scan_face_completed": "Berhasil memindai wajah...",
-          "face_detected_successfully": "ID wajah sukses dikenali",
+          "face_detected_successfully": "Driver sukses untuk diidentifikasi",
           "filter_gas_station": "Pom Bensin",
           "filter_service_center": "Pusat Servis",
           "filter_restaurant": "Restoran",
@@ -349,6 +354,11 @@ class AppTranslations extends Translations {
           "error_connection": "Error pada Koneksi",
           "error_connection_desc": "Tidak dapat terhubung ke server. Periksa koneksi internet Anda.",
           "error_time_picker": "Waktu tidak boleh melebihi waktu sekarang",
+          "assign": "Penugasan",
+          "event_type": "Tipe event",
+          "choose_event": "Pilih event",
+          "face_detected_failed":"Wajah driver gagal diidentifikasi",
+          "try_again":"Coba Lagi"
         }
       };
 }

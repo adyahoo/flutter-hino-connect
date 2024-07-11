@@ -11,10 +11,16 @@ class BsActivityFormController extends GetxController {
   final typeState = AppTextFieldState();
   final dateState = AppTextFieldState();
   final timeState = AppTextFieldState();
+  final noteState = AppTextFieldState(
+    maxLines: 4,
+    inputType: TextInputType.multiline,
+  );
 
   final typeController = TextEditingController().obs;
   final dateController = TextEditingController().obs;
   final timeController = TextEditingController().obs;
+  final noteController = TextEditingController().obs;
+
   final isLoading = false.obs;
 
   PickerModel? type;
@@ -50,6 +56,7 @@ class BsActivityFormController extends GetxController {
       id: (_editedId != 0) ? _editedId : 5,
       type: type!,
       createdAt: formattedDate.toString(),
+      note: noteController.value.text,
     );
 
     return data;
@@ -62,6 +69,7 @@ class BsActivityFormController extends GetxController {
     typeController.value.text = activityModel.type.title;
     dateController.value.text = date.getActivityDate();
     timeController.value.text = time.getActivityTime();
+    noteController.value.text = activityModel.note ?? "";
 
     this.type = activityModel.type;
     this.date = date;
