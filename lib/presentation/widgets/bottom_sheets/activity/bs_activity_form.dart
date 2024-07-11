@@ -102,10 +102,13 @@ class BsActivityForm extends GetView<BsActivityFormController> {
           ),
           const SizedBox(width: 16),
           Expanded(
-            child: AppButton(
-              label: 'save'.tr,
-              onPress: _doSubmit,
-              type: AppButtonType.filled,
+            child: Obx(
+              () => AppButton(
+                label: 'save'.tr,
+                onPress: controller.isSaveEnabled.value ? _doSubmit : null,
+                isLoading: controller.isLoading.value,
+                type: AppButtonType.filled,
+              ),
             ),
           ),
         ],
