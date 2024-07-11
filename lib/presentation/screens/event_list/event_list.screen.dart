@@ -47,6 +47,7 @@ class EventListScreen extends GetView<EventListController> {
             child: const AppStrippedDivider(),
           ),
           AppCardAction(
+            isEditable: item.type.value != 'external',
             onEdit: () {
               onEdit(item);
             },
