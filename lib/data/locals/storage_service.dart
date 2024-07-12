@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:hino_driver_app/domain/core/entities/search_result_model.dart';
-import 'package:hino_driver_app/infrastructure/navigation/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StorageService {
@@ -15,6 +13,7 @@ class StorageService {
   final String LOGIN_ATTEMPT = "login_attempt";
   final String SCHEDULE_NOTIF_FIRED = "schedule_notif_fired"; //flag untuk hide 1 data trip sebelum notif ke trigger (keperluan demo)
   final String SCANNED_VEHICLE_DATE = "scanned_vehicle_date";
+  final String IS_VEHICLE_VERIFIED = "is_vehicle_verified"; //flag untuk ngasi tau user udh verif mobil atau belum (keperluan demo, nnti ini dari api flagnya)
 
   static final String ACTIVITIES_JSON = "activities_json";
   static final String CONTACTS_JSON = "contacts_json";
@@ -86,6 +85,12 @@ class StorageService {
     await _preferences!.setBool(IS_BIOMETRIC_LOGIN, value);
   }
 
+  bool? getIsVehicleVerified() => _preferences!.getBool(IS_VEHICLE_VERIFIED);
+
+  void setIsVehicleVerified(bool value) async {
+    await _preferences!.setBool(IS_VEHICLE_VERIFIED, value);
+  }
+
   int getSelectedLanguage() => _preferences!.getInt(SELECTED_LANGUAGE) ?? 2;
 
   void setSelectedLanguage(int value) async {
@@ -124,7 +129,7 @@ class StorageService {
     await _preferences!.remove(TOKEN);
   }
 
-    Future<void> setScannedDate(DateTime date) async {
+  Future<void> setScannedDate(DateTime date) async {
     await _preferences!.setString(SCANNED_VEHICLE_DATE, date.toIso8601String());
   }
 
@@ -132,5 +137,4 @@ class StorageService {
     final dateString = _preferences!.getString(SCANNED_VEHICLE_DATE);
     return dateString != null ? DateTime.parse(dateString) : null;
   }
-
 }

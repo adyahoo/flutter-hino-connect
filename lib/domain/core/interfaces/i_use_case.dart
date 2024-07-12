@@ -12,6 +12,7 @@ import 'package:hino_driver_app/domain/core/entities/user_model.dart';
 import 'package:hino_driver_app/presentation/screens/trip_list/controllers/trip_list.controller.dart';
 
 part 'i_activity_use_case.dart';
+part 'i_vehicle_scan_use_case.dart';
 part 'i_event_use_case.dart';
 part 'i_contact_use_case.dart';
 part 'i_trip_use_case.dart';

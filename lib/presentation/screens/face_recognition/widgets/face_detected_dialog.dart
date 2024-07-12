@@ -1,15 +1,17 @@
 part of '../face_recognition.screen.dart';
 
 class FaceDetectedDialog extends StatelessWidget {
-  const FaceDetectedDialog({super.key, required this.name, this.isSuccess = true});
+  const FaceDetectedDialog({
+    super.key,
+    required this.name,
+    required this.title,
+  });
 
   final String name;
-  final bool isSuccess;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
-    final title = isSuccess ? "face_detected_successfully".tr : "face_detected_failed".tr;
-
     return Center(
       child: Container(
         padding: const EdgeInsets.all(16),
@@ -31,18 +33,9 @@ class FaceDetectedDialog extends StatelessWidget {
               child: Text(
                 title,
                 style: Theme.of(Get.context!).textTheme.titleMedium?.copyWith(color: Colors.white),
+                textAlign: TextAlign.center,
               ),
             ),
-            if (!isSuccess) ...[
-              const SizedBox(height: 24),
-              AppButton(
-                label: 'try_again'.tr,
-                onPress: () {
-                  Get.back();
-                },
-                type: AppButtonType.transparent,
-              ),
-            ],
           ],
         ),
       ),

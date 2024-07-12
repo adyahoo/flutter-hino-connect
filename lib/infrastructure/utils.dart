@@ -73,6 +73,10 @@ void errorHandler(Exception e, {VoidCallback? onDismiss}) {
     print('error: $error');
   }
 
+  if (Get.isBottomSheetOpen == true || Get.isDialogOpen == true) {
+    Get.back();
+  }
+
   showGetBottomSheet(
     BsConfirmation(
       type: BsConfirmationType.danger,

@@ -179,8 +179,15 @@ class AppTranslations extends Translations {
           "assign": "Assign",
           "event_type": "Event type",
           "choose_event": "Choose event",
-          "face_detected_failed":"Driver's face identification failed",
-          "try_again":"Try Again"
+          "face_detected_failed": "Driver's face identification failed",
+          "try_again": "Try Again",
+          "debug_option": "Debug option",
+          "force_vehicle_title": 'Force vehicle assignment',
+          "force_vehicle_description": "You can skip this step to access your vehicle and trip data.",
+          "force_vehicle_confirmation_desc": "Are you sure to skip this face verification process? You will be navigated to main screen directly with your vehicle and trip data.",
+          "manual_capture_desc":"Our system can't detect your face. Please send picture manually with button below to do manual verification.",
+          "capture_send":"Capture and send",
+          "face_detecting":"Recognizing your photo with data in our system..."
         },
         'id_ID': {
           'home': 'Home',
@@ -357,8 +364,15 @@ class AppTranslations extends Translations {
           "assign": "Penugasan",
           "event_type": "Tipe event",
           "choose_event": "Pilih event",
-          "face_detected_failed":"Wajah driver gagal diidentifikasi",
-          "try_again":"Coba Lagi"
+          "face_detected_failed": "Wajah driver gagal diidentifikasi",
+          "try_again": "Coba Lagi",
+          "debug_option": "Opsi debug",
+          "force_vehicle_title": 'Force vehicle assignment',
+          "force_vehicle_description": 'Anda bisa lewati tahap ini untuk mengakses data kendaraan dan perjalanan Anda.',
+          "force_vehicle_confirmation_desc": "Apakah Anda yakin untuk melewati tahap verifikasi wajah ini? Anda akan langsung diarahkan ke halaman utama dengan data kendaraan dan perjalanan Anda.",
+          "manual_capture_desc":"Sistem kami tidak dapat mendeteksi wajah Anda. Silakan mengirim foto secara manual dengan tekan tombol dibawah untuk melakukan verifikasi manual.",
+          "capture_send":"Ambil foto dan kirim",
+          "face_detecting":"Mencocokan foto wajah pada sistem kami..."
         }
       };
 }

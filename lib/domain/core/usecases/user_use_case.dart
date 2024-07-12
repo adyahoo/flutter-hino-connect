@@ -58,6 +58,7 @@ class UserUseCase implements IUserUseCase {
     try {
       await dataSource.logout();
       inject<StorageService>().setScheduleNotifFired(status: false);
+      inject<StorageService>().setIsVehicleVerified(false);
     } on ApiException catch (e) {
       errorHandler(e);
       rethrow;

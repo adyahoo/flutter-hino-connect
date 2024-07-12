@@ -7,6 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:hino_driver_app/infrastructure/theme/app_color.dart';
+import 'package:hino_driver_app/infrastructure/utils.dart';
 import 'package:hino_driver_app/presentation/screens/face_recognition/widgets/face_detection_painter.dart';
 import 'package:hino_driver_app/presentation/widgets/widgets.dart';
 import 'package:lottie/lottie.dart';
@@ -15,12 +16,41 @@ import 'controllers/face_recognition.controller.dart';
 
 part 'widgets/face_detected_dialog.dart';
 
+part 'widgets/face_manual_capture.dart';
+
+part 'widgets/face_scanning_bar.dart';
+
 final clipKey = GlobalKey();
 
 class FaceRecognitionScreen extends GetView<FaceRecognitionController> {
   const FaceRecognitionScreen({Key? key}) : super(key: key);
 
-  Widget cameraWidget(context) {
+  void _showDebugOptionBs() {
+    showGetBottomSheet(
+      BsDebugOption(
+        onTapOption: _showForceVehicleConfirmation,
+      ),
+    );
+  }
+
+  void _showForceVehicleConfirmation() {
+    showGetBottomSheet(
+      BsConfirmation(
+        type: BsConfirmationType.warning,
+        title: "force_vehicle_title".tr,
+        description: "force_vehicle_confirmation_desc".tr,
+        positiveButtonOnClick: () {
+          Get
+            ..back()
+            ..back();
+
+          controller.bypassVerification();
+        },
+      ),
+    );
+  }
+
+  Widget _cameraWidget(context) {
     var camera = controller.cameraController.value;
     final size = MediaQuery.of(context).size;
     var scale = size.aspectRatio * camera.aspectRatio;
@@ -76,7 +106,7 @@ class FaceRecognitionScreen extends GetView<FaceRecognitionController> {
               alignment: FractionalOffset.center,
               children: [
                 Positioned.fill(
-                  child: cameraWidget(context),
+                  child: _cameraWidget(context),
                 ),
                 Positioned(
                   top: MediaQuery.of(context).viewPadding.top + 16,
@@ -92,6 +122,18 @@ class FaceRecognitionScreen extends GetView<FaceRecognitionController> {
                         Get.back();
                       }
                     },
+                  ),
+                ),
+                Positioned(
+                  top: MediaQuery.of(context).viewPadding.top + 12,
+                  right: 8,
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.more_vert_rounded,
+                      size: 24,
+                      color: Colors.white,
+                    ),
+                    onPressed: _showDebugOptionBs,
                   ),
                 ),
                 Positioned(
@@ -111,46 +153,8 @@ class FaceRecognitionScreen extends GetView<FaceRecognitionController> {
                     ),
                   ),
                 ),
-                Obx(
-                  () => Visibility(
-                    visible: controller.isScanning.value,
-                    child: Positioned(
-                      left: 16,
-                      right: 16,
-                      bottom: 16,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            "scanning_face".tr,
-                            style: Theme.of(context).textTheme.labelLarge?.copyWith(color: Colors.white),
-                          ),
-                          const SizedBox(height: 16),
-                          TweenAnimationBuilder(
-                            duration: const Duration(milliseconds: 3000),
-                            tween: Tween<double>(
-                              begin: 0.0,
-                              end: 0.99,
-                            ),
-                            builder: (context, value, child) {
-                              controller.loadingValue.value = value;
-
-                              return Obx(
-                                () => LinearProgressIndicator(
-                                  backgroundColor: SuccesColor.surface,
-                                  color: PrimaryNewColor().main,
-                                  borderRadius: BorderRadius.circular(20),
-                                  minHeight: 6,
-                                  value: controller.loadingValue.value,
-                                ),
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+                const FaceScanningBar(),
+                const FaceManualCapture(),
               ],
             );
           } else {

@@ -15,6 +15,8 @@ import 'package:hino_driver_app/domain/core/usecases/trip_use_case.dart';
 import 'package:hino_driver_app/domain/core/usecases/user_use_case.dart';
 import 'package:hino_driver_app/domain/core/usecases/contact_use_case.dart';
 import 'package:hino_driver_app/domain/core/usecases/event_use_case.dart';
+import 'package:hino_driver_app/domain/core/usecases/vehicle_scan_use_case.dart';
+import 'package:hino_driver_app/domain/core/usecases/vehicle_scan_use_case.dart';
 import 'package:hino_driver_app/infrastructure/client/client.dart';
 
 GetIt inject = GetIt.instance;
@@ -55,6 +57,9 @@ Future setupInjection() async {
 
   //face recognition
   inject.registerLazySingleton<FaceRecognitionUseCase>(() => FaceRecognitionUseCase(dataSource: inject()));
+
+  //vehicle scan
+  inject.registerLazySingleton<VehicleScanUseCase>(() => VehicleScanUseCase());
 
   //bs sos
   inject.registerLazySingleton<ContactDataSource>(() => ContactDataSource());

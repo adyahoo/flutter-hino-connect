@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hino_driver_app/data/locals/storage_service.dart';
+import 'package:hino_driver_app/domain/core/usecases/vehicle_scan_use_case.dart';
 import 'package:hino_driver_app/infrastructure/di.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -12,9 +13,12 @@ import 'package:hino_driver_app/infrastructure/navigation/routes.dart';
 final _panelController = PanelController();
 
 class VehicleScanController extends GetxController {
+  VehicleScanController({required this.vehicleScanUseCase});
+
   late QRViewController qrController;
   late Timer timer;
 
+  final VehicleScanUseCase vehicleScanUseCase;
   final qrKey = GlobalKey(debugLabel: 'QR');
   final panelController = _panelController;
 
@@ -52,14 +56,9 @@ class VehicleScanController extends GetxController {
     qrController.scannedDataStream.listen((event) async {
       result.value = event;
       qrController.pauseCamera();
-      await _saveScannedDate();
+      await vehicleScanUseCase.verifyVehicle();
       _startRedirectTimer();
     });
-  }
-
-  Future<void> _saveScannedDate() async {
-    final now = DateTime.now();
-    inject<StorageService>().setScannedDate(now);
   }
 
   void _startRedirectTimer() {
@@ -75,7 +74,7 @@ class VehicleScanController extends GetxController {
     counter.value = Duration(seconds: counter.value.inSeconds - 1);
 
     if (counter.value.inSeconds == 0) {
-      Get.offAllNamed(Routes.MAIN_TAB, arguments: {'isVehicleVerified': true});
+      Get.offAllNamed(Routes.MAIN_TAB, arguments: {'refetch': true});
     }
   }
 }

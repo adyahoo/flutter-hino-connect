@@ -7,7 +7,7 @@ class FaceRecognitionControllerBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut<FaceRecognitionController>(
-      () => FaceRecognitionController(useCase: inject()),
+      () => FaceRecognitionController(useCase: inject(), vehicleScanUseCase: inject()),
     );
   }
 }

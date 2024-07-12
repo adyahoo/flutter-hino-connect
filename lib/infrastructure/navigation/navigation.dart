@@ -40,11 +40,6 @@ class Nav {
       binding: MainTabControllerBinding(),
     ),
     GetPage(
-      name: Routes.SCAN_QR,
-      page: () => const ScanQrScreen(),
-      binding: ScanQrControllerBinding(),
-    ),
-    GetPage(
       name: Routes.FACE_RECOGNITION,
       page: () => const FaceRecognitionScreen(),
       binding: FaceRecognitionControllerBinding(),

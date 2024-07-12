@@ -1,6 +1,6 @@
 part of 'widgets.dart';
 
-enum AppButtonType { filled, outline, text, alternate, transparent }
+enum AppButtonType { filled, outline, text, alternate, plain }
 
 enum AppButtonShape { rounded, rect }
 
@@ -135,10 +135,8 @@ class AppButton extends StatelessWidget {
           bgColor = BackgroundColor.secondary;
           labelColor = TextColor.disabled;
           break;
-        case AppButtonType.transparent:
-          bgColor = Colors.transparent;
-          labelColor = Colors.white;
-          borderColor = Colors.white;
+        case AppButtonType.plain:
+          break;
       }
     } else {
       switch (type) {
@@ -163,10 +161,10 @@ class AppButton extends StatelessWidget {
           labelColor = PrimaryNewColor().main;
           pressedColor = PrimaryNewColor().border;
           break;
-        case AppButtonType.transparent:
-          bgColor = Colors.transparent;
-          labelColor = Colors.white;
-          borderColor = Colors.white;
+        case AppButtonType.plain:
+          bgColor = PlainColor().main;
+          labelColor = PlainColor().content;
+          break;
       }
     }
   }

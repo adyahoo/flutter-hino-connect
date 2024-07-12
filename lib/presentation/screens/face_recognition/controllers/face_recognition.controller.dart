@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:ui';
 
@@ -6,6 +7,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:hino_driver_app/domain/core/usecases/face_recognition_use_case.dart';
+import 'package:hino_driver_app/domain/core/usecases/vehicle_scan_use_case.dart';
 import 'package:hino_driver_app/infrastructure/client/exceptions/ApiException.dart';
 import 'package:hino_driver_app/infrastructure/navigation/routes.dart';
 import 'package:hino_driver_app/infrastructure/utils.dart';
@@ -14,9 +16,10 @@ import 'package:hino_driver_app/presentation/screens.dart';
 import 'package:path_provider/path_provider.dart';
 
 class FaceRecognitionController extends GetxController {
-  FaceRecognitionController({required this.useCase});
+  FaceRecognitionController({required this.useCase, required this.vehicleScanUseCase});
 
   FaceRecognitionUseCase useCase;
+  VehicleScanUseCase vehicleScanUseCase;
 
   late CameraController cameraController;
   late FaceDetector _faceDetector;
@@ -27,7 +30,9 @@ class FaceRecognitionController extends GetxController {
   final faces = Rx<List<Face>>([]);
   final capturedImage = Rx<File?>(null);
   final capturedImageBytes = Rx<Uint8List?>(null);
+  final isManual = false.obs;
 
+  Timer? _manualCaptureTimer;
   bool _canProcess = true;
   bool _isBusy = false;
   XFile? imageFile;
@@ -38,6 +43,12 @@ class FaceRecognitionController extends GetxController {
     DeviceOrientation.portraitDown: 180,
     DeviceOrientation.landscapeRight: 270,
   };
+
+  @override
+  onReady() {
+    super.onReady();
+    _startManualCaptureTimer();
+  }
 
   Future<void> initCamera() async {
     _cameras = await availableCameras();
@@ -55,6 +66,15 @@ class FaceRecognitionController extends GetxController {
 
   void _initFaceDetector() {
     _faceDetector = FaceDetector(options: FaceDetectorOptions());
+  }
+
+  void _startManualCaptureTimer() {
+    final duration = Duration(seconds: 6);
+    _manualCaptureTimer = Timer(duration, () {
+      _stopImageStream();
+      isManual.value = true;
+      isScanning.value = false;
+    });
   }
 
   void _startImageStream() {
@@ -115,32 +135,19 @@ class FaceRecognitionController extends GetxController {
     _isBusy = false;
   }
 
-  @override
-  void onClose() {
-    super.onClose();
-    cameraController.dispose();
-    _faceDetector.close();
-  }
-
   Future<void> _captureFace() async {
     _isBusy = true;
 
     try {
+      //capture image
       await Future.delayed(const Duration(seconds: 1));
       imageFile = await cameraController.takePicture();
       final file = File(imageFile?.path ?? "");
       capturedImage.value = file;
 
+      //get croped image with circle masking
       await Future.delayed(const Duration(seconds: 1));
-      RenderRepaintBoundary boundary = clipKey.currentContext?.findRenderObject() as RenderRepaintBoundary;
-      final img = await boundary.toImage();
-      final byteData = await img.toByteData(format: ImageByteFormat.png);
-      final pngByte = byteData?.buffer.asUint8List();
-      capturedImageBytes.value = pngByte;
-
-      final tempDir = await getTemporaryDirectory();
-      final capturedFile = await File('${tempDir.path}/image.png').create();
-      capturedFile.writeAsBytesSync(pngByte!);
+      final capturedFile = await useCase.getMaskedImage();
 
       try {
         await useCase.verifyDriverFace(capturedFile);
@@ -151,7 +158,7 @@ class FaceRecognitionController extends GetxController {
         _showSuccessDialog();
 
         // Close the dialog after 3 seconds and navigate to the Scan QR page
-        navigateScanVehicle();
+        _navigateScanVehicle();
 
         // Get.back();
       } on ApiException catch (e) {
@@ -159,7 +166,6 @@ class FaceRecognitionController extends GetxController {
         loadingValue.value = 0.0;
         isScanning.value = false;
 
-        // _showErrorDialog();
         errorHandler(
           e,
           onDismiss: () {
@@ -174,27 +180,67 @@ class FaceRecognitionController extends GetxController {
     }
   }
 
-  void _showSuccessDialog() {
-    Get.dialog(
-      FaceDetectedDialog(name: "face_id_success.json"),
-      barrierDismissible: false, // Prevent closing the dialog by tapping outside
-    );
+  void captureFaceManual() async {
+    _showLoadingDialog();
+    _isBusy = true;
+
+    try {
+      //capture image
+      await Future.delayed(const Duration(seconds: 1));
+      imageFile = await cameraController.takePicture();
+      final file = File(imageFile?.path ?? "");
+      capturedImage.value = file;
+
+      //get croped image with circle masking
+      await Future.delayed(const Duration(seconds: 1));
+      final capturedFile = await useCase.getMaskedImage();
+
+      try {
+        await useCase.verifyDriverFace(capturedFile);
+        loadingValue.value = 1.0;
+
+        Get.back();
+        await Future.delayed(const Duration(milliseconds: 500));
+        // Show the success dialog
+        _showSuccessDialog();
+
+        // Close the dialog after 3 seconds and navigate to the Scan QR page
+        _navigateScanVehicle();
+      } on ApiException catch (e) {
+        _isBusy = false;
+        loadingValue.value = 0.0;
+        isScanning.value = false;
+
+        errorHandler(e);
+      }
+    } catch (e) {
+      _isBusy = false;
+      isScanning.value = false;
+      loadingValue.value = 0.0;
+    }
   }
 
-  void _showErrorDialog() async {
-    await Get.dialog(
+  void _showSuccessDialog() {
+    Get.dialog(
       FaceDetectedDialog(
-        name: "face_id_error.json",
-        isSuccess: false,
+        name: "face_id_success.json",
+        title: "face_detected_successfully".tr,
       ),
       barrierDismissible: false, // Prevent closing the dialog by tapping outside
     );
-
-    //wait dialog ketutup baru jalanin kamera lagi
-    _startImageStream();
   }
 
-  void navigateScanVehicle() async {
+  void _showLoadingDialog() {
+    Get.dialog(
+      FaceDetectedDialog(
+        name: "face_id_loading.json",
+        title: "face_detecting".tr,
+      ),
+      barrierDismissible: false, // Prevent closing the dialog by tapping outside
+    );
+  }
+
+  void _navigateScanVehicle() async {
     await Future.delayed(Duration(seconds: 3));
 
     Get.back();
@@ -205,5 +251,24 @@ class FaceRecognitionController extends GetxController {
         cameraController.dispose();
       },
     );
+  }
+
+  void bypassVerification() async {
+    await Future.delayed(const Duration(milliseconds: 200));
+    showLoadingOverlay();
+
+    await vehicleScanUseCase.verifyVehicle();
+    await Future.delayed(const Duration(seconds: 3));
+
+    Get.offAllNamed(Routes.MAIN_TAB, arguments: {'refetch': true}); // Navigate to the home screen with argument
+    hideLoadingOverlay();
+  }
+
+  @override
+  void onClose() {
+    super.onClose();
+    cameraController.dispose();
+    _faceDetector.close();
+    _manualCaptureTimer?.cancel();
   }
 }

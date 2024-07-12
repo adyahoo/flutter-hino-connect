@@ -1,6 +1,7 @@
-part of '../widgets.dart';
+part of '../../widgets.dart';
 
 enum BSDescriptionType { success, warning, danger }
+
 class SuccessBottomSheet extends StatelessWidget {
   final BSDescriptionType type;
   final String title;
@@ -15,7 +16,7 @@ class SuccessBottomSheet extends StatelessWidget {
     this.onButtonPressed,
   }) : super(key: key);
 
-    String get icon {
+  String get icon {
     switch (type) {
       case BSDescriptionType.success:
         return "assets/icons/ic_success_circle.svg";
@@ -26,7 +27,7 @@ class SuccessBottomSheet extends StatelessWidget {
     }
   }
 
-    Widget _renderContent(BuildContext context) {
+  Widget _renderContent(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -67,9 +68,8 @@ class SuccessBottomSheet extends StatelessWidget {
           SizedBox(height: 16),
           // Main description content
           _renderContent(context),
-    
+
           const SizedBox(height: 16),
-    
 
           if (Platform.isIOS) const SizedBox(height: 24),
         ],

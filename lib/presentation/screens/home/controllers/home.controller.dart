@@ -1,8 +1,10 @@
 import 'package:get/get.dart';
+import 'package:hino_driver_app/data/locals/storage_service.dart';
 import 'package:hino_driver_app/domain/core/entities/trips_model.dart';
 import 'package:hino_driver_app/domain/core/entities/user_model.dart';
 import 'package:hino_driver_app/domain/core/usecases/trip_use_case.dart';
 import 'package:hino_driver_app/domain/core/usecases/user_use_case.dart';
+import 'package:hino_driver_app/infrastructure/di.dart';
 import 'package:hino_driver_app/infrastructure/utils.dart';
 
 class HomeController extends GetxController {
@@ -25,34 +27,38 @@ class HomeController extends GetxController {
     super.onInit();
 
     // Get the argument passed from the previous screen
-    if (Get.arguments != null && Get.arguments['isVehicleVerified'] != null) {
-      print('sapi isVehicleVerified: $isVehicleVerified');
-      isVehicleVerified.value = Get.arguments['isVehicleVerified'];
+    if (Get.arguments != null && Get.arguments['refetch'] != null) {
+      if (Get.arguments['refetch'] == true) {
+        _getData();
+      }
     }
   }
 
   @override
   void onReady() {
     super.onReady();
+    _getData();
+  }
+
+  void _getData() {
     _getUser();
-
-    if (isVehicleVerified.value) {
-      getTodayTrip();
-    }
+    _getVehicle();
+    _getTodayTrip();
   }
 
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void getTodayTrip() async {
+  void _getTodayTrip() async {
     isFetchingTrip.value = true;
 
     final res = await tripUseCase.getTodayTripList();
     todayTrips.value = res.data;
 
     isFetchingTrip.value = false;
+  }
+
+  void _getVehicle() async {
+    final isVerified = inject<StorageService>().getIsVehicleVerified() ?? false;
+
+    isVehicleVerified.value = isVerified;
   }
 
   void _getUser() async {
@@ -71,6 +77,6 @@ class HomeController extends GetxController {
     isVehicleVerified.value = true;
     hideLoadingOverlay();
 
-    getTodayTrip();
+    _getTodayTrip();
   }
 }

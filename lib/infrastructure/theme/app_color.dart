@@ -21,6 +21,29 @@ abstract class BaseAppColorProps {
   });
 }
 
+class PlainColor implements BaseAppColorProps {
+  @override
+  Color get border => Colors.white;
+
+  @override
+  Color get content => TextColor.secondary;
+
+  @override
+  Color get focus => Colors.white;
+
+  @override
+  Color get hover => Colors.white;
+
+  @override
+  Color get main => Colors.white;
+
+  @override
+  Color get pressed => Colors.white;
+
+  @override
+  Color get surface => Colors.white;
+}
+
 class PrimaryNewColor implements BaseAppColorProps {
   PrimaryNewColor();
 
@@ -169,7 +192,6 @@ class YellowBaseColor implements BaseAppColorProps {
 
   @override
   Color get surface => YellowColor.color50;
-
 }
 
 class PrimaryColor {
