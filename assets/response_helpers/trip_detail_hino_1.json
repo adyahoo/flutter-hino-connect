@@ -19,7 +19,7 @@
             "lat": -6.335310728,
             "lng": 107.1822852
           },
-          "point": 33,
+          "point": 5,
           "type": "over_speed",
           "note": "kecepatan_melebihi_80_km/jam",
           "date_time": "2024-07-01T10:00:00.000000Z"
@@ -30,6 +30,7 @@
             "lat": -6.417508025,
             "lng": 107.4176241
           },
+          "point": 2,
           "type": "brake",
           "note": "harsh_braking_untuk_menghindari_kendaraan_di_depan",
           "date_time": "2024-07-01T10:30:00.000000Z"
@@ -40,6 +41,7 @@
             "lat": -6.814510471,
             "lng": 107.4777638
           },
+          "point": 2,
           "type": "acceleration",
           "note": "harsh_acceleration_terdeteksi",
           "date_time": "2024-07-01T11:50:00.000000Z"
@@ -50,6 +52,7 @@
             "lat": -6.930356139,
             "lng": 107.5760367
           },
+          "point": 1,
           "type": "lateral_accel",
           "note": "lateral_acceleration_terdeteksi",
           "date_time": "2024-07-01T12:20:00.000000Z"
@@ -75,6 +78,7 @@
             "lat": -6.457331016,
             "lng": 106.8869088
           },
+          "point": 10,
           "type": "over_speed",
           "note": "kecepatan_melebihi_80_km/jam",
           "date_time": "2024-07-02T09:30:00.000000Z"
@@ -85,6 +89,7 @@
             "lat": -6.498107921,
             "lng": 106.8683192
           },
+          "point": 5,
           "type": "brake",
           "note": "harsh_braking_untuk_menghindari_kendaraan_di_depan",
           "date_time": "2024-07-02T09:40:00.000000Z"
@@ -95,6 +100,7 @@
             "lat": -6.540341579,
             "lng": 106.8508599
           },
+          "point": 5,
           "type": "acceleration",
           "note": "harsh_acceleration_terdeteksi",
           "date_time": "2024-07-02T10:00:00.000000Z"
@@ -105,6 +111,7 @@
             "lat": -6.604589405,
             "lng": 106.8069653
           },
+          "point": 10,
           "type": "lateral_accel",
           "note": "lateral_acceleration_terdeteksi",
           "date_time": "2024-07-02T10:25:00.000000Z"
@@ -130,6 +137,7 @@
             "lat": -6.495385034,
             "lng": 107.6514929
           },
+          "point": 20,
           "type": "over_speed",
           "note": "kecepatan_melebihi_80_km/jam",
           "date_time": "2024-07-03T11:00:00.000000Z"
@@ -140,6 +148,7 @@
             "lat": -6.508347387,
             "lng": 107.7084845
           },
+          "point": 10,
           "type": "brake",
           "note": "harsh_braking_untuk_menghindari_kendaraan_di_depan",
           "date_time": "2024-07-03T11:10:00.000000Z"
@@ -150,6 +159,7 @@
             "lat": -6.644090755,
             "lng": 108.0682867
           },
+          "point": 10,
           "type": "acceleration",
           "note": "harsh_acceleration_terdeteksi",
           "date_time": "2024-07-03T12:10:00.000000Z"
@@ -160,6 +170,7 @@
             "lat": -6.76154193,
             "lng": 108.5272954
           },
+          "point": 10,
           "type": "lateral_accel",
           "note": "lateral_acceleration_terdeteksi",
           "date_time": "2024-07-03T13:15:00.000000Z"
@@ -185,6 +196,7 @@
             "lat": -6.173067475,
             "lng": 106.7282615
           },
+          "point": 20,
           "type": "over_speed",
           "note": "kecepatan_melebihi_80_km/jam",
           "date_time": "2024-07-04T09:20:00.000000Z"
@@ -195,6 +207,7 @@
             "lat": -6.2144189,
             "lng": 106.7430311
           },
+          "point": 30,
           "type": "brake",
           "note": "harsh_braking_untuk_menghindari_kendaraan_di_depan",
           "date_time": "2024-07-04T09:30:00.000000Z"
@@ -205,6 +218,7 @@
             "lat": -6.292291029,
             "lng": 106.8106886
           },
+          "point": 10,
           "type": "acceleration",
           "note": "harsh_acceleration_terdeteksi",
           "date_time": "2024-07-04T10:10:00.000000Z"
@@ -215,6 +229,7 @@
             "lat": -6.302585689,
             "lng": 106.8396198
           },
+          "point": 10,
           "type": "lateral_accel",
           "note": "lateral_acceleration_terdeteksi",
           "date_time": "2024-07-04T10:20:00.000000Z"
@@ -240,6 +255,7 @@
             "lat": -6.152620415,
             "lng": 106.8874996
           },
+          "point": 20,
           "type": "over_speed",
           "note": "kecepatan_melebihi_80_km/jam",
           "date_time": "2024-07-05T09:15:00.000000Z"
@@ -250,6 +266,7 @@
             "lat": -6.140074117,
             "lng": 106.8914947
           },
+          "point": 20,
           "type": "brake",
           "note": "harsh_braking_untuk_menghindari_kendaraan_di_depan",
           "date_time": "2024-07-05T09:18:00.000000Z"
@@ -260,6 +277,7 @@
             "lat": -6.126160962,
             "lng": 106.8938686
           },
+          "point": 15,
           "type": "acceleration",
           "note": "harsh_acceleration_terdeteksi",
           "date_time": "2024-07-05T09:30:00.000000Z"
@@ -270,6 +288,7 @@
             "lat": -6.109908131,
             "lng": 106.8827847
           },
+          "point": 30,
           "type": "lateral_accel",
           "note": "lateral_acceleration_terdeteksi",
           "date_time": "2024-07-05T09:40:00.000000Z"
@@ -295,6 +314,7 @@
             "lat": -6.18752942,
             "lng": 106.7970818
           },
+          "point": 20,
           "type": "over_speed",
           "note": "kecepatan_melebihi_80_km/jam",
           "date_time": "2024-07-06T09:12:00.000000Z"
@@ -305,6 +325,7 @@
             "lat": -6.211849608,
             "lng": 106.8068319
           },
+          "point": 20,
           "type": "brake",
           "note": "harsh_braking_untuk_menghindari_kendaraan_di_depan",
           "date_time": "2024-07-06T09:18:00.000000Z"
@@ -315,6 +336,7 @@
             "lat": -6.243450157,
             "lng": 106.847861
           },
+          "point": 30,
           "type": "acceleration",
           "note": "harsh_acceleration_terdeteksi",
           "date_time": "2024-07-06T09:50:00.000000Z"
@@ -325,6 +347,7 @@
             "lat": -6.24388321,
             "lng": 106.8686215
           },
+          "point": 30,
           "type": "lateral_accel",
           "note": "lateral_acceleration_terdeteksi",
           "date_time": "2024-07-06T10:02:00.000000Z"
