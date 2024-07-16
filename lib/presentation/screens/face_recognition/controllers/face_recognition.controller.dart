@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:ui';
 
 import 'package:camera/camera.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:hino_driver_app/domain/core/usecases/face_recognition_use_case.dart';
@@ -13,7 +11,6 @@ import 'package:hino_driver_app/infrastructure/navigation/routes.dart';
 import 'package:hino_driver_app/infrastructure/utils.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:hino_driver_app/presentation/screens.dart';
-import 'package:path_provider/path_provider.dart';
 
 class FaceRecognitionController extends GetxController {
   FaceRecognitionController({required this.useCase, required this.vehicleScanUseCase});
@@ -69,12 +66,16 @@ class FaceRecognitionController extends GetxController {
   }
 
   void _startManualCaptureTimer() {
-    final duration = Duration(seconds: 6);
+    final duration = const Duration(seconds: 6);
     _manualCaptureTimer = Timer(duration, () {
       _stopImageStream();
       isManual.value = true;
       isScanning.value = false;
     });
+  }
+
+  void _stopManualCaptureTimer() {
+    _manualCaptureTimer?.cancel();
   }
 
   void _startImageStream() {
@@ -125,6 +126,7 @@ class FaceRecognitionController extends GetxController {
         if (width && top && right && bottom & left) {
           isScanning.value = true;
 
+          _stopManualCaptureTimer();
           await Future.delayed(const Duration(milliseconds: 500));
           _stopImageStream();
           await _captureFace();
@@ -146,7 +148,6 @@ class FaceRecognitionController extends GetxController {
       capturedImage.value = file;
 
       //get croped image with circle masking
-      await Future.delayed(const Duration(seconds: 1));
       final capturedFile = await useCase.getMaskedImage();
 
       try {
@@ -169,6 +170,7 @@ class FaceRecognitionController extends GetxController {
         errorHandler(
           e,
           onDismiss: () {
+            _startManualCaptureTimer();
             _startImageStream();
           },
         );
@@ -176,6 +178,7 @@ class FaceRecognitionController extends GetxController {
     } catch (e) {
       _isBusy = false;
       isScanning.value = false;
+      _startManualCaptureTimer();
       loadingValue.value = 0.0;
     }
   }
@@ -208,15 +211,11 @@ class FaceRecognitionController extends GetxController {
         _navigateScanVehicle();
       } on ApiException catch (e) {
         _isBusy = false;
-        loadingValue.value = 0.0;
-        isScanning.value = false;
 
         errorHandler(e);
       }
     } catch (e) {
       _isBusy = false;
-      isScanning.value = false;
-      loadingValue.value = 0.0;
     }
   }
 
